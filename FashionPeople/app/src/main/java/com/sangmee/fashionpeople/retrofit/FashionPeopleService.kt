@@ -17,11 +17,11 @@ interface FashionPeopleService {
     @GET("users/{id}")
     fun getFUser(@Path("id") id: String): Call<FUser>
 
-    @POST("/users")
+    @POST("users")
     fun addUser(@Body body: FUser): Call<FUser>
 
-    @PUT("{/users/id}")
-    fun signup(
+    @PUT("users/{id}")
+    fun addUserById(
         @Path("id") id: String,
         @Body body: FUser
     ): Call<FUser>

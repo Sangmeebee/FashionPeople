@@ -19,21 +19,12 @@ class UserInfoActivity : AppCompatActivity() {
 
     val pref = GlobalApplication.prefs
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_info)
 
-        //retrofit
-        var call = RetrofitClient().getUsersRetrofit()
-        call.enqueue(object: Callback<FUser> {
-            override fun onFailure(call: retrofit2.Call<FUser>, t: Throwable) {
-                Log.d("sangmin_error", t.message)
-            }
-
-            override fun onResponse(call: retrofit2.Call<FUser>, response: Response<FUser>) {
-                Log.d("sangmin_success", response.body().toString())
-            }
-        })
 
         //툴바 세팅
         setSupportActionBar(app_toolbar)
@@ -44,6 +35,24 @@ class UserInfoActivity : AppCompatActivity() {
 
         //버튼 클릭 (가입완료)
         authorization_btn.setOnClickListener {
+
+            //회원 아이디
+            val customId = pref.getString("custom_id", "empty")
+            //닉네임
+            val name = nickname.text.toString()
+            val instagramId = instagram_id.text.toString()
+
+            //회원정보 저장(retrofit2)
+            RetrofitClient().getInstance().addUser(FUser(customId, name, instagramId)).enqueue(object: Callback<FUser> {
+                override fun onFailure(call: retrofit2.Call<FUser>, t: Throwable) {
+                    Log.d("sangmin_error", t.message)
+                }
+
+                override fun onResponse(call: retrofit2.Call<FUser>, response: Response<FUser>) {
+                    Log.d("sangmin_success", response.body().toString())
+                }
+            })
+
             val intent = Intent(this, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
