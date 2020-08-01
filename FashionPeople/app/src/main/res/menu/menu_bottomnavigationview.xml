@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeItem"
+        android:icon="@drawable/home"
+        android:title="홈" />
+    <item
+        android:id="@+id/searchItem"
+        android:icon="@drawable/search"
+        android:title="검색" />
+    <item
+        android:id="@+id/addItem"
+        android:icon="@drawable/add"
+        android:title="추가" />
+    <item
+        android:id="@+id/alarmItem"
+        android:icon="@drawable/alarm"
+        android:title="알림" />
+    <item
+        android:id="@+id/infoItem"
+        android:icon="@drawable/user"
+        android:title="나" />
+</menu>
