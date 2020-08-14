@@ -68,7 +68,7 @@ class InfoFragment : Fragment() {
                         }
                         val profileImg = view.findViewById<CircleImageView>(R.id.profile_image)
 
-                        Glide.with(this@InfoFragment).load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/profile/1435930790/${profileImgName}").error(R.drawable.user).into(profileImg)
+                        Glide.with(context!!).load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/profile/${customId}/${profileImgName}").error(R.drawable.user).into(profileImg)
 
                     }
                 })
