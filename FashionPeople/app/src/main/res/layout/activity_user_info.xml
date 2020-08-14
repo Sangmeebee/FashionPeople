@@ -26,6 +26,17 @@
                 android:orientation="vertical"
                 android:padding="50dp">
 
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginBottom="50dp"
+                    app:civ_border_color="@color/lightgray"
+                    app:civ_border_width="2dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/user"
+                    />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -39,6 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="40dp"
                     android:textSize="16sp"
+                    android:inputType="text"
                     />
 
                 <TextView

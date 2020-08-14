@@ -1,10 +1,16 @@
 package com.sangmee.fashionpeople.kakaologin
 
 import android.app.Application
+import android.content.Context
+import androidx.multidex.MultiDex
 import com.kakao.auth.KakaoSDK
 
 class GlobalApplication : Application() {
 
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
+    }
     override fun onCreate() {
         prefs = PreferenceUtil(applicationContext)
         super.onCreate()

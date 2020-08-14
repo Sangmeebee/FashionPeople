@@ -8,7 +8,7 @@ import android.view.Window
 import kotlinx.android.synthetic.main.my_dialog.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
-class MyDialog(context : Context, title: String, kakaoBtnListener: View.OnClickListener) : Dialog(context) {
+class LoginDialog(context : Context, title: String, kakaoBtnListener: View.OnClickListener) : Dialog(context) {
     val customTitle = title
     val mKakaoBtnListener = kakaoBtnListener
     init {

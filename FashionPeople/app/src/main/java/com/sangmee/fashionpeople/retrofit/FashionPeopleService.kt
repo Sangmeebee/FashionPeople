@@ -2,6 +2,8 @@ package com.sangmee.fashionpeople.retrofit
 
 import com.sangmee.fashionpeople.kakaologin.GlobalApplication
 import com.sangmee.fashionpeople.kakaologin.PreferenceUtil
+import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -19,6 +21,7 @@ interface FashionPeopleService {
 
     @POST("users")
     fun addUser(@Body body: FUser): Call<FUser>
+
 
     @PUT("users/{id}")
     fun addUserById(
