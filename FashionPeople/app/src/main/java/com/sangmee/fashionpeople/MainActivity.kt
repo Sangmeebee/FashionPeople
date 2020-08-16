@@ -56,8 +56,9 @@ class MainActivity : AppCompatActivity() {
     //카카오 로그인 callback
     private var callback: SessionCallback = SessionCallback()
     lateinit var filepath : File
+    lateinit var mCurrentPhotoPath: String
     companion object {
-        private val CameraResult = 1111
+        private val CAMERA_START = 1111
     }
 
 
@@ -76,7 +77,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.addItem -> {
 
                     startCameraApp()
-
                 }
                 R.id.alarmItem -> {
                     supportFragmentManager.beginTransaction().replace(R.id.frameLayout, AlarmFragment()).commit()
@@ -125,10 +125,17 @@ class MainActivity : AppCompatActivity() {
             return
         }
         //카메라 앱 실행 후 결과
-        if(requestCode== CameraResult && resultCode== RESULT_OK){
-            if(filepath != null){
-                val options: BitmapFactory.Options = BitmapFactory.Options()
-                options.inJustDecodeBounds = true
+        if(requestCode== CAMERA_START){
+            Log.i("REQUEST_TAKE_PHOTO", "${Activity.RESULT_OK}" + " " + "${resultCode}");
+            if (resultCode == RESULT_OK) {
+                try {
+                    galleryAddPic();
+                } catch (e: Exception) {
+                    Log.e("REQUEST_TAKE_PHOTO", e.toString());
+                }
+
+            } else {
+                Toast.makeText(this@MainActivity, "사진찍기를 취소하였습니다.", Toast.LENGTH_SHORT).show();
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
@@ -178,30 +185,11 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    //퍼미션 확인후 카메라 앱 실행
+    //카메라 앱 실행
     fun startCameraApp(){
-        //외부 쓰기 퍼미션이 있다면
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
             try {
-                //디렉토리 생성
-                val dirPath = Environment.getExternalStorageDirectory().absolutePath+"l/fashionPeope"
-                val dir: File = File(dirPath)
-                if(!dir.exists()){
-                    dir.mkdir()
-                    Log.d("sangmin", "make directory")
-                }
-
-                //파일 생성
-                filepath = File.createTempFile("IMG", ".jpg", dir)
-                if(!filepath.exists()){
-                    filepath.createNewFile()
-                    Log.d("sangmin", "make file")
-                }
-                //카메라 식별자로 intent 보냄
-                val photoUri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID+".provider", filepath)
-                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
-                startActivityForResult(intent, CameraResult)
+                captureCamera()
             }
             catch (e:Exception){
                 e.printStackTrace()
@@ -210,6 +198,60 @@ class MainActivity : AppCompatActivity() {
         else{
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 100)
         }
+    }
+
+    //임시 파일 생성
+    @Throws(IOException::class)
+    fun createImageFile(): File? { // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val imageFileName = "JPEG_$timeStamp.jpg"
+        var imageFile: File? = null
+        val storageDir = File(
+            Environment.getExternalStorageDirectory().toString() + "/Pictures",
+            "FashionPeople"
+        )
+        if (!storageDir.exists()) {
+            Log.i("mCurrentPhotoPath1", storageDir.toString())
+            storageDir.mkdirs()
+        }
+        imageFile = File(storageDir, imageFileName)
+        mCurrentPhotoPath = imageFile.absolutePath
+        Log.d("sangmin", mCurrentPhotoPath)
+        return imageFile
+    }
+
+    //카메라 실행
+    private fun captureCamera() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (takePictureIntent.resolveActivity(packageManager) != null) {
+
+            var photoFile: File? = null
+            try {
+                photoFile = createImageFile()
+            } catch (ex: IOException) {
+                Log.e("captureCamera Error", ex.toString())
+                return
+            }
+            if (photoFile != null) { // getUriForFile의 두 번째 인자는 Manifest provier의 authorites와 일치해야 함
+                val providerURI = FileProvider.getUriForFile(this, "$packageName.provider", photoFile)
+                Log.d("sangmin_photoFile", photoFile.absolutePath)
+                // 인텐트에 전달할 때는 FileProvier의 Return값인 content://로만!!, providerURI의 값에 카메라 데이터를 넣어 보냄
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, providerURI)
+                startActivityForResult(takePictureIntent, CAMERA_START)
+            }
+        }
+    }
+
+    //이미지 로컬 폴더에 저장
+    private fun galleryAddPic() {
+        Log.i("galleryAddPic", "Call");
+        val mediaScanIntent: Intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        // 해당 경로에 있는 파일을 객체화(새로 파일을 만든다는 것으로 이해하면 안 됨)
+        val f: File = File(mCurrentPhotoPath);
+        val contentUri: Uri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        sendBroadcast(mediaScanIntent);
+        Toast.makeText(this, "사진이 앨범에 저장되었습니다.", Toast.LENGTH_SHORT).show();
     }
 
 }
