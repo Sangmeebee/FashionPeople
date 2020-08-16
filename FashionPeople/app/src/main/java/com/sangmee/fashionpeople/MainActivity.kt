@@ -247,11 +247,62 @@ class MainActivity : AppCompatActivity() {
         Log.i("galleryAddPic", "Call");
         val mediaScanIntent: Intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         // 해당 경로에 있는 파일을 객체화(새로 파일을 만든다는 것으로 이해하면 안 됨)
-        val f: File = File(mCurrentPhotoPath);
-        val contentUri: Uri = Uri.fromFile(f);
-        mediaScanIntent.setData(contentUri);
-        sendBroadcast(mediaScanIntent);
-        Toast.makeText(this, "사진이 앨범에 저장되었습니다.", Toast.LENGTH_SHORT).show();
+        val f: File = File(mCurrentPhotoPath)
+        val contentUri: Uri = Uri.fromFile(f)
+        mediaScanIntent.setData(contentUri)
+        sendBroadcast(mediaScanIntent)
+        val customId = GlobalApplication.prefs.getString("custom_id", "empty")
+        uploadWithTransferUtility(customId, f.name, f)
+
+        Toast.makeText(this, "사진이 앨범에 저장되었습니다.", Toast.LENGTH_SHORT).show()
+    }
+
+    //aws s3에 이미지 업로드
+    fun uploadWithTransferUtility(customId: String, fileName: String, file: File?) {
+
+        val credentialsProvider = CognitoCachingCredentialsProvider(
+            applicationContext,
+            "ap-northeast-2:04a21c16-627a-49a9-8229-f1c412ddebfa",  // 자격 증명 풀 ID
+            Regions.AP_NORTHEAST_2 // 리전
+        )
+
+        TransferNetworkLossHandler.getInstance(applicationContext)
+
+        val transferUtility = TransferUtility.builder()
+            .context(applicationContext)
+            .defaultBucket("fashionprofile-images")
+            .s3Client(AmazonS3Client(credentialsProvider, Region.getRegion(Regions.AP_NORTHEAST_2)))
+            .build()
+
+        /* Store the new created Image file path */
+
+        val uploadObserver = transferUtility.upload("users/${customId}/feed/${fileName}", file, CannedAccessControlList.PublicRead)
+
+        //CannedAccessControlList.PublicRead 읽기 권한 추가
+
+        // Attach a listener to the observer
+        uploadObserver.setTransferListener(object : TransferListener {
+            override fun onStateChanged(id: Int, state: TransferState) {
+                if (state == TransferState.COMPLETED) {
+                    Log.d("MYTAG", "fileupload")
+                }
+            }
+
+            override fun onProgressChanged(id: Int, current: Long, total: Long) {
+                val done = (((current.toDouble() / total) * 100.0).toInt())
+                Log.d("MYTAG", "UPLOAD - - ID: $id, percent done = $done")
+            }
+
+            override fun onError(id: Int, ex: Exception) {
+                Log.d("MYTAG", "UPLOAD ERROR - - ID: $id - - EX: ${ex.message.toString()}")
+            }
+        })
+
+        // If you prefer to long-poll for updates
+        if (uploadObserver.state == TransferState.COMPLETED) {
+            /* Handle completion */
+
+        }
     }
 
 }
