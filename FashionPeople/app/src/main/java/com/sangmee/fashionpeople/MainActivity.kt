@@ -76,7 +76,17 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.addItem -> {
 
-                    startCameraApp()
+                    //로그인이 안되어있으면 로그인 권유 다이얼로그 출력
+                    val customId = GlobalApplication.prefs.getString("custom_id", "empty")
+                    if(customId == "empty"){
+                        dialog = LoginDialog(this, "로그인을 해주세요", kakaoBtnListener)
+                        dialog.show()
+                    }
+                    //로그인이 되면 카메라 앱으로 전환
+                    else{
+                        startCameraApp()
+                    }
+
                 }
                 R.id.alarmItem -> {
                     supportFragmentManager.beginTransaction().replace(R.id.frameLayout, AlarmFragment()).commit()
@@ -126,16 +136,17 @@ class MainActivity : AppCompatActivity() {
         }
         //카메라 앱 실행 후 결과
         if(requestCode== CAMERA_START){
-            Log.i("REQUEST_TAKE_PHOTO", "${Activity.RESULT_OK}" + " " + "${resultCode}");
+            Log.i("REQUEST_TAKE_PHOTO", "${Activity.RESULT_OK}" + " " + "${resultCode}")
             if (resultCode == RESULT_OK) {
                 try {
-                    galleryAddPic();
+                    galleryAddPic()
+                    supportFragmentManager.beginTransaction().replace(R.id.frameLayout, HomeFragment()).commit()
                 } catch (e: Exception) {
-                    Log.e("REQUEST_TAKE_PHOTO", e.toString());
+                    Log.e("REQUEST_TAKE_PHOTO", e.toString())
                 }
 
             } else {
-                Toast.makeText(this@MainActivity, "사진찍기를 취소하였습니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this@MainActivity, "사진찍기를 취소하였습니다.", Toast.LENGTH_SHORT).show()
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
