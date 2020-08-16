@@ -54,19 +54,11 @@ class UserInfoActivity : AppCompatActivity() {
         toolbar_title.setText("정보 입력")
         actionBar.setDisplayHomeAsUpEnabled(true)
 
-        //외부 저장소에 권한 필요, 동적 퍼미션
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val permissionResult = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            if (permissionResult == PackageManager.PERMISSION_DENIED) {
-                val permissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                requestPermissions(permissions, 200)
-            }
-        }
 
         //프로필 사진 선택
         profile_image.setOnClickListener {
             //외부 쓰기 퍼미션이 있다면
-            if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+            if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
                 try {
                     //갤러리 앱 실행
                     val intent = Intent(Intent.ACTION_PICK)
@@ -79,7 +71,7 @@ class UserInfoActivity : AppCompatActivity() {
                 }
             }
             else{
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 100)
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE), 100)
             }
         }
 
@@ -147,7 +139,7 @@ class UserInfoActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
-            200 -> if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            100 -> if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, "외부 메모리 읽기/쓰기 사용 가능", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this, "외부 메모리 읽기/쓰기 제한", Toast.LENGTH_SHORT).show()
