@@ -38,6 +38,7 @@ class UserInfoActivity : AppCompatActivity() {
     lateinit var imagePath:String
     var file: File? = null
     lateinit var customId: String
+    val CHOOSE_PROFILEIMG = 200
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,11 +61,11 @@ class UserInfoActivity : AppCompatActivity() {
             }
         }
 
-       //프로필 사진 선택
+        //프로필 사진 선택
         profile_image.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
-            intent.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
-            startActivityForResult(intent, 200)
+            intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
+            startActivityForResult(intent, CHOOSE_PROFILEIMG)
         }
 
         //버튼 클릭 (가입완료)
@@ -81,10 +82,6 @@ class UserInfoActivity : AppCompatActivity() {
             if(profileImage!=null){
                 uploadWithTransferUtility(profileImage, file)
             }
-            else{
-                redirctUserInfoActivity()
-            }
-
 
             //회원정보 저장(retrofit2)
             RetrofitClient().getInstance().addUser(FUser(customId, name, instagramId, profileImage)).enqueue(object: Callback<FUser> {
@@ -94,6 +91,7 @@ class UserInfoActivity : AppCompatActivity() {
 
                 override fun onResponse(call: retrofit2.Call<FUser>, response: Response<FUser>) {
                     Log.d("sangmin_success", response.body().toString())
+                    redirctUserInfoActivity()
                 }
             })
 
@@ -142,10 +140,9 @@ class UserInfoActivity : AppCompatActivity() {
         }
     }
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == 200)
+        if(requestCode == CHOOSE_PROFILEIMG)
         {
             if(resultCode == RESULT_OK)
             {
@@ -187,7 +184,7 @@ class UserInfoActivity : AppCompatActivity() {
 
         /* Store the new created Image file path */
 
-        val uploadObserver = transferUtility.upload("profile/${customId}/${fileName}", file, CannedAccessControlList.PublicRead)
+        val uploadObserver = transferUtility.upload("users/${customId}/profile/${fileName}", file, CannedAccessControlList.PublicRead)
 
         //CannedAccessControlList.PublicRead 읽기 권한 추가
 

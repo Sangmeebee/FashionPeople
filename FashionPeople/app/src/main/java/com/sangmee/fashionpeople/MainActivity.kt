@@ -1,10 +1,13 @@
 package com.sangmee.fashionpeople
 
 import android.Manifest
+import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -18,6 +21,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import androidx.multidex.BuildConfig
 import com.amazonaws.auth.CognitoCachingCredentialsProvider
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferNetworkLossHandler
@@ -41,6 +46,7 @@ import com.sangmee.fashionpeople.kakaologin.UserInfoActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.io.IOException
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -49,9 +55,9 @@ class MainActivity : AppCompatActivity() {
     lateinit var dialog : LoginDialog
     //카카오 로그인 callback
     private var callback: SessionCallback = SessionCallback()
-
+    lateinit var filepath : File
     companion object {
-        private val MY_PERMISSION_STORAGE = 1111
+        private val CameraResult = 1111
     }
 
 
@@ -68,7 +74,8 @@ class MainActivity : AppCompatActivity() {
                     supportFragmentManager.beginTransaction().replace(R.id.frameLayout, SearchFragment()).commit()
                 }
                 R.id.addItem -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.frameLayout, AddFragment()).commit()
+
+                    startCameraApp()
 
                 }
                 R.id.alarmItem -> {
@@ -111,11 +118,18 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    //카카오톡 로그인 결과
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        //카카오톡 로그인 결과
         if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
             Log.i("Log", "session get current session")
             return
+        }
+        //카메라 앱 실행 후 결과
+        if(requestCode== CameraResult && resultCode== RESULT_OK){
+            if(filepath != null){
+                val options: BitmapFactory.Options = BitmapFactory.Options()
+                options.inJustDecodeBounds = true
+            }
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
@@ -162,6 +176,40 @@ class MainActivity : AppCompatActivity() {
     fun redirctUserInfoActivity(){
         val intent = Intent(this, UserInfoActivity::class.java)
         startActivity(intent)
+    }
+
+    //퍼미션 확인후 카메라 앱 실행
+    fun startCameraApp(){
+        //외부 쓰기 퍼미션이 있다면
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+            try {
+                //디렉토리 생성
+                val dirPath = Environment.getExternalStorageDirectory().absolutePath+"l/fashionPeope"
+                val dir: File = File(dirPath)
+                if(!dir.exists()){
+                    dir.mkdir()
+                    Log.d("sangmin", "make directory")
+                }
+
+                //파일 생성
+                filepath = File.createTempFile("IMG", ".jpg", dir)
+                if(!filepath.exists()){
+                    filepath.createNewFile()
+                    Log.d("sangmin", "make file")
+                }
+                //카메라 식별자로 intent 보냄
+                val photoUri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID+".provider", filepath)
+                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+                startActivityForResult(intent, CameraResult)
+            }
+            catch (e:Exception){
+                e.printStackTrace()
+            }
+        }
+        else{
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 100)
+        }
     }
 
 }

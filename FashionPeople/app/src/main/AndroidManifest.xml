@@ -7,9 +7,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!-- 카메라 사용을 사용자에게 알림-->
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera2" />
 
 
     <application
@@ -50,7 +47,7 @@
             android:enabled="true" />
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.shuvic.alumni.cameraalbum"
+            android:authorities="com.sangmee.fashionpeople.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
