@@ -32,8 +32,6 @@ import java.util.*
 
 
 class AddFragment : Fragment() {
-    private val REQUEST_TAKE_PHOTO = 2222
-    lateinit var mCurrentPhotoPath:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

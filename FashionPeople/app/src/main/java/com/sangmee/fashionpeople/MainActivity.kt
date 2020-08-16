@@ -49,8 +49,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var dialog : LoginDialog
     //카카오 로그인 callback
     private var callback: SessionCallback = SessionCallback()
-    lateinit var imagePath: String
-    val REQUEST_IMAGE_CAPTURE = 1
 
     companion object {
         private val MY_PERMISSION_STORAGE = 1111
@@ -165,52 +163,5 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, UserInfoActivity::class.java)
         startActivity(intent)
     }
-
-
-    override fun onRequestPermissionsResult(requestCode:Int, @NonNull permissions:Array<String>, @NonNull grantResults:IntArray) {
-        when (requestCode) {
-            MY_PERMISSION_STORAGE -> for (i in grantResults.indices)
-            {
-                // grantResults[] : 허용된 권한은 0, 거부한 권한은 -1
-                if (grantResults[i] < 0)
-                {
-                    Toast.makeText(this@MainActivity, "해당 권한을 활성화 하셔야 합니다.", Toast.LENGTH_SHORT).show()
-                    return
-                }
-            }
-        }// 허용했다면 이 부분에서..
-    }
-    private fun checkPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) !== PackageManager.PERMISSION_GRANTED)
-        {
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE))
-            {
-                AlertDialog.Builder(this)
-                        .setTitle("알림")
-                        .setMessage("저장소 권한이 거부되었습니다. 사용을 원하시면 설정에서 해당 권한을 직접 허용하셔야 합니다.")
-                        .setNeutralButton("설정", object: DialogInterface.OnClickListener {
-                            override fun onClick(dialogInterface:DialogInterface, i:Int) {
-                                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                                intent.setData(Uri.parse("package:" + getPackageName()))
-                                startActivity(intent)
-                            }
-                        })
-                        .setPositiveButton("확인", object:DialogInterface.OnClickListener {
-                            override fun onClick(dialogInterface:DialogInterface, i:Int) {
-                                finish()
-                            }
-                        })
-                        .setCancelable(false)
-                        .create()
-                        .show()
-            }
-            else
-            {
-                ActivityCompat.requestPermissions(this, arrayOf<String>(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE), MY_PERMISSION_STORAGE)
-            }
-        }
-    }
-
 
 }
