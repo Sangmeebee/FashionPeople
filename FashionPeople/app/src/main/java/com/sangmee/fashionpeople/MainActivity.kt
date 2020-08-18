@@ -2,27 +2,19 @@ package com.sangmee.fashionpeople
 
 import android.Manifest
 import android.app.Activity
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.pm.ResolveInfo
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.NonNull
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.multidex.BuildConfig
 import com.amazonaws.auth.CognitoCachingCredentialsProvider
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferNetworkLossHandler
@@ -32,6 +24,8 @@ import com.amazonaws.regions.Region
 import com.amazonaws.regions.Regions
 import com.amazonaws.services.s3.AmazonS3Client
 import com.amazonaws.services.s3.model.CannedAccessControlList
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.TedPermission
 import com.kakao.auth.AuthType
 import com.kakao.auth.ISessionCallback
 import com.kakao.auth.Session
@@ -52,56 +46,84 @@ import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
-    lateinit var dialog : LoginDialog
+    lateinit var dialog: LoginDialog
+
     //카카오 로그인 callback
     private var callback: SessionCallback = SessionCallback()
-    lateinit var filepath : File
+    lateinit var filepath: File
     lateinit var mCurrentPhotoPath: String
+    lateinit var mCurrentVideoPath: String
+
+    val permissionlistener = object: PermissionListener {
+        override fun onPermissionGranted() {
+            Toast.makeText(applicationContext, "권한체크완료", Toast.LENGTH_SHORT).show()
+        }
+
+        override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
+            TODO("Not yet implemented")
+        }
+    }
+
     companion object {
-        private val CAMERA_START = 1111
+        private const val CAMERA_START = 1111
+        private const val REQUEST_VIDEO_CAPTURE = 1
     }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        TedPermission.with(this)
+            .setPermissionListener(permissionlistener)
+            .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+            .setPermissions(Manifest.permission.CAMERA)
+            .check();
 
         navigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.homeItem -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.frameLayout, HomeFragment()).commit()
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.frameLayout, HomeFragment()).commit()
                 }
                 R.id.searchItem -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.frameLayout, SearchFragment()).commit()
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.frameLayout, SearchFragment()).commit()
                 }
                 R.id.addItem -> {
 
                     //로그인이 안되어있으면 로그인 권유 다이얼로그 출력
                     val customId = GlobalApplication.prefs.getString("custom_id", "empty")
-                    if(customId == "empty"){
+                    if (customId == "empty") {
                         dialog = LoginDialog(this, "로그인을 해주세요", kakaoBtnListener)
                         dialog.show()
                     }
-                    //로그인이 되면 카메라 앱으로 전환
-                    else{
-                        startCameraApp()
+                    //로그인이 되면
+                    else {
+                        //사진 촬영, 비디오 촬영 선택 다이얼로그 출력
+                        CameraDialog.newInstance({
+                            startCameraApp()//사진 촬영 클릭시
+                        }, {
+                            temporary()//비디오 촬영 클릭시
+                        }).show(supportFragmentManager, CameraDialog.TAG)
                     }
 
                 }
                 R.id.alarmItem -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.frameLayout, AlarmFragment()).commit()
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.frameLayout, AlarmFragment()).commit()
                 }
                 R.id.infoItem -> {
                     val customId = GlobalApplication.prefs.getString("custom_id", "empty")
                     //다르다면(로그인이 안되어 있는 상태라면 로그인하라는 알림창)
-                    if (customId=="empty") {
+                    if (customId == "empty") {
                         dialog = LoginDialog(this, "로그인을 해주세요", kakaoBtnListener)
                         dialog.show()
                     }
                     //sharedpreference에 있는 id와 DB에 있는 id가 같다면 info fragment 띄어준다
                     else {
 
-                        supportFragmentManager.beginTransaction().replace(R.id.frameLayout, InfoFragment()).commit()
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.frameLayout, InfoFragment()).commit()
                     }
 
                 }
@@ -112,7 +134,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     //다이얼로그의 카카오로그인 버튼 리스터
-    val kakaoBtnListener =View.OnClickListener{
+    val kakaoBtnListener = View.OnClickListener {
         Toast.makeText(this, "카카오톡으로 로그인합니다.", Toast.LENGTH_SHORT).show()
         //카카오 콜백 추가
         Session.getCurrentSession().addCallback(callback)
@@ -135,12 +157,13 @@ class MainActivity : AppCompatActivity() {
             return
         }
         //카메라 앱 실행 후 결과
-        if(requestCode== CAMERA_START){
+        if (requestCode == CAMERA_START) {
             Log.i("REQUEST_TAKE_PHOTO", "${Activity.RESULT_OK}" + " " + "${resultCode}")
             if (resultCode == RESULT_OK) {
                 try {
                     galleryAddPic()
-                    supportFragmentManager.beginTransaction().replace(R.id.frameLayout, HomeFragment()).commit()
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.frameLayout, HomeFragment()).commit()
                 } catch (e: Exception) {
                     Log.e("REQUEST_TAKE_PHOTO", e.toString())
                 }
@@ -149,12 +172,25 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity, "사진찍기를 취소하였습니다.", Toast.LENGTH_SHORT).show()
             }
         }
+        if (requestCode == REQUEST_VIDEO_CAPTURE) {
+            if (resultCode == RESULT_OK) {
+                try {
+
+                } catch (e: Exception) {
+                    Log.d("REQUEST_VIDEO_CAPTURE", e.toString())
+                }
+            } else {
+                Log.d("resultcode", resultCode.toString())
+                Toast.makeText(this@MainActivity, R.string.cancel_video_record, Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
         super.onActivityResult(requestCode, resultCode, data)
     }
 
     //카카오톡 로그인 콜백
     inner class SessionCallback : ISessionCallback {
-        lateinit var custom_id : String
+        lateinit var custom_id: String
         override fun onSessionOpenFailed(exception: KakaoException?) {
             Log.e("sangmin", "Session Call back :: onSessionOpenFailed: ${exception?.message}")
         }
@@ -167,7 +203,10 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onSessionClosed(errorResult: ErrorResult?) {
-                    Log.i("sangmin", "Session Call back :: onSessionClosed ${errorResult?.errorMessage}")
+                    Log.i(
+                        "sangmin",
+                        "Session Call back :: onSessionClosed ${errorResult?.errorMessage}"
+                    )
 
                 }
 
@@ -190,26 +229,34 @@ class MainActivity : AppCompatActivity() {
             })
         }
     }
+
     //화면전환 메소드
-    fun redirctUserInfoActivity(){
+    fun redirctUserInfoActivity() {
         val intent = Intent(this, UserInfoActivity::class.java)
         startActivity(intent)
     }
 
     //카메라 앱 실행
-    fun startCameraApp(){
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-            try {
-                captureCamera()
+    fun startCameraApp() {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                try {
+                    captureCamera()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            } else {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    100
+                )
             }
-            catch (e:Exception){
-                e.printStackTrace()
-            }
-        }
-        else{
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 100)
-        }
     }
+
 
     //임시 파일 생성
     @Throws(IOException::class)
@@ -231,9 +278,11 @@ class MainActivity : AppCompatActivity() {
         return imageFile
     }
 
+
     //카메라 실행
     private fun captureCamera() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
         if (takePictureIntent.resolveActivity(packageManager) != null) {
 
             var photoFile: File? = null
@@ -244,7 +293,8 @@ class MainActivity : AppCompatActivity() {
                 return
             }
             if (photoFile != null) { // getUriForFile의 두 번째 인자는 Manifest provier의 authorites와 일치해야 함
-                val providerURI = FileProvider.getUriForFile(this, "$packageName.provider", photoFile)
+                val providerURI =
+                    FileProvider.getUriForFile(this, "$packageName.provider", photoFile)
                 Log.d("sangmin_photoFile", photoFile.absolutePath)
                 // 인텐트에 전달할 때는 FileProvier의 Return값인 content://로만!!, providerURI의 값에 카메라 데이터를 넣어 보냄
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, providerURI)
@@ -252,6 +302,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
 
     //이미지 로컬 폴더에 저장
     private fun galleryAddPic() {
@@ -266,6 +317,81 @@ class MainActivity : AppCompatActivity() {
         uploadWithTransferUtility(customId, f.name, f)
 
         Toast.makeText(this, "사진이 앨범에 저장되었습니다.", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun startVideoApp() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            try {
+                recordVideoCamera()
+            } catch (e: Exception) {
+                Log.e("exception", e.toString())
+            }
+        } else {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                , 100
+            )
+        }
+    }
+
+    private fun temporary() {
+
+            Intent(MediaStore.ACTION_VIDEO_CAPTURE).also { takeVideoIntent ->
+                takeVideoIntent.resolveActivity(packageManager)?.also {
+                    startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE)
+                }
+            }
+    }
+
+    //동영상 녹화 실행
+    private fun recordVideoCamera() {
+            val videoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+            if (intent.resolveActivity(packageManager) != null) { //인텐트 설정에 맞는 액티비티를 찾아줌
+
+                var videoFile: File? = null
+                try {
+                    videoFile = createVideoFile()
+                } catch (ex: IOException) {
+                    Log.e("videoRecord Error", ex.toString())
+                    return
+                }
+                videoFile?.let {
+                    val provideURI =
+                        FileProvider.getUriForFile(this, "$packageName.videoProvider", videoFile)
+                    videoIntent.putExtra(MediaStore.EXTRA_OUTPUT, provideURI)
+                    startActivityForResult(intent, REQUEST_VIDEO_CAPTURE)
+                    Log.d("aa", "aa")
+                }
+            }
+
+
+    }
+
+    // 비디오 폴더 있는지 확인 후 없으면 생성 + 파일 생성(파일 이름은 겹칠일 없으니 존재하는지 체크 X)
+    private fun createVideoFile(): File? {
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val videoFileName = "VID_$timeStamp.mp4"
+        var videoFile: File? = null
+        val storageDir = File(
+            Environment.getExternalStorageDirectory().toString() + "/Videos",
+            "FashionPeople"
+        )
+        if (!storageDir.exists()) { //자체적으로 폴더 존재하는지 판단하긴 하지만 한번더 확인
+            storageDir.mkdirs()
+        }
+        videoFile = File(storageDir, videoFileName)
+        mCurrentVideoPath = videoFile.absolutePath
+        return videoFile
+    }
+
+    //동영상 로컬 폴더에 저장
+    private fun galleryAddVideo() {
+
     }
 
     //aws s3에 이미지 업로드
@@ -287,7 +413,11 @@ class MainActivity : AppCompatActivity() {
 
         /* Store the new created Image file path */
 
-        val uploadObserver = transferUtility.upload("users/${customId}/feed/${fileName}", file, CannedAccessControlList.PublicRead)
+        val uploadObserver = transferUtility.upload(
+            "users/${customId}/feed/${fileName}",
+            file,
+            CannedAccessControlList.PublicRead
+        )
 
         //CannedAccessControlList.PublicRead 읽기 권한 추가
 

@@ -67,4 +67,7 @@ dependencies {
     implementation 'com.amazonaws:aws-android-sdk-mobile-client:2.13.5'
     //Glide (url 이미지 다운)
     implementation 'com.github.bumptech.glide:glide:4.11.0'
+
+    //체크 퍼미션
+    implementation 'gun0912.ted:tedpermission:2.2.3'
 }
