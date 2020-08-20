@@ -385,7 +385,7 @@ class MainActivity : AppCompatActivity() {
         val customId = GlobalApplication.prefs.getString("custom_id", "empty")
         uploadWithTransferUtility(customId, f.name, f)
 
-        Toast.makeText(this, "사진이 앨범에 저장되었습니다.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "동영상이 앨범에 저장되었습니다.", Toast.LENGTH_SHORT).show()
     }
 
     //aws s3에 이미지 업로드
