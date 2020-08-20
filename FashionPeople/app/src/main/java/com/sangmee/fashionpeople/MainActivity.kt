@@ -54,30 +54,27 @@ class MainActivity : AppCompatActivity() {
     lateinit var mCurrentPhotoPath: String
     lateinit var mCurrentVideoPath: String
 
-    val permissionlistener = object: PermissionListener {
+    private val permissionListener = object: PermissionListener {
         override fun onPermissionGranted() {
-            Toast.makeText(applicationContext, "권한체크완료", Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, R.string.check_permission_completed, Toast.LENGTH_SHORT).show()
         }
 
         override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
-            TODO("Not yet implemented")
+            Toast.makeText(applicationContext, R.string.check_permission_denied, Toast.LENGTH_SHORT).show()
         }
     }
 
     companion object {
         private const val CAMERA_START = 1111
         private const val REQUEST_VIDEO_CAPTURE = 1
+        private const val BUCKET_NAME = "fashionprofile-images"
     }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        TedPermission.with(this)
-            .setPermissionListener(permissionlistener)
-            .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-            .setPermissions(Manifest.permission.CAMERA)
-            .check();
+
 
         navigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
@@ -103,7 +100,7 @@ class MainActivity : AppCompatActivity() {
                         CameraDialog.newInstance({
                             startCameraApp()//사진 촬영 클릭시
                         }, {
-                            temporary()//비디오 촬영 클릭시
+                            recordVideoCamera()//비디오 촬영 클릭시
                         }).show(supportFragmentManager, CameraDialog.TAG)
                     }
 
@@ -134,7 +131,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     //다이얼로그의 카카오로그인 버튼 리스터
-    val kakaoBtnListener = View.OnClickListener {
+    private val kakaoBtnListener = View.OnClickListener {
         Toast.makeText(this, "카카오톡으로 로그인합니다.", Toast.LENGTH_SHORT).show()
         //카카오 콜백 추가
         Session.getCurrentSession().addCallback(callback)
@@ -175,7 +172,7 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == REQUEST_VIDEO_CAPTURE) {
             if (resultCode == RESULT_OK) {
                 try {
-
+                    galleryAddVideo()
                 } catch (e: Exception) {
                     Log.d("REQUEST_VIDEO_CAPTURE", e.toString())
                 }
@@ -221,7 +218,7 @@ class MainActivity : AppCompatActivity() {
                     Log.i("Log", "연령대 : ${result.kakaoAccount.ageRange}")
 
                     checkNotNull(result) { "session response null" }
-                    redirctUserInfoActivity()
+                    redirectUserInfoActivity()
 
 
                 }
@@ -231,13 +228,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     //화면전환 메소드
-    fun redirctUserInfoActivity() {
+    private fun redirectUserInfoActivity() {
         val intent = Intent(this, UserInfoActivity::class.java)
         startActivity(intent)
     }
 
     //카메라 앱 실행
-    fun startCameraApp() {
+    private fun startCameraApp() {
+        TedPermission.with(this)
+            .setPermissionListener(permissionListener)
+            .setDeniedMessage(R.string.check_permission)
+            .setPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            .check()
+
             if (ContextCompat.checkSelfPermission(
                     this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -260,7 +263,7 @@ class MainActivity : AppCompatActivity() {
 
     //임시 파일 생성
     @Throws(IOException::class)
-    fun createImageFile(): File? { // Create an image file name
+    private fun createImageFile(): File? { // Create an image file name
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         val imageFileName = "JPEG_$timeStamp.jpg"
         var imageFile: File? = null
@@ -288,7 +291,7 @@ class MainActivity : AppCompatActivity() {
             var photoFile: File? = null
             try {
                 photoFile = createImageFile()
-            } catch (ex: IOException) {
+            } catch (ex: Exception) {
                 Log.e("captureCamera Error", ex.toString())
                 return
             }
@@ -319,37 +322,17 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, "사진이 앨범에 저장되었습니다.", Toast.LENGTH_SHORT).show()
     }
 
-    private fun startVideoApp() {
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            try {
-                recordVideoCamera()
-            } catch (e: Exception) {
-                Log.e("exception", e.toString())
-            }
-        } else {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                , 100
-            )
-        }
-    }
 
-    private fun temporary() {
-
-            Intent(MediaStore.ACTION_VIDEO_CAPTURE).also { takeVideoIntent ->
-                takeVideoIntent.resolveActivity(packageManager)?.also {
-                    startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE)
-                }
-            }
-    }
 
     //동영상 녹화 실행
     private fun recordVideoCamera() {
+
+        TedPermission.with(this)
+            .setPermissionListener(permissionListener)
+            .setDeniedMessage(R.string.check_permission)
+            .setPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            .check()
+
             val videoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
             if (intent.resolveActivity(packageManager) != null) { //인텐트 설정에 맞는 액티비티를 찾아줌
 
@@ -362,23 +345,25 @@ class MainActivity : AppCompatActivity() {
                 }
                 videoFile?.let {
                     val provideURI =
-                        FileProvider.getUriForFile(this, "$packageName.videoProvider", videoFile)
+                        FileProvider.getUriForFile(this, "$packageName.provider", videoFile)
                     videoIntent.putExtra(MediaStore.EXTRA_OUTPUT, provideURI)
-                    startActivityForResult(intent, REQUEST_VIDEO_CAPTURE)
+                    startActivityForResult(videoIntent, REQUEST_VIDEO_CAPTURE)
                     Log.d("aa", "aa")
                 }
             }
 
 
+
     }
 
     // 비디오 폴더 있는지 확인 후 없으면 생성 + 파일 생성(파일 이름은 겹칠일 없으니 존재하는지 체크 X)
+    @Throws(IOException::class)
     private fun createVideoFile(): File? {
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         val videoFileName = "VID_$timeStamp.mp4"
         var videoFile: File? = null
         val storageDir = File(
-            Environment.getExternalStorageDirectory().toString() + "/Videos",
+            Environment.getExternalStorageDirectory().toString() + "/Pictures",
             "FashionPeople"
         )
         if (!storageDir.exists()) { //자체적으로 폴더 존재하는지 판단하긴 하지만 한번더 확인
@@ -391,11 +376,20 @@ class MainActivity : AppCompatActivity() {
 
     //동영상 로컬 폴더에 저장
     private fun galleryAddVideo() {
+        val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        // 해당 경로에 있는 파일을 객체화(새로 파일을 만든다는 것으로 이해하면 안 됨)
+        val f: File = File(mCurrentVideoPath)
+        val contentUri: Uri = Uri.fromFile(f)
+        mediaScanIntent.data = contentUri
+        sendBroadcast(mediaScanIntent)
+        val customId = GlobalApplication.prefs.getString("custom_id", "empty")
+        uploadWithTransferUtility(customId, f.name, f)
 
+        Toast.makeText(this, "사진이 앨범에 저장되었습니다.", Toast.LENGTH_SHORT).show()
     }
 
     //aws s3에 이미지 업로드
-    fun uploadWithTransferUtility(customId: String, fileName: String, file: File?) {
+    private fun uploadWithTransferUtility(customId: String, fileName: String, file: File?) {
 
         val credentialsProvider = CognitoCachingCredentialsProvider(
             applicationContext,
@@ -407,7 +401,7 @@ class MainActivity : AppCompatActivity() {
 
         val transferUtility = TransferUtility.builder()
             .context(applicationContext)
-            .defaultBucket("fashionprofile-images")
+            .defaultBucket(BUCKET_NAME)
             .s3Client(AmazonS3Client(credentialsProvider, Region.getRegion(Regions.AP_NORTHEAST_2)))
             .build()
 
@@ -445,5 +439,8 @@ class MainActivity : AppCompatActivity() {
 
         }
     }
+
+
+
 
 }
