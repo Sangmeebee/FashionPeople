@@ -3,6 +3,8 @@ package com.sangmee.fashionpeople.retrofit
 import com.sangmee.fashionpeople.kakaologin.GlobalApplication
 import com.sangmee.fashionpeople.retrofit.service.FUserService
 import com.sangmee.fashionpeople.retrofit.service.FeedImageService
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -19,6 +21,11 @@ class RetrofitClient {
     init {
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .client(OkHttpClient().newBuilder()
+                .addInterceptor(HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.BODY
+                })
+                .build())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         fUserService = retrofit.create(FUserService::class.java)

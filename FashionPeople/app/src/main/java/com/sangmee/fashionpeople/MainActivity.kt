@@ -37,7 +37,12 @@ import com.kakao.util.exception.KakaoException
 import com.sangmee.fashionpeople.fragment.*
 import com.sangmee.fashionpeople.kakaologin.GlobalApplication
 import com.sangmee.fashionpeople.kakaologin.UserInfoActivity
+import com.sangmee.fashionpeople.retrofit.RetrofitClient
+import com.sangmee.fashionpeople.retrofit.model.FeedImage
 import kotlinx.android.synthetic.main.activity_main.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 import java.io.IOException
 import java.lang.Exception
@@ -54,13 +59,18 @@ class MainActivity : AppCompatActivity() {
     lateinit var mCurrentPhotoPath: String
     lateinit var mCurrentVideoPath: String
 
-    private val permissionListener = object: PermissionListener {
+    private val permissionListener = object : PermissionListener {
         override fun onPermissionGranted() {
-            Toast.makeText(applicationContext, R.string.check_permission_completed, Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                applicationContext,
+                R.string.check_permission_completed,
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
         override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
-            Toast.makeText(applicationContext, R.string.check_permission_denied, Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, R.string.check_permission_denied, Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
@@ -241,23 +251,23 @@ class MainActivity : AppCompatActivity() {
             .setPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
             .check()
 
-            if (ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                try {
-                    captureCamera()
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            } else {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                    100
-                )
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            try {
+                captureCamera()
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
+        } else {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                100
+            )
+        }
     }
 
 
@@ -318,10 +328,10 @@ class MainActivity : AppCompatActivity() {
         sendBroadcast(mediaScanIntent)
         val customId = GlobalApplication.prefs.getString("custom_id", "empty")
         uploadWithTransferUtility(customId, f.name, f)
+        postFeedImage(customId, f.name)
 
         Toast.makeText(this, "사진이 앨범에 저장되었습니다.", Toast.LENGTH_SHORT).show()
     }
-
 
 
     //동영상 녹화 실행
@@ -333,25 +343,24 @@ class MainActivity : AppCompatActivity() {
             .setPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
             .check()
 
-            val videoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
-            if (intent.resolveActivity(packageManager) != null) { //인텐트 설정에 맞는 액티비티를 찾아줌
+        val videoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+        if (intent.resolveActivity(packageManager) != null) { //인텐트 설정에 맞는 액티비티를 찾아줌
 
-                var videoFile: File? = null
-                try {
-                    videoFile = createVideoFile()
-                } catch (ex: IOException) {
-                    Log.e("videoRecord Error", ex.toString())
-                    return
-                }
-                videoFile?.let {
-                    val provideURI =
-                        FileProvider.getUriForFile(this, "$packageName.provider", videoFile)
-                    videoIntent.putExtra(MediaStore.EXTRA_OUTPUT, provideURI)
-                    startActivityForResult(videoIntent, REQUEST_VIDEO_CAPTURE)
-                    Log.d("aa", "aa")
-                }
+            var videoFile: File? = null
+            try {
+                videoFile = createVideoFile()
+            } catch (ex: IOException) {
+                Log.e("videoRecord Error", ex.toString())
+                return
             }
-
+            videoFile?.let {
+                val provideURI =
+                    FileProvider.getUriForFile(this, "$packageName.provider", videoFile)
+                videoIntent.putExtra(MediaStore.EXTRA_OUTPUT, provideURI)
+                startActivityForResult(videoIntent, REQUEST_VIDEO_CAPTURE)
+                Log.d("aa", "aa")
+            }
+        }
 
 
     }
@@ -384,6 +393,7 @@ class MainActivity : AppCompatActivity() {
         sendBroadcast(mediaScanIntent)
         val customId = GlobalApplication.prefs.getString("custom_id", "empty")
         uploadWithTransferUtility(customId, f.name, f)
+        postFeedImage(customId, f.name)
 
         Toast.makeText(this, "동영상이 앨범에 저장되었습니다.", Toast.LENGTH_SHORT).show()
     }
@@ -440,7 +450,24 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun postFeedImage(customId: String, fileName: String) {
+        val feedImage = FeedImage(
+            listOf(),
+            0,
+            fileName,
+            listOf(),
+            SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date()),
+            customId
+        )
+        RetrofitClient().getFeedImageService().putFeedImage(customId, feedImage).enqueue(object:
+            Callback<FeedImage> {
+            override fun onResponse(call: Call<FeedImage>, response: Response<FeedImage>) {
+            }
 
+            override fun onFailure(call: Call<FeedImage>, t: Throwable) {
+            }
+        })
+    }
 
 
 }
