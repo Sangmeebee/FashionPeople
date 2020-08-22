@@ -9,14 +9,19 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.sangmee.fashionpeople.FeedImageAdapter
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.kakaologin.GlobalApplication
 import com.sangmee.fashionpeople.retrofit.model.FUser
 import com.sangmee.fashionpeople.retrofit.RetrofitClient
+import com.sangmee.fashionpeople.retrofit.model.FeedImage
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.fragment_info.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
@@ -26,6 +31,9 @@ class InfoFragment : Fragment() {
     lateinit var customId: String
     var customName: String? = null
     var profileImgName: String? = null
+    private val feedImageAdapter by lazy {
+        FeedImageAdapter(customId)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +81,37 @@ class InfoFragment : Fragment() {
         }
 
 
+
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        rv_feed_image.apply {
+            adapter = feedImageAdapter
+        }
+        getFeedImages()
+    }
+    private fun getFeedImages() {
+        RetrofitClient().getFeedImageService().getFeedImages(customId).enqueue(object: Callback<List<FeedImage>> {
+            override fun onResponse(
+                call: Call<List<FeedImage>>,
+                response: Response<List<FeedImage>>
+            ) {
+                response.body()?.let { feedImages ->
+                    feedImageAdapter.setFeedImages(feedImages)
+                }
+                Log.d("feedUrls", response.body()!!.size.toString())
+                response.body()?.forEach{
+
+                }
+
+            }
+
+            override fun onFailure(call: Call<List<FeedImage>>, t: Throwable) {
+                Log.d("fail", t.message)
+            }
+        })
     }
 
 }
