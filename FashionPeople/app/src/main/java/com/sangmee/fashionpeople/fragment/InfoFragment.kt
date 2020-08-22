@@ -1,8 +1,5 @@
 package com.sangmee.fashionpeople.fragment
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,10 +12,9 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.kakaologin.GlobalApplication
-import com.sangmee.fashionpeople.retrofit.FUser
+import com.sangmee.fashionpeople.retrofit.model.FUser
 import com.sangmee.fashionpeople.retrofit.RetrofitClient
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.fragment_info.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import retrofit2.Callback
@@ -47,7 +43,7 @@ class InfoFragment : Fragment() {
         //툴바 세팅
         runBlocking {
             val a = launch {
-                RetrofitClient().getInstance().getFUser(customId).enqueue(object: Callback<FUser> {
+                RetrofitClient().getFUserService().getFUser(customId).enqueue(object: Callback<FUser> {
                     override fun onFailure(call: retrofit2.Call<FUser>, t: Throwable) {
                         Log.d("sangmin_error", t.message)
                     }
