@@ -1,16 +1,11 @@
-package com.sangmee.fashionpeople.retrofit
+package com.sangmee.fashionpeople.retrofit.service
 
 import com.sangmee.fashionpeople.kakaologin.GlobalApplication
-import com.sangmee.fashionpeople.kakaologin.PreferenceUtil
-import okhttp3.MultipartBody
-import okhttp3.ResponseBody
+import com.sangmee.fashionpeople.retrofit.model.FUser
 import retrofit2.Call
 import retrofit2.http.*
 
-const val BASE_URL = "http://52.78.102.63:3333/api/v1/"
-val userId = GlobalApplication.prefs.getString("custom_id", "empty")
-
-interface FashionPeopleService {
+interface FUserService {
 
 
     @GET("users")
