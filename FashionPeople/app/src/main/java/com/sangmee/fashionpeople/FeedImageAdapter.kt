@@ -2,12 +2,11 @@ package com.sangmee.fashionpeople
 
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.inflate
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sangmee.fashionpeople.retrofit.model.FeedImage
-import kotlinx.android.synthetic.main.item_feed_image.view.*
 
 class FeedImageAdapter(
     private val customId: String): RecyclerView.Adapter<FeedImageAdapter.FeedImageViewHolder>() {
@@ -31,12 +30,13 @@ class FeedImageAdapter(
     }
 
     inner class FeedImageViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+        private val ivFeedImage = itemView.findViewById<ImageView>(R.id.iv_feed_image)
         fun bind(feedImage: FeedImage) {
 
             with(itemView) {
                 Glide.with(context)
                     .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/$customId/feed/${feedImage.imageName}")
-                    .into(iv_feed_image)
+                    .into(ivFeedImage)
             }
         }
     }
