@@ -1,4 +1,4 @@
-package com.sangmee.fashionpeople.kakaologin
+package com.sangmee.fashionpeople.ui
 
 import android.Manifest
 import android.content.Intent
@@ -22,8 +22,8 @@ import com.amazonaws.regions.Region
 import com.amazonaws.regions.Regions
 import com.amazonaws.services.s3.AmazonS3Client
 import com.amazonaws.services.s3.model.CannedAccessControlList
-import com.sangmee.fashionpeople.MainActivity
 import com.sangmee.fashionpeople.R
+import com.sangmee.fashionpeople.kakaologin.GlobalApplication
 import com.sangmee.fashionpeople.retrofit.model.FUser
 import com.sangmee.fashionpeople.retrofit.RetrofitClient
 import com.sangmee.fashionpeople.retrofit.model.Image

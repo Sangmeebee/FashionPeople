@@ -1,4 +1,4 @@
-package com.sangmee.fashionpeople.fragment
+package com.sangmee.fashionpeople.ui.fragment
 
 import android.os.Bundle
 import android.util.Log

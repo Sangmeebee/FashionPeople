@@ -1,4 +1,4 @@
-package com.sangmee.fashionpeople
+package com.sangmee.fashionpeople.ui
 
 import android.Manifest
 import android.app.Activity
@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -26,17 +25,12 @@ import com.amazonaws.services.s3.AmazonS3Client
 import com.amazonaws.services.s3.model.CannedAccessControlList
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
-import com.kakao.auth.AuthType
-import com.kakao.auth.ISessionCallback
-import com.kakao.auth.Session
-import com.kakao.network.ErrorResult
-import com.kakao.usermgmt.UserManagement
-import com.kakao.usermgmt.callback.MeV2ResponseCallback
-import com.kakao.usermgmt.response.MeV2Response
-import com.kakao.util.exception.KakaoException
-import com.sangmee.fashionpeople.fragment.*
+import com.sangmee.fashionpeople.R
+import com.sangmee.fashionpeople.ui.fragment.AlarmFragment
+import com.sangmee.fashionpeople.ui.fragment.HomeFragment
+import com.sangmee.fashionpeople.ui.fragment.InfoFragment
+import com.sangmee.fashionpeople.ui.fragment.SearchFragment
 import com.sangmee.fashionpeople.kakaologin.GlobalApplication
-import com.sangmee.fashionpeople.kakaologin.UserInfoActivity
 import com.sangmee.fashionpeople.retrofit.RetrofitClient
 import com.sangmee.fashionpeople.retrofit.model.FUser
 import kotlinx.android.synthetic.main.activity_main.*
@@ -46,19 +40,14 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.io.IOException
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
-    lateinit var dialog: LoginDialog
 
-    //카카오 로그인 callback
-    private var callback: SessionCallback = SessionCallback()
-    lateinit var filepath: File
-    lateinit var mCurrentPhotoPath: String
-    lateinit var mCurrentVideoPath: String
+    private lateinit var mCurrentPhotoPath: String
+    private lateinit var mCurrentVideoPath: String
 
     private val permissionListener = object : PermissionListener {
         override fun onPermissionGranted() {
@@ -98,29 +87,21 @@ class MainActivity : AppCompatActivity() {
                         .replace(R.id.frameLayout, SearchFragment()).commit()
                 }
                 R.id.addItem -> {
-
-                    //로그인이 안되어있으면 로그인 권유 다이얼로그 출력
-                    val customId = GlobalApplication.prefs.getString("custom_id", "empty")
-                    if (customId == "empty") {
-                        dialog = LoginDialog(this, "로그인을 해주세요", kakaoBtnListener)
-                        dialog.show()
-                    }
-                    //로그인이 되면
-                    else {
-                        //사진 촬영, 비디오 촬영 선택 다이얼로그 출력
-                        CameraDialog.newInstance({
-                            startCameraApp()//사진 촬영 클릭시
-                        }, {
-                            recordVideoCamera()//비디오 촬영 클릭시
-                        }).show(supportFragmentManager, CameraDialog.TAG)
-                    }
-
+                    //사진 촬영, 비디오 촬영 선택 다이얼로그 출력
+                    CameraDialog.newInstance({
+                        startCameraApp()//사진 촬영 클릭시
+                    }, {
+                        recordVideoCamera()//비디오 촬영 클릭시
+                    }).show(supportFragmentManager, CameraDialog.TAG)
                 }
+
+
                 R.id.alarmItem -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.frameLayout, AlarmFragment()).commit()
                 }
                 R.id.infoItem -> {
+<<<<<<< HEAD:FashionPeople/app/src/main/java/com/sangmee/fashionpeople/MainActivity.kt
                     val customId = GlobalApplication.prefs.getString("custom_id", "empty")
                     //다르다면(로그인이 안되어 있는 상태라면 로그인하라는 알림창)
                     if (customId == "empty") {
@@ -133,6 +114,10 @@ class MainActivity : AppCompatActivity() {
                             .replace(R.id.frameLayout, InfoFragment()).commit()
                     }
 
+=======
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.frameLayout, InfoFragment()).commit()
+>>>>>>> develop:FashionPeople/app/src/main/java/com/sangmee/fashionpeople/ui/MainActivity.kt
                 }
             }
             return@setOnNavigationItemSelectedListener true
@@ -140,29 +125,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    //다이얼로그의 카카오로그인 버튼 리스터
-    private val kakaoBtnListener = View.OnClickListener {
-        Toast.makeText(this, "카카오톡으로 로그인합니다.", Toast.LENGTH_SHORT).show()
-        //카카오 콜백 추가
-        Session.getCurrentSession().addCallback(callback)
-        Session.getCurrentSession().open(AuthType.KAKAO_LOGIN_ALL, this)
-        dialog.dismiss()
-
-    }
-
-    //카카오 로그인
-    override fun onDestroy() {
-        super.onDestroy()
-        Session.getCurrentSession().removeCallback(callback)
-
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        //카카오톡 로그인 결과
-        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
-            Log.i("Log", "session get current session")
-            return
-        }
         //카메라 앱 실행 후 결과
         if (requestCode == CAMERA_START) {
             Log.i("REQUEST_TAKE_PHOTO", "${Activity.RESULT_OK}" + " " + "${resultCode}")
@@ -195,6 +158,7 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
+<<<<<<< HEAD:FashionPeople/app/src/main/java/com/sangmee/fashionpeople/MainActivity.kt
     //카카오톡 로그인 콜백
     inner class SessionCallback : ISessionCallback {
         lateinit var custom_id: String
@@ -266,6 +230,8 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, UserInfoActivity::class.java)
         startActivity(intent)
     }
+=======
+>>>>>>> develop:FashionPeople/app/src/main/java/com/sangmee/fashionpeople/ui/MainActivity.kt
 
     //카메라 앱 실행
     private fun startCameraApp() {
@@ -483,7 +449,7 @@ class MainActivity : AppCompatActivity() {
             SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date()),
             customId
         )
-        RetrofitClient().getFeedImageService().putFeedImage(customId, feedImage).enqueue(object:
+        RetrofitClient().getFeedImageService().putFeedImage(customId, feedImage).enqueue(object :
             Callback<FeedImage> {
             override fun onResponse(call: Call<FeedImage>, response: Response<FeedImage>) {
             }
@@ -492,6 +458,9 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
+<<<<<<< HEAD:FashionPeople/app/src/main/java/com/sangmee/fashionpeople/MainActivity.kt
 
 
+=======
+>>>>>>> develop:FashionPeople/app/src/main/java/com/sangmee/fashionpeople/ui/MainActivity.kt
 }
