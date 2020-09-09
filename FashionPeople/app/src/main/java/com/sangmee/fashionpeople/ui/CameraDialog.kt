@@ -1,4 +1,4 @@
-package com.sangmee.fashionpeople
+package com.sangmee.fashionpeople.ui
 
 import android.content.Context
 import android.graphics.Color
@@ -8,7 +8,7 @@ import android.util.DisplayMetrics
 import android.view.*
 import android.widget.ImageView
 import androidx.fragment.app.DialogFragment
-import kotlinx.android.synthetic.main.camera_dialog.*
+import com.sangmee.fashionpeople.R
 
 class CameraDialog : DialogFragment() {
 

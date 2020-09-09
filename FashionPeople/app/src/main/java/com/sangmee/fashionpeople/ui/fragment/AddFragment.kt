@@ -1,4 +1,4 @@
-package com.sangmee.fashionpeople.fragment
+package com.sangmee.fashionpeople.ui.fragment
 
 import android.app.Activity
 import android.app.Activity.RESULT_OK
