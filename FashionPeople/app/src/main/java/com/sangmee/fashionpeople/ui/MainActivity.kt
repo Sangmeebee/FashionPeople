@@ -95,29 +95,13 @@ class MainActivity : AppCompatActivity() {
                     }).show(supportFragmentManager, CameraDialog.TAG)
                 }
 
-
                 R.id.alarmItem -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.frameLayout, AlarmFragment()).commit()
                 }
                 R.id.infoItem -> {
-<<<<<<< HEAD:FashionPeople/app/src/main/java/com/sangmee/fashionpeople/MainActivity.kt
-                    val customId = GlobalApplication.prefs.getString("custom_id", "empty")
-                    //다르다면(로그인이 안되어 있는 상태라면 로그인하라는 알림창)
-                    if (customId == "empty") {
-                        dialog = LoginDialog(this, "로그인을 해주세요", kakaoBtnListener)
-                        dialog.show()
-                    }
-                    //sharedpreference에 있는 id와 DB에 있는 id가 같다면 info fragment 띄어준다
-                    else {
-                        supportFragmentManager.beginTransaction()
-                            .replace(R.id.frameLayout, InfoFragment()).commit()
-                    }
-
-=======
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.frameLayout, InfoFragment()).commit()
->>>>>>> develop:FashionPeople/app/src/main/java/com/sangmee/fashionpeople/ui/MainActivity.kt
                 }
             }
             return@setOnNavigationItemSelectedListener true
@@ -157,81 +141,6 @@ class MainActivity : AppCompatActivity() {
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
-
-<<<<<<< HEAD:FashionPeople/app/src/main/java/com/sangmee/fashionpeople/MainActivity.kt
-    //카카오톡 로그인 콜백
-    inner class SessionCallback : ISessionCallback {
-        lateinit var custom_id: String
-        override fun onSessionOpenFailed(exception: KakaoException?) {
-            Log.e("sangmin", "Session Call back :: onSessionOpenFailed: ${exception?.message}")
-        }
-
-        override fun onSessionOpened() {
-            UserManagement.getInstance().me(object : MeV2ResponseCallback() {
-
-                override fun onFailure(errorResult: ErrorResult?) {
-                    Log.i("sangmin", "Session Call back :: on failed ${errorResult?.errorMessage}")
-                }
-
-                override fun onSessionClosed(errorResult: ErrorResult?) {
-                    Log.i(
-                        "sangmin",
-                        "Session Call back :: onSessionClosed ${errorResult?.errorMessage}"
-                    )
-
-                }
-
-                override fun onSuccess(result: MeV2Response?) {
-                    Log.d("sangmin", "연결 성공")
-                    custom_id = result!!.id.toString()
-                    GlobalApplication.prefs.setString("custom_id", custom_id)
-                    Log.i("sangmin", "아이디 : ${custom_id}")
-                    Log.i("Log", "이메일 : ${result.kakaoAccount.email}")
-                    Log.i("Log", "성별 : ${result.kakaoAccount.gender}")
-                    Log.i("Log", "생일 : ${result.kakaoAccount.birthday}")
-                    Log.i("Log", "연령대 : ${result.kakaoAccount.ageRange}")
-
-                    checkNotNull(result) { "session response null" }
-
-                    // 데이터베이스에 아이디 이미 있는지 체크
-                    RetrofitClient().getFUserService().getAllFUser().enqueue(object:
-                        Callback<List<FUser>> {
-                        override fun onFailure(call: retrofit2.Call<List<FUser>>, t: Throwable) {
-                            Log.d("fashionPeople_error", t.message)
-                        }
-                        override fun onResponse(
-                            call: retrofit2.Call<List<FUser>>,
-                            response: Response<List<FUser>>
-                        ) {
-                            Log.d("fashionPeople_success", response.body()!!.get(0).id.toString()+response.body()!!.size)
-                            val res = response.body()!!
-                            var exist = false
-                            for(fUser in res){
-                                if(fUser.id == custom_id){
-                                    exist = true
-                                }
-                            }
-                            if(exist == true){
-                                supportFragmentManager.beginTransaction()
-                                    .replace(R.id.frameLayout, InfoFragment()).commit()
-                            } else {
-                                redirectUserInfoActivity()
-                            }
-                        }
-                    })
-                }
-
-            })
-        }
-    }
-
-    //화면전환 메소드
-    private fun redirectUserInfoActivity() {
-        val intent = Intent(this, UserInfoActivity::class.java)
-        startActivity(intent)
-    }
-=======
->>>>>>> develop:FashionPeople/app/src/main/java/com/sangmee/fashionpeople/ui/MainActivity.kt
 
     //카메라 앱 실행
     private fun startCameraApp() {
@@ -458,9 +367,4 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
-<<<<<<< HEAD:FashionPeople/app/src/main/java/com/sangmee/fashionpeople/MainActivity.kt
-
-
-=======
->>>>>>> develop:FashionPeople/app/src/main/java/com/sangmee/fashionpeople/ui/MainActivity.kt
 }
