@@ -1,4 +1,4 @@
-package com.sangmee.fashionpeople
+package com.sangmee.fashionpeople.ui
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.retrofit.model.FeedImage
 
 class FeedImageAdapter(

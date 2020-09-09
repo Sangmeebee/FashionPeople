@@ -9,9 +9,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.sangmee.fashionpeople.FeedImageAdapter
+import com.sangmee.fashionpeople.ui.FeedImageAdapter
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.kakaologin.GlobalApplication
 import com.sangmee.fashionpeople.retrofit.model.FUser
