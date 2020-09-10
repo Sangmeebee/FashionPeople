@@ -18,6 +18,7 @@ import com.sangmee.fashionpeople.retrofit.RetrofitClient
 import com.sangmee.fashionpeople.retrofit.model.FeedImage
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_info.*
+import kotlinx.android.synthetic.main.fragment_user.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import retrofit2.Call
@@ -46,7 +47,7 @@ class InfoFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_info, container, false)
+        val view = inflater.inflate(R.layout.fragment_user, container, false)
         //툴바 세팅
         runBlocking {
             val a = launch {
@@ -59,19 +60,9 @@ class InfoFragment : Fragment() {
                         //닉네임 레트로핏으로 불러오기
                         customName = response.body()?.name.toString()
                         profileImgName = response.body()?.profileImage.toString()
-                        //툴바 세팅
-                        val toolbar = view.findViewById<Toolbar>(R.id.app_toolbar)
-                        if(activity is AppCompatActivity){
-                            (activity as AppCompatActivity).setSupportActionBar(toolbar)
-                            val actionBar = (activity as AppCompatActivity).supportActionBar!!
-                            val toolbar_title = view.findViewById<TextView>(R.id.toolbar_title)
-                            toolbar_title.setText(customName)
-                            actionBar.setDisplayShowTitleEnabled(false)
-                            actionBar.setDisplayHomeAsUpEnabled(true)
-                        }
-                        val profileImg = view.findViewById<CircleImageView>(R.id.profile_image)
+                        //val profileImg = view.findViewById<CircleImageView>(R.id.profile_image)
 
-                        Glide.with(context!!).load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${customId}/profile/${profileImgName}").error(R.drawable.user).into(profileImg)
+                        //Glide.with(context!!).load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${customId}/profile/${profileImgName}").error(R.drawable.user).into(profileImg)
 
                     }
                 })
@@ -86,7 +77,7 @@ class InfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        rv_feed_image.apply {
+        rv_user_image.apply {
             adapter = feedImageAdapter
         }
         getFeedImages()
@@ -101,9 +92,6 @@ class InfoFragment : Fragment() {
                     feedImageAdapter.setFeedImages(feedImages)
                 }
                 Log.d("feedUrls", response.body()!!.size.toString())
-                response.body()?.forEach{
-
-                }
 
             }
 
