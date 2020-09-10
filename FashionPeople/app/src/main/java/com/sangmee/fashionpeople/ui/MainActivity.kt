@@ -14,33 +14,49 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-
-        navigationView.setOnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
+        
+        navigationView.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
                 R.id.homeItem -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.frameLayout, HomeFragment()).commit()
+                    if (currentFragment != "homeItem") {
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.frameLayout, HomeFragment()).commit()
+                        currentFragment = "homeItem"
+                    }
                 }
                 R.id.searchItem -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.frameLayout, SearchFragment()).commit()
+                    if (currentFragment != "searchItem") {
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.frameLayout, SearchFragment()).commit()
+                        currentFragment = "searchItem"
+                    }
+
                 }
                 R.id.addItem -> {
-
                 }
 
                 R.id.alarmItem -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.frameLayout, AlarmFragment()).commit()
+                    if (currentFragment != "alarmItem") {
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.frameLayout, AlarmFragment()).commit()
+                        currentFragment = "alarmItem"
+                    }
                 }
                 R.id.infoItem -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.frameLayout, InfoFragment()).commit()
+                    if (currentFragment != "infoItem") {
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.frameLayout, InfoFragment()).commit()
+                        currentFragment = "infoItem"
+                    }
                 }
+
             }
             return@setOnNavigationItemSelectedListener true
 
         }
+    }
+
+    companion object {
+        private var currentFragment = "homeItem"
     }
 }
