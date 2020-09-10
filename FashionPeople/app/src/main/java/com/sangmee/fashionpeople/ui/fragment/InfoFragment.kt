@@ -18,13 +18,16 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.sangmee.fashionpeople.ui.FeedImageAdapter
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.kakaologin.GlobalApplication
 import com.sangmee.fashionpeople.retrofit.RetrofitClient
+import com.sangmee.fashionpeople.retrofit.model.FUser
 import com.sangmee.fashionpeople.retrofit.model.FeedImage
+import com.sangmee.fashionpeople.ui.FeedImageAdapter
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.fragment_info.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -56,7 +59,29 @@ class InfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        runBlocking {
+            val a = launch {
+                RetrofitClient().getFUserService().getFUser(customId)
+                    .enqueue(object : Callback<FUser> {
+                        override fun onFailure(call: Call<FUser>, t: Throwable) {
+                            Log.d("sangmin_error", t.message)
+                        }
 
+                        override fun onResponse(call: Call<FUser>, response: Response<FUser>) {
+                            //닉네임 레트로핏으로 불러오기
+                            val profileImgName = response.body()?.profileImage.toString()
+                            val profileImg = view.findViewById<ImageView>(R.id.iv_info_user)
+
+                            Glide.with(context!!)
+                                .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${customId}/profile/${profileImgName}")
+                                .apply(RequestOptions().circleCrop())
+                                .error(R.drawable.user).into(profileImg)
+
+                        }
+                    })
+            }
+            a.join()
+        }
         //사진 등록 imageView 클릭시 이벤트
         iv_plus.setOnClickListener {
             if (context?.let {
@@ -140,7 +165,6 @@ class InfoFragment : Fragment() {
             if (resultCode == AppCompatActivity.RESULT_OK) {
                 val resultUri = result.uri
                 iv_plus.setImageURI(resultUri)
-
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Log.e("TAG_ERROR", result.error.toString())
