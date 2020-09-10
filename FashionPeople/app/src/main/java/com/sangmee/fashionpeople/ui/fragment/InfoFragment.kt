@@ -11,15 +11,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.sangmee.fashionpeople.ui.FeedImageAdapter
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.kakaologin.GlobalApplication
 import com.sangmee.fashionpeople.retrofit.RetrofitClient
 import com.sangmee.fashionpeople.retrofit.model.FeedImage
-import com.sangmee.fashionpeople.ui.FeedImageAdapter
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.fragment_info.*
 import retrofit2.Call
@@ -53,8 +56,9 @@ class InfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         //사진 등록 imageView 클릭시 이벤트
-        profile_image.setOnClickListener {
+        iv_plus.setOnClickListener {
             if (context?.let {
                     ContextCompat.checkSelfPermission(
                         it,
@@ -88,8 +92,7 @@ class InfoFragment : Fragment() {
             }
         }
 
-        //리사이클러뷰에 adpater 세팅 후 레트로핏으로 저장한 이미지 적용
-        rv_feed_image.apply {
+        rv_user_image.apply {
             adapter = feedImageAdapter
         }
         getFeedImages()
@@ -136,7 +139,7 @@ class InfoFragment : Fragment() {
             val result = CropImage.getActivityResult(data)
             if (resultCode == AppCompatActivity.RESULT_OK) {
                 val resultUri = result.uri
-                profile_image.setImageURI(resultUri)
+                iv_plus.setImageURI(resultUri)
 
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
