@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -70,7 +71,20 @@ class InfoFragment : Fragment() {
                         override fun onResponse(call: Call<FUser>, response: Response<FUser>) {
                             //닉네임 레트로핏으로 불러오기
                             val profileImgName = response.body()?.profileImage.toString()
+                            val introduce = response.body()?.instagramId
+                            val userId = response.body()?.name
                             val profileImg = view.findViewById<ImageView>(R.id.iv_info_user)
+                            val introduceTv =
+                                view.findViewById<TextView>(R.id.tv_info_user_introduce)
+                            val userName = view.findViewById<TextView>(R.id.tv_info_user_name)
+
+                            introduce?.let {
+                                introduceTv.text = it
+                            }
+
+                            userId?.let {
+                                userName.text = it
+                            }
 
                             Glide.with(context!!)
                                 .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${customId}/profile/${profileImgName}")
