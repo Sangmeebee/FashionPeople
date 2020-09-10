@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants">
 
     <androidx.constraintlayout.widget.ConstraintLayout
 
@@ -14,57 +15,22 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_plus_container"
             android:layout_width="match_parent"
-            android:layout_height="480dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="3:4"
             android:background="#F4F4F4"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/iv_plus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="120dp"
-                android:src="@drawable/plus"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:src="@drawable/war_icon"
-                app:layout_constraintBottom_toBottomOf="@id/tv_plus_message1"
-                app:layout_constraintEnd_toStartOf="@id/tv_plus_message1"
-                app:layout_constraintTop_toTopOf="@id/tv_plus_message1" />
-
-            <TextView
-                android:id="@+id/tv_plus_message1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="38dp"
-                android:fontFamily="@font/ygd_330"
-                android:text="@string/plus_text"
-                android:textSize="27sp"
-                android:textStyle="bold"
+                android:id="@+id/iv_plus"
+                android:layout_width="@dimen/iv_plus_width"
+                android:layout_height="@dimen/iv_plus_height"
+                android:src="@drawable/plus"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_plus" />
-
-            <TextView
-                android:id="@+id/tv_plus_message2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/ygd_330"
-                android:text="@string/plus_text2"
-                android:textSize="27sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_plus_message1" />
-
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -73,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="40dp"
-            android:layout_marginTop="424dp"
+            android:layout_marginTop="@dimen/sv_margin_top"
             android:background="@drawable/dialog_round_white"
             android:orientation="vertical"
             android:padding="24dp"
@@ -81,22 +47,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+
             <ImageView
                 android:id="@+id/iv_info_user"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:scaleType="fitXY"
-                android:src="@mipmap/ic_launcher"
+                android:src="@drawable/user"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_info_user_name"
-                android:layout_width="60dp"
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:fontFamily="@font/ygd_340"
                 android:text="sangsang"
+                android:textColor="@color/colorBlack"
                 android:textSize="13sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@id/ll_info_score"
@@ -108,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="4dp"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="@id/iv_info_user"
                 app:layout_constraintStart_toEndOf="@id/iv_info_user">
@@ -137,7 +105,7 @@
                 android:background="@null"
                 android:src="@drawable/like_button"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@id/tv_info_user_name" />
 
             <TextView
                 android:id="@+id/tv_info_user_introduce"
@@ -147,8 +115,8 @@
                 android:fontFamily="@font/ygd_320"
                 android:singleLine="false"
                 android:text="프로필 말: 안녕하세요"
-                android:textSize="15sp"
-                android:textStyle="bold"
+                android:textColor="@color/colorBlack"
+                android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_info_user" />
 

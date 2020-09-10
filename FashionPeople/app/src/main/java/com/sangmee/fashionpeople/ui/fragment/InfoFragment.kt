@@ -129,7 +129,7 @@ class InfoFragment : Fragment() {
             try {
                 val uri: Uri = data.data!!
                 CropImage.activity(uri)
-                    .setAspectRatio(1, 1)
+                    .setAspectRatio(3, 4)
                     .start(context!!, this)
             } catch (e: Exception) {
 
