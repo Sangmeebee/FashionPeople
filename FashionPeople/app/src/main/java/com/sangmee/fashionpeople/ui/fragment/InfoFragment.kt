@@ -5,11 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.sangmee.fashionpeople.ui.FeedImageAdapter
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.kakaologin.GlobalApplication
@@ -18,7 +20,6 @@ import com.sangmee.fashionpeople.retrofit.RetrofitClient
 import com.sangmee.fashionpeople.retrofit.model.FeedImage
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_info.*
-import kotlinx.android.synthetic.main.fragment_user.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import retrofit2.Call
@@ -47,7 +48,7 @@ class InfoFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_user, container, false)
+        val view = inflater.inflate(R.layout.fragment_info, container, false)
         //툴바 세팅
         runBlocking {
             val a = launch {
@@ -60,9 +61,12 @@ class InfoFragment : Fragment() {
                         //닉네임 레트로핏으로 불러오기
                         customName = response.body()?.name.toString()
                         profileImgName = response.body()?.profileImage.toString()
-                        //val profileImg = view.findViewById<CircleImageView>(R.id.profile_image)
+                        val profileImg = view.findViewById<ImageView>(R.id.iv_info_user)
 
-                        //Glide.with(context!!).load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${customId}/profile/${profileImgName}").error(R.drawable.user).into(profileImg)
+                        Glide.with(context!!)
+                            .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${customId}/profile/${profileImgName}")
+                            .apply(RequestOptions().circleCrop())
+                            .error(R.drawable.user).into(profileImg)
 
                     }
                 })
