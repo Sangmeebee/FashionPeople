@@ -1,6 +1,7 @@
 package com.sangmee.fashionpeople.ui.fragment
 
 import android.content.res.AssetManager
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.sangmee.fashionpeople.R
+import com.sangmee.fashionpeople.ui.CategoryAdapter
+import kotlinx.android.synthetic.main.fragment_tag.*
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
@@ -15,6 +18,7 @@ import java.io.InputStreamReader
 
 class TagFragment : Fragment() {
 
+    //assets 폴더에서 브랜드 파일 읽기용 프로퍼티
     private var inputStream: InputStream? = null
     private var manBrand = arrayListOf<String>()
 
@@ -22,9 +26,6 @@ class TagFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         readFromAssets("man_brand.txt")
-        for(brands in manBrand){
-            Log.d("sangmin", brands)
-        }
     }
 
     override fun onCreateView(
@@ -35,6 +36,13 @@ class TagFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_tag, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        iv_select_image.setImageURI(resultUri)
+        rv_category.adapter = CategoryAdapter()
+    }
+
+    //assets 폴더에서 브랜드 파일 읽기
     private fun readFromAssets(filename: String) {
         try {
             val am = resources.assets
@@ -50,7 +58,12 @@ class TagFragment : Fragment() {
         }
     }
 
+    fun setImageUri(resultUri : Uri){
+        TagFragment.resultUri = resultUri
+    }
+
     companion object {
-        fun newInstance(): TagFragment = TagFragment()
+        var resultUri :Uri? = null
+
     }
 }

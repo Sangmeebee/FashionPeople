@@ -25,10 +25,12 @@ import com.sangmee.fashionpeople.retrofit.RetrofitClient
 import com.sangmee.fashionpeople.retrofit.model.FUser
 import com.sangmee.fashionpeople.retrofit.model.FeedImage
 import com.sangmee.fashionpeople.ui.FeedImageAdapter
+import com.sangmee.fashionpeople.ui.MainActivity
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.fragment_info.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.jetbrains.anko.support.v4.act
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -148,11 +150,6 @@ class InfoFragment : Fragment() {
                         response.body()?.let { feedImages ->
                             feedImageAdapter.setFeedImages(feedImages)
                         }
-                        Log.d("feedUrls", response.body()!!.size.toString())
-                        response.body()?.forEach {
-
-                        }
-
                     }
 
                     override fun onFailure(call: Call<List<FeedImage>>, t: Throwable) {
@@ -178,7 +175,11 @@ class InfoFragment : Fragment() {
             val result = CropImage.getActivityResult(data)
             if (resultCode == AppCompatActivity.RESULT_OK) {
                 val resultUri = result.uri
-                iv_plus.setImageURI(resultUri)
+                //TagFragment로 이동 & resultUri 전
+                val mActivity = activity as MainActivity
+                val fragment = TagFragment()
+                fragment.setImageUri(resultUri)
+                mActivity.replaceFragment(TagFragment())
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Log.e("TAG_ERROR", result.error.toString())
