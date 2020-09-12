@@ -30,7 +30,6 @@ import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.fragment_info.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import org.jetbrains.anko.support.v4.act
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -165,7 +164,7 @@ class InfoFragment : Fragment() {
             try {
                 val uri: Uri = data.data!!
                 CropImage.activity(uri)
-                    .setAspectRatio(3, 4)
+                    .setAspectRatio(1, 1)
                     .start(context!!, this)
             } catch (e: Exception) {
 

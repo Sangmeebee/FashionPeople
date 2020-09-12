@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.sangmee.fashionpeople.R
-import com.sangmee.fashionpeople.ui.CategoryAdapter
 import kotlinx.android.synthetic.main.fragment_tag.*
 import java.io.BufferedReader
 import java.io.IOException
@@ -39,7 +38,6 @@ class TagFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         iv_select_image.setImageURI(resultUri)
-        rv_category.adapter = CategoryAdapter()
     }
 
     //assets 폴더에서 브랜드 파일 읽기

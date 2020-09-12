@@ -9,5 +9,6 @@
     <color name="colorBlack">#000000</color>
     <color name="colorYellow">#FFD855</color>
     <color name="colorGray">#F4F4F4</color>
+    <color name="brandTextColor">#9B9B9B</color>
 </resources>
 
