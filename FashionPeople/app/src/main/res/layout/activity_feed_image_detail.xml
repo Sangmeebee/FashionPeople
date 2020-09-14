@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/iv_feed_image"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toTopOf="@id/cl_info_container"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_info_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_round_top"
         android:orientation="vertical"
         android:paddingHorizontal="24dp"
         android:paddingTop="24dp"
@@ -43,7 +43,7 @@
                     android:gravity="center"
                     android:text="카테고리"
                     android:textColor="@color/colorBlack"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"/>
 
                 <TextView
                     android:id="@+id/tv_category_name"
@@ -54,7 +54,7 @@
                     android:gravity="center"
                     android:text="브랜드 명"
                     android:textColor="@color/brandTextColor"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"/>
 
             </LinearLayout>
 
@@ -62,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
                 android:layout_marginVertical="18dp"
-                android:background="@color/colorGray" />
+                android:background="@color/colorGray"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -77,7 +77,7 @@
                     android:gravity="center"
                     android:text="상의"
                     android:textColor="@color/colorBlack"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"/>
 
                 <TextView
                     android:id="@+id/tv_top_brand_name"
@@ -88,7 +88,7 @@
                     android:gravity="center"
                     android:text="브랜드명"
                     android:textColor="@color/brandTextColor"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"/>
 
             </LinearLayout>
 
@@ -96,7 +96,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
                 android:layout_marginVertical="18dp"
-                android:background="@color/colorGray" />
+                android:background="@color/colorGray"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -111,7 +111,7 @@
                     android:gravity="center"
                     android:text="하의"
                     android:textColor="@color/colorBlack"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"/>
 
                 <TextView
                     android:id="@+id/tv_pants_brand_name"
@@ -122,14 +122,14 @@
                     android:gravity="center"
                     android:text="브랜드명"
                     android:textColor="@color/brandTextColor"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"/>
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
                 android:layout_marginVertical="18dp"
-                android:background="@color/colorGray" />
+                android:background="@color/colorGray"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -144,7 +144,7 @@
                     android:gravity="center"
                     android:text="신발"
                     android:textColor="@color/colorBlack"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"/>
 
                 <TextView
                     android:id="@+id/tv_shoes_brand_name"
@@ -155,14 +155,14 @@
                     android:gravity="center"
                     android:text="브랜드명"
                     android:textColor="@color/brandTextColor"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"/>
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
                 android:layout_marginVertical="18dp"
-                android:background="@color/colorGray" />
+                android:background="@color/colorGray"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -177,7 +177,7 @@
                     android:gravity="center"
                     android:text="악세사리"
                     android:textColor="@color/colorBlack"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"/>
 
                 <TextView
                     android:id="@+id/tv_accessories_brand_name"
@@ -188,14 +188,14 @@
                     android:gravity="center"
                     android:text="브랜드명"
                     android:textColor="@color/brandTextColor"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"/>
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
                 android:layout_marginVertical="18dp"
-                android:background="@color/colorGray" />
+                android:background="@color/colorGray"/>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
