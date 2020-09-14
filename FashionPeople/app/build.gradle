@@ -73,5 +73,6 @@ dependencies {
     //체크 퍼미션
     implementation 'gun0912.ted:tedpermission:2.2.3'
 
-
+    //crop
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
 }

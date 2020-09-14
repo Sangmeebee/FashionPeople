@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="sv_margin_top">500dp</dimen>
+    <dimen name="iv_plus_width">-1.0px</dimen>
+    <dimen name="iv_plus_height">-1.0px</dimen>
+</resources>
