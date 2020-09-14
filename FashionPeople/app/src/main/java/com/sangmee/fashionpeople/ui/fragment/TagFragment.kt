@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.sangmee.fashionpeople.R
-import com.sangmee.fashionpeople.ui.CategoryActivity
 import kotlinx.android.synthetic.main.fragment_tag.*
 
 class TagFragment : Fragment() {
@@ -27,9 +26,7 @@ class TagFragment : Fragment() {
         iv_select_image.setImageURI(resultUri)
 
         tv_category_name.setOnClickListener {
-
-            val intent = Intent(activity, CategoryActivity::class.java)
-            startActivity(intent)
+            
         }
     }
 
