@@ -185,15 +185,6 @@ class InfoFragment : Fragment() {
         }
     }
 
-    //이미지Uri -- > 절대경로로 바꿔서 리턴시켜주는 메소드
-    private fun getRealPathFromUri(uri: Uri): String {
-        val proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
-        val c: Cursor = context!!.contentResolver.query(uri, proj, null, null, null)!!
-        val index = c.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-        c.moveToFirst()
-        return c.getString(index)
-    }
-
     companion object {
         private const val CHOOSE_PROFILEIMG = 200
     }
