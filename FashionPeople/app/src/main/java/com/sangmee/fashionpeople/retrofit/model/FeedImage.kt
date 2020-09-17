@@ -1,8 +1,11 @@
 package com.sangmee.fashionpeople.retrofit.model
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class FeedImage(
     @SerializedName("comments")
     val comments: List<Comment>?,
@@ -16,4 +19,4 @@ data class FeedImage(
     val timeStamp: String?,
     @SerializedName("userId")
     val userId: String?
-)
+): Parcelable

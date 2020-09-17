@@ -1,5 +1,7 @@
 package com.sangmee.fashionpeople.ui
 
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +12,21 @@ import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.retrofit.model.FeedImage
 
 class FeedImageAdapter(
-    private val customId: String): RecyclerView.Adapter<FeedImageAdapter.FeedImageViewHolder>() {
+    private val customId: String
+) : RecyclerView.Adapter<FeedImageAdapter.FeedImageViewHolder>() {
     private val feedImageList = mutableListOf<FeedImage>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedImageViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_feed_image, parent, false)
-        return FeedImageViewHolder(view)
+        val viewHolder = FeedImageViewHolder(view)
+        viewHolder.itemView.setOnClickListener {
+            val intent = Intent(it.context, FeedImageDetailActivity::class.java)
+            intent.putExtra(FeedImageDetailActivity.KEY_FEED_IMAGE, feedImageList[viewHolder.adapterPosition])
+            parent.context.startActivity(intent)
+        }
+
+        return viewHolder
+
     }
 
     override fun onBindViewHolder(holder: FeedImageViewHolder, position: Int) {
@@ -30,7 +41,7 @@ class FeedImageAdapter(
         notifyDataSetChanged()
     }
 
-    inner class FeedImageViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    inner class FeedImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val ivFeedImage = itemView.findViewById<ImageView>(R.id.iv_feed_image)
         fun bind(feedImage: FeedImage) {
 
