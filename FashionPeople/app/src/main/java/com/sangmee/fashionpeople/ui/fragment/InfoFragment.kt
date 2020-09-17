@@ -175,8 +175,8 @@ class InfoFragment : Fragment() {
             if (resultCode == AppCompatActivity.RESULT_OK) {
                 val resultUri = result.uri
                 //TagFragment로 이동 & resultUri 전
+                GlobalApplication.prefs.setString("resultUri", resultUri.toString())
                 val intent = Intent(activity, TagActivity::class.java)
-                intent.putExtra("resultUri", resultUri.toString())
                 startActivity(intent)
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
