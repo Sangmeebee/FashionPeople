@@ -35,7 +35,7 @@
         android:background="@drawable/bg_round_top"
         android:orientation="vertical"
         android:paddingHorizontal="24dp"
-        android:paddingTop="24dp"
+        android:paddingTop="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -67,6 +67,7 @@
                     android:layout_weight="2"
                     android:fontFamily="@font/ygd_330"
                     android:gravity="center"
+                    android:paddingVertical="18dp"
                     android:text="카테고리 입력"
                     android:textColor="@color/brandTextColor"
                     android:textSize="12sp" />
@@ -76,7 +77,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
-                android:layout_marginVertical="18dp"
                 android:background="@color/colorGray" />
 
             <LinearLayout
@@ -101,6 +101,7 @@
                     android:layout_weight="2"
                     android:fontFamily="@font/ygd_330"
                     android:gravity="center"
+                    android:paddingVertical="18dp"
                     android:text="브랜드명 입력"
                     android:textColor="@color/brandTextColor"
                     android:textSize="12sp" />
@@ -110,7 +111,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
-                android:layout_marginVertical="18dp"
                 android:background="@color/colorGray" />
 
             <LinearLayout
@@ -135,6 +135,7 @@
                     android:layout_weight="2"
                     android:fontFamily="@font/ygd_330"
                     android:gravity="center"
+                    android:paddingVertical="18dp"
                     android:text="브랜드명 입력"
                     android:textColor="@color/brandTextColor"
                     android:textSize="12sp" />
@@ -143,7 +144,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
-                android:layout_marginVertical="18dp"
                 android:background="@color/colorGray" />
 
             <LinearLayout
@@ -168,6 +168,7 @@
                     android:layout_weight="2"
                     android:fontFamily="@font/ygd_330"
                     android:gravity="center"
+                    android:paddingVertical="18dp"
                     android:text="브랜드명 입력"
                     android:textColor="@color/brandTextColor"
                     android:textSize="12sp" />
@@ -176,7 +177,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
-                android:layout_marginVertical="18dp"
                 android:background="@color/colorGray" />
 
             <LinearLayout
@@ -201,14 +201,15 @@
                     android:layout_weight="2"
                     android:fontFamily="@font/ygd_330"
                     android:gravity="center"
+                    android:paddingVertical="18dp"
                     android:text="브랜드명 입력"
                     android:textColor="@color/brandTextColor"
                     android:textSize="12sp" />
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
-                android:layout_marginVertical="18dp"
                 android:background="@color/colorGray" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
