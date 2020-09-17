@@ -25,7 +25,7 @@ import com.sangmee.fashionpeople.retrofit.RetrofitClient
 import com.sangmee.fashionpeople.retrofit.model.FUser
 import com.sangmee.fashionpeople.retrofit.model.FeedImage
 import com.sangmee.fashionpeople.ui.FeedImageAdapter
-import com.sangmee.fashionpeople.ui.MainActivity
+import com.sangmee.fashionpeople.ui.TagActivity
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.fragment_info.*
 import kotlinx.coroutines.launch
@@ -175,10 +175,9 @@ class InfoFragment : Fragment() {
             if (resultCode == AppCompatActivity.RESULT_OK) {
                 val resultUri = result.uri
                 //TagFragment로 이동 & resultUri 전
-                val mActivity = activity as MainActivity
-                val fragment = TagFragment()
-                fragment.setImageUri(resultUri)
-                mActivity.replaceFragment(TagFragment())
+                val intent = Intent(activity, TagActivity::class.java)
+                intent.putExtra("resultUri", resultUri.toString())
+                startActivity(intent)
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Log.e("TAG_ERROR", result.error.toString())
