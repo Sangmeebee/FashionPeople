@@ -179,38 +179,15 @@
                 android:layout_height="3dp"
                 android:background="@color/colorGray" />
 
-            <LinearLayout
+            <Button
+                android:id="@+id/btn_complete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/ygd_330"
-                    android:gravity="center"
-                    android:text="악세사리"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/tv_accessories_brand_name"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:fontFamily="@font/ygd_330"
-                    android:gravity="center"
-                    android:paddingVertical="18dp"
-                    android:text="브랜드명 입력"
-                    android:textColor="@color/brandTextColor"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="3dp"
-                android:background="@color/colorGray" />
+                android:fontFamily="@font/ygd_330"
+                android:background="@color/colorYellow"
+                android:text="등록 완료"
+                android:textColor="@color/colorWhite"
+                android:textSize="12sp" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

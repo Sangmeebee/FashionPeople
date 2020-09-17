@@ -28,7 +28,6 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 R.id.addItem -> {
-                    replaceFragment(TagFragment())
                 }
 
                 R.id.alarmItem -> {
