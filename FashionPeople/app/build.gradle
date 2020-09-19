@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 29
@@ -11,15 +12,25 @@ android {
         targetSdkVersion 29
         multiDexEnabled true
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures {
+        viewBinding = true
+        dataBinding = true
+    }
+
     buildTypes {
+        debug {
+            resValue "string", "app_version", "${defaultConfig.versionName}"
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            resValue "string", "app_version", "${defaultConfig.versionName}"
         }
     }
 }
@@ -62,7 +73,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-scalars:2.6.4'
     // okhttp interceptor
     implementation 'com.squareup.okhttp3:logging-interceptor:4.8.0'
-
+    
     //AWS S3
     implementation 'com.amazonaws:aws-android-sdk-cognito:2.13.5'
     implementation 'com.amazonaws:aws-android-sdk-s3:2.13.5'
