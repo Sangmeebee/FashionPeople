@@ -1,6 +1,7 @@
 package com.sangmee.fashionpeople.ui.fragment
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -25,6 +26,8 @@ import com.sangmee.fashionpeople.retrofit.model.FUser
 import com.sangmee.fashionpeople.retrofit.model.FeedImage
 import com.sangmee.fashionpeople.ui.FeedImageAdapter
 import com.sangmee.fashionpeople.ui.TagActivity
+import com.sangmee.fashionpeople.ui.LoginActivity
+import com.sangmee.fashionpeople.ui.SettingActivity
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.fragment_info.*
 import kotlinx.coroutines.launch
@@ -35,12 +38,17 @@ import retrofit2.Response
 import java.io.File
 
 
-class InfoFragment : Fragment() {
+class InfoFragment : Fragment()  {
 
     lateinit var customId: String
     var file: File? = null
     private val feedImageAdapter by lazy {
         FeedImageAdapter(customId)
+    }
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -144,7 +152,15 @@ class InfoFragment : Fragment() {
         rv_user_image.apply {
             adapter = feedImageAdapter
         }
+
+        btn_setting.setOnClickListener{
+            val intent = Intent(context, SettingActivity::class.java)
+            startActivityForResult(intent, LOGOUT_CODE)
+        }
+
         getFeedImages()
+
+
     }
 
     private fun getFeedImages() {
@@ -192,9 +208,19 @@ class InfoFragment : Fragment() {
                 Log.e("TAG_ERROR", result.error.toString())
             }
         }
+        if(requestCode == LOGOUT_CODE && resultCode == AppCompatActivity.RESULT_OK) {
+            activity?.finish()
+            val intent = Intent(context, LoginActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     companion object {
         private const val CHOOSE_PROFILEIMG = 200
+        private const val LOGOUT_CODE = 210
     }
+
+
+
+
 }
