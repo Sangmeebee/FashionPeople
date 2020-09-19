@@ -107,7 +107,7 @@ class InfoFragment : Fragment() {
             a.join()
         }
         //사진 등록 imageView 클릭시 이벤트
-        btn_info_like.setOnClickListener {
+        btn_plus.setOnClickListener {
             if (context?.let {
                     ContextCompat.checkSelfPermission(
                         it,
