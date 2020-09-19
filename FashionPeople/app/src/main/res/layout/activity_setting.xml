@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="activity"
+                  type="com.sangmee.fashionpeople.ui.SettingActivity"/>
+
+    </data>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb_setting"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            bindToolbar="@{activity}"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/ll_setting_account"
+            android:layout_width="match_parent"
+            android:paddingHorizontal="16dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textSize="23sp"
+                android:paddingVertical="8dp"
+                android:textColor="@color/colorBlack"
+                android:gravity="center_vertical"
+                android:id="@+id/tv_account"
+                android:fontFamily="@font/ygd_350"
+                android:text="@string/account_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <View
+                android:background="@color/colorBlack"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"/>
+
+            <TextView
+                android:id="@+id/tv_modify_profile"
+                android:layout_marginTop="4dp"
+                android:paddingVertical="8dp"
+                android:fontFamily="@font/ygd_340"
+                android:textSize="16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/modify_profile_text"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:id="@+id/ll_setting_system"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                android:textSize="23sp"
+                android:paddingVertical="8dp"
+                android:textColor="@color/colorBlack"
+                android:gravity="center_vertical"
+                android:id="@+id/tv_system"
+                android:fontFamily="@font/ygd_350"
+                android:text="@string/system_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <View
+                android:background="@color/colorBlack"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:fontFamily="@font/ygd_340"
+                    android:id="@+id/tv_version"
+                    android:layout_marginTop="4dp"
+                    android:paddingVertical="8dp"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/version_text"/>
+                <TextView
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:fontFamily="@font/ygd_340"
+                    android:id="@+id/tv_version_name"
+                    android:layout_marginTop="4dp"
+                    android:paddingVertical="8dp"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_version"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <View
+                android:background="@color/colorGray"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+
+            <TextView
+                android:fontFamily="@font/ygd_340"
+                android:id="@+id/tv_logout"
+                android:layout_marginTop="4dp"
+                android:paddingVertical="8dp"
+                android:textSize="16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/logout_text"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>
