@@ -3,7 +3,6 @@ package com.sangmee.fashionpeople.ui.fragment
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -60,6 +59,16 @@ class InfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val battleImage = GlobalApplication.prefs.getString("battleImage", "")
+        if(battleImage!=""){
+            Glide.with(context!!)
+                .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${customId}/feed/${battleImage}")
+                .error(R.drawable.plus).into(iv_plus)
+            iv_plus.scaleType = ImageView.ScaleType.CENTER_CROP
+        }
+
+
 
         runBlocking {
             val a = launch {

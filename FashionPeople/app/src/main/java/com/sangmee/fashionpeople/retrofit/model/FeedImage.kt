@@ -7,16 +7,20 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class FeedImage(
-    @SerializedName("comments")
-    val comments: List<Comment>?,
-    @SerializedName("id")
-    val id: Int?,
     @SerializedName("imageName")
     val imageName: String?,
-    @SerializedName("likes")
-    val likes: List<Like>?,
     @SerializedName("timeStamp")
     val timeStamp: String?,
-    @SerializedName("userId")
-    val userId: String?
+    @SerializedName("style")
+    val style: String?,
+    @SerializedName("top")
+    val top: String?,
+    @SerializedName("pants")
+    val pants: String?,
+    @SerializedName("shoes")
+    val shoes: String?,
+    @SerializedName("rank")
+    val rank: Int?,
+    @SerializedName("battleNow")
+    val battleNow: Boolean?
 ): Parcelable
