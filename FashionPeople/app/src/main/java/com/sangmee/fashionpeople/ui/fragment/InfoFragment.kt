@@ -25,9 +25,9 @@ import com.sangmee.fashionpeople.retrofit.RetrofitClient
 import com.sangmee.fashionpeople.retrofit.model.FUser
 import com.sangmee.fashionpeople.retrofit.model.FeedImage
 import com.sangmee.fashionpeople.ui.FeedImageAdapter
-import com.sangmee.fashionpeople.ui.TagActivity
 import com.sangmee.fashionpeople.ui.LoginActivity
 import com.sangmee.fashionpeople.ui.SettingActivity
+import com.sangmee.fashionpeople.ui.TagActivity
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.fragment_info.*
 import kotlinx.coroutines.launch
@@ -38,7 +38,7 @@ import retrofit2.Response
 import java.io.File
 
 
-class InfoFragment : Fragment()  {
+class InfoFragment : Fragment() {
 
     lateinit var customId: String
     var file: File? = null
@@ -69,7 +69,7 @@ class InfoFragment : Fragment()  {
         super.onViewCreated(view, savedInstanceState)
 
         val battleImage = GlobalApplication.prefs.getString("battleImage", "")
-        if(battleImage!=""){
+        if (battleImage != "") {
             Glide.with(context!!)
                 .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${customId}/feed/${battleImage}")
                 .error(R.drawable.plus).into(iv_plus)
@@ -153,7 +153,7 @@ class InfoFragment : Fragment()  {
             adapter = feedImageAdapter
         }
 
-        btn_setting.setOnClickListener{
+        btn_setting.setOnClickListener {
             val intent = Intent(context, SettingActivity::class.java)
             startActivityForResult(intent, LOGOUT_CODE)
         }
@@ -208,7 +208,7 @@ class InfoFragment : Fragment()  {
                 Log.e("TAG_ERROR", result.error.toString())
             }
         }
-        if(requestCode == LOGOUT_CODE && resultCode == AppCompatActivity.RESULT_OK) {
+        if (requestCode == LOGOUT_CODE && resultCode == AppCompatActivity.RESULT_OK) {
             activity?.finish()
             val intent = Intent(context, LoginActivity::class.java)
             startActivity(intent)
@@ -219,8 +219,6 @@ class InfoFragment : Fragment()  {
         private const val CHOOSE_PROFILEIMG = 200
         private const val LOGOUT_CODE = 210
     }
-
-
 
 
 }

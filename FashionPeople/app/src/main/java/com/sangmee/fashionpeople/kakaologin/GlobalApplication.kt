@@ -11,6 +11,7 @@ class GlobalApplication : Application() {
         super.attachBaseContext(base)
         MultiDex.install(this)
     }
+
     override fun onCreate() {
         prefs = PreferenceUtil(applicationContext)
         super.onCreate()

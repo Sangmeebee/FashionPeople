@@ -1,7 +1,6 @@
 package com.sangmee.fashionpeople.ui
 
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,11 +16,15 @@ class FeedImageAdapter(
     private val feedImageList = mutableListOf<FeedImage>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedImageViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_feed_image, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_feed_image, parent, false)
         val viewHolder = FeedImageViewHolder(view)
         viewHolder.itemView.setOnClickListener {
             val intent = Intent(it.context, FeedImageDetailActivity::class.java)
-            intent.putExtra(FeedImageDetailActivity.KEY_FEED_IMAGE, feedImageList[viewHolder.adapterPosition])
+            intent.putExtra(
+                FeedImageDetailActivity.KEY_FEED_IMAGE,
+                feedImageList[viewHolder.adapterPosition]
+            )
             parent.context.startActivity(intent)
         }
 

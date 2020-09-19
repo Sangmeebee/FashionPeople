@@ -15,4 +15,4 @@ data class Comment(
     val timeStamp: String?,
     @SerializedName("userId")
     val userId: String?
-): Parcelable
+) : Parcelable

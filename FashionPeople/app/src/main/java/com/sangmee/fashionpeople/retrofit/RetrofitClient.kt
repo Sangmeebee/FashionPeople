@@ -21,11 +21,13 @@ class RetrofitClient {
     init {
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .client(OkHttpClient().newBuilder()
-                .addInterceptor(HttpLoggingInterceptor().apply {
-                    level = HttpLoggingInterceptor.Level.BODY
-                })
-                .build())
+            .client(
+                OkHttpClient().newBuilder()
+                    .addInterceptor(HttpLoggingInterceptor().apply {
+                        level = HttpLoggingInterceptor.Level.BODY
+                    })
+                    .build()
+            )
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         fUserService = retrofit.create(FUserService::class.java)

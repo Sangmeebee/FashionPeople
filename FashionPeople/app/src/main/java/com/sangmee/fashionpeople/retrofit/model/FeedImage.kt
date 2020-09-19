@@ -23,4 +23,4 @@ data class FeedImage(
     val rank: Int?,
     @SerializedName("battleNow")
     val battleNow: Boolean?
-): Parcelable
+) : Parcelable

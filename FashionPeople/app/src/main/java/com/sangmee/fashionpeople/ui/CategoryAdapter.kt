@@ -1,13 +1,11 @@
 package com.sangmee.fashionpeople.ui
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.sangmee.fashionpeople.R
-import com.sangmee.fashionpeople.kakaologin.GlobalApplication
 
 class CategoryAdapter(private val onListItemSelectedInterface: OnListItemSelectedInterface) :
     RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
@@ -43,6 +41,7 @@ class CategoryAdapter(private val onListItemSelectedInterface: OnListItemSelecte
         }
         notifyDataSetChanged()
     }
+
     class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val brandName = itemView.findViewById<TextView>(R.id.tv_brand_name)
 

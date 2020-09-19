@@ -33,16 +33,15 @@ class CategoryActivity : AppCompatActivity(), OnListItemSelectedInterface {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_category)
 
-        if(subject == "style"){
+        if (subject == "style") {
             readFromAssets("style.txt")
-        }
-        else{
+        } else {
             val gender = GlobalApplication.prefs.getString("custom_gender", "")
 
-            if(gender == "MALE"){
+            if (gender == "MALE") {
                 readFromAssets("man_brand.txt")
             }
-            if(gender == "FEMALE"){
+            if (gender == "FEMALE") {
                 readFromAssets("woman_brand.txt")
             }
         }
@@ -119,7 +118,7 @@ class CategoryActivity : AppCompatActivity(), OnListItemSelectedInterface {
     override fun onItemSelected(title: String) {
         GlobalApplication.prefs.setString(subject, title)
         val intent = intent
-        intent.putExtra("subject" ,subject)
+        intent.putExtra("subject", subject)
         setResult(RESULT_OK, intent)
         finish()
     }

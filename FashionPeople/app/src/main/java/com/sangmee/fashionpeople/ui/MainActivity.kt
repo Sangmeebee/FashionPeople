@@ -1,17 +1,16 @@
 package com.sangmee.fashionpeople.ui
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.sangmee.fashionpeople.R
-import com.sangmee.fashionpeople.ui.fragment.*
+import com.sangmee.fashionpeople.ui.fragment.AlarmFragment
+import com.sangmee.fashionpeople.ui.fragment.HomeFragment
+import com.sangmee.fashionpeople.ui.fragment.InfoFragment
+import com.sangmee.fashionpeople.ui.fragment.SearchFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

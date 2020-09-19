@@ -30,12 +30,11 @@
                     android:id="@+id/profile_image"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:layout_marginBottom="50dp"
-                    app:civ_border_color="@color/lightgray"
-                    app:civ_border_width="2dp"
                     android:layout_gravity="center"
+                    android:layout_marginBottom="50dp"
                     android:src="@drawable/user"
-                    />
+                    app:civ_border_color="@color/lightgray"
+                    app:civ_border_width="2dp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -49,9 +48,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="40dp"
-                    android:textSize="16sp"
                     android:inputType="text"
-                    />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -66,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="40dp"
                     android:hint="소셜 아이디 / 홍보하고 싶은 글"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -77,9 +75,9 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="가입완료"
-                android:textSize="16sp"
                 android:textColor="@android:color/white"
-                android:textStyle="bold"/>
+                android:textSize="16sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
 

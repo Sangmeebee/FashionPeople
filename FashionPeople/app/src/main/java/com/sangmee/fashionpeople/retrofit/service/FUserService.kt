@@ -1,6 +1,5 @@
 package com.sangmee.fashionpeople.retrofit.service
 
-import com.sangmee.fashionpeople.kakaologin.GlobalApplication
 import com.sangmee.fashionpeople.retrofit.model.FUser
 import retrofit2.Call
 import retrofit2.http.*

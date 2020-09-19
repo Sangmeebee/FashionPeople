@@ -13,4 +13,4 @@ data class Like(
     val imageId: String?,
     @SerializedName("likePerson")
     val likePerson: String?
-): Parcelable
+) : Parcelable

@@ -1,8 +1,6 @@
 package com.sangmee.fashionpeople.ui
 
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.sangmee.fashionpeople.R

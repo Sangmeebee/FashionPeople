@@ -1,8 +1,6 @@
 package com.sangmee.fashionpeople.kakaologin
 
-import android.util.Log
 import com.kakao.auth.*
-import com.sangmee.fashionpeople.kakaologin.GlobalApplication
 
 class KakaoSDKAdapter : KakaoAdapter() {
     override fun getSessionConfig(): ISessionConfig {
