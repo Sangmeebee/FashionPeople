@@ -2,6 +2,7 @@ package com.sangmee.fashionpeople.ui
 
 import android.app.Activity
 import android.os.Bundle
+import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -20,10 +21,15 @@ class SettingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_setting)
-        binding.activity = this@SettingActivity
-
+        setToolbar(binding.tbSetting)
         customId = GlobalApplication.prefs.getString("custom_id", "empty")
 
+        initView()
+
+
+    }
+
+    private fun initView() {
         binding.tvLogout.setOnClickListener {
             AlertDialog.Builder(this).setMessage(R.string.ask_logout_text)
                 .setPositiveButton("네") { dialog, which ->
@@ -41,8 +47,15 @@ class SettingActivity : AppCompatActivity() {
                 }.create().show()
         }
 
-
     }
 
+    private fun setToolbar(toolbar: Toolbar) {
+        setSupportActionBar(toolbar)
+        supportActionBar?.run {
+            setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.ic_arrow)
+            setDisplayShowTitleEnabled(false)
+        }
+    }
 
 }

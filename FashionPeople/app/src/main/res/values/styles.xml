@@ -5,6 +5,12 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorBlack</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionBarStyle">@style/MyActionBarStyle</item>
     </style>
 
+
+    <style name="MyActionBarStyle" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="displayOptions">showHome|homeAsUp</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow</item>
+    </style>
 </resources>

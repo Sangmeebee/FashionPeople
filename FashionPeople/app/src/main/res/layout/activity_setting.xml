@@ -2,13 +2,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-
-        <variable
-            name="activity"
-            type="com.sangmee.fashionpeople.ui.SettingActivity" />
-
-    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,10 +10,20 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tb_setting"
-            bindToolbar="@{activity}"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:fontFamily="@font/ygd_340"
+                android:gravity="center"
+                android:text="@string/setting_text"
+                android:textColor="@color/colorBlack"
+                android:textSize="23sp" />
+        </androidx.appcompat.widget.Toolbar>
 
         <LinearLayout
             android:id="@+id/ll_setting_account"
@@ -33,17 +36,14 @@
                 android:id="@+id/tv_account"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/ygd_350"
+                android:background="@drawable/background_setting_text"
+                android:fontFamily="@font/ygd_340"
                 android:gravity="center_vertical"
                 android:paddingVertical="8dp"
                 android:text="@string/account_text"
                 android:textColor="@color/colorBlack"
-                android:textSize="23sp" />
+                android:textSize="16sp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/colorBlack" />
 
             <TextView
                 android:id="@+id/tv_modify_profile"
@@ -53,6 +53,113 @@
                 android:fontFamily="@font/ygd_340"
                 android:paddingVertical="8dp"
                 android:text="@string/modify_profile_text"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/colorGray" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_push_notification"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/ygd_340"
+                    android:paddingVertical="8dp"
+                    android:text="@string/push_notification_text"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_customer_support"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp">
+
+            <TextView
+                android:id="@+id/tv_customer_support"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_setting_text"
+                android:fontFamily="@font/ygd_340"
+                android:gravity="center_vertical"
+                android:paddingVertical="8dp"
+                android:text="@string/customer_support_text"
+                android:textColor="@color/colorBlack"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_question_suggestion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/ygd_340"
+                android:paddingVertical="8dp"
+                android:text="@string/question_suggestion_text"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_terms_of_service"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp">
+
+            <TextView
+                android:id="@+id/tv_terms_of_service_main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_setting_text"
+                android:fontFamily="@font/ygd_340"
+                android:gravity="center_vertical"
+                android:paddingVertical="8dp"
+                android:text="@string/account_text"
+                android:textColor="@color/colorBlack"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:id="@+id/tv_terms_of_service_sub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/ygd_340"
+                android:paddingVertical="8dp"
+                android:text="@string/terms_of_service_text"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/colorGray" />
+
+            <TextView
+                android:id="@+id/tv_privacy_policy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/ygd_340"
+                android:paddingVertical="8dp"
+                android:text="@string/privacy_policy_text"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -68,17 +175,14 @@
                 android:id="@+id/tv_system"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/ygd_350"
+                android:background="@drawable/background_setting_text"
+                android:fontFamily="@font/ygd_340"
                 android:gravity="center_vertical"
                 android:paddingVertical="8dp"
                 android:text="@string/system_text"
                 android:textColor="@color/colorBlack"
-                android:textSize="23sp" />
+                android:textSize="16sp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/colorBlack" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -110,6 +214,20 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorGray" />
+
+            <TextView
+                android:id="@+id/tv_withdrawal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/ygd_340"
+                android:paddingVertical="8dp"
+                android:text="@string/withdrawl_text"
+                android:textSize="16sp" />
 
             <View
                 android:layout_width="match_parent"

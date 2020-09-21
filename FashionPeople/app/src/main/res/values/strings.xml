@@ -18,4 +18,10 @@
     <string name="logout_text">로그아웃</string>
     <string name="version_text">버전정보</string>
     <string name="ask_logout_text">로그아웃 하시겠습니까?</string>
+    <string name="customer_support_text">고객지원</string>
+    <string name="question_suggestion_text">문의 / 의견 보내기</string>
+    <string name="privacy_policy_text">개인정보 처리방침</string>
+    <string name="terms_of_service_text">이용약관</string>
+    <string name="withdrawl_text">회원탈퇴</string>
+    <string name="push_notification_text">푸쉬 알림</string>
 </resources>
