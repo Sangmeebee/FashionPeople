@@ -8,6 +8,17 @@
         <item name="actionBarStyle">@style/MyActionBarStyle</item>
     </style>
 
+    <style name="TabLayoutStyle" parent="Widget.Design.TabLayout">
+        <item name="tabTextColor">@color/colorWhite</item> <!--그냥 이렇게 일일히 변경해주어도 되고-->
+        <item name="tabIndicatorColor">@color/colorWhite</item> <!--글씨 밑에 indicator 색상 변경-->
+        <item name="tabTextAppearance">@style/TabTextAppearance</item> <!-- 여기서 한번에 바꾸어 줘도 된다.-->
+    </style>
+
+    <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">27sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="textAllCaps">true</item> <!--text의 소문자를 모두 대문자로 만듬-->
+    </style>
 
     <style name="MyActionBarStyle" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="displayOptions">showHome|homeAsUp</item>
