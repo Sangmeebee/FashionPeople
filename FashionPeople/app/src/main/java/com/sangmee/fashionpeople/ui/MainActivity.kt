@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.ui.fragment.AlarmFragment
-import com.sangmee.fashionpeople.ui.fragment.HomeFragment
+import com.sangmee.fashionpeople.ui.fragment.home.HomeFragment
 import com.sangmee.fashionpeople.ui.fragment.InfoFragment
 import com.sangmee.fashionpeople.ui.fragment.SearchFragment
 import kotlinx.android.synthetic.main.activity_main.*
