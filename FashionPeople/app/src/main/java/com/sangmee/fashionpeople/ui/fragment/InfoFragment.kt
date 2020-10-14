@@ -1,12 +1,7 @@
 package com.sangmee.fashionpeople.ui.fragment
 
-import android.Manifest
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,8 +9,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -27,29 +20,21 @@ import com.sangmee.fashionpeople.retrofit.model.FeedImage
 import com.sangmee.fashionpeople.ui.FeedImageAdapter
 import com.sangmee.fashionpeople.ui.LoginActivity
 import com.sangmee.fashionpeople.ui.SettingActivity
-import com.sangmee.fashionpeople.ui.TagActivity
-import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.fragment_info.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.File
 
 
 class InfoFragment : Fragment() {
 
     lateinit var customId: String
-    var file: File? = null
     private val feedImageAdapter by lazy {
         FeedImageAdapter(customId)
     }
 
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -114,40 +99,7 @@ class InfoFragment : Fragment() {
             }
             a.join()
         }
-        //사진 등록 imageView 클릭시 이벤트
-        btn_plus.setOnClickListener {
-            if (context?.let {
-                    ContextCompat.checkSelfPermission(
-                        it,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    )
-                } == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
-                    context!!,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                try {
-                    //갤러리 앱 실행
-                    val intent = Intent(Intent.ACTION_PICK)
-                    intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
-                    startActivityForResult(intent, CHOOSE_PROFILEIMG)
 
-                } catch (e: java.lang.Exception) {
-                    e.printStackTrace()
-                }
-            } else {
-                activity?.let {
-                    ActivityCompat.requestPermissions(
-                        it,
-                        arrayOf(
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            Manifest.permission.READ_EXTERNAL_STORAGE
-                        ),
-                        100
-                    )
-                }
-            }
-        }
 
         rv_user_image.apply {
             adapter = feedImageAdapter
@@ -173,6 +125,7 @@ class InfoFragment : Fragment() {
                     ) {
                         response.body()?.let { feedImages ->
                             feedImageAdapter.setFeedImages(feedImages)
+                            Log.d("sangmin", feedImages.toString())
                         }
                     }
 
@@ -185,29 +138,7 @@ class InfoFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == CHOOSE_PROFILEIMG && resultCode == AppCompatActivity.RESULT_OK && data != null) {
-            try {
-                val uri: Uri = data.data!!
-                CropImage.activity(uri)
-                    .setAspectRatio(1, 1)
-                    .start(context!!, this)
-            } catch (e: Exception) {
 
-            }
-        }
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            val result = CropImage.getActivityResult(data)
-            if (resultCode == AppCompatActivity.RESULT_OK) {
-                val resultUri = result.uri
-                //TagFragment로 이동 & resultUri 전
-                GlobalApplication.prefs.setString("resultUri", resultUri.toString())
-                val intent = Intent(activity, TagActivity::class.java)
-                startActivity(intent)
-
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Log.e("TAG_ERROR", result.error.toString())
-            }
-        }
         if (requestCode == LOGOUT_CODE && resultCode == AppCompatActivity.RESULT_OK) {
             activity?.finish()
             val intent = Intent(context, LoginActivity::class.java)
@@ -216,7 +147,6 @@ class InfoFragment : Fragment() {
     }
 
     companion object {
-        private const val CHOOSE_PROFILEIMG = 200
         private const val LOGOUT_CODE = 210
     }
 
