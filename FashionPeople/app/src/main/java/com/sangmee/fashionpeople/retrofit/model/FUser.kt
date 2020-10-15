@@ -6,7 +6,7 @@ data class FUser(
     @SerializedName("id")
     val id: String?,
     @SerializedName("images")
-    val images: List<Image>,
+    val images: List<FeedImage>,
     @SerializedName("instagramId")
     val instagramId: String?,
     @SerializedName("name")
