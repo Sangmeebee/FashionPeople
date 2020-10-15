@@ -8,6 +8,10 @@
         <item name="actionBarStyle">@style/MyActionBarStyle</item>
     </style>
 
+    <style name="tab_text" parent="@android:style/TextAppearance.Widget.TabWidget">
+        <item name="android:fontFamily">@font/ygd_330</item>
+        <item name="android:textSize">13sp</item>
+    </style>
 
     <style name="MyActionBarStyle" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="displayOptions">showHome|homeAsUp</item>
