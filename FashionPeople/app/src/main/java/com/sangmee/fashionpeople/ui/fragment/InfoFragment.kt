@@ -12,14 +12,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.tabs.TabLayoutMediator
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.kakaologin.GlobalApplication
 import com.sangmee.fashionpeople.retrofit.RetrofitClient
 import com.sangmee.fashionpeople.retrofit.model.FUser
-import com.sangmee.fashionpeople.retrofit.model.FeedImage
-import com.sangmee.fashionpeople.ui.FeedImageAdapter
 import com.sangmee.fashionpeople.ui.LoginActivity
 import com.sangmee.fashionpeople.ui.SettingActivity
+import com.sangmee.fashionpeople.ui.fragment.content.ViewPagerAdapter
 import kotlinx.android.synthetic.main.fragment_info.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -31,10 +31,6 @@ import retrofit2.Response
 class InfoFragment : Fragment() {
 
     lateinit var customId: String
-    private val feedImageAdapter by lazy {
-        FeedImageAdapter(customId)
-    }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,16 +49,17 @@ class InfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val battleImage = GlobalApplication.prefs.getString("battleImage", "")
-        if (battleImage != "") {
-            Glide.with(context!!)
-                .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${customId}/feed/${battleImage}")
-                .error(R.drawable.plus).into(iv_plus)
-            iv_plus.scaleType = ImageView.ScaleType.CENTER_CROP
-        }
+        //tablayout 세팅
+        viewPager.adapter = ViewPagerAdapter(this)
 
+        TabLayoutMediator(tl_container, viewPager) { tab, position ->
+            when (position) {
+                0 -> tab.text = "게시물"
+                else -> tab.text = "저장함"
+            }
+        }.attach()
 
-
+        //프로필 세팅
         runBlocking {
             val a = launch {
                 RetrofitClient().getFUserService().getFUser(customId)
@@ -74,21 +71,15 @@ class InfoFragment : Fragment() {
                         override fun onResponse(call: Call<FUser>, response: Response<FUser>) {
                             //닉네임 레트로핏으로 불러오기
                             val profileImgName = response.body()?.profileImage.toString()
-                            val introduce = response.body()?.instagramId
-                            val userId = response.body()?.name
-                            val profileImg = view.findViewById<ImageView>(R.id.iv_info_user)
-                            val introduceTv =
-                                view.findViewById<TextView>(R.id.tv_info_user_introduce)
-                            val userName = view.findViewById<TextView>(R.id.tv_info_user_name)
+                            val userName = response.body()?.name
+                            val profileImg = view.findViewById<ImageView>(R.id.iv_profile)
+                            val tvNickName = view.findViewById<TextView>(R.id.tv_nickname)
 
-                            introduce?.let {
-                                introduceTv.text = it
+                            //유저 닉네임
+                            userName?.let {
+                                tvNickName.text = it
                             }
-
-                            userId?.let {
-                                userName.text = it
-                            }
-
+                            //프로필 이미지
                             Glide.with(context!!)
                                 .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${customId}/profile/${profileImgName}")
                                 .apply(RequestOptions().circleCrop())
@@ -100,41 +91,12 @@ class InfoFragment : Fragment() {
             a.join()
         }
 
-
-        rv_user_image.apply {
-            adapter = feedImageAdapter
-        }
-
         btn_setting.setOnClickListener {
             val intent = Intent(context, SettingActivity::class.java)
             startActivityForResult(intent, LOGOUT_CODE)
         }
-
-        getFeedImages()
-
-
     }
 
-    private fun getFeedImages() {
-        if (customId != "") {
-            RetrofitClient().getFeedImageService().getFeedImages(customId)
-                .enqueue(object : Callback<List<FeedImage>> {
-                    override fun onResponse(
-                        call: Call<List<FeedImage>>,
-                        response: Response<List<FeedImage>>
-                    ) {
-                        response.body()?.let { feedImages ->
-                            feedImageAdapter.setFeedImages(feedImages)
-                            Log.d("sangmin", feedImages.toString())
-                        }
-                    }
-
-                    override fun onFailure(call: Call<List<FeedImage>>, t: Throwable) {
-                        Log.d("fail", t.message)
-                    }
-                })
-        }
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
