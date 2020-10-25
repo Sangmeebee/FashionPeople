@@ -1,7 +1,6 @@
 package com.sangmee.fashionpeople.ui.fragment.home.evaluate
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.viewpager2.widget.ViewPager2
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.databinding.FragmentEvaluateBinding
 import com.sangmee.fashionpeople.ui.fragment.home.HomeFeedAdapter
@@ -26,9 +26,7 @@ class EvaluateFragment : Fragment() {
         }).get(EvaluateViewModel::class.java)
     }
 
-    private val homeFeedAdapter: HomeFeedAdapter by lazy {
-        HomeFeedAdapter()
-    }
+    private lateinit var homeFeedAdapter: HomeFeedAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,14 +40,21 @@ class EvaluateFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.vpEvaluate.apply {
-            adapter = homeFeedAdapter
-        }
+
+        initViewPager()
         initObserve()
     }
 
+    private fun initViewPager() {
+        homeFeedAdapter = HomeFeedAdapter()
+        binding.vpEvaluate.apply {
+            adapter = homeFeedAdapter
+            orientation = ViewPager2.ORIENTATION_VERTICAL
+        }
+    }
+
     private fun initObserve() {
-        viewModel.feedImages.observe(viewLifecycleOwner, Observer {
+        viewModel.feedImages.observe(this@EvaluateFragment, Observer {
             homeFeedAdapter.setFeedImages(it)
         })
     }
