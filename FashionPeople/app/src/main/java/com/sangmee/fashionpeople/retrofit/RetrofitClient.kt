@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 const val BASE_URL = "http://52.78.102.63:3333/api/v1/"
 
-class RetrofitClient {
+object RetrofitClient {
     val pref = GlobalApplication.prefs
     val customId = pref.getString("custom_id", "empty")
 

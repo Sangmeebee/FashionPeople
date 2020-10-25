@@ -21,4 +21,6 @@ class NewFragment: Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_new, container, false)
         return binding.root
     }
+
+
 }

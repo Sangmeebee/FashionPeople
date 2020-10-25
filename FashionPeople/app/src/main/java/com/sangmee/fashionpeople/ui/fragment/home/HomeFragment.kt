@@ -18,7 +18,7 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var homeFragmentStateAdapter: HomeFragmentStateAdapter
 
-    private val tabNameList = arrayListOf("NEW", "HOT", "팔로잉")
+    private val tabNameList = arrayListOf("평가", "팔로잉")
 
 
     override fun onCreateView(
@@ -38,7 +38,6 @@ class HomeFragment : Fragment() {
         homeFragmentStateAdapter = HomeFragmentStateAdapter(requireActivity())
         binding.vpHome.apply {
             adapter = homeFragmentStateAdapter
-            setPageTransformer(ZoomOutPageTransformer())
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     binding.tlHome.setScrollPosition(position, 0F, false)
