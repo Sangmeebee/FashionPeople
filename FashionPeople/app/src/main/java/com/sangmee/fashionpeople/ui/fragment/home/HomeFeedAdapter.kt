@@ -25,4 +25,10 @@ class HomeFeedAdapter: RecyclerView.Adapter<HomeFeedViewHolder>() {
     override fun getItemCount(): Int = items.size
 
 
+    fun setFeedImages(list: List<FeedImage>) {
+        items.clear()
+        items.addAll(list)
+        notifyDataSetChanged()
+    }
+
 }

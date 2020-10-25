@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sangmee.fashionpeople.retrofit.RetrofitClient
 import com.sangmee.fashionpeople.retrofit.model.FeedImage
-import com.sangmee.fashionpeople.retrofit.service.FeedImageService
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
@@ -16,8 +15,12 @@ class EvaluateViewModel: ViewModel() {
 
     val feedImages = MutableLiveData<List<FeedImage>>()
 
+    init {
+        getAllImages()
+    }
+
     private fun getAllImages() {
-        RetrofitClient.getFeedImageService().getAllFeedImages()
+        RetrofitClient().getFeedImageService().getAllFeedImages()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({

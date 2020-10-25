@@ -6,12 +6,13 @@ import com.sangmee.fashionpeople.retrofit.service.FeedImageService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 
 const val BASE_URL = "http://52.78.102.63:3333/api/v1/"
 
-object RetrofitClient {
+class RetrofitClient {
     val pref = GlobalApplication.prefs
     val customId = pref.getString("custom_id", "empty")
 
@@ -29,6 +30,7 @@ object RetrofitClient {
                     .build()
             )
             .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
         fUserService = retrofit.create(FUserService::class.java)
         feedImageService = retrofit.create(FeedImageService::class.java)
@@ -36,4 +38,5 @@ object RetrofitClient {
 
     fun getFUserService(): FUserService = fUserService
     fun getFeedImageService(): FeedImageService = feedImageService
+
 }

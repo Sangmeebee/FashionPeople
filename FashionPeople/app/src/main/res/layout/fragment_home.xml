@@ -11,6 +11,11 @@
         android:layout_height="match_parent"
         android:background="@color/colorBlack">
 
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_home"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tl_home"
             style="@style/TabLayoutStyle"
@@ -21,10 +26,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/vp_home"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
