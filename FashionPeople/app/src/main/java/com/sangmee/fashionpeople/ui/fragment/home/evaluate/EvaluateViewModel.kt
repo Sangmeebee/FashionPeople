@@ -30,6 +30,10 @@ class EvaluateViewModel: ViewModel() {
             }).addTo(compositeDisposable)
     }
 
+    private fun ratingClickEvent() {
+
+    }
+
 
 
     fun clearDisposable() {

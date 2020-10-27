@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RatingBar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -14,7 +15,7 @@ import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.databinding.FragmentEvaluateBinding
 import com.sangmee.fashionpeople.ui.fragment.home.HomeFeedAdapter
 
-class EvaluateFragment : Fragment() {
+class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
 
     private lateinit var binding: FragmentEvaluateBinding
 
@@ -47,6 +48,7 @@ class EvaluateFragment : Fragment() {
 
     private fun initViewPager() {
         homeFeedAdapter = HomeFeedAdapter()
+        homeFeedAdapter.onClickListener = this@EvaluateFragment
         binding.vpEvaluate.apply {
             adapter = homeFeedAdapter
             orientation = ViewPager2.ORIENTATION_VERTICAL
@@ -62,5 +64,9 @@ class EvaluateFragment : Fragment() {
     override fun onDestroy() {
         viewModel.clearDisposable()
         super.onDestroy()
+    }
+
+    override fun onClickRatingBar(ratingBar: RatingBar?, rating: Float, fromUser: Boolean) {
+
     }
 }
