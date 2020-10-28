@@ -75,7 +75,7 @@ class TagActivity : AppCompatActivity() {
             val feedImage =
                 FeedImage(imageFileName, timeStamp, style, top, pants, shoes, null, true)
 
-            RetrofitClient().getFeedImageService().putFeedImage(customId, feedImage)
+            RetrofitClient().getFeedImageService().postFeedImage(customId, feedImage)
                 .enqueue(object : Callback<FeedImage> {
                     override fun onResponse(call: Call<FeedImage>, response: Response<FeedImage>) {
                         showMessage()
