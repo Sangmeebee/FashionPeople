@@ -31,7 +31,7 @@ class EvaluateViewModel: ViewModel() {
     }
 
     private fun ratingClickEvent() {
-
+        RetrofitClient().getFeedImageService()
     }
 
 

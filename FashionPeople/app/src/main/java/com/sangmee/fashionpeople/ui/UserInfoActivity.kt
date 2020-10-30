@@ -26,7 +26,7 @@ import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.kakaologin.GlobalApplication
 import com.sangmee.fashionpeople.retrofit.RetrofitClient
 import com.sangmee.fashionpeople.retrofit.model.FUser
-import com.sangmee.fashionpeople.retrofit.model.Image
+import com.sangmee.fashionpeople.retrofit.model.FeedImage
 import kotlinx.android.synthetic.main.activity_user_info.*
 import kotlinx.android.synthetic.main.toolbar.*
 import retrofit2.Callback
@@ -106,7 +106,7 @@ class UserInfoActivity : AppCompatActivity() {
             RetrofitClient().getFUserService().addUser(
                 FUser(
                     customId,
-                    listOf<Image>(),
+                    listOf<FeedImage>(),
                     name,
                     instagramId,
                     profileImage

@@ -1,6 +1,7 @@
 package com.sangmee.fashionpeople.ui.fragment.home.evaluate
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,6 +68,6 @@ class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
     }
 
     override fun onClickRatingBar(ratingBar: RatingBar?, rating: Float, fromUser: Boolean) {
-
+        ratingBar?.rating = rating
     }
 }

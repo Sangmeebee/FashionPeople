@@ -26,4 +26,9 @@
         <item name="displayOptions">showHome|homeAsUp</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_arrow</item>
     </style>
+
+    <style name="RatingBarStyle" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/darkgray</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+    </style>
 </resources>
