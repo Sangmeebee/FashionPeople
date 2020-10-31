@@ -1,5 +1,6 @@
 package com.sangmee.fashionpeople.ui.fragment.home.evaluate
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sangmee.fashionpeople.retrofit.RetrofitClient
@@ -25,6 +26,8 @@ class EvaluateViewModel: ViewModel() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 feedImages.value = it
+                Log.d("seunghwan", it[0].style)
+                Log.d("seunghwan", it[0].user?.name)
             }, {
 
             }).addTo(compositeDisposable)

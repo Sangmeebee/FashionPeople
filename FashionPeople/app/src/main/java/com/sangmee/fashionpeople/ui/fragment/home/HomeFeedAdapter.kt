@@ -20,12 +20,10 @@ class HomeFeedAdapter: RecyclerView.Adapter<HomeFeedViewHolder>() {
         val binding = DataBindingUtil.inflate<ItemHomeFeedBinding>(LayoutInflater.from(parent.context), R.layout.item_home_feed, parent, false)
         val viewHolder = HomeFeedViewHolder(binding)
         viewHolder.itemView.rb_home_feed.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
-            onClickListener?.onClickRatingBar(
-                ratingBar,
-                rating,
-                fromUser
-            )
+            onClickListener?.onClickRatingBar(ratingBar, rating, fromUser)
         }
+
+
         return viewHolder
     }
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:toolsNs="http://schemas.android.com/tools">
 
     <data>
 
@@ -12,7 +13,13 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        toolsNs:background="@color/colorBlack">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_item_home_feed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
         <RatingBar
             android:id="@+id/rb_home_feed"
@@ -27,10 +34,56 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_item_home_feed"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/tv_user_name_home_feed"
+            style="@style/HomeFeedTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginBottom="12dp"
+            android:ellipsize="end"
+            android:text="@{feedImage.user.name}"
+            app:layout_constraintBottom_toTopOf="@id/ll_info_home_feed"
+            app:layout_constraintEnd_toEndOf="@id/ll_info_home_feed"
+            app:layout_constraintStart_toEndOf="@id/iv_profile_home_feed"
+            app:layout_constraintTop_toTopOf="@id/iv_profile_home_feed"
+            toolsNs:text="서승환" />
+
+        <ImageView
+            android:id="@+id/iv_profile_home_feed"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintBottom_toTopOf="@id/ll_info_home_feed"
+            app:layout_constraintStart_toStartOf="parent"
+            toolsNs:src="@drawable/ic_person_white" />
+
+        <LinearLayout
+            android:id="@+id/ll_info_home_feed"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginBottom="24dp"
+            android:orientation="horizontal"
+            app:createView="@{feedImage}"
+            app:layout_constraintBottom_toTopOf="@id/rb_home_feed"
+            app:layout_constraintStart_toStartOf="parent" />
+        <!--        <TextView
+                    android:id="@+id/tv_info_home_feed"
+                    style="@style/HomeFeedTextStyle"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginBottom="24dp"
+                    app:layout_constraintBottom_toTopOf="@id/rb_home_feed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:text="abacascasdsfasd"
+                    toolsNs:text="#엠엘비 #나이키 # 아디다스 #구찌 #마르지엘라" />-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
