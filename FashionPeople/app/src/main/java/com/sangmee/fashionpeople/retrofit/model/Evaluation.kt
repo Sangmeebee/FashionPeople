@@ -7,8 +7,6 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Evaluation(
-    @SerializedName("id")
-    val id: Int?,
     @SerializedName("evaluationPersonId")
     val evaluationPersonId: String?,
     @SerializedName("score")
