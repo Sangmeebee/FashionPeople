@@ -58,7 +58,7 @@ class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
     }
 
     private fun initViewPager() {
-        homeFeedAdapter = HomeFeedAdapter()
+        homeFeedAdapter = HomeFeedAdapter(viewModel)
         homeFeedAdapter.onClickListener = this@EvaluateFragment
         binding.vpEvaluate.apply {
             adapter = homeFeedAdapter
@@ -79,9 +79,8 @@ class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
         })
 
         viewModel.ratingClickEvent.observe(this@EvaluateFragment, Observer {
-            it.value?.let {
+            it.let {
                 viewModel.nowPage.value?.let {
-                    binding.vpEvaluate.currentItem = it + 1
                 }
             }
         })

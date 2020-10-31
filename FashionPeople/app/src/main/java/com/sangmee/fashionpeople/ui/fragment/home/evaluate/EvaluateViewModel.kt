@@ -30,8 +30,8 @@ class EvaluateViewModel : ViewModel() {
     val nowPage: LiveData<Int>
         get() = _nowPage
 
-    private val _ratingClickEvent = MutableLiveData<SingleLiveEvent<Unit>>()
-    val ratingClickEvent: LiveData<SingleLiveEvent<Unit>>
+    private val _ratingClickEvent = SingleLiveEvent<Unit>()
+    val ratingClickEvent: LiveData<Unit>
         get() = _ratingClickEvent
 
     val idSubject = BehaviorSubject.create<String>()
@@ -72,7 +72,7 @@ class EvaluateViewModel : ViewModel() {
                 _nowPage.value?.let { now ->
                     _nowPage.value = now + 1
                 }
-                _ratingClickEvent.value?.call()
+                _ratingClickEvent.call()
             }, {
             }).addTo(compositeDisposable)
     }
