@@ -6,13 +6,11 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Like(
+data class Evaluation(
     @SerializedName("id")
     val id: Int?,
-    @SerializedName("imageId")
-    val imageId: String?,
-    @SerializedName("rating")
-    val rating: Float?,
-    @SerializedName("likePerson")
-    val likePerson: String?
+    @SerializedName("evaluationPersonId")
+    val evaluationPersonId: String?,
+    @SerializedName("score")
+    val score: Float?
 ) : Parcelable
