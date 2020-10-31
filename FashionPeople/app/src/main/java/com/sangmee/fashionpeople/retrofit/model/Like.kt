@@ -11,6 +11,8 @@ data class Like(
     val id: Int?,
     @SerializedName("imageId")
     val imageId: String?,
+    @SerializedName("rating")
+    val rating: Float?,
     @SerializedName("likePerson")
     val likePerson: String?
 ) : Parcelable

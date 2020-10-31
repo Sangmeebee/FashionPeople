@@ -6,6 +6,7 @@ import com.sangmee.fashionpeople.retrofit.service.FeedImageService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 
@@ -29,6 +30,7 @@ class RetrofitClient {
                     .build()
             )
             .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
         fUserService = retrofit.create(FUserService::class.java)
         feedImageService = retrofit.create(FeedImageService::class.java)
@@ -36,4 +38,5 @@ class RetrofitClient {
 
     fun getFUserService(): FUserService = fUserService
     fun getFeedImageService(): FeedImageService = feedImageService
+
 }

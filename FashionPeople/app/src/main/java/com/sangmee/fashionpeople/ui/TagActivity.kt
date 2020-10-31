@@ -73,7 +73,7 @@ class TagActivity : AppCompatActivity() {
             val pants = GlobalApplication.prefs.getString("pants", "")
             val shoes = GlobalApplication.prefs.getString("shoes", "")
             val feedImage =
-                FeedImage(imageFileName, timeStamp, style, top, pants, shoes, null, true)
+                FeedImage(imageFileName, timeStamp, style, top, pants, shoes, null, true, null, null)
 
             RetrofitClient().getFeedImageService().putFeedImage(customId, feedImage)
                 .enqueue(object : Callback<FeedImage> {
