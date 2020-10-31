@@ -35,4 +35,10 @@
         <item name="colorControlNormal">@color/darkgray</item>
         <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
+
+    <style name="HomeFeedTextStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>
