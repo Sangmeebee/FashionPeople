@@ -1,9 +1,11 @@
 package com.sangmee.fashionpeople.ui.fragment.home
 
+import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.RatingBar
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sangmee.fashionpeople.R
@@ -27,6 +29,7 @@ class HomeFeedAdapter: RecyclerView.Adapter<HomeFeedViewHolder>() {
         return viewHolder
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onBindViewHolder(holder: HomeFeedViewHolder, position: Int) {
         holder.bind(items[position])
     }

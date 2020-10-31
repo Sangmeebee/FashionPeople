@@ -14,11 +14,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.databinding.FragmentEvaluateBinding
+import com.sangmee.fashionpeople.kakaologin.GlobalApplication
 import com.sangmee.fashionpeople.ui.fragment.home.HomeFeedAdapter
 
 class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
 
     private lateinit var binding: FragmentEvaluateBinding
+    val pref = GlobalApplication.prefs
+    lateinit var customId: String
 
     private val viewModel: EvaluateViewModel by lazy {
         ViewModelProvider(this, object : ViewModelProvider.Factory {
@@ -42,9 +45,14 @@ class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setId()
         initViewPager()
         initObserve()
+    }
+
+    private fun setId() {
+        customId = pref.getString("custom_id", "empty")
+        viewModel.idSubject.onNext(customId)
     }
 
     private fun initViewPager() {
