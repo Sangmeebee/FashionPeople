@@ -2,6 +2,7 @@ package com.sangmee.fashionpeople.retrofit.service
 
 import com.sangmee.fashionpeople.retrofit.model.Evaluation
 import com.sangmee.fashionpeople.retrofit.model.FeedImage
+import io.reactivex.Completable
 import io.reactivex.Single
 import retrofit2.Call
 import retrofit2.http.*
@@ -15,7 +16,7 @@ interface FeedImageService {
     fun getOtherImages(@Path("id") id: String): Single<List<FeedImage>>
 
     @PUT("feedImage/evaluation/{imageId}")
-    fun updateImageScore(@Path("imageId") imageId: Int, evaluation: Evaluation)
+    fun updateImageScore(@Path("imageId") imageName: String, evaluation: Evaluation): Completable
 
     @GET("feedImage/{id}")
     fun getFeedImages(@Path("id") id: String): Call<List<FeedImage>>

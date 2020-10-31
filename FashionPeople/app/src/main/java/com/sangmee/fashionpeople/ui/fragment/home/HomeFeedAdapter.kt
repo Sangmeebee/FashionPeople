@@ -11,18 +11,27 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.databinding.ItemHomeFeedBinding
 import com.sangmee.fashionpeople.retrofit.model.FeedImage
+import com.sangmee.fashionpeople.ui.fragment.home.evaluate.EvaluateViewModel
 import kotlinx.android.synthetic.main.item_home_feed.view.*
 
-class HomeFeedAdapter: RecyclerView.Adapter<HomeFeedViewHolder>() {
+class HomeFeedAdapter(private val viewModel: EvaluateViewModel) :
+    RecyclerView.Adapter<HomeFeedViewHolder>() {
 
     private val items = mutableListOf<FeedImage>()
     var onClickListener: OnClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeFeedViewHolder {
-        val binding = DataBindingUtil.inflate<ItemHomeFeedBinding>(LayoutInflater.from(parent.context), R.layout.item_home_feed, parent, false)
+        val binding = DataBindingUtil.inflate<ItemHomeFeedBinding>(
+            LayoutInflater.from(parent.context),
+            R.layout.item_home_feed,
+            parent,
+            false
+        )
         val viewHolder = HomeFeedViewHolder(binding)
         viewHolder.itemView.rb_home_feed.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
-            onClickListener?.onClickRatingBar(ratingBar, rating, fromUser)
+            items[viewHolder.adapterPosition].imageName?.let {
+                viewModel.ratingClickEvent(it, rating)
+            }
         }
 
 
@@ -43,8 +52,22 @@ class HomeFeedAdapter: RecyclerView.Adapter<HomeFeedViewHolder>() {
         notifyDataSetChanged()
     }
 
+    fun removeImage(feedImage: FeedImage) {
+        for (i in items.indices) {
+            if (items[i].imageName == feedImage.imageName) {
+                items.remove(items[i])
+                notifyItemRemoved(i)
+            }
+        }
+    }
+
     interface OnClickListener {
-        fun onClickRatingBar(ratingBar: RatingBar?, rating: Float, fromUser: Boolean)
+        fun onClickRatingBar(
+            ratingBar: RatingBar?,
+            rating: Float,
+            fromUser: Boolean,
+            feedImage: FeedImage
+        )
     }
 
 }

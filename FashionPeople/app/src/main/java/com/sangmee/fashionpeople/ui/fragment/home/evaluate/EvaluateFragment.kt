@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RatingBar
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -15,6 +16,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.databinding.FragmentEvaluateBinding
 import com.sangmee.fashionpeople.kakaologin.GlobalApplication
+import com.sangmee.fashionpeople.retrofit.model.FeedImage
 import com.sangmee.fashionpeople.ui.fragment.home.HomeFeedAdapter
 
 class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
@@ -61,12 +63,27 @@ class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
         binding.vpEvaluate.apply {
             adapter = homeFeedAdapter
             orientation = ViewPager2.ORIENTATION_VERTICAL
+            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    viewModel.nowPageSubject.onNext(position)
+                    Toast.makeText(context, position.toString(), Toast.LENGTH_SHORT).show()
+                }
+            })
         }
     }
 
     private fun initObserve() {
         viewModel.feedImages.observe(this@EvaluateFragment, Observer {
             homeFeedAdapter.setFeedImages(it)
+        })
+
+        viewModel.ratingClickEvent.observe(this@EvaluateFragment, Observer {
+            it.value?.let {
+                viewModel.nowPage.value?.let {
+                    binding.vpEvaluate.currentItem = it + 1
+                }
+            }
         })
     }
 
@@ -75,7 +92,14 @@ class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
         super.onDestroy()
     }
 
-    override fun onClickRatingBar(ratingBar: RatingBar?, rating: Float, fromUser: Boolean) {
+    override fun onClickRatingBar(
+        ratingBar: RatingBar?,
+        rating: Float,
+        fromUser: Boolean,
+        feedImage: FeedImage
+    ) {
         ratingBar?.rating = rating
+        viewModel.nowPage.value?.let {
+        }
     }
 }
