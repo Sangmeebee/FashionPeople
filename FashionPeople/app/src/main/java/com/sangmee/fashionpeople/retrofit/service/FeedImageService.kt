@@ -19,6 +19,4 @@ interface FeedImageService {
     @POST("feedImage/{id}")
     fun postFeedImage(@Path("id") id: String, @Body feedImage: FeedImage): Call<FeedImage>
 
-    @PUT("feedImage/like/{id}/{imageName}")
-    fun setFeedImageLike()
 }
