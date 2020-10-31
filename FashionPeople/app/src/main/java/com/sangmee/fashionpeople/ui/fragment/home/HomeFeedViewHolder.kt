@@ -14,6 +14,7 @@ class HomeFeedViewHolder(private val binding: ItemHomeFeedBinding) :
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun bind(feedImage: FeedImage) {
+        binding.feedImage = feedImage
         with(itemView) {
             Glide.with(context)
                 .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${feedImage.user?.id}/feed/${feedImage.imageName}")

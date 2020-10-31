@@ -9,27 +9,31 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.BehaviorSubject
 
 class EvaluateViewModel: ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
 
     val feedImages = MutableLiveData<List<FeedImage>>()
+    val idSubject = BehaviorSubject.create<String>()
 
     init {
-        getAllImages()
+        idSubject.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                getOtherImages(it)
+            }, {
+            }).addTo(compositeDisposable)
     }
 
-    private fun getAllImages() {
-        RetrofitClient().getFeedImageService().getAllFeedImages()
+    private fun getOtherImages(id: String) {
+        RetrofitClient().getFeedImageService().getOtherImages(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 feedImages.value = it
-                Log.d("seunghwan", it[0].style)
-                Log.d("seunghwan", it[0].user?.name)
             }, {
-
             }).addTo(compositeDisposable)
     }
 

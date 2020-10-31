@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.core.view.marginEnd
 import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -20,34 +21,29 @@ fun createView(linearLayout: LinearLayout, feedImage: FeedImage?) {
     feedImage?.style?.let {
         val tv = TextView(linearLayout.context)
         tv.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        tv.text = it
+        tv.text = "#$it"
         tv.setTextAppearance(R.style.HomeFeedTextStyle)
         linearLayout.addView(tv)
-        Log.d("seunghwan", it)
     }
     feedImage?.top?.let {
         val tv = TextView(linearLayout.context)
         tv.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        tv.text = it
+        tv.text = "#$it"
         tv.setTextAppearance(R.style.HomeFeedTextStyle)
         linearLayout.addView(tv)
-        Log.d("seunghwan", it)
     }
     feedImage?.pants?.let {
         val tv = TextView(linearLayout.context)
         tv.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        tv.text = it
+        tv.text = "#$it"
         tv.setTextAppearance(R.style.HomeFeedTextStyle)
         linearLayout.addView(tv)
-        Log.d("seunghwan", it)
     }
     feedImage?.shoes?.let {
         val tv = TextView(linearLayout.context)
         tv.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        tv.text = it
+        tv.text = "#$it"
         tv.setTextAppearance(R.style.HomeFeedTextStyle)
         linearLayout.addView(tv)
-        Log.d("seunghwan", it)
     }
-    Log.d("seunghwan", feedImage.toString())
 }
