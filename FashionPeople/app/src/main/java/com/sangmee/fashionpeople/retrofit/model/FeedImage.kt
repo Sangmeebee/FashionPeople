@@ -23,8 +23,8 @@ data class FeedImage(
     val rank: Int?,
     @SerializedName("battleNow")
     val battleNow: Boolean?,
-    @SerializedName("likes")
-    val likes: List<Like>?,
+    @SerializedName("evaluations")
+    val evaluations: List<Evaluation>?,
     @SerializedName("user")
     val user: FUser?
 ) : Parcelable
