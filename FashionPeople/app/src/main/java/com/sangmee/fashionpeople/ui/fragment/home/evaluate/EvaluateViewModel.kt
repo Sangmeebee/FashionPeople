@@ -1,5 +1,6 @@
 package com.sangmee.fashionpeople.ui.fragment.home.evaluate
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,6 +8,7 @@ import com.sangmee.fashionpeople.retrofit.RetrofitClient
 import com.sangmee.fashionpeople.retrofit.model.Evaluation
 import com.sangmee.fashionpeople.retrofit.model.FeedImage
 import com.sangmee.fashionpeople.util.SingleLiveEvent
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
@@ -70,15 +72,19 @@ class EvaluateViewModel : ViewModel() {
         RetrofitClient().getFeedImageService()
             .updateImageScore(imageName, Evaluation(userId.value, rating))
             .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
             .andThen(RetrofitClient().getFeedImageService().getFeedImageByName(imageName))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 _nowPage.value = _nowPage.value?.plus(1)
                 it?.let {
                     _updateFeedImage.value = it
                 }
-                _evaluateMessage.call();
+                Log.d("seunghwan", it.toString())
+
+                _evaluateMessage.call()
             }, {
+                Log.d("seunghwan", it.toString())
             }).addTo(compositeDisposable)
     }
 

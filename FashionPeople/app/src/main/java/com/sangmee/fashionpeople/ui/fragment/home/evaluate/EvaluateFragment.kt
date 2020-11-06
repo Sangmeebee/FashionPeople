@@ -1,6 +1,7 @@
 package com.sangmee.fashionpeople.ui.fragment.home.evaluate
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -95,7 +96,8 @@ class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
         })
 
         viewModel.evaluateMessage.observe(this@EvaluateFragment, Observer {
-            Toast.makeText(context, "평가가 완료되었습니다", Toast.LENGTH_SHORT).show();
+            Log.d("seunghwan", "평가")
+            Toast.makeText(context, "평가가 완료되었습니다", Toast.LENGTH_SHORT).show()
         })
     }
 

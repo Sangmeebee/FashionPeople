@@ -21,44 +21,16 @@ import org.jetbrains.anko.custom.style
 @BindingAdapter("createView")
 fun createView(linearLayout: LinearLayout, feedImage: FeedImage?) {
     feedImage?.style?.let {
-        val tv = TextView(linearLayout.context)
-        tv.layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        tv.text = "#$it"
-        tv.setTextAppearance(R.style.HomeFeedTextStyle)
-        linearLayout.addView(tv)
+        createView(linearLayout, it)
     }
     feedImage?.top?.let {
-        val tv = TextView(linearLayout.context)
-        tv.layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        tv.text = "#$it"
-        tv.setTextAppearance(R.style.HomeFeedTextStyle)
-        linearLayout.addView(tv)
+        createView(linearLayout, it)
     }
     feedImage?.pants?.let {
-        val tv = TextView(linearLayout.context)
-        tv.layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        tv.text = "#$it"
-        tv.setTextAppearance(R.style.HomeFeedTextStyle)
-        linearLayout.addView(tv)
+        createView(linearLayout, it)
     }
     feedImage?.shoes?.let {
-        val tv = TextView(linearLayout.context)
-        tv.layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        tv.text = "#$it"
-        tv.setTextAppearance(R.style.HomeFeedTextStyle)
-        linearLayout.addView(tv)
+        createView(linearLayout, it)
     }
 }
 
