@@ -96,7 +96,6 @@ class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
         })
 
         viewModel.evaluateMessage.observe(this@EvaluateFragment, Observer {
-            Log.d("seunghwan", "평가")
             Toast.makeText(context, "평가가 완료되었습니다", Toast.LENGTH_SHORT).show()
         })
     }
