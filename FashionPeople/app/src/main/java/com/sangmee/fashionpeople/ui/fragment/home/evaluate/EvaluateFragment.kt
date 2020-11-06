@@ -1,7 +1,6 @@
 package com.sangmee.fashionpeople.ui.fragment.home.evaluate
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,11 +53,12 @@ class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
 
     private fun setId() {
         customId = pref.getString("custom_id", "empty")
+
         viewModel.idSubject.onNext(customId)
     }
 
     private fun initViewPager() {
-        homeFeedAdapter = HomeFeedAdapter(viewModel)
+        homeFeedAdapter = HomeFeedAdapter(myId = customId)
         homeFeedAdapter.onClickListener = this@EvaluateFragment
         binding.vpEvaluate.apply {
             adapter = homeFeedAdapter
@@ -75,14 +75,27 @@ class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
 
     private fun initObserve() {
         viewModel.feedImages.observe(this@EvaluateFragment, Observer {
-            homeFeedAdapter.setFeedImages(it)
+            it?.let {
+                homeFeedAdapter.setFeedImages(it)
+            }
         })
 
-        viewModel.ratingClickEvent.observe(this@EvaluateFragment, Observer {
-            it.let {
-                viewModel.nowPage.value?.let {
+        viewModel.nowPage.observe(this@EvaluateFragment, Observer {
+            it?.let {
+                if (homeFeedAdapter.itemCount - 1 > binding.vpEvaluate.currentItem) {
+                    binding.vpEvaluate.currentItem = it
                 }
             }
+        })
+
+        viewModel.updateFeedImages.observe(this@EvaluateFragment, Observer {
+            it?.let {
+                homeFeedAdapter.updateItem(it)
+            }
+        })
+
+        viewModel.evaluateMessage.observe(this@EvaluateFragment, Observer {
+            Toast.makeText(context, "평가가 완료되었습니다", Toast.LENGTH_SHORT).show();
         })
     }
 
@@ -98,7 +111,6 @@ class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
         feedImage: FeedImage
     ) {
         ratingBar?.rating = rating
-        viewModel.nowPage.value?.let {
-        }
+        feedImage.imageName?.let { viewModel.ratingClick(it, rating) }
     }
 }

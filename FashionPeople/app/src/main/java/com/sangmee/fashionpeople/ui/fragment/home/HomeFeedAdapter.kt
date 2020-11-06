@@ -14,8 +14,7 @@ import com.sangmee.fashionpeople.retrofit.model.FeedImage
 import com.sangmee.fashionpeople.ui.fragment.home.evaluate.EvaluateViewModel
 import kotlinx.android.synthetic.main.item_home_feed.view.*
 
-class HomeFeedAdapter(private val viewModel: EvaluateViewModel) :
-    RecyclerView.Adapter<HomeFeedViewHolder>() {
+class HomeFeedAdapter(private val myId: String) : RecyclerView.Adapter<HomeFeedViewHolder>() {
 
     private val items = mutableListOf<FeedImage>()
     var onClickListener: OnClickListener? = null
@@ -27,10 +26,10 @@ class HomeFeedAdapter(private val viewModel: EvaluateViewModel) :
             parent,
             false
         )
-        val viewHolder = HomeFeedViewHolder(binding)
+        val viewHolder = HomeFeedViewHolder(binding, myId)
         viewHolder.itemView.rb_home_feed.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
-            items[viewHolder.adapterPosition].imageName?.let {
-                viewModel.ratingClickEvent(it, rating)
+            items[viewHolder.adapterPosition].let {
+                onClickListener?.onClickRatingBar(ratingBar, rating, fromUser, it)
             }
         }
 
@@ -59,6 +58,16 @@ class HomeFeedAdapter(private val viewModel: EvaluateViewModel) :
                 notifyItemRemoved(i)
             }
         }
+    }
+
+    fun updateItem(feedImage: FeedImage) {
+        for (index in items.indices) {
+            if (items[index].imageName == feedImage.imageName) {
+                items[index] = feedImage
+                notifyItemChanged(index)
+            }
+        }
+
     }
 
     interface OnClickListener {

@@ -12,6 +12,9 @@ interface FeedImageService {
     @GET("feedImage/")
     fun getAllFeedImages(): Single<List<FeedImage>>
 
+    @GET("feedImage/imageName/{imageName}")
+    fun getFeedImageByName(@Path("imageName") imageName: String): Single<FeedImage>
+
     @GET("feedImage/other/{id}")
     fun getOtherImages(@Path("id") id: String): Single<List<FeedImage>>
 

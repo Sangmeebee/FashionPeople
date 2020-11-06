@@ -9,6 +9,9 @@
             name="feedImage"
             type="com.sangmee.fashionpeople.retrofit.model.FeedImage" />
 
+        <variable
+            name="myId"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -28,8 +31,11 @@
             android:layout_marginBottom="12dp"
             android:isIndicator="false"
             android:numStars="5"
+            toolsNs:visibility="visible"
             android:stepSize="0.5"
             android:theme="@style/RatingBarStyle"
+            app:setVisibleRating="@{feedImage}"
+            app:myId="@{myId}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
