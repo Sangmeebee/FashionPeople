@@ -18,8 +18,8 @@ interface FeedImageService {
     @GET("feedImage/other/{id}")
     fun getOtherImages(@Path("id") id: String): Single<List<FeedImage>>
 
-    @PUT("feedImage/evaluation/{imageId}")
-    fun updateImageScore(@Path("imageId") imageName: String, evaluation: Evaluation): Completable
+    @PUT("feedImage/evaluation/{imageName}")
+    fun updateImageScore(@Path("imageName") imageName: String, @Body evaluation: Evaluation): Completable
 
     @GET("feedImage/{id}")
     fun getFeedImages(@Path("id") id: String): Call<List<FeedImage>>

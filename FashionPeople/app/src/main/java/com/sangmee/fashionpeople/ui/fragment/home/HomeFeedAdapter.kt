@@ -65,6 +65,7 @@ class HomeFeedAdapter(private val myId: String) : RecyclerView.Adapter<HomeFeedV
             if (items[index].imageName == feedImage.imageName) {
                 items[index] = feedImage
                 notifyItemChanged(index)
+                Log.d("seunghwan", "aaa")
             }
         }
 
