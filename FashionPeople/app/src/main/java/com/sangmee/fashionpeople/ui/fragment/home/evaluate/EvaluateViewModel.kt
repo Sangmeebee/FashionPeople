@@ -1,6 +1,5 @@
 package com.sangmee.fashionpeople.ui.fragment.home.evaluate
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,6 +21,10 @@ class EvaluateViewModel : ViewModel() {
     val feedImages: LiveData<List<FeedImage>>
         get() = _feedImages
 
+    private val _updateFeedImage = MutableLiveData<FeedImage>()
+    val updateFeedImages: LiveData<FeedImage>
+        get() = _updateFeedImage
+
     private val _userId = MutableLiveData<String>()
     val userId: LiveData<String>
         get() = _userId
@@ -30,9 +33,9 @@ class EvaluateViewModel : ViewModel() {
     val nowPage: LiveData<Int>
         get() = _nowPage
 
-    private val _ratingClickEvent = SingleLiveEvent<Unit>()
-    val ratingClickEvent: LiveData<Unit>
-        get() = _ratingClickEvent
+    private val _evaluateMessage = SingleLiveEvent<Unit>()
+    val evaluateMessage: LiveData<Unit>
+        get() = _evaluateMessage
 
     val idSubject = BehaviorSubject.create<String>()
     val nowPageSubject = BehaviorSubject.create<Int>()
@@ -63,16 +66,18 @@ class EvaluateViewModel : ViewModel() {
             }).addTo(compositeDisposable)
     }
 
-    fun ratingClickEvent(imageName: String, rating: Float) {
+    fun ratingClick(imageName: String, rating: Float) {
         RetrofitClient().getFeedImageService()
             .updateImageScore(imageName, Evaluation(userId.value, rating))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .andThen(RetrofitClient().getFeedImageService().getFeedImageByName(imageName))
             .subscribe({
-                _nowPage.value?.let { now ->
-                    _nowPage.value = now + 1
+                _nowPage.value = _nowPage.value?.plus(1)
+                it?.let {
+                    _updateFeedImage.value = it
                 }
-                _ratingClickEvent.call()
+                _evaluateMessage.call();
             }, {
             }).addTo(compositeDisposable)
     }

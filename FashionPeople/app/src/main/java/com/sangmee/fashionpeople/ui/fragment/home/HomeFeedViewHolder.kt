@@ -9,11 +9,12 @@ import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.databinding.ItemHomeFeedBinding
 import com.sangmee.fashionpeople.retrofit.model.FeedImage
 
-class HomeFeedViewHolder(private val binding: ItemHomeFeedBinding) :
+class HomeFeedViewHolder(private val binding: ItemHomeFeedBinding, private val myId: String) :
     RecyclerView.ViewHolder(binding.root) {
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun bind(feedImage: FeedImage) {
+        binding.myId = myId
         binding.feedImage = feedImage
         with(itemView) {
             Glide.with(context)
