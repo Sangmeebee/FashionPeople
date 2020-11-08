@@ -66,7 +66,7 @@ class TagActivity : AppCompatActivity() {
 
         btn_complete.setOnClickListener {
             //서버에 저장
-            val timeStamp: String = SimpleDateFormat("yyyyMMdd").format(Date())
+            val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
             val imageFileName = "JPEG_$timeStamp.jpg"
             val style = GlobalApplication.prefs.getString("style", "")
             val top = GlobalApplication.prefs.getString("top", "")
@@ -75,7 +75,7 @@ class TagActivity : AppCompatActivity() {
             val feedImage =
                 FeedImage(imageFileName, timeStamp, style, top, pants, shoes, null, true, null, null)
 
-            RetrofitClient().getFeedImageService().putFeedImage(customId, feedImage)
+            RetrofitClient().getFeedImageService().postFeedImage(customId, feedImage)
                 .enqueue(object : Callback<FeedImage> {
                     override fun onResponse(call: Call<FeedImage>, response: Response<FeedImage>) {
                         showMessage()
