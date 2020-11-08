@@ -97,9 +97,6 @@ dependencies {
 
     //crop
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
-
-    //tablayout&viewpager2
-    implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
     // RxJava, Kotlin, Android
     implementation 'io.reactivex.rxjava2:rxjava:2.2.17'
