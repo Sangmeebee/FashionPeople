@@ -11,4 +11,8 @@ class RepositoryImpl(
     override fun getAllFUser(success: (List<FUser>) -> Unit, failed: (String) -> Unit) {
         remoteDataSource.getAllFUser(success, failed)
     }
+
+    override fun getFUser(id: String, success: (FUser) -> Unit, failed: (String) -> Unit) {
+        remoteDataSource.getFUser(id, success, failed)
+    }
 }

@@ -7,4 +7,10 @@ interface Repository {
         success: (List<FUser>) -> Unit,
         failed: (String) -> Unit
     )
+
+    fun getFUser(
+        id: String,
+        success: (FUser) -> Unit,
+        failed: (String) -> Unit
+    )
 }

@@ -15,14 +15,16 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
-import com.sangmee.fashionpeople.data.service.retrofit.RetrofitClient
+import com.sangmee.fashionpeople.data.dataSource.local.LocalDataSourceImpl
+import com.sangmee.fashionpeople.data.dataSource.remote.RemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.FUser
+import com.sangmee.fashionpeople.data.repository.Repository
+import com.sangmee.fashionpeople.data.repository.RepositoryImpl
+import com.sangmee.fashionpeople.data.service.retrofit.RetrofitClient
 import com.sangmee.fashionpeople.ui.LoginActivity
 import com.sangmee.fashionpeople.ui.SettingActivity
 import com.sangmee.fashionpeople.ui.fragment.info.content.ViewPagerAdapter
 import kotlinx.android.synthetic.main.fragment_info.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,6 +33,11 @@ import retrofit2.Response
 class InfoFragment : Fragment() {
 
     lateinit var customId: String
+    private val repository: Repository by lazy {
+        RepositoryImpl(
+            LocalDataSourceImpl(), RemoteDataSourceImpl()
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,37 +67,24 @@ class InfoFragment : Fragment() {
         }.attach()
 
         //프로필 세팅
-        runBlocking {
-            val a = launch {
-                RetrofitClient.getFUserService().getFUser(customId)
-                    .enqueue(object : Callback<FUser> {
-                        override fun onFailure(call: Call<FUser>, t: Throwable) {
-                            Log.d("sangmin_error", t.message)
-                        }
+        repository.getFUser(customId, success = {
+            val profileImgName = it.profileImage
+            val userName = it.name
+            val profileImg = view.findViewById<ImageView>(R.id.iv_profile)
+            val tvNickName = view.findViewById<TextView>(R.id.tv_nickname)
 
-                        override fun onResponse(call: Call<FUser>, response: Response<FUser>) {
-                            //닉네임 레트로핏으로 불러오기
-                            val profileImgName = response.body()?.profileImage
-                            val userName = response.body()?.name
-                            val profileImg = view.findViewById<ImageView>(R.id.iv_profile)
-                            val tvNickName = view.findViewById<TextView>(R.id.tv_nickname)
-
-                            //유저 닉네임
-                            userName?.let {
-                                tvNickName.text = it
-                            }
-                            //프로필 이미지
-                            profileImgName?.let {
-                                Glide.with(context!!)
-                                    .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${customId}/profile/${it}")
-                                    .apply(RequestOptions().circleCrop())
-                                    .error(R.drawable.user).into(profileImg)
-                            }
-                        }
-                    })
+            userName?.let { name ->
+                tvNickName.text = name
             }
-            a.join()
-        }
+            //프로필 이미지
+            profileImgName?.let {
+                Glide.with(context!!)
+                    .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${customId}/profile/${it}")
+                    .apply(RequestOptions().circleCrop())
+                    .error(R.drawable.user).into(profileImg)
+            }
+        }, failed = { Log.e("fashionPeopleError", it) })
+
 
         btn_setting.setOnClickListener {
             val intent = Intent(context, SettingActivity::class.java)

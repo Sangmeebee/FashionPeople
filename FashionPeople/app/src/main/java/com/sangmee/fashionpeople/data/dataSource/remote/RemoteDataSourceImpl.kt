@@ -2,6 +2,7 @@ package com.sangmee.fashionpeople.data.dataSource.remote
 
 import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.data.service.retrofit.RetrofitClient
+import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
@@ -31,7 +32,24 @@ class RemoteDataSourceImpl : RemoteDataSource {
     }
 
     override fun getFUser(id: String, success: (FUser) -> Unit, failed: (String) -> Unit) {
-        TODO("Not yet implemented")
+        RetrofitClient.getFUserService().getFUser(id)
+            .enqueue(object : Callback<FUser> {
+                override fun onFailure(call: Call<FUser>, t: Throwable) {
+                    failed(t.message.toString())
+                }
+
+                override fun onResponse(call: Call<FUser>, response: Response<FUser>) {
+                    //닉네임 레트로핏으로 불러오기
+                    if (response.isSuccessful) {
+                        val res = response.body()
+                        res?.let {
+                            success(it)
+                        }
+                    } else {
+                        failed(response.message())
+                    }
+                }
+            })
     }
 
     override fun addUser(user: FUser, success: (String) -> Unit, failed: (String) -> Unit) {
