@@ -29,10 +29,10 @@
             android:id="@+id/iv_save_image"
             android:layout_width="80dp"
             android:layout_height="0dp"
+            android:contentDescription="이미지 저장"
             app:layout_constraintBottom_toBottomOf="@id/ll_comment"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/ll_comment"
-            android:contentDescription="이미지 저장" />
+            app:layout_constraintTop_toTopOf="@id/ll_comment" />
 
 
         <LinearLayout
@@ -43,11 +43,13 @@
             android:layout_marginLeft="8dp"
             android:background="@drawable/background_comment"
             android:orientation="horizontal"
-            android:visibility="visible"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@id/rb_home_feed"
             app:layout_constraintEnd_toStartOf="@id/iv_save_image"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/rb_home_feed">
+            app:layout_constraintTop_toTopOf="@id/rb_home_feed"
+            app:myId="@{myId}"
+            app:setVisibleLinearLayout="@{feedImage}">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_comment_profile"
