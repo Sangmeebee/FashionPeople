@@ -17,17 +17,12 @@ import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.data.dataSource.local.LocalDataSourceImpl
 import com.sangmee.fashionpeople.data.dataSource.remote.RemoteDataSourceImpl
-import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.data.repository.Repository
 import com.sangmee.fashionpeople.data.repository.RepositoryImpl
-import com.sangmee.fashionpeople.data.service.retrofit.RetrofitClient
 import com.sangmee.fashionpeople.ui.LoginActivity
 import com.sangmee.fashionpeople.ui.SettingActivity
 import com.sangmee.fashionpeople.ui.fragment.info.content.ViewPagerAdapter
 import kotlinx.android.synthetic.main.fragment_info.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 class InfoFragment : Fragment() {
@@ -66,6 +61,15 @@ class InfoFragment : Fragment() {
             }
         }.attach()
 
+        setProfile(view)
+
+        btn_setting.setOnClickListener {
+            val intent = Intent(context, SettingActivity::class.java)
+            startActivityForResult(intent, LOGOUT_CODE)
+        }
+    }
+
+    private fun setProfile(view: View) {
         //프로필 세팅
         repository.getFUser(customId, success = {
             val profileImgName = it.profileImage
@@ -84,14 +88,7 @@ class InfoFragment : Fragment() {
                     .error(R.drawable.user).into(profileImg)
             }
         }, failed = { Log.e("fashionPeopleError", it) })
-
-
-        btn_setting.setOnClickListener {
-            val intent = Intent(context, SettingActivity::class.java)
-            startActivityForResult(intent, LOGOUT_CODE)
-        }
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
