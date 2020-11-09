@@ -17,7 +17,7 @@ class S3RemoteDataSourceImpl(private val context: Context, private val customId:
     S3RemoteDataSource {
 
     //aws s3에 이미지 업로드
-    override fun uploadWithTransferUtility(fileName: String, file: File?) {
+    override fun uploadWithTransferUtility(fileName: String, file: File?, location: String) {
 
         val credentialsProvider = CognitoCachingCredentialsProvider(
             context,
@@ -36,7 +36,7 @@ class S3RemoteDataSourceImpl(private val context: Context, private val customId:
         /* Store the new created Image file path */
 
         val uploadObserver = transferUtility.upload(
-            "users/${customId}/profile/${fileName}",
+            "users/${customId}/${location}/${fileName}",
             file,
             CannedAccessControlList.PublicRead
         )

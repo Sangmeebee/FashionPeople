@@ -105,7 +105,7 @@ class UserInfoActivity : AppCompatActivity() {
         //프로필 사진
         val profileImage = file?.name
         profileImage?.let {
-            s3RemoteDataSource.uploadWithTransferUtility(it, file)
+            s3RemoteDataSource.uploadWithTransferUtility(it, file, "profile")
         }
 
         repository.addUser(

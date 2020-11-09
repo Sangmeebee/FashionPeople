@@ -1,6 +1,5 @@
 package com.sangmee.fashionpeople.data.dataSource.remote
 
-import android.util.Log
 import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.data.service.retrofit.RetrofitClient
 import retrofit2.Call
