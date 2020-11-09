@@ -1,5 +1,6 @@
 package com.sangmee.fashionpeople.data.dataSource.remote
 
+import android.util.Log
 import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.data.service.retrofit.RetrofitClient
 import retrofit2.Call
@@ -52,7 +53,15 @@ class RemoteDataSourceImpl : RemoteDataSource {
             })
     }
 
-    override fun addUser(user: FUser, success: (String) -> Unit, failed: (String) -> Unit) {
-        TODO("Not yet implemented")
+    override fun addUser(user: FUser, success: () -> Unit, failed: (String) -> Unit) {
+        RetrofitClient.getFUserService().addUser(user).enqueue(object : Callback<FUser> {
+            override fun onFailure(call: retrofit2.Call<FUser>, t: Throwable) {
+                failed(t.message.toString())
+            }
+
+            override fun onResponse(call: retrofit2.Call<FUser>, response: Response<FUser>) {
+                success()
+            }
+        })
     }
 }

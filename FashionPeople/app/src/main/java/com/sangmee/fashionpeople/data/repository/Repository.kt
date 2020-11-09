@@ -13,4 +13,10 @@ interface Repository {
         success: (FUser) -> Unit,
         failed: (String) -> Unit
     )
+
+    fun addUser(
+        user: FUser,
+        success: () -> Unit,
+        failed: (String) -> Unit
+    )
 }

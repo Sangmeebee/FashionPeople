@@ -16,7 +16,7 @@ interface RemoteDataSource {
 
     fun addUser(
         user: FUser,
-        success: (String) -> Unit,
+        success: () -> Unit,
         failed: (String) -> Unit
     )
 }

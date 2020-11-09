@@ -13,8 +13,8 @@ import com.amazonaws.services.s3.AmazonS3Client
 import com.amazonaws.services.s3.model.CannedAccessControlList
 import java.io.File
 
-class RemoteDataSourceImpl(private val context: Context, private val customId: String) :
-    RemoteDataSource {
+class S3RemoteDataSourceImpl(private val context: Context, private val customId: String) :
+    S3RemoteDataSource {
 
     //aws s3에 이미지 업로드
     override fun uploadWithTransferUtility(fileName: String, file: File?) {
