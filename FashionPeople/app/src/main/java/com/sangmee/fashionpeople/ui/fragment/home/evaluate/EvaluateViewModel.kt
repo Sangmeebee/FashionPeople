@@ -58,7 +58,7 @@ class EvaluateViewModel : ViewModel() {
     }
 
     private fun getOtherImages(id: String) {
-        RetrofitClient().getFeedImageService().getOtherImages(id)
+        RetrofitClient.getFeedImageService().getOtherImages(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -68,10 +68,10 @@ class EvaluateViewModel : ViewModel() {
     }
 
     fun ratingClick(imageName: String, rating: Float) {
-        RetrofitClient().getFeedImageService()
+        RetrofitClient.getFeedImageService()
             .updateImageScore(imageName, Evaluation(userId.value, rating))
             .subscribeOn(Schedulers.io())
-            .andThen(RetrofitClient().getFeedImageService().getFeedImageByName(imageName))
+            .andThen(RetrofitClient.getFeedImageService().getFeedImageByName(imageName))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({

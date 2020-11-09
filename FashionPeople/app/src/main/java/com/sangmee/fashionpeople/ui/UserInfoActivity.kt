@@ -102,7 +102,7 @@ class UserInfoActivity : AppCompatActivity() {
             }
 
             //회원정보 저장(retrofit2)
-            RetrofitClient().getFUserService().addUser(
+            RetrofitClient.getFUserService().addUser(
                 FUser(
                     customId,
                     name,

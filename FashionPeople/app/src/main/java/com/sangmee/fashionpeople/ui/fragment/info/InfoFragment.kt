@@ -62,7 +62,7 @@ class InfoFragment : Fragment() {
         //프로필 세팅
         runBlocking {
             val a = launch {
-                RetrofitClient().getFUserService().getFUser(customId)
+                RetrofitClient.getFUserService().getFUser(customId)
                     .enqueue(object : Callback<FUser> {
                         override fun onFailure(call: Call<FUser>, t: Throwable) {
                             Log.d("sangmin_error", t.message)

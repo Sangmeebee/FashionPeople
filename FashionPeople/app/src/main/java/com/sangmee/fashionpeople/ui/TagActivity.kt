@@ -19,6 +19,7 @@ import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.data.service.retrofit.RetrofitClient
 import com.sangmee.fashionpeople.data.model.FeedImage
+import com.sangmee.fashionpeople.ui.add.CategoryActivity
 import kotlinx.android.synthetic.main.activity_tag.*
 import org.jetbrains.anko.textColor
 import retrofit2.Call
@@ -75,7 +76,7 @@ class TagActivity : AppCompatActivity() {
             val feedImage =
                 FeedImage(imageFileName, timeStamp, style, top, pants, shoes, null, true, null, null)
 
-            RetrofitClient().getFeedImageService().postFeedImage(customId, feedImage)
+            RetrofitClient.getFeedImageService().postFeedImage(customId, feedImage)
                 .enqueue(object : Callback<FeedImage> {
                     override fun onResponse(call: Call<FeedImage>, response: Response<FeedImage>) {
                         showMessage()

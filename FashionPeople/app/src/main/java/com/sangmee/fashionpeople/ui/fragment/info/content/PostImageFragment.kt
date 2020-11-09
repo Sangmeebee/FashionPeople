@@ -48,7 +48,7 @@ class PostImageFragment : Fragment() {
 
     private fun getFeedImages() {
         if (customId != "") {
-            RetrofitClient().getFeedImageService().getFeedImages(customId)
+            RetrofitClient.getFeedImageService().getFeedImages(customId)
                 .enqueue(object : Callback<List<FeedImage>> {
                     override fun onResponse(
                         call: Call<List<FeedImage>>,

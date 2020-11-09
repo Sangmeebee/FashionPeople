@@ -1,6 +1,5 @@
 package com.sangmee.fashionpeople.data.service.retrofit
 
-import com.sangmee.fashionpeople.data.GlobalApplication
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -10,31 +9,22 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 const val BASE_URL = "http://15.165.254.24:3333/api/v1/"
 
-class RetrofitClient {
-    val pref = GlobalApplication.prefs
-    val customId = pref.getString("custom_id", "empty")
+object RetrofitClient {
 
-    private val fUserService: FUserService
-    private val feedImageService: FeedImageService
+    private val retrofit = Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .client(
+            OkHttpClient().newBuilder()
+                .addInterceptor(HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.BODY
+                })
+                .build()
+        )
+        .addConverterFactory(GsonConverterFactory.create())
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        .build()
 
-    init {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(
-                OkHttpClient().newBuilder()
-                    .addInterceptor(HttpLoggingInterceptor().apply {
-                        level = HttpLoggingInterceptor.Level.BODY
-                    })
-                    .build()
-            )
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .build()
-        fUserService = retrofit.create(FUserService::class.java)
-        feedImageService = retrofit.create(FeedImageService::class.java)
-    }
-
-    fun getFUserService(): FUserService = fUserService
-    fun getFeedImageService(): FeedImageService = feedImageService
-
+    fun getFUserService() = retrofit.create(FUserService::class.java)
+    fun getFeedImageService() = retrofit.create(FeedImageService::class.java)
 }
+
