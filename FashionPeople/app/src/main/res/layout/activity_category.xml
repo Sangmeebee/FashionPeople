@@ -7,7 +7,7 @@
     android:layout_marginHorizontal="20dp"
     android:layout_marginTop="30sp"
     android:orientation="vertical"
-    tools:context=".ui.CategoryActivity">
+    tools:context=".ui.add.CategoryActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

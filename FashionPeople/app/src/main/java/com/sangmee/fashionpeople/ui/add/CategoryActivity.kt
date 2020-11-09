@@ -1,4 +1,4 @@
-package com.sangmee.fashionpeople.ui
+package com.sangmee.fashionpeople.ui.add
 
 import android.os.Bundle
 import android.text.Editable

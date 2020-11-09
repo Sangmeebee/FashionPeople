@@ -20,7 +20,7 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".ui.TagActivity"></activity>
         <activity
-            android:name=".ui.CategoryActivity"
+            android:name=".ui.add.CategoryActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.LoginActivity" />
 

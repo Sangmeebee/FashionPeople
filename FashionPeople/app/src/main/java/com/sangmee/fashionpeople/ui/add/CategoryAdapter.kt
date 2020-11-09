@@ -1,4 +1,4 @@
-package com.sangmee.fashionpeople.ui
+package com.sangmee.fashionpeople.ui.add
 
 import android.view.LayoutInflater
 import android.view.View
