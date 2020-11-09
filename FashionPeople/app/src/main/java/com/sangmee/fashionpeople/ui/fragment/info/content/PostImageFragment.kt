@@ -17,7 +17,7 @@ import retrofit2.Response
 
 class PostImageFragment : Fragment() {
 
-    private lateinit var customId : String
+    private lateinit var customId: String
     private val feedImageAdapter by lazy {
         FeedImageAdapter(customId)
     }

@@ -21,7 +21,7 @@ class FeedImageAdapter(
             LayoutInflater.from(parent.context).inflate(R.layout.item_feed_image, parent, false)
         val viewHolder = FeedImageViewHolder(view)
         viewHolder.itemView.setOnClickListener {
-            val intent = Intent(it.context, FeedImageDetailActivity::class.java)
+            val intent = Intent(parent.context, FeedImageDetailActivity::class.java)
             intent.putExtra(
                 FeedImageDetailActivity.KEY_FEED_IMAGE,
                 feedImageList[viewHolder.adapterPosition]

@@ -22,7 +22,6 @@ class FeedImageDetailActivity : AppCompatActivity() {
             Glide.with(this)
                 .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/$customId/feed/${feedImage.imageName}")
                 .into(iv_feed_image)
-
         }
 
     }
