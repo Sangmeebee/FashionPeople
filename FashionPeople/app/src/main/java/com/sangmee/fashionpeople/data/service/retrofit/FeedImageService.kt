@@ -1,7 +1,7 @@
-package com.sangmee.fashionpeople.retrofit.service
+package com.sangmee.fashionpeople.data.service.retrofit
 
-import com.sangmee.fashionpeople.retrofit.model.Evaluation
-import com.sangmee.fashionpeople.retrofit.model.FeedImage
+import com.sangmee.fashionpeople.data.model.Evaluation
+import com.sangmee.fashionpeople.data.model.FeedImage
 import io.reactivex.Completable
 import io.reactivex.Single
 import retrofit2.Call

@@ -1,13 +1,12 @@
 package com.sangmee.fashionpeople.ui.fragment.home
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.databinding.ItemHomeFeedBinding
-import com.sangmee.fashionpeople.retrofit.model.FeedImage
+import com.sangmee.fashionpeople.data.model.FeedImage
 
 class HomeFeedViewHolder(private val binding: ItemHomeFeedBinding, private val myId: String) :
     RecyclerView.ViewHolder(binding.root) {

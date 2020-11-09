@@ -1,6 +1,6 @@
-package com.sangmee.fashionpeople.retrofit.service
+package com.sangmee.fashionpeople.data.service.retrofit
 
-import com.sangmee.fashionpeople.retrofit.model.FUser
+import com.sangmee.fashionpeople.data.model.FUser
 import retrofit2.Call
 import retrofit2.http.*
 

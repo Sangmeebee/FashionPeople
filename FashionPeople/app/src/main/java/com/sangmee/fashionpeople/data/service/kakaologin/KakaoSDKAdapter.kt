@@ -1,6 +1,7 @@
-package com.sangmee.fashionpeople.kakaologin
+package com.sangmee.fashionpeople.data.service.kakaologin
 
 import com.kakao.auth.*
+import com.sangmee.fashionpeople.data.GlobalApplication
 
 class KakaoSDKAdapter : KakaoAdapter() {
     override fun getSessionConfig(): ISessionConfig {

@@ -1,9 +1,10 @@
-package com.sangmee.fashionpeople.kakaologin
+package com.sangmee.fashionpeople.data
 
 import android.app.Application
 import android.content.Context
 import androidx.multidex.MultiDex
 import com.kakao.auth.KakaoSDK
+import com.sangmee.fashionpeople.data.service.kakaologin.KakaoSDKAdapter
 
 class GlobalApplication : Application() {
 

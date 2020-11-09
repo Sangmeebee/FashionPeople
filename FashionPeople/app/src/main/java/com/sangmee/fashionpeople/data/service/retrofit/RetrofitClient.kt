@@ -1,8 +1,6 @@
-package com.sangmee.fashionpeople.retrofit
+package com.sangmee.fashionpeople.data.service.retrofit
 
-import com.sangmee.fashionpeople.kakaologin.GlobalApplication
-import com.sangmee.fashionpeople.retrofit.service.FUserService
-import com.sangmee.fashionpeople.retrofit.service.FeedImageService
+import com.sangmee.fashionpeople.data.GlobalApplication
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

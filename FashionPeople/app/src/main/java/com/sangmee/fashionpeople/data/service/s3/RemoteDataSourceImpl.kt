@@ -1,4 +1,4 @@
-package com.sangmee.fashionpeople.s3
+package com.sangmee.fashionpeople.data.service.s3
 
 import android.content.Context
 import android.util.Log

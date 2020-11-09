@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -13,7 +12,7 @@ import com.kakao.usermgmt.UserManagement
 import com.kakao.usermgmt.callback.LogoutResponseCallback
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.databinding.ActivitySettingBinding
-import com.sangmee.fashionpeople.kakaologin.GlobalApplication
+import com.sangmee.fashionpeople.data.GlobalApplication
 
 class SettingActivity : AppCompatActivity() {
 

@@ -1,4 +1,4 @@
-package com.sangmee.fashionpeople.kakaologin
+package com.sangmee.fashionpeople.data
 
 import android.content.Context
 import android.content.SharedPreferences

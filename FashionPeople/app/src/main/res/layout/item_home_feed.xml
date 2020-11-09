@@ -7,7 +7,7 @@
 
         <variable
             name="feedImage"
-            type="com.sangmee.fashionpeople.retrofit.model.FeedImage" />
+            type="com.sangmee.fashionpeople.data.model.FeedImage" />
 
         <variable
             name="myId"

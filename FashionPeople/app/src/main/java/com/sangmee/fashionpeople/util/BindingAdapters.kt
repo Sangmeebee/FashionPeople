@@ -1,21 +1,12 @@
 package com.sangmee.fashionpeople.util
 
 import android.os.Build
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RatingBar
-import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.core.view.marginEnd
 import androidx.databinding.BindingAdapter
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
-import com.sangmee.fashionpeople.R
-import com.sangmee.fashionpeople.retrofit.model.FeedImage
-import org.jetbrains.anko.custom.style
+import com.sangmee.fashionpeople.data.model.FeedImage
 
 @RequiresApi(Build.VERSION_CODES.M)
 @BindingAdapter("createView")
