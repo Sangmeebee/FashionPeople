@@ -67,7 +67,7 @@ class TagActivity : AppCompatActivity() {
         btn_complete.setOnClickListener {
             //서버에 저장
             val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-            val imageFileName = "JPEG_$timeStamp.jpg"
+            val imageFileName = "JPEG_${customId}_${timeStamp}.jpg"
             val style = GlobalApplication.prefs.getString("style", "")
             val top = GlobalApplication.prefs.getString("top", "")
             val pants = GlobalApplication.prefs.getString("pants", "")
