@@ -15,7 +15,7 @@ import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.kakaologin.GlobalApplication
 import com.sangmee.fashionpeople.ui.fragment.AlarmFragment
 import com.sangmee.fashionpeople.ui.fragment.home.HomeFragment
-import com.sangmee.fashionpeople.ui.fragment.InfoFragment
+import com.sangmee.fashionpeople.ui.fragment.info.InfoFragment
 import com.sangmee.fashionpeople.ui.fragment.SearchFragment
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView

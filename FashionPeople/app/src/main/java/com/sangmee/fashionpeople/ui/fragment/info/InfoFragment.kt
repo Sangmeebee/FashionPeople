@@ -1,4 +1,4 @@
-package com.sangmee.fashionpeople.ui.fragment
+package com.sangmee.fashionpeople.ui.fragment.info
 
 import android.content.Intent
 import android.os.Bundle
@@ -19,7 +19,7 @@ import com.sangmee.fashionpeople.retrofit.RetrofitClient
 import com.sangmee.fashionpeople.retrofit.model.FUser
 import com.sangmee.fashionpeople.ui.LoginActivity
 import com.sangmee.fashionpeople.ui.SettingActivity
-import com.sangmee.fashionpeople.ui.fragment.content.ViewPagerAdapter
+import com.sangmee.fashionpeople.ui.fragment.info.content.ViewPagerAdapter
 import kotlinx.android.synthetic.main.fragment_info.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking

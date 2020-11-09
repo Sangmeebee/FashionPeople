@@ -26,7 +26,6 @@ import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.kakaologin.GlobalApplication
 import com.sangmee.fashionpeople.retrofit.RetrofitClient
 import com.sangmee.fashionpeople.retrofit.model.FUser
-import com.sangmee.fashionpeople.retrofit.model.Image
 import kotlinx.android.synthetic.main.activity_user_info.*
 import kotlinx.android.synthetic.main.toolbar.*
 import retrofit2.Callback
@@ -36,11 +35,11 @@ import java.io.File
 
 class UserInfoActivity : AppCompatActivity() {
 
-    val pref = GlobalApplication.prefs
+    private val pref = GlobalApplication.prefs
     lateinit var imagePath: String
-    var file: File? = null
+    private var file: File? = null
     lateinit var customId: String
-    val CHOOSE_PROFILEIMG = 200
+    private val CHOOSE_PROFILEIMG = 200
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

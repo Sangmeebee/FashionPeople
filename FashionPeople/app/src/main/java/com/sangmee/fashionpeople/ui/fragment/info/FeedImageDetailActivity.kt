@@ -1,4 +1,4 @@
-package com.sangmee.fashionpeople.ui
+package com.sangmee.fashionpeople.ui.fragment.info
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
