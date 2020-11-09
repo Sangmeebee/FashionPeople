@@ -18,7 +18,7 @@ interface FUserService {
 
 
     @PUT("users/{id}")
-    fun addUserById(
+    fun updateUserById(
         @Path("id") id: String,
         @Body body: FUser
     ): Call<FUser>

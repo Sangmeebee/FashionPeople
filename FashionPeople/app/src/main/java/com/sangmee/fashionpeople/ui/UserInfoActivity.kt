@@ -105,10 +105,10 @@ class UserInfoActivity : AppCompatActivity() {
             RetrofitClient().getFUserService().addUser(
                 FUser(
                     customId,
-                    listOf(),
                     name,
                     instagramId,
-                    profileImage
+                    profileImage,
+                    listOf()
                 )
             ).enqueue(object : Callback<FUser> {
                 override fun onFailure(call: retrofit2.Call<FUser>, t: Throwable) {

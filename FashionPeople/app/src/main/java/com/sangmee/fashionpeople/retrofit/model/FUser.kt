@@ -8,12 +8,12 @@ import kotlinx.android.parcel.Parcelize
 data class FUser(
     @SerializedName("id")
     val id: String?,
-    @SerializedName("images")
-    val images: List<FeedImage>?,
-    @SerializedName("instagramId")
-    val instagramId: String?,
     @SerializedName("name")
     val name: String?,
+    @SerializedName("instagramId")
+    val instagramId: String?,
     @SerializedName("profileImage")
-    val profileImage: String?
+    val profileImage: String?,
+    @SerializedName("images")
+    val images: List<FeedImage>?
 ): Parcelable
