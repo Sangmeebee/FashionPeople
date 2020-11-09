@@ -1,19 +1,25 @@
 package com.sangmee.fashionpeople.ui.fragment.home.evaluate
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RatingBar
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sangmee.fashionpeople.R
+import com.sangmee.fashionpeople.databinding.DialogBaseBinding
 import com.sangmee.fashionpeople.databinding.FragmentEvaluateBinding
 import com.sangmee.fashionpeople.kakaologin.GlobalApplication
 import com.sangmee.fashionpeople.retrofit.model.FeedImage
@@ -67,7 +73,6 @@ class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    viewModel.nowPageSubject.onNext(position)
                     Toast.makeText(context, position.toString(), Toast.LENGTH_SHORT).show()
                 }
             })
@@ -96,7 +101,30 @@ class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
         })
 
         viewModel.evaluateMessage.observe(this@EvaluateFragment, Observer {
-            Toast.makeText(context, "평가가 완료되었습니다", Toast.LENGTH_SHORT).show()
+            val binding = DataBindingUtil.inflate<DialogBaseBinding>(
+                layoutInflater,
+                R.layout.dialog_base,
+                null,
+                false
+            )
+            val builder = AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme)
+            builder.setView(binding.root)
+
+            val alertDialog = builder.create()
+            val window = alertDialog.window
+            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            alertDialog.show()
+
+
+            binding.tvDialogMessage.text = "평가가 완료되었습니다\n 사진을 저장하시겠습니까?"
+            binding.btnOk.setOnClickListener {
+                viewModel.setNextPage()
+                alertDialog.dismiss()
+            }
+
+            binding.btnCancel.setOnClickListener {
+                alertDialog.dismiss()
+            }
         })
     }
 

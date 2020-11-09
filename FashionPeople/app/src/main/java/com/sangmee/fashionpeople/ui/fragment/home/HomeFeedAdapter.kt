@@ -33,7 +33,6 @@ class HomeFeedAdapter(private val myId: String) : RecyclerView.Adapter<HomeFeedV
             }
         }
 
-
         return viewHolder
     }
 
@@ -68,7 +67,6 @@ class HomeFeedAdapter(private val myId: String) : RecyclerView.Adapter<HomeFeedV
                 Log.d("seunghwan", "aaa")
             }
         }
-
     }
 
     interface OnClickListener {

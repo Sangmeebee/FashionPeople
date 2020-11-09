@@ -5,6 +5,7 @@
     <color name="colorAccent">#FFD855</color>
     <color name="lightgray">#DEDFDF</color>
     <color name="darkgray">#8E8F8F</color>
+    <color name="darkGray2">#282828</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
     <color name="colorYellow">#FFD855</color>
@@ -12,5 +13,6 @@
     <color name="colorGray">#F4F4F4</color>
     <color name="brandTextColor">#9B9B9B</color>
     <color name="brandList">#909090</color>
+    <color name="colorRed">#FA3526</color>
 </resources>
 
