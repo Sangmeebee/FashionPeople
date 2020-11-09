@@ -70,7 +70,7 @@ class InfoFragment : Fragment() {
 
                         override fun onResponse(call: Call<FUser>, response: Response<FUser>) {
                             //닉네임 레트로핏으로 불러오기
-                            val profileImgName = response.body()?.profileImage.toString()
+                            val profileImgName = response.body()?.profileImage
                             val userName = response.body()?.name
                             val profileImg = view.findViewById<ImageView>(R.id.iv_profile)
                             val tvNickName = view.findViewById<TextView>(R.id.tv_nickname)
@@ -80,11 +80,12 @@ class InfoFragment : Fragment() {
                                 tvNickName.text = it
                             }
                             //프로필 이미지
-                            Glide.with(context!!)
-                                .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${customId}/profile/${profileImgName}")
-                                .apply(RequestOptions().circleCrop())
-                                .error(R.drawable.user).into(profileImg)
-
+                            profileImgName?.let {
+                                Glide.with(context!!)
+                                    .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${customId}/profile/${it}")
+                                    .apply(RequestOptions().circleCrop())
+                                    .error(R.drawable.user).into(profileImg)
+                            }
                         }
                     })
             }
