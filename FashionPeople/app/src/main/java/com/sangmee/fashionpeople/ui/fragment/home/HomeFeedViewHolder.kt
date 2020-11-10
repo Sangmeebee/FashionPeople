@@ -25,7 +25,6 @@ class HomeFeedViewHolder(private val binding: ItemHomeFeedBinding, private val m
                 .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${feedImage.user?.id}/profile/${feedImage.user?.profileImage}")
                 .error(context.getDrawable(R.drawable.ic_person_white))
                 .placeholder(context.getDrawable(R.drawable.ic_person_white))
-                .circleCrop()
                 .into(binding.ivProfileHomeFeed)
         }
     }

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
@@ -15,6 +15,7 @@
         <!--<item name="tabIndicatorFullWidth">false</item>--> <!--indicator 꽉차지않게-->
         <item name="tabTextAppearance">@style/TabTextAppearance</item> <!-- 여기서 한번에 바꾸어 줘도 된다.-->
     </style>
+
     <style name="tab_text" parent="@android:style/TextAppearance.Widget.TabWidget">
         <item name="android:fontFamily">@font/ygd_330</item>
         <item name="android:textSize">13sp</item>
@@ -41,4 +42,38 @@
         <item name="android:textSize">17sp</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="android:background">@color/darkGray2</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/BodyTextStyle</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="@style/Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:theme">@style/SelectableItemTheme</item>
+    </style>
+
+    <style name="NegativeButtonStyle" parent="@style/Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:theme">@style/SelectableItemTheme</item>
+    </style>
+
+    <style name="SelectableItemTheme" parent="ThemeOverlay.MaterialComponents">
+        <item name="colorControlHighlight">@color/colorWhite</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textAlignment" tools:targetApi="jelly_bean_mr1">viewStart</item>
+    </style>
+
+
+    <style name="BodyTextStyle">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>

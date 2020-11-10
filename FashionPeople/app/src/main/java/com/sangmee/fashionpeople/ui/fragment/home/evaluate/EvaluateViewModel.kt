@@ -40,7 +40,6 @@ class EvaluateViewModel : ViewModel() {
         get() = _evaluateMessage
 
     val idSubject = BehaviorSubject.create<String>()
-    val nowPageSubject = BehaviorSubject.create<Int>()
 
     init {
         idSubject.subscribeOn(Schedulers.io())
@@ -48,12 +47,6 @@ class EvaluateViewModel : ViewModel() {
             .subscribe({
                 _userId.value = it
                 getOtherImages(it)
-            }, {
-            }).addTo(compositeDisposable)
-        nowPageSubject.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                _nowPage.value = it
             }, {
             }).addTo(compositeDisposable)
     }
@@ -76,18 +69,19 @@ class EvaluateViewModel : ViewModel() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                _nowPage.value = _nowPage.value?.plus(1)
                 it?.let {
                     _updateFeedImage.value = it
                 }
                 Log.d("seunghwan", it.toString())
-
                 _evaluateMessage.call()
             }, {
                 Log.d("seunghwan", it.toString())
             }).addTo(compositeDisposable)
     }
 
+    fun setNextPage() {
+        _nowPage.value = _nowPage.value?.plus(1)
+    }
 
     fun clearDisposable() {
         compositeDisposable.clear()
