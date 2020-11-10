@@ -25,6 +25,7 @@ import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.data.dataSource.local.FUserLocalDataSourceImpl
 import com.sangmee.fashionpeople.data.dataSource.remote.FUserRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.dataSource.remote.FeedImageRemoteDataSourceImpl
+import com.sangmee.fashionpeople.data.model.Comment
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.data.repository.FUserRepositoryImpl
 import com.sangmee.fashionpeople.data.repository.FeedImageRepositoryImpl
@@ -121,7 +122,6 @@ class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
             val window = alertDialog.window
             window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             alertDialog.show()
-
 
             binding.tvDialogMessage.text = "평가가 완료되었습니다\n 사진을 저장하시겠습니까?"
             binding.btnOk.setOnClickListener {
