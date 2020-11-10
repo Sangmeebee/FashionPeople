@@ -4,11 +4,10 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.sangmee.fashionpeople.retrofit.RetrofitClient
-import com.sangmee.fashionpeople.retrofit.model.Evaluation
-import com.sangmee.fashionpeople.retrofit.model.FeedImage
+import com.sangmee.fashionpeople.data.service.retrofit.RetrofitClient
+import com.sangmee.fashionpeople.data.model.Evaluation
+import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.util.SingleLiveEvent
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
@@ -52,7 +51,7 @@ class EvaluateViewModel : ViewModel() {
     }
 
     private fun getOtherImages(id: String) {
-        RetrofitClient().getFeedImageService().getOtherImages(id)
+        RetrofitClient.getFeedImageService().getOtherImages(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -62,10 +61,10 @@ class EvaluateViewModel : ViewModel() {
     }
 
     fun ratingClick(imageName: String, rating: Float) {
-        RetrofitClient().getFeedImageService()
+        RetrofitClient.getFeedImageService()
             .updateImageScore(imageName, Evaluation(userId.value, rating))
             .subscribeOn(Schedulers.io())
-            .andThen(RetrofitClient().getFeedImageService().getFeedImageByName(imageName))
+            .andThen(RetrofitClient.getFeedImageService().getFeedImageByName(imageName))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({

@@ -14,9 +14,13 @@ import com.kakao.usermgmt.callback.MeV2ResponseCallback
 import com.kakao.usermgmt.response.MeV2Response
 import com.kakao.util.exception.KakaoException
 import com.sangmee.fashionpeople.R
-import com.sangmee.fashionpeople.kakaologin.GlobalApplication
-import com.sangmee.fashionpeople.retrofit.RetrofitClient
-import com.sangmee.fashionpeople.retrofit.model.FUser
+import com.sangmee.fashionpeople.data.GlobalApplication
+import com.sangmee.fashionpeople.data.dataSource.local.LocalDataSourceImpl
+import com.sangmee.fashionpeople.data.dataSource.remote.RemoteDataSourceImpl
+import com.sangmee.fashionpeople.data.model.FUser
+import com.sangmee.fashionpeople.data.repository.Repository
+import com.sangmee.fashionpeople.data.repository.RepositoryImpl
+import com.sangmee.fashionpeople.data.service.retrofit.RetrofitClient
 import kotlinx.android.synthetic.main.activity_login.*
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,6 +28,11 @@ import retrofit2.Response
 class LoginActivity : AppCompatActivity() {
 
     private var callback: SessionCallback = SessionCallback()
+    private val repository: Repository by lazy {
+        RepositoryImpl(
+            LocalDataSourceImpl(), RemoteDataSourceImpl()
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,30 +84,15 @@ class LoginActivity : AppCompatActivity() {
 
                     checkNotNull(result) { "session response null" }
                     // 데이터베이스에 아이디 이미 있는지 체크
-                    RetrofitClient().getFUserService().getAllFUser().enqueue(object :
-                        Callback<List<FUser>> {
-                        override fun onFailure(call: retrofit2.Call<List<FUser>>, t: Throwable) {
-                            Log.d("fashionPeople_error", t.message)
-                        }
-
-                        override fun onResponse(
-                            call: retrofit2.Call<List<FUser>>,
-                            response: Response<List<FUser>>
-                        ) {
-                            Log.d(
-                                "fashionPeople_success",
-                                response.body()!![0].id.toString() + response.body()!!.size
-                            )
-                            val res = response.body()!!
-                            var exist = false
-                            for (fUser in res) {
-                                if (fUser.id == custom_id) {
-                                    exist = true
-                                }
+                    var exist = false
+                    repository.getAllFUser(success = {
+                        for(fUser in it) {
+                            if(fUser.id == custom_id) {
+                                exist = true
                             }
-                            redirectUserInfoActivity(exist)
                         }
-                    })
+                        redirectUserInfoActivity(exist)
+                    }, failed = { Log.e("fashionPeopleError", it) })
                 }
             })
         }

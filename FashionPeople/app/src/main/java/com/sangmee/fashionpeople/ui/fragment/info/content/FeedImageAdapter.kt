@@ -8,7 +8,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sangmee.fashionpeople.R
-import com.sangmee.fashionpeople.retrofit.model.FeedImage
+import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.ui.fragment.info.FeedImageDetailActivity
 
 class FeedImageAdapter(

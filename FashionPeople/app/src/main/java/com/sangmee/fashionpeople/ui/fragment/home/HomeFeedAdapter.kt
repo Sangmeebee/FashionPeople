@@ -10,8 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.databinding.ItemHomeFeedBinding
-import com.sangmee.fashionpeople.retrofit.model.FeedImage
-import com.sangmee.fashionpeople.ui.fragment.home.evaluate.EvaluateViewModel
+import com.sangmee.fashionpeople.data.model.FeedImage
 import kotlinx.android.synthetic.main.item_home_feed.view.*
 
 class HomeFeedAdapter(private val myId: String) : RecyclerView.Adapter<HomeFeedViewHolder>() {

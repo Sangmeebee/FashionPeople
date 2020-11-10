@@ -1,4 +1,4 @@
-package com.sangmee.fashionpeople.s3
+package com.sangmee.fashionpeople.data.service.s3
 
 import android.content.Context
 import android.util.Log
@@ -13,11 +13,11 @@ import com.amazonaws.services.s3.AmazonS3Client
 import com.amazonaws.services.s3.model.CannedAccessControlList
 import java.io.File
 
-class RemoteDataSourceImpl(private val context: Context, private val customId: String) :
-    RemoteDataSource {
+class S3RemoteDataSourceImpl(private val context: Context, private val customId: String) :
+    S3RemoteDataSource {
 
     //aws s3에 이미지 업로드
-    override fun uploadWithTransferUtility(fileName: String, file: File?) {
+    override fun uploadWithTransferUtility(fileName: String, file: File?, location: String) {
 
         val credentialsProvider = CognitoCachingCredentialsProvider(
             context,
@@ -36,7 +36,7 @@ class RemoteDataSourceImpl(private val context: Context, private val customId: S
         /* Store the new created Image file path */
 
         val uploadObserver = transferUtility.upload(
-            "users/${customId}/profile/${fileName}",
+            "users/${customId}/${location}/${fileName}",
             file,
             CannedAccessControlList.PublicRead
         )

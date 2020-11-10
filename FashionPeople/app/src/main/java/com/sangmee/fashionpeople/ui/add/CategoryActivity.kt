@@ -1,4 +1,4 @@
-package com.sangmee.fashionpeople.ui
+package com.sangmee.fashionpeople.ui.add
 
 import android.os.Bundle
 import android.text.Editable
@@ -6,7 +6,7 @@ import android.text.TextWatcher
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.sangmee.fashionpeople.R
-import com.sangmee.fashionpeople.kakaologin.GlobalApplication
+import com.sangmee.fashionpeople.data.GlobalApplication
 import kotlinx.android.synthetic.main.activity_category.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

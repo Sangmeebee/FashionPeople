@@ -21,8 +21,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.databinding.DialogBaseBinding
 import com.sangmee.fashionpeople.databinding.FragmentEvaluateBinding
-import com.sangmee.fashionpeople.kakaologin.GlobalApplication
-import com.sangmee.fashionpeople.retrofit.model.FeedImage
+import com.sangmee.fashionpeople.data.GlobalApplication
+import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.ui.fragment.home.HomeFeedAdapter
 
 class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {

@@ -13,23 +13,17 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.amazonaws.auth.CognitoCachingCredentialsProvider
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferNetworkLossHandler
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
-import com.amazonaws.regions.Region
-import com.amazonaws.regions.Regions
-import com.amazonaws.services.s3.AmazonS3Client
-import com.amazonaws.services.s3.model.CannedAccessControlList
 import com.sangmee.fashionpeople.R
-import com.sangmee.fashionpeople.kakaologin.GlobalApplication
-import com.sangmee.fashionpeople.retrofit.RetrofitClient
-import com.sangmee.fashionpeople.retrofit.model.FUser
+import com.sangmee.fashionpeople.data.GlobalApplication
+import com.sangmee.fashionpeople.data.dataSource.local.LocalDataSourceImpl
+import com.sangmee.fashionpeople.data.dataSource.remote.RemoteDataSourceImpl
+import com.sangmee.fashionpeople.data.model.FUser
+import com.sangmee.fashionpeople.data.repository.Repository
+import com.sangmee.fashionpeople.data.repository.RepositoryImpl
+import com.sangmee.fashionpeople.data.service.s3.S3RemoteDataSource
+import com.sangmee.fashionpeople.data.service.s3.S3RemoteDataSourceImpl
 import kotlinx.android.synthetic.main.activity_user_info.*
 import kotlinx.android.synthetic.main.toolbar.*
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.File
 
 
@@ -38,9 +32,19 @@ class UserInfoActivity : AppCompatActivity() {
     private val pref = GlobalApplication.prefs
     lateinit var imagePath: String
     private var file: File? = null
-    lateinit var customId: String
+    private val customId by lazy { pref.getString("custom_id", "empty") }
     private val CHOOSE_PROFILEIMG = 200
-
+    private val repository: Repository by lazy {
+        RepositoryImpl(
+            LocalDataSourceImpl(), RemoteDataSourceImpl()
+        )
+    }
+    private val s3RemoteDataSource: S3RemoteDataSource by lazy {
+        S3RemoteDataSourceImpl(
+            applicationContext,
+            customId
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,40 +92,31 @@ class UserInfoActivity : AppCompatActivity() {
 
         //버튼 클릭 (가입완료)
         authorization_btn.setOnClickListener {
-
-            //회원 아이디
-            customId = pref.getString("custom_id", "empty")
-            //닉네임
-            var name: String? = nickname.text.toString()
-            //소개 글
-            var instagramId: String? = instagram_id.text.toString()
-            //프로필 사진
-            var profileImage: String? = file?.name
-            if (profileImage != null) {
-                uploadWithTransferUtility(profileImage, file)
-            }
-
-            //회원정보 저장(retrofit2)
-            RetrofitClient().getFUserService().addUser(
-                FUser(
-                    customId,
-                    name,
-                    instagramId,
-                    profileImage,
-                    listOf()
-                )
-            ).enqueue(object : Callback<FUser> {
-                override fun onFailure(call: retrofit2.Call<FUser>, t: Throwable) {
-                    Log.d("sangmin_error", t.message)
-                }
-
-                override fun onResponse(call: retrofit2.Call<FUser>, response: Response<FUser>) {
-                    Log.d("sangmin_success", response.body().toString())
-                    redirctUserInfoActivity()
-                }
-            })
-
+            saveUser(customId)
         }
+    }
+
+    //회원정보 저장(retrofit2)
+    private fun saveUser(customId: String) {
+        //닉네임
+        val name = nickname.text.toString()
+        //소개 글
+        val instagramId = instagram_id.text.toString()
+        //프로필 사진
+        val profileImage = file?.name
+        profileImage?.let {
+            s3RemoteDataSource.uploadWithTransferUtility(it, file, "profile")
+        }
+
+        repository.addUser(
+            FUser(
+                customId,
+                name,
+                instagramId,
+                profileImage,
+                listOf()
+            ), { redirectUserInfoActivity() }, { Log.e("sangmin_error", it) }
+        )
     }
 
     //툴바 뒤로가기 버튼
@@ -138,10 +133,10 @@ class UserInfoActivity : AppCompatActivity() {
     }
 
     //이미지Uri -- > 절대경로로 바꿔서 리턴시켜주는 메소드
-    fun getRealPathFromUri(uri: Uri): String {
-        var proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
-        var c: Cursor = contentResolver.query(uri, proj, null, null, null)!!
-        var index = c!!.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+    private fun getRealPathFromUri(uri: Uri): String {
+        val proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
+        val c: Cursor = contentResolver.query(uri, proj, null, null, null)!!
+        val index = c!!.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
         c.moveToFirst()
 
         var result = c.getString(index)
@@ -190,65 +185,9 @@ class UserInfoActivity : AppCompatActivity() {
 
     }
 
-    //aws s3에 이미지 업로드
-    fun uploadWithTransferUtility(fileName: String, file: File?) {
-
-        val credentialsProvider = CognitoCachingCredentialsProvider(
-            applicationContext,
-            "ap-northeast-2:04a21c16-627a-49a9-8229-f1c412ddebfa",  // 자격 증명 풀 ID
-            Regions.AP_NORTHEAST_2 // 리전
-        )
-
-        TransferNetworkLossHandler.getInstance(applicationContext)
-
-        val transferUtility = TransferUtility.builder()
-            .context(applicationContext)
-            .defaultBucket("fashionprofile-images")
-            .s3Client(AmazonS3Client(credentialsProvider, Region.getRegion(Regions.AP_NORTHEAST_2)))
-            .build()
-
-        /* Store the new created Image file path */
-
-        val uploadObserver = transferUtility.upload(
-            "users/${customId}/profile/${fileName}",
-            file,
-            CannedAccessControlList.PublicRead
-        )
-
-        //CannedAccessControlList.PublicRead 읽기 권한 추가
-
-        // Attach a listener to the observer
-        uploadObserver.setTransferListener(object : TransferListener {
-            override fun onStateChanged(id: Int, state: TransferState) {
-                if (state == TransferState.COMPLETED) {
-                    Log.d("MYTAG", "fileupload")
-                    redirctUserInfoActivity()
-
-                }
-            }
-
-            override fun onProgressChanged(id: Int, current: Long, total: Long) {
-                val done = (((current.toDouble() / total) * 100.0).toInt())
-                Log.d("MYTAG", "UPLOAD - - ID: $id, percent done = $done")
-            }
-
-            override fun onError(id: Int, ex: Exception) {
-                Log.d("MYTAG", "UPLOAD ERROR - - ID: $id - - EX: ${ex.message.toString()}")
-            }
-        })
-
-        // If you prefer to long-poll for updates
-        if (uploadObserver.state == TransferState.COMPLETED) {
-            /* Handle completion */
-
-        }
-    }
-
-    fun redirctUserInfoActivity() {
+    private fun redirectUserInfoActivity() {
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
     }
-
-
 }

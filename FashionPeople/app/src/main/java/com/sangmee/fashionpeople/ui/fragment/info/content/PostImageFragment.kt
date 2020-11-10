@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.sangmee.fashionpeople.R
-import com.sangmee.fashionpeople.kakaologin.GlobalApplication
-import com.sangmee.fashionpeople.retrofit.RetrofitClient
-import com.sangmee.fashionpeople.retrofit.model.FeedImage
+import com.sangmee.fashionpeople.data.GlobalApplication
+import com.sangmee.fashionpeople.data.service.retrofit.RetrofitClient
+import com.sangmee.fashionpeople.data.model.FeedImage
 import kotlinx.android.synthetic.main.fragment_post_image.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -48,7 +48,7 @@ class PostImageFragment : Fragment() {
 
     private fun getFeedImages() {
         if (customId != "") {
-            RetrofitClient().getFeedImageService().getFeedImages(customId)
+            RetrofitClient.getFeedImageService().getFeedImages(customId)
                 .enqueue(object : Callback<List<FeedImage>> {
                     override fun onResponse(
                         call: Call<List<FeedImage>>,

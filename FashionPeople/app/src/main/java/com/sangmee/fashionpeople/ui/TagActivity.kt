@@ -16,9 +16,12 @@ import com.amazonaws.regions.Regions
 import com.amazonaws.services.s3.AmazonS3Client
 import com.amazonaws.services.s3.model.CannedAccessControlList
 import com.sangmee.fashionpeople.R
-import com.sangmee.fashionpeople.kakaologin.GlobalApplication
-import com.sangmee.fashionpeople.retrofit.RetrofitClient
-import com.sangmee.fashionpeople.retrofit.model.FeedImage
+import com.sangmee.fashionpeople.data.GlobalApplication
+import com.sangmee.fashionpeople.data.service.retrofit.RetrofitClient
+import com.sangmee.fashionpeople.data.model.FeedImage
+import com.sangmee.fashionpeople.data.service.s3.S3RemoteDataSource
+import com.sangmee.fashionpeople.data.service.s3.S3RemoteDataSourceImpl
+import com.sangmee.fashionpeople.ui.add.CategoryActivity
 import kotlinx.android.synthetic.main.activity_tag.*
 import org.jetbrains.anko.textColor
 import retrofit2.Call
@@ -30,6 +33,15 @@ import java.util.*
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class TagActivity : AppCompatActivity() {
+
+    private val customId by lazy { GlobalApplication.prefs.getString("custom_id", "empty") }
+    private val s3RemoteDataSource: S3RemoteDataSource by lazy {
+        S3RemoteDataSourceImpl(
+            applicationContext,
+            customId
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tag)
@@ -75,7 +87,7 @@ class TagActivity : AppCompatActivity() {
             val feedImage =
                 FeedImage(imageFileName, timeStamp, style, top, pants, shoes, null, true, null, null)
 
-            RetrofitClient().getFeedImageService().postFeedImage(customId, feedImage)
+            RetrofitClient.getFeedImageService().postFeedImage(customId, feedImage)
                 .enqueue(object : Callback<FeedImage> {
                     override fun onResponse(call: Call<FeedImage>, response: Response<FeedImage>) {
                         showMessage()
@@ -86,7 +98,7 @@ class TagActivity : AppCompatActivity() {
                 })
 
             //S3에 저장
-            uploadWithTransferUtility(customId, imageFileName, battleImageFile)
+            s3RemoteDataSource.uploadWithTransferUtility(imageFileName, battleImageFile, "feed")
 
             GlobalApplication.prefs.setString("battleImage", imageFileName)
             GlobalApplication.prefs.remove("resultUri")
@@ -140,59 +152,6 @@ class TagActivity : AppCompatActivity() {
             }
         }
     }
-
-    //s3저장 메소드
-    //aws s3에 이미지 업로드
-    private fun uploadWithTransferUtility(customId: String, fileName: String, file: File?) {
-
-        val credentialsProvider = CognitoCachingCredentialsProvider(
-            applicationContext,
-            "ap-northeast-2:04a21c16-627a-49a9-8229-f1c412ddebfa",  // 자격 증명 풀 ID
-            Regions.AP_NORTHEAST_2 // 리전
-        )
-
-        TransferNetworkLossHandler.getInstance(applicationContext)
-
-        val transferUtility = TransferUtility.builder()
-            .context(applicationContext)
-            .defaultBucket(BUCKET_NAME)
-            .s3Client(AmazonS3Client(credentialsProvider, Region.getRegion(Regions.AP_NORTHEAST_2)))
-            .build()
-
-        /* Store the new created Image file path */
-
-        val uploadObserver = transferUtility.upload(
-            "users/${customId}/feed/${fileName}",
-            file,
-            CannedAccessControlList.PublicRead
-        )
-
-        //CannedAccessControlList.PublicRead 읽기 권한 추가
-
-        // Attach a listener to the observer
-        uploadObserver.setTransferListener(object : TransferListener {
-            override fun onStateChanged(id: Int, state: TransferState) {
-                if (state == TransferState.COMPLETED) {
-                    Log.d("MYTAG", "fileupload")
-                }
-            }
-
-            override fun onProgressChanged(id: Int, current: Long, total: Long) {
-                val done = (((current.toDouble() / total) * 100.0).toInt())
-                Log.d("MYTAG", "UPLOAD - - ID: $id, percent done = $done")
-            }
-
-            override fun onError(id: Int, ex: Exception) {
-                Log.d("MYTAG", "UPLOAD ERROR - - ID: $id - - EX: ${ex.message.toString()}")
-            }
-        })
-
-        // If you prefer to long-poll for updates
-        if (uploadObserver.state == TransferState.COMPLETED) {
-            /* Handle completion */
-        }
-    }
-
 
     companion object {
         private const val CHOOSING_CATEGORY = 100
