@@ -11,7 +11,7 @@ import retrofit2.http.Path
 interface CommentService {
 
     @GET("feedImage/comment/{image_name}")
-    fun getImageComment(@Path("image_name") imageName: String): Single<List<Comment>>
+    fun getImageComments(@Path("image_name") imageName: String): Single<List<Comment>>
 
     @PUT("feedImage/comment/{image_name}")
     fun updateImageComment(@Path("image_name") imageName: String, @Body comment: Comment): Completable

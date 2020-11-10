@@ -8,7 +8,7 @@ import retrofit2.http.Path
 
 interface CommentRepository {
 
-    fun getImageComment(@Path("image_name") imageName: String): Single<List<Comment>>
+    fun getImageComments(@Path("image_name") imageName: String): Single<List<Comment>>
 
     fun updateImageComment(
         @Path("image_name") imageName: String,

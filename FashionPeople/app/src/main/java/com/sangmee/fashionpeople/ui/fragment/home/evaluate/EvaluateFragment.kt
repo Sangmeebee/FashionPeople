@@ -29,6 +29,7 @@ import com.sangmee.fashionpeople.data.model.Comment
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.data.repository.FUserRepositoryImpl
 import com.sangmee.fashionpeople.data.repository.FeedImageRepositoryImpl
+import com.sangmee.fashionpeople.ui.fragment.comment.CommentDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.home.HomeFeedAdapter
 
 class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
@@ -135,6 +136,11 @@ class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
         })
     }
 
+    fun showCommentFragment(imageName: String) {
+        CommentDialogFragment.newInstance(imageName)
+            .show(childFragmentManager, CommentDialogFragment.TAG)
+    }
+
     override fun onDestroy() {
         viewModel.clearDisposable()
         super.onDestroy()
@@ -148,5 +154,9 @@ class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
     ) {
         ratingBar?.rating = rating
         feedImage.imageName?.let { viewModel.ratingClick(it, rating) }
+    }
+
+    override fun onClickComment(imageName: String) {
+        showCommentFragment(imageName)
     }
 }

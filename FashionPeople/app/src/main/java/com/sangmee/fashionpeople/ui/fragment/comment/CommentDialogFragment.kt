@@ -8,11 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.library.baseAdapters.BR
+import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.sangmee.fashionpeople.R
+import com.sangmee.fashionpeople.data.dataSource.remote.CommentRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.dataSource.remote.FeedImageRemoteDataSourceImpl
+import com.sangmee.fashionpeople.data.repository.CommentRepositoryImpl
 import com.sangmee.fashionpeople.data.repository.FeedImageRepositoryImpl
 import com.sangmee.fashionpeople.databinding.FragmentCommentBinding
 import com.sangmee.fashionpeople.ui.fragment.home.evaluate.EvaluateViewModel
@@ -21,11 +25,15 @@ class CommentDialogFragment : BottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentCommentBinding
 
+    private val commentRecyclerView: CommentRecyclerAdapter by lazy {
+        CommentRecyclerAdapter()
+    }
+
     private val viewModel: CommentViewModel by lazy {
         ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return CommentViewModel(
-                    FeedImageRepositoryImpl(feedImageRemoteDataSource = FeedImageRemoteDataSourceImpl())
+                    commentRepository = CommentRepositoryImpl(CommentRemoteDataSourceImpl())
                 ) as T
             }
         }).get(CommentViewModel::class.java)
@@ -43,8 +51,37 @@ class CommentDialogFragment : BottomSheetDialogFragment() {
         dialog?.let {
             it.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
-
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initObserve()
+    }
+
+
+    private fun initObserve() {
+        viewModel.comments.observe(viewLifecycleOwner, Observer {
+            commentRecyclerView.setComments(it)
+        })
+    }
+
+    override fun onDestroy() {
+        viewModel.clearDisposable()
+        super.onDestroy()
+    }
+
+    companion object {
+        val TAG = this::class.java.simpleName
+
+        const val IMAGE_NAME = "image_name"
+
+        fun newInstance(imageName: String) = CommentDialogFragment().apply {
+            arguments = Bundle().apply {
+                putString(IMAGE_NAME, imageName)
+            }
+            setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetStyle)
+        }
+    }
 }

@@ -9,8 +9,8 @@ class CommentRepositoryImpl(
     private val commentRemoteDataSource: CommentRemoteDataSource
 ) : CommentRepository {
 
-    override fun getImageComment(imageName: String): Single<List<Comment>> {
-        return commentRemoteDataSource.getImageComment(imageName)
+    override fun getImageComments(imageName: String): Single<List<Comment>> {
+        return commentRemoteDataSource.getImageComments(imageName)
     }
 
     override fun updateImageComment(imageName: String, comment: Comment): Completable {

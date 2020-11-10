@@ -31,6 +31,13 @@ class HomeFeedAdapter(private val myId: String) : RecyclerView.Adapter<HomeFeedV
                 onClickListener?.onClickRatingBar(ratingBar, rating, fromUser, it)
             }
         }
+        viewHolder.itemView.ll_comment.setOnClickListener {
+            items[viewHolder.adapterPosition].let {
+                it.imageName?.let { imageName ->
+                    onClickListener?.onClickComment(imageName)
+                }
+            }
+        }
 
         return viewHolder
     }
@@ -47,15 +54,6 @@ class HomeFeedAdapter(private val myId: String) : RecyclerView.Adapter<HomeFeedV
         items.clear()
         items.addAll(list)
         notifyDataSetChanged()
-    }
-
-    fun removeImage(feedImage: FeedImage) {
-        for (i in items.indices) {
-            if (items[i].imageName == feedImage.imageName) {
-                items.remove(items[i])
-                notifyItemRemoved(i)
-            }
-        }
     }
 
     fun updateItem(feedImage: FeedImage) {
@@ -75,6 +73,8 @@ class HomeFeedAdapter(private val myId: String) : RecyclerView.Adapter<HomeFeedV
             fromUser: Boolean,
             feedImage: FeedImage
         )
+
+        fun onClickComment(imageName: String)
     }
 
 }

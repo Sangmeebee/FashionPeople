@@ -82,5 +82,14 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="RoundCornerBottomSheetStyle" parent="Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/ModalStyle</item>
+    </style>
+
+    <style name="ModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_round_top</item>
+        <item name="behavior_peekHeight">500dp</item>
+    </style>
+
 
 </resources>
