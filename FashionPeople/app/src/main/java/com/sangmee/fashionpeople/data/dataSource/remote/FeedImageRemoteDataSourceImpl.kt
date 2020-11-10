@@ -30,6 +30,6 @@ class FeedImageRemoteDataSourceImpl : FeedImageRemoteDataSource {
     }
 
     override fun updateImageScore(imageName: String, evaluation: Evaluation): Completable {
-        TODO("Not yet implemented")
+        return RetrofitClient.getFeedImageService().updateImageScore(imageName, evaluation)
     }
 }
