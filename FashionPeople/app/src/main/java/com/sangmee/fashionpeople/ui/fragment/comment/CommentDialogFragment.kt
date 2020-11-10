@@ -12,6 +12,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.sangmee.fashionpeople.R
+import com.sangmee.fashionpeople.data.dataSource.remote.FeedImageRemoteDataSourceImpl
+import com.sangmee.fashionpeople.data.repository.FeedImageRepositoryImpl
 import com.sangmee.fashionpeople.databinding.FragmentCommentBinding
 import com.sangmee.fashionpeople.ui.fragment.home.evaluate.EvaluateViewModel
 
@@ -22,7 +24,9 @@ class CommentDialogFragment : BottomSheetDialogFragment() {
     private val viewModel: CommentViewModel by lazy {
         ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return CommentViewModel() as T
+                return CommentViewModel(
+                    FeedImageRepositoryImpl(feedImageRemoteDataSource = FeedImageRemoteDataSourceImpl())
+                ) as T
             }
         }).get(CommentViewModel::class.java)
     }

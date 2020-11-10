@@ -22,7 +22,12 @@ import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.databinding.DialogBaseBinding
 import com.sangmee.fashionpeople.databinding.FragmentEvaluateBinding
 import com.sangmee.fashionpeople.data.GlobalApplication
+import com.sangmee.fashionpeople.data.dataSource.local.FUserLocalDataSourceImpl
+import com.sangmee.fashionpeople.data.dataSource.remote.FUserRemoteDataSourceImpl
+import com.sangmee.fashionpeople.data.dataSource.remote.FeedImageRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.FeedImage
+import com.sangmee.fashionpeople.data.repository.FUserRepositoryImpl
+import com.sangmee.fashionpeople.data.repository.FeedImageRepositoryImpl
 import com.sangmee.fashionpeople.ui.fragment.home.HomeFeedAdapter
 
 class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
@@ -34,7 +39,9 @@ class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
     private val viewModel: EvaluateViewModel by lazy {
         ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return EvaluateViewModel() as T
+                return EvaluateViewModel(
+                    FeedImageRepositoryImpl(feedImageRemoteDataSource = FeedImageRemoteDataSourceImpl())
+                ) as T
             }
         }).get(EvaluateViewModel::class.java)
     }
