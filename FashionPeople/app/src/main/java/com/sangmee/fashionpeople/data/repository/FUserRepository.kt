@@ -1,8 +1,8 @@
-package com.sangmee.fashionpeople.data.dataSource.remote
+package com.sangmee.fashionpeople.data.repository
 
 import com.sangmee.fashionpeople.data.model.FUser
 
-interface RemoteDataSource {
+interface FUserRepository {
     fun getAllFUser(
         success: (List<FUser>) -> Unit,
         failed: (String) -> Unit

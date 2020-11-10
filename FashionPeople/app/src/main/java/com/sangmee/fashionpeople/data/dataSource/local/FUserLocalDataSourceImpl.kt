@@ -1,4 +1,4 @@
 package com.sangmee.fashionpeople.data.dataSource.local
 
-interface LocalDataSource {
+class FUserLocalDataSourceImpl : FUserLocalDataSource {
 }

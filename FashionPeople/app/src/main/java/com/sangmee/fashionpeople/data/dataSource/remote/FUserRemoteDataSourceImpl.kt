@@ -6,7 +6,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RemoteDataSourceImpl : RemoteDataSource {
+class FUserRemoteDataSourceImpl : FUserRemoteDataSource {
 
     override fun getAllFUser(success: (List<FUser>) -> Unit, failed: (String) -> Unit) {
         RetrofitClient.getFUserService().getAllFUser().enqueue(object :

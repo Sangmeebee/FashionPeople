@@ -15,10 +15,10 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
-import com.sangmee.fashionpeople.data.dataSource.local.LocalDataSourceImpl
-import com.sangmee.fashionpeople.data.dataSource.remote.RemoteDataSourceImpl
-import com.sangmee.fashionpeople.data.repository.Repository
-import com.sangmee.fashionpeople.data.repository.RepositoryImpl
+import com.sangmee.fashionpeople.data.dataSource.local.FUserLocalDataSourceImpl
+import com.sangmee.fashionpeople.data.dataSource.remote.FUserRemoteDataSourceImpl
+import com.sangmee.fashionpeople.data.repository.FUserRepository
+import com.sangmee.fashionpeople.data.repository.FUserRepositoryImpl
 import com.sangmee.fashionpeople.ui.LoginActivity
 import com.sangmee.fashionpeople.ui.SettingActivity
 import com.sangmee.fashionpeople.ui.fragment.info.content.ViewPagerAdapter
@@ -28,9 +28,9 @@ import kotlinx.android.synthetic.main.fragment_info.*
 class InfoFragment : Fragment() {
 
     lateinit var customId: String
-    private val repository: Repository by lazy {
-        RepositoryImpl(
-            LocalDataSourceImpl(), RemoteDataSourceImpl()
+    private val FUserRepository: FUserRepository by lazy {
+        FUserRepositoryImpl(
+            FUserLocalDataSourceImpl(), FUserRemoteDataSourceImpl()
         )
     }
 
@@ -71,7 +71,7 @@ class InfoFragment : Fragment() {
 
     private fun setProfile(view: View) {
         //프로필 세팅
-        repository.getFUser(customId, success = {
+        FUserRepository.getFUser(customId, success = {
             val profileImgName = it.profileImage
             val userName = it.name
             val profileImg = view.findViewById<ImageView>(R.id.iv_profile)

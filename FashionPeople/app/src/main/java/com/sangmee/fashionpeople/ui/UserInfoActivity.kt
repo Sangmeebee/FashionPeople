@@ -15,11 +15,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
-import com.sangmee.fashionpeople.data.dataSource.local.LocalDataSourceImpl
-import com.sangmee.fashionpeople.data.dataSource.remote.RemoteDataSourceImpl
+import com.sangmee.fashionpeople.data.dataSource.local.FUserLocalDataSourceImpl
+import com.sangmee.fashionpeople.data.dataSource.remote.FUserRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.FUser
-import com.sangmee.fashionpeople.data.repository.Repository
-import com.sangmee.fashionpeople.data.repository.RepositoryImpl
+import com.sangmee.fashionpeople.data.repository.FUserRepository
+import com.sangmee.fashionpeople.data.repository.FUserRepositoryImpl
 import com.sangmee.fashionpeople.data.service.s3.S3RemoteDataSource
 import com.sangmee.fashionpeople.data.service.s3.S3RemoteDataSourceImpl
 import kotlinx.android.synthetic.main.activity_user_info.*
@@ -34,9 +34,9 @@ class UserInfoActivity : AppCompatActivity() {
     private var file: File? = null
     private val customId by lazy { pref.getString("custom_id", "empty") }
     private val CHOOSE_PROFILEIMG = 200
-    private val repository: Repository by lazy {
-        RepositoryImpl(
-            LocalDataSourceImpl(), RemoteDataSourceImpl()
+    private val FUserRepository: FUserRepository by lazy {
+        FUserRepositoryImpl(
+            FUserLocalDataSourceImpl(), FUserRemoteDataSourceImpl()
         )
     }
     private val s3RemoteDataSource: S3RemoteDataSource by lazy {
@@ -108,7 +108,7 @@ class UserInfoActivity : AppCompatActivity() {
             s3RemoteDataSource.uploadWithTransferUtility(it, file, "profile")
         }
 
-        repository.addUser(
+        FUserRepository.addUser(
             FUser(
                 customId,
                 name,
