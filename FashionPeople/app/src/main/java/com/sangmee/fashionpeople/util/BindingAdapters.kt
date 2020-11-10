@@ -49,7 +49,7 @@ fun setVisibleRating(ratingBar: RatingBar, feedImage: FeedImage?, myId: String) 
     }
 }
 
-@BindingAdapter("setVisibleRating", "myId")
+@BindingAdapter("setVisibleLinearLayout", "myId")
 fun setVisibleLinearLayout(linearLayout: LinearLayout, feedImage: FeedImage?, myId: String) {
     feedImage?.let {
         myId.let {
