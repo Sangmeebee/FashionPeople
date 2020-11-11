@@ -24,9 +24,9 @@ object RetrofitClient {
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .build()
 
-    fun getFUserService() = retrofit.create(FUserService::class.java)
-    fun getFeedImageService() = retrofit.create(FeedImageService::class.java)
-    fun getFollowerService() = retrofit.create(FollowerService::class.java)
-    fun getFollowingService() = retrofit.create(FollowingService::class.java)
+    fun getFUserService(): FUserService = retrofit.create(FUserService::class.java)
+    fun getFeedImageService(): FeedImageService = retrofit.create(FeedImageService::class.java)
+    fun getFollowerService(): FollowerService = retrofit.create(FollowerService::class.java)
+    fun getFollowingService(): FollowingService = retrofit.create(FollowingService::class.java)
 }
 

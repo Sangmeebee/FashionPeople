@@ -1,11 +1,9 @@
 package com.sangmee.fashionpeople.data.repository
 
-import com.sangmee.fashionpeople.data.dataSource.local.FUserLocalDataSource
 import com.sangmee.fashionpeople.data.dataSource.remote.FUserRemoteDataSource
 import com.sangmee.fashionpeople.data.model.FUser
 
 class FUserRepositoryImpl(
-    private val FUserLocalDataSource: FUserLocalDataSource,
     private val FUserRemoteDataSource: FUserRemoteDataSource
 ) : FUserRepository {
     override fun getAllFUser(success: (List<FUser>) -> Unit, failed: (String) -> Unit) {
