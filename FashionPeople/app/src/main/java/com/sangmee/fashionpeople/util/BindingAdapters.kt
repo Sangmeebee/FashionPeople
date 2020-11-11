@@ -1,12 +1,20 @@
 package com.sangmee.fashionpeople.util
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RatingBar
 import androidx.annotation.RequiresApi
 import androidx.databinding.BindingAdapter
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
+import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FeedImage
+import com.sangmee.fashionpeople.ui.SettingActivity
 
 @RequiresApi(Build.VERSION_CODES.M)
 @BindingAdapter("createView")
@@ -54,4 +62,13 @@ fun setVisibleLinearLayout(linearLayout: LinearLayout, feedImage: FeedImage?, my
         }
     }
 }
+
+@BindingAdapter("setCustomId", "setImageName")
+fun ImageView.setLoadUrl(customId: String, imageName: String) {
+    Glide.with(context!!)
+        .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${customId}/profile/${imageName}")
+        .apply(RequestOptions().circleCrop())
+        .error(R.drawable.user).into(this)
+}
+
 
