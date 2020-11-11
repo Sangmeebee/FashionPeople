@@ -34,7 +34,6 @@ class InfoFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_info, container, false)?.apply {
             binding = DataBindingUtil.bind(this)!!
             binding.vm = vm
-            vm.callProfile()
             binding.lifecycleOwner = viewLifecycleOwner
         }
     }
@@ -42,6 +41,7 @@ class InfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        vm.callProfile()
         //tablayout 세팅
         viewPager.adapter = ViewPagerAdapter(this)
 

@@ -15,6 +15,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.ui.SettingActivity
+import de.hdodenhof.circleimageview.CircleImageView
 
 @RequiresApi(Build.VERSION_CODES.M)
 @BindingAdapter("createView")
@@ -64,11 +65,17 @@ fun setVisibleLinearLayout(linearLayout: LinearLayout, feedImage: FeedImage?, my
 }
 
 @BindingAdapter("setCustomId", "setImageName")
-fun ImageView.setLoadUrl(customId: String, imageName: String) {
-    Glide.with(context!!)
-        .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${customId}/profile/${imageName}")
-        .apply(RequestOptions().circleCrop())
-        .error(R.drawable.user).into(this)
+fun ImageView.setLoadUrl(customId: String?, imageName: String?) {
+    customId?.let { customId ->
+        imageName?.let {
+            imageName ->
+            Glide.with(context!!)
+                .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${customId}/profile/${imageName}")
+                .apply(RequestOptions().circleCrop())
+                .error(R.drawable.user).into(this)
+        }
+    }
+
 }
 
 
