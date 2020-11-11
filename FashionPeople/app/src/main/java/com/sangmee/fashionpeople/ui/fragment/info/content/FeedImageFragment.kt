@@ -15,7 +15,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class PostImageFragment : Fragment() {
+class FeedImageFragment : Fragment() {
 
     private lateinit var customId: String
     private val feedImageAdapter by lazy {

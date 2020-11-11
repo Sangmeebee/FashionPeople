@@ -9,7 +9,7 @@ class ViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     override fun createFragment(position: Int): Fragment {
 
         return when (position) {
-            0 -> PostImageFragment()
+            0 -> FeedImageFragment()
             else -> SavedImageFragment()
         }
     }
