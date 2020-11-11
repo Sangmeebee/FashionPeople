@@ -1,68 +1,61 @@
 package com.sangmee.fashionpeople.ui.fragment.info.content
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
 import com.sangmee.fashionpeople.R
-import com.sangmee.fashionpeople.data.GlobalApplication
-import com.sangmee.fashionpeople.data.service.retrofit.RetrofitClient
-import com.sangmee.fashionpeople.data.model.FeedImage
-import kotlinx.android.synthetic.main.fragment_post_image.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.sangmee.fashionpeople.databinding.FragmentFeedImageBinding
+import com.sangmee.fashionpeople.observer.FeedImageViewModel
+import kotlinx.android.synthetic.main.fragment_feed_image.*
 
 class FeedImageFragment : Fragment() {
 
-    private lateinit var customId: String
+    private val vm by activityViewModels<FeedImageViewModel>()
+    private lateinit var binding: FragmentFeedImageBinding
     private val feedImageAdapter by lazy {
-        FeedImageAdapter(customId)
+        FeedImageAdapter(vm.customId)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        customId = GlobalApplication.prefs.getString("custom_id", "")
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_post_image, container, false)
+        return inflater.inflate(R.layout.fragment_feed_image, container, false)?.apply {
+            binding = DataBindingUtil.bind(this)!!
+            binding.lifecycleOwner = viewLifecycleOwner
+            vm.callFeedImages()
+            setRecyclerView()
+            viewModelCallback()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        getFeedImages()
 
         rv_user_image.apply {
             adapter = feedImageAdapter
         }
     }
 
-
-    private fun getFeedImages() {
-        if (customId != "") {
-            RetrofitClient.getFeedImageService().getFeedImages(customId)
-                .enqueue(object : Callback<List<FeedImage>> {
-                    override fun onResponse(
-                        call: Call<List<FeedImage>>,
-                        response: Response<List<FeedImage>>
-                    ) {
-                        response.body()?.let { feedImages ->
-                            feedImageAdapter.setFeedImages(feedImages)
-                        }
-                    }
-
-                    override fun onFailure(call: Call<List<FeedImage>>, t: Throwable) {
-                        Log.d("fail", t.message)
-                    }
-                })
+    private fun setRecyclerView() {
+        binding.rvUserImage.apply {
+            setHasFixedSize(true)
+            adapter = feedImageAdapter
         }
+    }
+
+    private fun viewModelCallback() {
+        vm.feedImages.observe(viewLifecycleOwner, Observer {
+            feedImageAdapter.setFeedImages(it)
+        })
     }
 }
