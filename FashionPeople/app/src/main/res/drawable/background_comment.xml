@@ -4,9 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <corners android:radius="20dp" />
     <!-- 배경색 -->
-    <solid android:color="@color/darkGray2" />
+    <solid android:color="@color/darkgray" />
     <!-- 라인색 및 두께 -->
     <stroke
-        android:color="@color/colorPrimary"
+        android:color="@color/colorWhite"
         android:width="1dp" />
 </shape>

@@ -103,7 +103,7 @@
             android:layout_marginBottom="12dp"
             android:ellipsize="end"
             android:text="@{feedImage.user.name}"
-            app:layout_constraintBottom_toTopOf="@id/ll_info_home_feed"
+            app:layout_constraintBottom_toTopOf="@id/rv_tags_home_feed"
             app:layout_constraintStart_toEndOf="@id/iv_profile_home_feed"
             toolsNs:text="서승환" />
 
@@ -134,15 +134,15 @@
             app:layout_constraintTop_toTopOf="@id/tv_user_name_home_feed"
             toolsNs:src="@drawable/ic_person_white" />
 
-        <LinearLayout
-            android:id="@+id/ll_info_home_feed"
-            android:layout_width="wrap_content"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_tags_home_feed"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginLeft="24dp"
             android:layout_marginBottom="24dp"
-            android:orientation="horizontal"
-            app:createView="@{feedImage}"
+            android:scrollbars="vertical"
+            setFeedImageTags="@{feedImage}"
             app:layout_constraintBottom_toTopOf="@id/rb_home_feed"
             app:layout_constraintStart_toStartOf="@id/iv_profile_home_feed" />
         <!--        <TextView

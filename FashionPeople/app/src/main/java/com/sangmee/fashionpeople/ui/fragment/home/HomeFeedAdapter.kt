@@ -8,15 +8,18 @@ import android.widget.RatingBar
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.flexbox.*
 import com.sangmee.fashionpeople.R
-import com.sangmee.fashionpeople.databinding.ItemHomeFeedBinding
 import com.sangmee.fashionpeople.data.model.FeedImage
+import com.sangmee.fashionpeople.databinding.ItemHomeFeedBinding
 import kotlinx.android.synthetic.main.item_home_feed.view.*
+
 
 class HomeFeedAdapter(private val myId: String) : RecyclerView.Adapter<HomeFeedViewHolder>() {
 
     private val items = mutableListOf<FeedImage>()
     var onClickListener: OnClickListener? = null
+    val tagAdapter = TagRecyclerViewAdapter()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeFeedViewHolder {
         val binding = DataBindingUtil.inflate<ItemHomeFeedBinding>(
@@ -26,6 +29,7 @@ class HomeFeedAdapter(private val myId: String) : RecyclerView.Adapter<HomeFeedV
             false
         )
         val viewHolder = HomeFeedViewHolder(binding, myId)
+
         viewHolder.itemView.rb_home_feed.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
             items[viewHolder.adapterPosition].let {
                 onClickListener?.onClickRatingBar(ratingBar, rating, fromUser, it)
@@ -38,7 +42,6 @@ class HomeFeedAdapter(private val myId: String) : RecyclerView.Adapter<HomeFeedV
                 }
             }
         }
-
         return viewHolder
     }
 
@@ -61,7 +64,6 @@ class HomeFeedAdapter(private val myId: String) : RecyclerView.Adapter<HomeFeedV
             if (items[index].imageName == feedImage.imageName) {
                 items[index] = feedImage
                 notifyItemChanged(index)
-                Log.d("seunghwan", "aaa")
             }
         }
     }
@@ -76,5 +78,6 @@ class HomeFeedAdapter(private val myId: String) : RecyclerView.Adapter<HomeFeedV
 
         fun onClickComment(imageName: String)
     }
+
 
 }

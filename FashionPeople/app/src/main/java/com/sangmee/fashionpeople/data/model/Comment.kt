@@ -4,7 +4,7 @@ package com.sangmee.fashionpeople.data.model
 import com.google.gson.annotations.SerializedName
 
 data class Comment(
-    @SerializedName("content")
+    @SerializedName("comment")
     val content: String?,
     @SerializedName("commentPersonId")
     val commentPersonId: String?,

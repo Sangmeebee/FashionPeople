@@ -35,7 +35,7 @@ import com.sangmee.fashionpeople.ui.fragment.home.HomeFeedAdapter
 class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
 
     private lateinit var binding: FragmentEvaluateBinding
-    val pref = GlobalApplication.prefs
+    private val pref = GlobalApplication.prefs
     lateinit var customId: String
 
     private val viewModel: EvaluateViewModel by lazy {
@@ -69,7 +69,6 @@ class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
 
     private fun setId() {
         customId = pref.getString("custom_id", "empty")
-
         viewModel.idSubject.onNext(customId)
     }
 
@@ -136,7 +135,7 @@ class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
         })
     }
 
-    fun showCommentFragment(imageName: String) {
+    private fun showCommentFragment(imageName: String) {
         CommentDialogFragment.newInstance(imageName)
             .show(childFragmentManager, CommentDialogFragment.TAG)
     }

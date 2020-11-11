@@ -41,6 +41,7 @@
                 android:id="@+id/tv_comment_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
                 toolsNs:text="서승환" />
 
             <LinearLayout
@@ -53,7 +54,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"
-                    android:text="와우 너무 멋있네요~~~~~~~~~~!!!!!!!!" />
+                    android:text="와우 너무 멋있네요~~~~~~~~~~!!!!!!!!"
+                    android:textColor="@color/colorBlack" />
 
                 <TextView
                     android:layout_width="wrap_content"

@@ -3,6 +3,7 @@ package com.sangmee.fashionpeople.ui.fragment.comment
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,7 +34,8 @@ class CommentDialogFragment : BottomSheetDialogFragment() {
         ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return CommentViewModel(
-                    commentRepository = CommentRepositoryImpl(CommentRemoteDataSourceImpl())
+                    commentRepository = CommentRepositoryImpl(CommentRemoteDataSourceImpl()),
+                    feedImageRepository = FeedImageRepositoryImpl(FeedImageRemoteDataSourceImpl())
                 ) as T
             }
         }).get(CommentViewModel::class.java)
@@ -56,14 +58,31 @@ class CommentDialogFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        initRecyclerView()
+        initView()
         initObserve()
+    }
+
+    private fun initRecyclerView() {
+        binding.rvComment.adapter = commentRecyclerView
+    }
+
+    private fun initView() {
+        arguments?.getString(IMAGE_NAME)?.let {
+            viewModel.imageNameSubject.onNext(it)
+        }
+
     }
 
 
     private fun initObserve() {
         viewModel.comments.observe(viewLifecycleOwner, Observer {
             commentRecyclerView.setComments(it)
+            Log.d("seunghwan", "bind items = ${it}")
+        })
+
+        viewModel.feedImage.observe(viewLifecycleOwner, Observer {
+            binding
         })
     }
 
@@ -75,7 +94,7 @@ class CommentDialogFragment : BottomSheetDialogFragment() {
     companion object {
         val TAG = this::class.java.simpleName
 
-        const val IMAGE_NAME = "image_name"
+        private const val IMAGE_NAME = "image_name"
 
         fun newInstance(imageName: String) = CommentDialogFragment().apply {
             arguments = Bundle().apply {
