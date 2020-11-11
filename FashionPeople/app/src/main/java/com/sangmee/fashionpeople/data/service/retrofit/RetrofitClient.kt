@@ -26,5 +26,7 @@ object RetrofitClient {
 
     fun getFUserService() = retrofit.create(FUserService::class.java)
     fun getFeedImageService() = retrofit.create(FeedImageService::class.java)
+    fun getFollowerService() = retrofit.create(FollowerService::class.java)
+    fun getFollowingService() = retrofit.create(FollowingService::class.java)
 }
 
