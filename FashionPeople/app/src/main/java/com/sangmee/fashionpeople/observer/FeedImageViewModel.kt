@@ -12,9 +12,7 @@ import com.sangmee.fashionpeople.data.repository.FeedImageRepositoryImpl
 class FeedImageViewModel : ViewModel() {
 
     private val feedImageRepository: FeedImageRepository by lazy {
-        FeedImageRepositoryImpl(
-            FeedImageRemoteDataSourceImpl()
-        )
+        FeedImageRepositoryImpl(FeedImageRemoteDataSourceImpl())
     }
     val customId = GlobalApplication.prefs.getString("custom_id", "empty")
     val feedImages = MutableLiveData<List<FeedImage>>()
