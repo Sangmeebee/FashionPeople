@@ -138,13 +138,11 @@
             android:id="@+id/rv_tags_home_feed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
             android:layout_marginBottom="24dp"
             android:scrollbars="vertical"
             setFeedImageTags="@{feedImage}"
             app:layout_constraintBottom_toTopOf="@id/rb_home_feed"
-            app:layout_constraintStart_toStartOf="@id/iv_profile_home_feed" />
+            app:layout_constraintStart_toStartOf="parent" />
         <!--        <TextView
                     android:id="@+id/tv_info_home_feed"
                     style="@style/HomeFeedTextStyle"
