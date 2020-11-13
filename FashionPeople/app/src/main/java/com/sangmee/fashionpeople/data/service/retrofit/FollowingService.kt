@@ -9,7 +9,7 @@ import retrofit2.http.Path
 interface FollowingService {
 
     @GET("following/{userId}")
-    fun getFollower(@Path("userId") userId: String): Call<List<Following>>
+    fun getFollowing(@Path("userId") userId: String): Call<List<Following>>
 
     @PUT("following/{userId}/{followingId}")
     fun updateFollowing(

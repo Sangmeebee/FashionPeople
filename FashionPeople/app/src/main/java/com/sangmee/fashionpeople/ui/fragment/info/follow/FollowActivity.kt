@@ -29,9 +29,11 @@ class FollowActivity : AppCompatActivity() {
             followingNum = it.getInt("FOLLOWING_NUM", 0)
         }
 
+        //toolbar 세팅
         setToolbar(binding.tbFollow)
-            binding.tvName.text = userName
-            setTabLayout()
+        binding.tvName.text = userName
+
+        setTabLayout()
     }
 
     private fun setTabLayout() {
