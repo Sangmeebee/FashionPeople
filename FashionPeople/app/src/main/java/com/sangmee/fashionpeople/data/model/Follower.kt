@@ -7,8 +7,8 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Follower(
-    @SerializedName("user_id")
-    val user: FUser,
-    @SerializedName("follower_person_id")
-    val follower: FUser
+    @SerializedName("user")
+    val user: FUser?,
+    @SerializedName("follower")
+    val follower: FUser?
 ) : Parcelable
