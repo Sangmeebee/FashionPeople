@@ -10,7 +10,4 @@ interface FollowerService {
 
     @GET("follower/{userId}")
     fun getFollower(@Path("userId") userId: String): Call<List<Follower>>
-
-    @PUT("follower/{userId}")
-    fun updateFollower(@Path("userId") userId: String): Call<Follower>
 }

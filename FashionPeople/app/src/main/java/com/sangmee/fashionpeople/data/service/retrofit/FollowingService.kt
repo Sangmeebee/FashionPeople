@@ -11,6 +11,9 @@ interface FollowingService {
     @GET("following/{userId}")
     fun getFollower(@Path("userId") userId: String): Call<List<Following>>
 
-    @PUT("following/{userId}")
-    fun updateFollowing(@Path("userId") userId: String): Call<Following>
+    @PUT("following/{userId}/{followingId}")
+    fun updateFollowing(
+        @Path("userId") userId: String,
+        @Path("followingId") followingId: String
+    ): Call<Following>
 }

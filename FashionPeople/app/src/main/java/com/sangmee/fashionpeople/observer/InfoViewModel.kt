@@ -15,6 +15,8 @@ class InfoViewModel : ViewModel() {
     val customId = GlobalApplication.prefs.getString("custom_id", "empty")
     val profileImgName = MutableLiveData<String>()
     val userName = MutableLiveData<String>()
+    val followerNum = MutableLiveData<Int>()
+    val followingNum = MutableLiveData<Int>()
     val errorMsg = MutableLiveData<String>()
 
     fun callProfile() {
@@ -23,6 +25,8 @@ class InfoViewModel : ViewModel() {
             fUserRepository.getFUser(customId, success = {
                 profileImgName.value = it.profileImage
                 userName.value = it.name
+                followerNum.value = it.followerNum
+                followingNum.value = it.followingNum
             }, failed = { errorMsg.value = it })
         }
     }

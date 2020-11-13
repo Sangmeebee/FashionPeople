@@ -14,6 +14,9 @@ data class FUser(
     val instagramId: String?,
     @SerializedName("profileImage")
     val profileImage: String?,
-    @SerializedName("images")
-    val images: List<FeedImage>?
+    @SerializedName("followerNum")
+    val followerNum: Int?,
+    @SerializedName("followingNum")
+    val followingNum: Int?
+
 ): Parcelable

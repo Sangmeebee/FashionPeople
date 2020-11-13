@@ -111,7 +111,8 @@ class UserInfoActivity : AppCompatActivity() {
                 name,
                 instagramId,
                 profileImage,
-                listOf()
+                0,
+                0
             ), { redirectUserInfoActivity() }, { Log.e("sangmin_error", it) }
         )
     }
