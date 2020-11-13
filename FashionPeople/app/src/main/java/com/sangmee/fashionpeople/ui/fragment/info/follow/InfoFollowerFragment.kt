@@ -6,15 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.Observer
 import com.sangmee.fashionpeople.R
-import com.sangmee.fashionpeople.observer.FollowViewModel
+import com.sangmee.fashionpeople.observer.FollowerViewModel
 import kotlinx.android.synthetic.main.fragment_info_follow.*
 
 class InfoFollowerFragment : Fragment() {
 
-    private val vm by activityViewModels<FollowViewModel>()
+    private val vm by activityViewModels<FollowerViewModel>()
     private val followerAdapter = InfoFollowerAdapter()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,14 +25,23 @@ class InfoFollowerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setRecyclerView()
+        vm.callFollower()
+        viewModelCallback()
     }
 
     private fun setRecyclerView() {
         rv_follow.apply {
             setHasFixedSize(true)
             adapter = followerAdapter
-            addItemDecoration(DividerItemDecoration(context, RecyclerView.VERTICAL))
         }
+    }
+
+    private fun viewModelCallback() {
+
+        vm.followers.observe(viewLifecycleOwner, Observer {
+            vm.followers.value?.let { followerAdapter.clearAndAddItems(it) }
+        })
+
     }
 }
