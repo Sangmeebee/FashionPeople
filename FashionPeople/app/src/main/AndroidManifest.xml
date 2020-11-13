@@ -18,7 +18,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.fragment.info.OtherActivity"></activity>
+        <activity
+            android:name=".ui.fragment.info.follow.FollowActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.fragment.info.OtherActivity" />
         <activity android:name=".ui.add.TagActivity" />
         <activity
             android:name=".ui.add.CategoryActivity"
