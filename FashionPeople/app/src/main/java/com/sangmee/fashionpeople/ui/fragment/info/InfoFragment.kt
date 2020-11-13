@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
@@ -17,6 +18,7 @@ import com.sangmee.fashionpeople.observer.InfoViewModel
 import com.sangmee.fashionpeople.ui.LoginActivity
 import com.sangmee.fashionpeople.ui.SettingActivity
 import com.sangmee.fashionpeople.ui.fragment.info.content.ViewPagerAdapter
+import com.sangmee.fashionpeople.ui.fragment.info.follow.FollowActivity
 import kotlinx.android.synthetic.main.fragment_info.*
 
 class InfoFragment : Fragment() {
@@ -41,6 +43,7 @@ class InfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModelCallback()
         vm.callProfile()
         //tablayout 세팅
         viewPager.adapter = ViewPagerAdapter(this)
@@ -67,6 +70,20 @@ class InfoFragment : Fragment() {
             val intent = Intent(context, LoginActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun viewModelCallback() {
+
+        vm.callActivity.observe(viewLifecycleOwner, Observer {
+            val intent = Intent(context, FollowActivity::class.java)
+            val bundle = Bundle()
+            bundle.putInt("FRAGMENT_ID", it)
+            bundle.putString("USER_NAME", vm.userName.value)
+            bundle.putInt("FOLLOWER_NUM", vm.followerNum.value!!)
+            bundle.putInt("FOLLOWING_NUM", vm.followingNum.value!!)
+            intent.putExtras(bundle)
+            startActivity(intent)
+        })
     }
 
     companion object {

@@ -6,6 +6,7 @@ import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.data.dataSource.remote.FUserRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.repository.FUserRepository
 import com.sangmee.fashionpeople.data.repository.FUserRepositoryImpl
+import com.sangmee.fashionpeople.util.SingleLiveEvent
 
 class InfoViewModel : ViewModel() {
 
@@ -15,8 +16,9 @@ class InfoViewModel : ViewModel() {
     val customId = GlobalApplication.prefs.getString("custom_id", "empty")
     val profileImgName = MutableLiveData<String>()
     val userName = MutableLiveData<String>()
-    val followerNum = MutableLiveData<Int>()
-    val followingNum = MutableLiveData<Int>()
+    val followerNum = MutableLiveData<Int>(0)
+    val followingNum = MutableLiveData<Int>(0)
+    val callActivity = SingleLiveEvent<Int>()
     val errorMsg = MutableLiveData<String>()
 
     fun callProfile() {
@@ -30,4 +32,9 @@ class InfoViewModel : ViewModel() {
             }, failed = { errorMsg.value = it })
         }
     }
+
+    fun callOtherActivity(num: Int) {
+        callActivity.value = num
+    }
 }
+
