@@ -6,23 +6,23 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FUser
-import com.sangmee.fashionpeople.databinding.ItemFollowBinding
+import com.sangmee.fashionpeople.databinding.ItemFollowerBinding
 
-class InfoFollowerAdapter : RecyclerView.Adapter<InfoFollowerAdapter.InfoFollowViewHolder>() {
+class InfoFollowerAdapter : RecyclerView.Adapter<InfoFollowerAdapter.InfoFollowerViewHolder>() {
 
     private val followList = arrayListOf<FUser>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InfoFollowViewHolder {
-        val binding = DataBindingUtil.inflate<ItemFollowBinding>(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InfoFollowerViewHolder {
+        val binding = DataBindingUtil.inflate<ItemFollowerBinding>(
             LayoutInflater.from(parent.context),
-            R.layout.item_follow,
+            R.layout.item_follower,
             parent,
             false
         )
-        return InfoFollowViewHolder(binding)
+        return InfoFollowerViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: InfoFollowViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: InfoFollowerViewHolder, position: Int) {
         holder.bind(followList[position])
     }
 
@@ -34,13 +34,13 @@ class InfoFollowerAdapter : RecyclerView.Adapter<InfoFollowerAdapter.InfoFollowV
         notifyDataSetChanged()
     }
 
-    class InfoFollowViewHolder(private val binding: ItemFollowBinding) :
+    class InfoFollowerViewHolder(private val binding: ItemFollowerBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private var isGone = true
 
-        fun bind(follow: FUser) {
-            binding.follow = follow
-            follow.instagramId?.let {
+        fun bind(follower: FUser) {
+            binding.follower = follower
+            follower.instagramId?.let {
                 if (it.isNotEmpty()) {
                     isGone = false
                 }
