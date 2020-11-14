@@ -1,6 +1,8 @@
 package com.sangmee.fashionpeople.util
 
+import android.content.Context
 import android.os.Build
+import android.util.TypedValue
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -21,4 +23,12 @@ fun createView(flexBoxLayout: FlexboxLayout, text: String) {
         tv.setTextAppearance(R.style.HomeFeedTextStyle)
         flexBoxLayout.addView(tv)
     }
+}
+
+fun Float.dpToPx(context: Context): Int {
+    return TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        this,
+        context.resources.displayMetrics
+    ).toInt()
 }

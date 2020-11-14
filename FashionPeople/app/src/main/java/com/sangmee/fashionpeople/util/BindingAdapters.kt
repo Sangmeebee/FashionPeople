@@ -6,12 +6,14 @@ import android.widget.LinearLayout
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.*
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.Comment
 import com.sangmee.fashionpeople.data.model.FeedImage
+import com.sangmee.fashionpeople.ui.fragment.home.TagRecyclerDecoration
 import com.sangmee.fashionpeople.ui.fragment.home.TagRecyclerViewAdapter
 
 @RequiresApi(Build.VERSION_CODES.M)
@@ -100,19 +102,27 @@ fun setFeedImageTags(recyclerView: RecyclerView, feedImage: FeedImage?) {
     }
     recyclerView.adapter = tagAdapter
     recyclerView.layoutManager = layoutManager
+    recyclerView.addItemDecoration(TagRecyclerDecoration(recyclerView.context, 5.toFloat()))
     feedImage?.let { feedImage ->
-        feedImage.style?.let {
-            tagAdapter.addTag(it)
+        if(feedImage.style != null && !feedImage.style.equals("")) {
+            tagAdapter.addTag(feedImage.style)
         }
-        feedImage.top?.let {
-            tagAdapter.addTag(it)
+        if(feedImage.top != null && !feedImage.top.equals("")) {
+            tagAdapter.addTag(feedImage.top)
         }
-        feedImage.pants?.let {
-            tagAdapter.addTag(it)
+        if(feedImage.pants != null && !feedImage.pants.equals("")) {
+            tagAdapter.addTag(feedImage.pants)
         }
-        feedImage.shoes?.let {
-            tagAdapter.addTag(it)
+        if(feedImage.shoes != null && !feedImage.shoes.equals("")) {
+            tagAdapter.addTag(feedImage.shoes)
         }
         tagAdapter.notifyDataSetChanged()
+    }
+}
+
+@BindingAdapter("createTag")
+fun createTag(appCompatTextView: AppCompatTextView, text: String?) {
+    text?.let {
+        appCompatTextView.text = "#${text}"
     }
 }
