@@ -1,6 +1,8 @@
 package com.sangmee.fashionpeople.ui.fragment.info.follow
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,8 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.sangmee.fashionpeople.R
+import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.observer.FollowViewModel
 import kotlinx.android.synthetic.main.fragment_info_follow.*
+import java.util.*
 
 class InfoFollowingFragment : Fragment() {
 
@@ -28,6 +32,28 @@ class InfoFollowingFragment : Fragment() {
         setRecyclerView()
         vm.callFollowing()
         viewModelCallback()
+        et_userName.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                val searchUserName = et_userName.text.toString().toLowerCase(Locale.getDefault())
+                val correctUser = arrayListOf<FUser>()
+                vm.followings.value?.let {
+                    for (user in it) {
+                        user.name?.let { name ->
+                            if (name.toLowerCase(Locale.getDefault()).contains(searchUserName)) {
+                                correctUser.add(user)
+                            }
+                        }
+                    }
+                }
+                followingAdapter.clearAndAddItems(correctUser)
+            }
+        })
     }
 
     private fun setRecyclerView() {
