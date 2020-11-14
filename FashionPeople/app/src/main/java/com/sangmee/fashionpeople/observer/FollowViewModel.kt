@@ -9,7 +9,7 @@ import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.data.repository.FollowRepository
 import com.sangmee.fashionpeople.data.repository.FollowRepositoryImpl
 
-class FollowerViewModel : ViewModel() {
+class FollowViewModel : ViewModel() {
     private val followRepository: FollowRepository by lazy {
         FollowRepositoryImpl(
             FollowRemoteDataSourceImpl()
@@ -17,6 +17,7 @@ class FollowerViewModel : ViewModel() {
     }
     val customId = GlobalApplication.prefs.getString("custom_id", "empty")
     val followers = MutableLiveData<List<FUser>>()
+    val followings = MutableLiveData<List<FUser>>()
 
     fun callFollower() {
         //프로필 세팅
@@ -24,12 +25,27 @@ class FollowerViewModel : ViewModel() {
             followRepository.getFollower(customId, success = {
                 val users = arrayListOf<FUser>()
                 for (follower in it) {
-                    follower.follower?.let{
-                        f -> users.add(f)
+                    follower.follower?.let { f ->
+                        users.add(f)
                     }
                 }
 
                 followers.value = users
+            }, failed = { Log.e("error", it) })
+        }
+    }
+    fun callFollowing() {
+        //프로필 세팅
+        if (customId !== "empty") {
+            followRepository.getFollowing(customId, success = {
+                val users = arrayListOf<FUser>()
+                for (following in it) {
+                    following.following?.let { f ->
+                        users.add(f)
+                    }
+                }
+
+                followings.value = users
             }, failed = { Log.e("error", it) })
         }
     }

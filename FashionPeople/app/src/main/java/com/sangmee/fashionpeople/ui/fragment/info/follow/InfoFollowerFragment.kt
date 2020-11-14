@@ -8,12 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.sangmee.fashionpeople.R
-import com.sangmee.fashionpeople.observer.FollowerViewModel
+import com.sangmee.fashionpeople.observer.FollowViewModel
 import kotlinx.android.synthetic.main.fragment_info_follow.*
 
 class InfoFollowerFragment : Fragment() {
 
-    private val vm by activityViewModels<FollowerViewModel>()
+    private val vm by activityViewModels<FollowViewModel>()
     private val followerAdapter = InfoFollowerAdapter()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
