@@ -16,6 +16,7 @@ import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.ui.fragment.home.TagRecyclerDecoration
 import com.sangmee.fashionpeople.ui.fragment.home.TagRecyclerViewAdapter
 
+
 @RequiresApi(Build.VERSION_CODES.M)
 @BindingAdapter("createView")
 fun createView(flexBoxLayout: FlexboxLayout, feedImage: FeedImage?) {
@@ -97,9 +98,12 @@ fun setFeedImageTags(recyclerView: RecyclerView, feedImage: FeedImage?) {
     val tagAdapter = TagRecyclerViewAdapter()
     val layoutManager = FlexboxLayoutManager(recyclerView.context).apply {
         flexWrap = FlexWrap.WRAP
+        alignItems = AlignItems.FLEX_START
         flexDirection = FlexDirection.ROW
         justifyContent = JustifyContent.FLEX_START
     }
+
+
     recyclerView.adapter = tagAdapter
     recyclerView.layoutManager = layoutManager
     recyclerView.addItemDecoration(TagRecyclerDecoration(recyclerView.context, 5.toFloat()))

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -11,7 +12,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
@@ -19,7 +21,10 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:createTag="@{tag}"
-            android:textColor="@color/colorWhite"
+            style="@style/TagTextStyle"
+            android:textColor="@color/colorPrimary"
+            android:background="@color/colorBlack"
+            tools:text="검색"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
