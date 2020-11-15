@@ -20,7 +20,7 @@
         toolsNs:background="@color/colorBlack">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_item_home_feed"
+            android:id="@+id/iv_item_evaluate_feed"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
@@ -45,10 +45,10 @@
             android:background="@drawable/background_comment"
             android:orientation="horizontal"
             android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@id/rb_home_feed"
+            app:layout_constraintBottom_toBottomOf="@id/rb_evaluate_feed"
             app:layout_constraintEnd_toStartOf="@id/iv_save_image"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/rb_home_feed"
+            app:layout_constraintTop_toTopOf="@id/rb_evaluate_feed"
             app:myId="@{myId}">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -78,7 +78,7 @@
 
 
         <RatingBar
-            android:id="@+id/rb_home_feed"
+            android:id="@+id/rb_evaluate_feed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
@@ -104,7 +104,7 @@
             android:ellipsize="end"
             android:text="@{feedImage.user.name}"
             app:layout_constraintBottom_toTopOf="@id/rv_tags_home_feed"
-            app:layout_constraintStart_toEndOf="@id/iv_profile_home_feed"
+            app:layout_constraintStart_toEndOf="@id/iv_profile_evaluate_feed"
             toolsNs:text="서승환" />
 
         <TextView
@@ -122,7 +122,7 @@
             toolsNs:text="팔로잉" />
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/iv_profile_home_feed"
+            android:id="@+id/iv_profile_evaluate_feed"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="24dp"
@@ -141,7 +141,7 @@
             android:layout_marginBottom="24dp"
             android:scrollbars="vertical"
             setFeedImageTags="@{feedImage}"
-            app:layout_constraintBottom_toTopOf="@id/rb_home_feed"
+            app:layout_constraintBottom_toTopOf="@id/rb_evaluate_feed"
             app:layout_constraintStart_toStartOf="parent" />
         <!--        <TextView
                     android:id="@+id/tv_info_home_feed"

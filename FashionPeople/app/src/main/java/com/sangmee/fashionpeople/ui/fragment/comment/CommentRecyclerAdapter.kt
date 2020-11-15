@@ -6,11 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.Comment
-import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.databinding.ItemCommentBinding
-import com.sangmee.fashionpeople.databinding.ItemHomeFeedBinding
-import com.sangmee.fashionpeople.ui.fragment.home.HomeFeedViewHolder
-import kotlinx.android.synthetic.main.item_home_feed.view.*
 
 class CommentRecyclerAdapter : RecyclerView.Adapter<CommentRecyclerViewHolder>() {
 
