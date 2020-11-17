@@ -18,22 +18,31 @@ class FollowViewModel : ViewModel() {
     val customId = GlobalApplication.prefs.getString("custom_id", "empty")
     val followers = MutableLiveData<List<FUser>>()
     val followings = MutableLiveData<List<FUser>>()
+    val isFollowings = MutableLiveData<MutableMap<String, Boolean>>()
 
     fun callFollower() {
         //프로필 세팅
         if (customId !== "empty") {
             followRepository.getFollower(customId, success = {
                 val users = arrayListOf<FUser>()
+                val isFollowingMap = mutableMapOf<String, Boolean>()
                 for (follower in it) {
                     follower.follower?.let { f ->
                         users.add(f)
                     }
+                    follower.follower!!.id?.let { id ->
+                        follower.isFollowing?.let { isFollowing ->
+                            isFollowingMap[id] = isFollowing
+                        }
+                    }
                 }
-
                 followers.value = users
+                isFollowings.value = isFollowingMap
+                Log.d("sangmin", isFollowings.value.toString())
             }, failed = { Log.e("error", it) })
         }
     }
+
     fun callFollowing() {
         //프로필 세팅
         if (customId !== "empty") {

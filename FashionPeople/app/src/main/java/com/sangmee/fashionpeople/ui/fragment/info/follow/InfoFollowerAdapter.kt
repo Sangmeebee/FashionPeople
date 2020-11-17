@@ -11,6 +11,7 @@ import com.sangmee.fashionpeople.databinding.ItemFollowerBinding
 class InfoFollowerAdapter : RecyclerView.Adapter<InfoFollowerAdapter.InfoFollowerViewHolder>() {
 
     private val followList = arrayListOf<FUser>()
+    private val isFollowings = mutableMapOf<String, Boolean>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InfoFollowerViewHolder {
         val binding = DataBindingUtil.inflate<ItemFollowerBinding>(
@@ -23,7 +24,7 @@ class InfoFollowerAdapter : RecyclerView.Adapter<InfoFollowerAdapter.InfoFollowe
     }
 
     override fun onBindViewHolder(holder: InfoFollowerViewHolder, position: Int) {
-        holder.bind(followList[position])
+        holder.bind(followList[position], isFollowings[followList[position].id]!!)
     }
 
     override fun getItemCount() = followList.size
@@ -34,11 +35,17 @@ class InfoFollowerAdapter : RecyclerView.Adapter<InfoFollowerAdapter.InfoFollowe
         notifyDataSetChanged()
     }
 
+    fun clearAndAddButtonType(isFollowing: Map<String, Boolean>) {
+        isFollowings.clear()
+        isFollowings.putAll(isFollowing)
+        notifyDataSetChanged()
+    }
+
     class InfoFollowerViewHolder(private val binding: ItemFollowerBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private var isGone = true
 
-        fun bind(follower: FUser) {
+        fun bind(follower: FUser, isFollowing: Boolean) {
             binding.follower = follower
             follower.instagramId?.let {
                 if (it.isNotEmpty()) {
@@ -46,6 +53,7 @@ class InfoFollowerAdapter : RecyclerView.Adapter<InfoFollowerAdapter.InfoFollowe
                 }
             }
             binding.isGone = isGone
+            binding.isFollowing = isFollowing
             binding.executePendingBindings()
         }
     }

@@ -7,6 +7,8 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Follower(
+    @SerializedName("following")
+    val isFollowing: Boolean?,
     @SerializedName("user")
     val user: FUser?,
     @SerializedName("follower")

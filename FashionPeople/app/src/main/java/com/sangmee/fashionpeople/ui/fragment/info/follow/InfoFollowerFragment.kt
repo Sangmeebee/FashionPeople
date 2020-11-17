@@ -42,6 +42,7 @@ class InfoFollowerFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
                 val searchUserName = et_userName.text.toString().toLowerCase(Locale.getDefault())
                 val correctUser = arrayListOf<FUser>()
+                val isFollowingList = mutableMapOf<String, Boolean>()
                 vm.followers.value?.let {
                     for (user in it) {
                         user.name?.let { name ->
@@ -50,8 +51,14 @@ class InfoFollowerFragment : Fragment() {
                             }
                         }
                     }
+                    for (user in correctUser) {
+                        vm.isFollowings.value?.let { t ->
+                            isFollowingList.put(user.id!!, t[user.id]!!)
+                        }
+                    }
                 }
                 followerAdapter.clearAndAddItems(correctUser)
+                followerAdapter.clearAndAddButtonType(isFollowingList)
             }
         })
     }
@@ -66,8 +73,14 @@ class InfoFollowerFragment : Fragment() {
     private fun viewModelCallback() {
 
         vm.followers.observe(viewLifecycleOwner, Observer {
-            vm.followers.value?.let { followerAdapter.clearAndAddItems(it) }
+            vm.followers.value?.let {
+                followerAdapter.clearAndAddItems(it)
+            }
         })
-
+        vm.isFollowings.observe(viewLifecycleOwner, Observer {
+            vm.isFollowings.value?.let {
+                followerAdapter.clearAndAddButtonType(it)
+            }
+        })
     }
 }
