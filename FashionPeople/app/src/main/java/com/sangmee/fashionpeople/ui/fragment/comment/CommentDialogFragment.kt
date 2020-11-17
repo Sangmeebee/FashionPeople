@@ -71,7 +71,6 @@ class CommentDialogFragment : BottomSheetDialogFragment() {
         arguments?.getString(IMAGE_NAME)?.let {
             viewModel.imageNameSubject.onNext(it)
         }
-
     }
 
 

@@ -77,14 +77,14 @@
         </LinearLayout>
 
 
-        <RatingBar
+        <androidx.appcompat.widget.AppCompatRatingBar
             android:id="@+id/rb_evaluate_feed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
             android:isIndicator="false"
             android:numStars="5"
-            android:stepSize="0.5"
+            android:stepSize="1"
             android:theme="@style/RatingBarStyle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

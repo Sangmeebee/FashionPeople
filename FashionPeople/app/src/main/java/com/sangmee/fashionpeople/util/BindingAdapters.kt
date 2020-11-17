@@ -1,5 +1,6 @@
 package com.sangmee.fashionpeople.util
 
+import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.view.View
 import android.widget.LinearLayout
@@ -103,10 +104,18 @@ fun setFeedImageTags(recyclerView: RecyclerView, feedImage: FeedImage?) {
         justifyContent = JustifyContent.FLEX_START
     }
 
+    val decoration = FlexboxItemDecoration(recyclerView.context)
+    decoration.setOrientation(FlexboxItemDecoration.BOTH)
+    val drawable = GradientDrawable().apply {
+        setSize(5.toFloat().dpToPx(recyclerView.context), 5.toFloat().dpToPx(recyclerView.context))
+    }
+    decoration.setDrawable(drawable)
 
     recyclerView.adapter = tagAdapter
     recyclerView.layoutManager = layoutManager
-    recyclerView.addItemDecoration(TagRecyclerDecoration(recyclerView.context, 5.toFloat()))
+
+
+    recyclerView.addItemDecoration(decoration)
     feedImage?.let { feedImage ->
         if(feedImage.style != null && !feedImage.style.equals("")) {
             tagAdapter.addTag(feedImage.style)
