@@ -6,7 +6,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FUser
-import com.sangmee.fashionpeople.databinding.ItemFollowerBinding
 import com.sangmee.fashionpeople.databinding.ItemFollowingBinding
 
 class InfoFollowingAdapter : RecyclerView.Adapter<InfoFollowingAdapter.InfoFollowingViewHolder>() {
