@@ -8,7 +8,8 @@ import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.databinding.ItemFollowerBinding
 
-class InfoFollowerAdapter : RecyclerView.Adapter<InfoFollowerAdapter.InfoFollowerViewHolder>() {
+class InfoFollowerAdapter(val setBtn: (String) -> Unit) :
+    RecyclerView.Adapter<InfoFollowerAdapter.InfoFollowerViewHolder>() {
 
     private val followList = arrayListOf<FUser>()
     private val isFollowings = mutableMapOf<String, Boolean>()
@@ -20,6 +21,7 @@ class InfoFollowerAdapter : RecyclerView.Adapter<InfoFollowerAdapter.InfoFollowe
             parent,
             false
         )
+        binding.adapter = this
         return InfoFollowerViewHolder(binding)
     }
 
@@ -41,6 +43,10 @@ class InfoFollowerAdapter : RecyclerView.Adapter<InfoFollowerAdapter.InfoFollowe
         notifyDataSetChanged()
     }
 
+    fun setButton(id: String){
+        setBtn(id)
+    }
+
     class InfoFollowerViewHolder(private val binding: ItemFollowerBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private var isGone = true
@@ -52,6 +58,7 @@ class InfoFollowerAdapter : RecyclerView.Adapter<InfoFollowerAdapter.InfoFollowe
                     isGone = false
                 }
             }
+            binding.id = follower.id
             binding.isGone = isGone
             binding.isFollowing = isFollowing
             binding.executePendingBindings()

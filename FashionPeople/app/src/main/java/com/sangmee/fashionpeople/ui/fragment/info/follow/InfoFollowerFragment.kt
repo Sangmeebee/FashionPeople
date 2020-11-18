@@ -18,7 +18,15 @@ import java.util.*
 class InfoFollowerFragment : Fragment() {
 
     private val vm by activityViewModels<FollowViewModel>()
-    private val followerAdapter = InfoFollowerAdapter()
+    private val followerAdapter by lazy {
+        InfoFollowerAdapter {
+            vm.isFollowings.value?.let { isFollowings ->
+                isFollowings[it] = !isFollowings[it]!!
+                vm.isFollowings.value = isFollowings
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -73,14 +81,10 @@ class InfoFollowerFragment : Fragment() {
     private fun viewModelCallback() {
 
         vm.followers.observe(viewLifecycleOwner, Observer {
-            vm.followers.value?.let {
-                followerAdapter.clearAndAddItems(it)
-            }
+            vm.followers.value?.let { followerAdapter.clearAndAddItems(it) }
         })
         vm.isFollowings.observe(viewLifecycleOwner, Observer {
-            vm.isFollowings.value?.let {
-                followerAdapter.clearAndAddButtonType(it)
-            }
+            vm.isFollowings.value?.let { followerAdapter.clearAndAddButtonType(it) }
         })
     }
 }
