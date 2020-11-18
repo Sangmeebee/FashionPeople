@@ -18,7 +18,22 @@ import java.util.*
 class InfoFollowingFragment : Fragment() {
 
     private val vm by activityViewModels<FollowViewModel>()
-    private val followingAdapter = InfoFollowingAdapter()
+    private val followingAdapter by lazy {
+        InfoFollowingAdapter {
+            vm.isFollowingsFollowing.value?.let { isFollowings ->
+                isFollowings[it] = !isFollowings[it]!!
+                vm.isFollowingsFollowing.value = isFollowings
+            }
+
+            vm.isFollowingsFollower.value?.let { isFollowings ->
+                isFollowings[it]?.let { isFollowing ->
+                    isFollowings[it] = !isFollowing
+                    vm.isFollowingsFollower.value = isFollowings
+                }
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,6 +57,7 @@ class InfoFollowingFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
                 val searchUserName = et_userName.text.toString().toLowerCase(Locale.getDefault())
                 val correctUser = arrayListOf<FUser>()
+                val isFollowingList = mutableMapOf<String, Boolean>()
                 vm.followings.value?.let {
                     for (user in it) {
                         user.name?.let { name ->
@@ -50,8 +66,14 @@ class InfoFollowingFragment : Fragment() {
                             }
                         }
                     }
+                    for (user in correctUser) {
+                        vm.isFollowingsFollowing.value?.let { t ->
+                            isFollowingList.put(user.id!!, t[user.id]!!)
+                        }
+                    }
                 }
                 followingAdapter.clearAndAddItems(correctUser)
+                followingAdapter.clearAndAddButtonType(isFollowingList)
             }
         })
     }
@@ -67,6 +89,9 @@ class InfoFollowingFragment : Fragment() {
 
         vm.followings.observe(viewLifecycleOwner, Observer {
             vm.followings.value?.let { followingAdapter.clearAndAddItems(it) }
+        })
+        vm.isFollowingsFollowing.observe(viewLifecycleOwner, Observer {
+            vm.isFollowingsFollowing.value?.let { followingAdapter.clearAndAddButtonType(it) }
         })
 
     }

@@ -20,9 +20,16 @@ class InfoFollowerFragment : Fragment() {
     private val vm by activityViewModels<FollowViewModel>()
     private val followerAdapter by lazy {
         InfoFollowerAdapter {
-            vm.isFollowings.value?.let { isFollowings ->
+            vm.isFollowingsFollower.value?.let { isFollowings ->
                 isFollowings[it] = !isFollowings[it]!!
-                vm.isFollowings.value = isFollowings
+                vm.isFollowingsFollower.value = isFollowings
+            }
+
+            vm.isFollowingsFollowing.value?.let { isFollowings ->
+                isFollowings[it]?.let { isFollowing ->
+                    isFollowings[it] = !isFollowing
+                    vm.isFollowingsFollowing.value = isFollowings
+                }
             }
         }
     }
@@ -60,7 +67,7 @@ class InfoFollowerFragment : Fragment() {
                         }
                     }
                     for (user in correctUser) {
-                        vm.isFollowings.value?.let { t ->
+                        vm.isFollowingsFollower.value?.let { t ->
                             isFollowingList.put(user.id!!, t[user.id]!!)
                         }
                     }
@@ -83,8 +90,8 @@ class InfoFollowerFragment : Fragment() {
         vm.followers.observe(viewLifecycleOwner, Observer {
             vm.followers.value?.let { followerAdapter.clearAndAddItems(it) }
         })
-        vm.isFollowings.observe(viewLifecycleOwner, Observer {
-            vm.isFollowings.value?.let { followerAdapter.clearAndAddButtonType(it) }
+        vm.isFollowingsFollower.observe(viewLifecycleOwner, Observer {
+            vm.isFollowingsFollower.value?.let { followerAdapter.clearAndAddButtonType(it) }
         })
     }
 }

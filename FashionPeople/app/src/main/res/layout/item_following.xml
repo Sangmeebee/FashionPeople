@@ -14,6 +14,18 @@
         <variable
             name="isGone"
             type="java.lang.Boolean" />
+
+        <variable
+            name="isFollowing"
+            type="java.lang.Boolean" />
+
+        <variable
+            name="id"
+            type="String" />
+
+        <variable
+            name="adapter"
+            type="com.sangmee.fashionpeople.ui.fragment.info.follow.InfoFollowingAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -86,10 +98,12 @@
             android:layout_marginRight="10dp"
             android:background="@android:color/white"
             android:fontFamily="@font/ygd_330"
+            android:onClick="@{() -> adapter.setButton(id)}"
             android:text="팔로잉"
             android:textSize="10sp"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            bind:isGone="@{!isFollowing}" />
 
         <Button
             android:layout_width="90dp"
@@ -98,11 +112,12 @@
             android:layout_marginRight="10dp"
             android:background="@color/colorYellow"
             android:fontFamily="@font/ygd_330"
+            android:onClick="@{() -> adapter.setButton(id)}"
             android:text="팔로우"
             android:textSize="10sp"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:visibility="gone"/>
+            bind:isGone="@{isFollowing}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -8,9 +8,11 @@ import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.databinding.ItemFollowingBinding
 
-class InfoFollowingAdapter : RecyclerView.Adapter<InfoFollowingAdapter.InfoFollowingViewHolder>() {
+class InfoFollowingAdapter(val setBtn: (String) -> Unit) :
+    RecyclerView.Adapter<InfoFollowingAdapter.InfoFollowingViewHolder>() {
 
     private val followList = arrayListOf<FUser>()
+    private val isFollowings = mutableMapOf<String, Boolean>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InfoFollowingViewHolder {
         val binding = DataBindingUtil.inflate<ItemFollowingBinding>(
@@ -19,11 +21,12 @@ class InfoFollowingAdapter : RecyclerView.Adapter<InfoFollowingAdapter.InfoFollo
             parent,
             false
         )
+        binding.adapter = this
         return InfoFollowingViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: InfoFollowingViewHolder, position: Int) {
-        holder.bind(followList[position])
+        holder.bind(followList[position], isFollowings[followList[position].id]!!)
     }
 
     override fun getItemCount() = followList.size
@@ -34,18 +37,30 @@ class InfoFollowingAdapter : RecyclerView.Adapter<InfoFollowingAdapter.InfoFollo
         notifyDataSetChanged()
     }
 
+    fun clearAndAddButtonType(isFollowing: Map<String, Boolean>) {
+        isFollowings.clear()
+        isFollowings.putAll(isFollowing)
+        notifyDataSetChanged()
+    }
+
+    fun setButton(id: String) {
+        setBtn(id)
+    }
+
     class InfoFollowingViewHolder(private val binding: ItemFollowingBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private var isGone = true
 
-        fun bind(following: FUser) {
+        fun bind(following: FUser, isFollowing: Boolean) {
             binding.following = following
             following.instagramId?.let {
                 if (it.isNotEmpty()) {
                     isGone = false
                 }
             }
+            binding.id = following.id
             binding.isGone = isGone
+            binding.isFollowing = isFollowing
             binding.executePendingBindings()
         }
     }
