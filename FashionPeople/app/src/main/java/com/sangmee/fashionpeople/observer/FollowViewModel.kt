@@ -63,4 +63,16 @@ class FollowViewModel : ViewModel() {
             }, failed = { Log.e("error", it) })
         }
     }
+
+    fun updateFollowing(followingId : String) {
+        followRepository.updateFollowing(customId, followingId, success = {
+            Log.d("ADD_FOLLOWING", "팔로잉 추가")
+        }, failed = { Log.d("ADD_FOLLOWING", "error") })
+    }
+
+    fun deleteFollowing(followingId : String) {
+        followRepository.deleteFollowing(customId, followingId, success = {
+            Log.d("DELETE_FOLLOWING", "팔로잉 삭제")
+        }, failed = { Log.d("DELETE_FOLLOWING", "error") })
+    }
 }

@@ -29,4 +29,14 @@ class FollowRepositoryImpl(private val followRemoteDataSource: FollowRemoteDataS
     ) {
         followRemoteDataSource.updateFollowing(userId, followingId, success, failed)
     }
+
+    override fun deleteFollowing(
+        userId: String,
+        followingId: String,
+        success: () -> Unit,
+        failed: (String) -> Unit
+    ) {
+        followRemoteDataSource.deleteFollowing(userId, followingId, success, failed)
+    }
+
 }

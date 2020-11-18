@@ -15,4 +15,11 @@ interface FollowRepository {
         success: () -> Unit,
         failed: (String) -> Unit
     )
+
+    fun deleteFollowing(
+        userId: String,
+        followingId: String,
+        success: () -> Unit,
+        failed: (String) -> Unit
+    )
 }

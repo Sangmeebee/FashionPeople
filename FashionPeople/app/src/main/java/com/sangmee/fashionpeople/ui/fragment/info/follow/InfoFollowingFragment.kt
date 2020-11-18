@@ -29,6 +29,11 @@ class InfoFollowingFragment : Fragment() {
 
             vm.isFollowingsFollower.value?.let { isFollowings ->
                 isFollowings[it]?.let { isFollowing ->
+                    if(isFollowing){
+                        vm.deleteFollowing(it)
+                    } else {
+                        vm.updateFollowing(it)
+                    }
                     isFollowings[it] = !isFollowing
                     vm.isFollowingsFollower.value = isFollowings
                 }

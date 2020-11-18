@@ -71,4 +71,22 @@ class FollowRemoteDataSourceImpl : FollowRemoteDataSource {
             }
         })
     }
+
+    override fun deleteFollowing(
+        userId: String,
+        followingId: String,
+        success: () -> Unit,
+        failed: (String) -> Unit
+    ) {
+        RetrofitClient.getFollowingService().deleteFollowing(userId, followingId).enqueue(object : Callback<Unit>{
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                success()
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                failed(t.message.toString())
+            }
+        })
+    }
+
 }
