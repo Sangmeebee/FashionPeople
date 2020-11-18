@@ -38,15 +38,17 @@ class FollowActivity : AppCompatActivity() {
 
     private fun setTabLayout() {
         //tablayout 세팅
-        vp_follow.adapter = FollowViewPagerAdapter(this)
-        vp_follow.currentItem = fragmentId
-        TabLayoutMediator(tl_container, vp_follow) { tab, position ->
-            when (position) {
-                0 -> tab.text =
-                    "팔로워 ${followerNum}명" //TODO vm를 MainActivity에서 가져서 vm.followerNum 불러오기
-                else -> tab.text = "팔로잉 ${followingNum}명"
-            }
-        }.attach()
+        vp_follow.apply {
+            adapter = FollowViewPagerAdapter(this@FollowActivity)
+            currentItem = fragmentId
+        }
+            TabLayoutMediator(tl_container, vp_follow) { tab, position ->
+                when (position) {
+                    0 -> tab.text =
+                        "팔로워 ${followerNum}명" //TODO vm를 MainActivity에서 가져서 vm.followerNum 불러오기
+                    else -> tab.text = "팔로잉 ${followingNum}명"
+                }
+            }.attach()
     }
 
     private fun setToolbar(toolbar: Toolbar) {

@@ -21,7 +21,9 @@ class InfoFollowingFragment : Fragment() {
     private val followingAdapter by lazy {
         InfoFollowingAdapter {
             vm.isFollowingsFollowing.value?.let { isFollowings ->
-                isFollowings[it] = !isFollowings[it]!!
+                isFollowings[it]?.let { isFollowing ->
+                    isFollowings[it] = !isFollowing
+                }
                 vm.isFollowingsFollowing.value = isFollowings
             }
 
