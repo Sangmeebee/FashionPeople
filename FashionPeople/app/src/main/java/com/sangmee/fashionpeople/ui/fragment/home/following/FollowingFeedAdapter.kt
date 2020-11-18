@@ -39,6 +39,7 @@ class FollowingFeedAdapter(private val myId: String) :
                 }
             }
         }
+        viewHolder.itemView
 
 
         return viewHolder

@@ -2,6 +2,9 @@ package com.sangmee.fashionpeople.util
 
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.RatingBar
@@ -117,16 +120,16 @@ fun setFeedImageTags(recyclerView: RecyclerView, feedImage: FeedImage?) {
 
     recyclerView.addItemDecoration(decoration)
     feedImage?.let { feedImage ->
-        if(feedImage.style != null && !feedImage.style.equals("")) {
+        if (feedImage.style != null && !feedImage.style.equals("")) {
             tagAdapter.addTag(feedImage.style)
         }
-        if(feedImage.top != null && !feedImage.top.equals("")) {
+        if (feedImage.top != null && !feedImage.top.equals("")) {
             tagAdapter.addTag(feedImage.top)
         }
-        if(feedImage.pants != null && !feedImage.pants.equals("")) {
+        if (feedImage.pants != null && !feedImage.pants.equals("")) {
             tagAdapter.addTag(feedImage.pants)
         }
-        if(feedImage.shoes != null && !feedImage.shoes.equals("")) {
+        if (feedImage.shoes != null && !feedImage.shoes.equals("")) {
             tagAdapter.addTag(feedImage.shoes)
         }
         tagAdapter.notifyDataSetChanged()
@@ -138,4 +141,45 @@ fun createTag(appCompatTextView: AppCompatTextView, text: String?) {
     text?.let {
         appCompatTextView.text = "#${text}"
     }
+}
+
+@BindingAdapter("setSpannableRating")
+fun setSpannableRating(appCompatTextView: AppCompatTextView, feedImage: FeedImage?) {
+
+    var average = 0f
+    feedImage?.let { feedImage ->
+        feedImage.evaluations?.let {
+            average = getRatingFromEvaluations(it)
+        }
+    }
+    val target = "${average}점"
+
+    val text = "${feedImage?.user?.name}님의 패션 점수는 $target 입니다."
+    val spannableString = SpannableString(text)
+    val targetStartIndex = text.indexOf(target)
+    val targetEndIndex = targetStartIndex + target.length
+
+    spannableString.setSpan(
+        ForegroundColorSpan(appCompatTextView.resources.getColor(R.color.colorPrimary)),
+        targetStartIndex,
+        targetEndIndex,
+        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+    )
+
+    appCompatTextView.text = spannableString
+
+
+}
+
+@BindingAdapter("setRatingText")
+fun setRatingText(appCompatTextView: AppCompatTextView, feedImage: FeedImage?) {
+    var average = 0f
+    feedImage?.let { feedImage ->
+        feedImage.evaluations?.let {
+            average = getRatingFromEvaluations(it)
+        }
+    }
+    val text = "$average"
+
+    appCompatTextView.text = text
 }
