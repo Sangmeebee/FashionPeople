@@ -12,11 +12,13 @@ import androidx.lifecycle.Observer
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.observer.FollowViewModel
+import com.sangmee.fashionpeople.observer.InfoViewModel
 import kotlinx.android.synthetic.main.fragment_info_follow.*
 import java.util.*
 
 class InfoFollowingFragment : Fragment() {
 
+    private val infoVm by activityViewModels<InfoViewModel>()
     private val vm by activityViewModels<FollowViewModel>()
     private val followingAdapter by lazy {
         InfoFollowingAdapter {
@@ -29,10 +31,12 @@ class InfoFollowingFragment : Fragment() {
 
             vm.isFollowingsFollower.value?.let { isFollowings ->
                 isFollowings[it]?.let { isFollowing ->
-                    if(isFollowing){
+                    if (isFollowing) {
                         vm.deleteFollowing(it)
+                        infoVm.followingNum.value?.let { infoVm.followingNum.value = it-1 }
                     } else {
                         vm.updateFollowing(it)
+                        infoVm.followingNum.value?.let { infoVm.followingNum.value = it+1 }
                     }
                     isFollowings[it] = !isFollowing
                     vm.isFollowingsFollower.value = isFollowings

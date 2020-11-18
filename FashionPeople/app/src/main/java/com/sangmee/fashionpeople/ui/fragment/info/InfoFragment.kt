@@ -16,9 +16,10 @@ import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.databinding.FragmentInfoBinding
 import com.sangmee.fashionpeople.observer.InfoViewModel
 import com.sangmee.fashionpeople.ui.LoginActivity
+import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.SettingActivity
 import com.sangmee.fashionpeople.ui.fragment.info.content.ViewPagerAdapter
-import com.sangmee.fashionpeople.ui.fragment.info.follow.FollowActivity
+import com.sangmee.fashionpeople.ui.fragment.info.follow.FollowFragment
 import kotlinx.android.synthetic.main.fragment_info.*
 
 class InfoFragment : Fragment() {
@@ -75,17 +76,9 @@ class InfoFragment : Fragment() {
     private fun viewModelCallback() {
 
         vm.callActivity.observe(viewLifecycleOwner, Observer {
-            val intent = Intent(context, FollowActivity::class.java)
-            val bundle = Bundle()
-            bundle.putInt("FRAGMENT_ID", it)
-            bundle.putString("USER_NAME", vm.userName.value)
-            bundle.putInt("FOLLOWER_NUM", vm.followerNum.value!!)
-            bundle.putInt("FOLLOWING_NUM", vm.followingNum.value!!)
-            intent.putExtras(bundle)
-            startActivity(intent)
+            (activity as MainActivity).replaceFragmentUseBackStack(FollowFragment.newInstance(it))
         })
     }
-
     companion object {
         private const val LOGOUT_CODE = 210
     }
