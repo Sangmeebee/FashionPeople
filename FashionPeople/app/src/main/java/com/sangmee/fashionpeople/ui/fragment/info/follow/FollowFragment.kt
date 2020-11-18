@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.databinding.FragmentFollowBinding
@@ -49,13 +48,13 @@ class FollowFragment : Fragment() {
         //tablayout 세팅
         vp_follow.apply {
             adapter = FollowViewPagerAdapter(this@FollowFragment)
-            fragmentId?.let { currentItem = it }
-
         }
+        fragmentId?.let { vp_follow.post { vp_follow.currentItem = it } }
+
         TabLayoutMediator(tl_container, vp_follow) { tab, position ->
             when (position) {
                 0 -> tab.text =
-                    "팔로워 ${vm.followerNum.value}명" //TODO vm를 MainActivity에서 가져서 vm.followerNum 불러오기
+                    "팔로워 ${vm.followerNum.value}명"
                 else -> tab.text = "팔로잉 ${vm.followingNum.value}명"
             }
         }.attach()
