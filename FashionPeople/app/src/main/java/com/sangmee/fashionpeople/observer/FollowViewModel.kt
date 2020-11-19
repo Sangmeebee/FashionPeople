@@ -8,6 +8,7 @@ import com.sangmee.fashionpeople.data.dataSource.remote.FollowRemoteDataSourceIm
 import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.data.repository.FollowRepository
 import com.sangmee.fashionpeople.data.repository.FollowRepositoryImpl
+import com.sangmee.fashionpeople.util.SingleLiveEvent
 
 class FollowViewModel : ViewModel() {
     private val followRepository: FollowRepository by lazy {
@@ -20,6 +21,8 @@ class FollowViewModel : ViewModel() {
     val followings = MutableLiveData<List<FUser>>()
     val isFollowingsFollower = MutableLiveData<MutableMap<String, Boolean>>()
     val isFollowingsFollowing = MutableLiveData<MutableMap<String, Boolean>>()
+    val callActivity = SingleLiveEvent<String>()
+    val buttonState = MutableLiveData<Boolean>()
 
     fun callFollower() {
         //프로필 세팅
@@ -64,15 +67,20 @@ class FollowViewModel : ViewModel() {
         }
     }
 
-    fun updateFollowing(followingId : String) {
+    fun updateFollowing(followingId: String) {
         followRepository.updateFollowing(customId, followingId, success = {
             Log.d("ADD_FOLLOWING", "팔로잉 추가")
         }, failed = { Log.d("ADD_FOLLOWING", "error") })
     }
 
-    fun deleteFollowing(followingId : String) {
+    fun deleteFollowing(followingId: String) {
         followRepository.deleteFollowing(customId, followingId, success = {
             Log.d("DELETE_FOLLOWING", "팔로잉 삭제")
         }, failed = { Log.d("DELETE_FOLLOWING", "error") })
+    }
+
+    fun callOtherActivity(customId: String, btnState: Boolean) {
+        callActivity.value = customId
+        buttonState.value = btnState
     }
 }

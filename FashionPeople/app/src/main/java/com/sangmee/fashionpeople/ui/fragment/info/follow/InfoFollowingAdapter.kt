@@ -8,7 +8,7 @@ import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.databinding.ItemFollowingBinding
 
-class InfoFollowingAdapter(val setBtn: (String) -> Unit) :
+class InfoFollowingAdapter(val setBtn: (String) -> Unit, val callActivity: (String, Boolean) -> Unit) :
     RecyclerView.Adapter<InfoFollowingAdapter.InfoFollowingViewHolder>() {
 
     private val followList = arrayListOf<FUser>()
@@ -45,6 +45,10 @@ class InfoFollowingAdapter(val setBtn: (String) -> Unit) :
 
     fun setButton(id: String) {
         setBtn(id)
+    }
+
+    fun callOtherActivity(customId: String, btnState: Boolean){
+        callActivity(customId, btnState)
     }
 
     class InfoFollowingViewHolder(private val binding: ItemFollowingBinding) :

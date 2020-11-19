@@ -1,5 +1,6 @@
 package com.sangmee.fashionpeople.ui.fragment.info.follow
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,6 +14,7 @@ import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.observer.FollowViewModel
 import com.sangmee.fashionpeople.observer.InfoViewModel
+import com.sangmee.fashionpeople.ui.fragment.info.OtherActivity
 import kotlinx.android.synthetic.main.fragment_info_follow.*
 import java.util.*
 
@@ -21,7 +23,7 @@ class InfoFollowingFragment : Fragment() {
     private val infoVm by activityViewModels<InfoViewModel>()
     private val vm by activityViewModels<FollowViewModel>()
     private val followingAdapter by lazy {
-        InfoFollowingAdapter {
+        InfoFollowingAdapter({
             vm.isFollowingsFollowing.value?.let { isFollowings ->
                 isFollowings[it]?.let { isFollowing ->
                     isFollowings[it] = !isFollowing
@@ -33,16 +35,16 @@ class InfoFollowingFragment : Fragment() {
                 isFollowings[it]?.let { isFollowing ->
                     if (isFollowing) {
                         vm.deleteFollowing(it)
-                        infoVm.followingNum.value?.let { infoVm.followingNum.value = it-1 }
+                        infoVm.followingNum.value?.let { infoVm.followingNum.value = it - 1 }
                     } else {
                         vm.updateFollowing(it)
-                        infoVm.followingNum.value?.let { infoVm.followingNum.value = it+1 }
+                        infoVm.followingNum.value?.let { infoVm.followingNum.value = it + 1 }
                     }
                     isFollowings[it] = !isFollowing
                     vm.isFollowingsFollower.value = isFollowings
                 }
             }
-        }
+        }, { customId, btnState -> vm.callOtherActivity(customId, btnState) })
     }
 
     override fun onCreateView(
@@ -104,6 +106,11 @@ class InfoFollowingFragment : Fragment() {
         vm.isFollowingsFollowing.observe(viewLifecycleOwner, Observer {
             vm.isFollowingsFollowing.value?.let { followingAdapter.clearAndAddButtonType(it) }
         })
-
+        vm.callActivity.observe(viewLifecycleOwner, Observer {
+            val intent = Intent(context, OtherActivity::class.java)
+            intent.putExtra("customId", vm.callActivity.value!!)
+            vm.buttonState.value?.let { intent.putExtra("buttonState", it) }
+            startActivity(intent)
+        })
     }
 }
