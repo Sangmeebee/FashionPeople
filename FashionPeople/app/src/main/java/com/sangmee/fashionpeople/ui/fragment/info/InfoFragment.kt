@@ -47,7 +47,7 @@ class InfoFragment : Fragment() {
         viewModelCallback()
         vm.callProfile(vm.customId)
         //tablayout 세팅
-        viewPager.adapter = ViewPagerAdapter(this)
+        viewPager.adapter = ViewPagerAdapter(this, customId)
 
         TabLayoutMediator(tl_container, viewPager) { tab, position ->
             when (position) {

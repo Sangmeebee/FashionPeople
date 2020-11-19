@@ -14,15 +14,13 @@ class FeedImageViewModel : ViewModel() {
     private val feedImageRepository: FeedImageRepository by lazy {
         FeedImageRepositoryImpl(FeedImageRemoteDataSourceImpl())
     }
-    val customId = GlobalApplication.prefs.getString("custom_id", "empty")
     val feedImages = MutableLiveData<List<FeedImage>>()
 
-    fun callFeedImages() {
-        if (customId != "empty") {
-            feedImageRepository.getFeedImages(
-                customId,
-                success = { feedImages.value = it },
-                failed = { Log.d("fail", it) })
-        }
+    fun callFeedImages(userId: String) {
+        feedImageRepository.getFeedImages(
+            userId,
+            success = { feedImages.value = it },
+            failed = { Log.d("fail", it) })
     }
+
 }

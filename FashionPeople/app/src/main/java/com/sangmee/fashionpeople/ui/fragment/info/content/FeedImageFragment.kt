@@ -11,11 +11,11 @@ import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.observer.FeedImageViewModel
 import kotlinx.android.synthetic.main.fragment_feed_image.*
 
-class FeedImageFragment : Fragment() {
+class FeedImageFragment(private val userId: String) : Fragment() {
 
     private val vm by activityViewModels<FeedImageViewModel>()
     private val feedImageAdapter by lazy {
-        FeedImageAdapter(vm.customId)
+        FeedImageAdapter(userId)
     }
 
     override fun onCreateView(
@@ -28,7 +28,7 @@ class FeedImageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        vm.callFeedImages()
+        vm.callFeedImages(userId)
         viewModelCallback()
         setRecyclerView()
     }

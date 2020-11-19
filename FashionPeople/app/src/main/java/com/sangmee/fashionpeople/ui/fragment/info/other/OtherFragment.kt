@@ -15,6 +15,7 @@ import com.sangmee.fashionpeople.observer.FollowViewModel
 import com.sangmee.fashionpeople.observer.InfoViewModel
 import com.sangmee.fashionpeople.observer.OtherViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
+import com.sangmee.fashionpeople.ui.fragment.info.content.ViewPagerAdapter
 import com.sangmee.fashionpeople.ui.fragment.info.follow.FollowFragment
 import kotlinx.android.synthetic.main.fragment_info.*
 
@@ -61,7 +62,7 @@ class OtherFragment : Fragment() {
     }
 
     private fun setTabLayout() {
-        viewPager.adapter = OtherViewPagerAdapter(this)
+        viewPager.adapter = ViewPagerAdapter(this, customId!!)
 
         TabLayoutMediator(tl_container, viewPager) { tab, position ->
             when (position) {
