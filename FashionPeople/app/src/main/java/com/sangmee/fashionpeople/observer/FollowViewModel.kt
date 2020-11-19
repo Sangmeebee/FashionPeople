@@ -22,7 +22,6 @@ class FollowViewModel : ViewModel() {
     val isFollowingsFollower = MutableLiveData<MutableMap<String, Boolean>>()
     val isFollowingsFollowing = MutableLiveData<MutableMap<String, Boolean>>()
     val callActivity = SingleLiveEvent<String>()
-    val buttonState = MutableLiveData<Boolean>()
 
     fun callFollower() {
         //프로필 세팅
@@ -79,8 +78,7 @@ class FollowViewModel : ViewModel() {
         }, failed = { Log.d("DELETE_FOLLOWING", "error") })
     }
 
-    fun callOtherActivity(customId: String, btnState: Boolean) {
+    fun callOtherActivity(customId: String) {
         callActivity.value = customId
-        buttonState.value = btnState
     }
 }

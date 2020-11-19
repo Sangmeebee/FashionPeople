@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.sangmee.fashionpeople.data.dataSource.remote.FUserRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.repository.FUserRepository
 import com.sangmee.fashionpeople.data.repository.FUserRepositoryImpl
+import com.sangmee.fashionpeople.util.SingleLiveEvent
 
 class OtherViewModel : ViewModel() {
     private val fUserRepository: FUserRepository by lazy {
@@ -15,6 +16,8 @@ class OtherViewModel : ViewModel() {
     val userName = MutableLiveData<String>()
     val followerNum = MutableLiveData<Int>(0)
     val followingNum = MutableLiveData<Int>(0)
+    val isFollowing = MutableLiveData<Boolean>()
+    val followBtnEvent = SingleLiveEvent<Int>()
 
     fun callProfile(customId: String) {
         //프로필 세팅
@@ -24,5 +27,9 @@ class OtherViewModel : ViewModel() {
             followerNum.value = it.followerNum
             followingNum.value = it.followingNum
         }, failed = { Log.e("CALL_PROFILE_ERROR", it) })
+    }
+
+    fun clickFollowBtn(fragmentId : Int){
+        followBtnEvent.value = fragmentId
     }
 }

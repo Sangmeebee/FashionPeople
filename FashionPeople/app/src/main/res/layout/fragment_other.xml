@@ -6,16 +6,21 @@
     <data>
 
         <variable
-            name="vm"
+            name="otherVm"
             type="com.sangmee.fashionpeople.observer.OtherViewModel" />
+
+        <variable
+            name="infoVm"
+            type="com.sangmee.fashionpeople.observer.InfoViewModel" />
 
         <variable
             name="customId"
             type="String" />
 
         <variable
-            name="isFollowing"
-            type="Boolean" />
+            name="fragmentId"
+            type="Integer" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -34,7 +39,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             bind:setCustomId="@{customId}"
-            bind:setImageName="@{vm.profileImgName}" />
+            bind:setImageName="@{otherVm.profileImgName}" />
 
         <TextView
             android:id="@+id/tv_nickname"
@@ -42,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:fontFamily="@font/ygd_330"
-            android:text="@{vm.userName}"
+            android:text="@{otherVm.userName}"
             android:textColor="@color/colorBlack"
             android:textSize="18sp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -55,6 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="60dp"
             android:layout_marginTop="36dp"
+            android:onClick="@{() -> infoVm.callOtherActivity(0)}"
             android:orientation="horizontal"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/ll_following"
@@ -74,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:fontFamily="@font/ygd_310"
-                android:text="@{String.valueOf(vm.followerNum)}"
+                android:text="@{String.valueOf(otherVm.followerNum)}"
                 android:textColor="@color/colorBlack"
                 android:textSize="15sp" />
 
@@ -87,6 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
             android:layout_marginRight="60dp"
+            android:onClick="@{() -> infoVm.callOtherActivity(0)}"
             android:orientation="horizontal"
             app:layout_constraintLeft_toRightOf="@id/ll_follower"
             app:layout_constraintRight_toRightOf="parent"
@@ -106,7 +113,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:fontFamily="@font/ygd_310"
-                android:text="@{String.valueOf(vm.followingNum)}"
+                android:text="@{String.valueOf(otherVm.followingNum)}"
                 android:textColor="@color/colorBlack"
                 android:textSize="15sp" />
         </LinearLayout>
@@ -119,13 +126,14 @@
             android:layout_marginTop="30dp"
             android:background="@color/colorYellow"
             android:fontFamily="@font/ygd_330"
+            android:onClick="@{()->otherVm.clickFollowBtn(fragmentId)}"
             android:text="팔로우"
             android:textColor="@android:color/black"
             android:textSize="13sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ll_following"
-            bind:isGone="@{!isFollowing}" />
+            bind:isGone="@{otherVm.isFollowing}" />
 
         <Button
             android:id="@+id/btn_following"
@@ -134,13 +142,14 @@
             android:layout_marginTop="30dp"
             android:background="@color/colorWhite"
             android:fontFamily="@font/ygd_330"
+            android:onClick="@{()->otherVm.clickFollowBtn(fragmentId)}"
             android:text="팔로잉"
             android:textColor="@android:color/black"
             android:textSize="13sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ll_following"
-            bind:isGone="@{isFollowing}" />
+            bind:isGone="@{!otherVm.isFollowing}" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tl_container"

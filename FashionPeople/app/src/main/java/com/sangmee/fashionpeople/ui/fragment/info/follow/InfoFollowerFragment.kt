@@ -14,7 +14,8 @@ import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.observer.FollowViewModel
 import com.sangmee.fashionpeople.observer.InfoViewModel
-import com.sangmee.fashionpeople.ui.fragment.info.OtherActivity
+import com.sangmee.fashionpeople.ui.MainActivity
+import com.sangmee.fashionpeople.ui.fragment.info.other.OtherFragment
 import kotlinx.android.synthetic.main.fragment_info_follow.*
 import java.util.*
 
@@ -44,7 +45,7 @@ class InfoFollowerFragment : Fragment() {
                     vm.isFollowingsFollowing.value = isFollowings
                 }
             }
-        }, { customId, btnState -> vm.callOtherActivity(customId, btnState) })
+        }, { vm.callOtherActivity(it) })
     }
 
     override fun onCreateView(
@@ -107,10 +108,7 @@ class InfoFollowerFragment : Fragment() {
             vm.isFollowingsFollower.value?.let { followerAdapter.clearAndAddButtonType(it) }
         })
         vm.callActivity.observe(viewLifecycleOwner, Observer {
-            val intent = Intent(context, OtherActivity::class.java)
-            intent.putExtra("customId", vm.callActivity.value!!)
-            vm.buttonState.value?.let { intent.putExtra("buttonState", it) }
-            startActivity(intent)
+            (activity as MainActivity).replaceFragmentUseBackStack(OtherFragment.newInstance(it, 0))
         })
     }
 }

@@ -1,10 +1,11 @@
-package com.sangmee.fashionpeople.ui.fragment.info.content
+package com.sangmee.fashionpeople.ui.fragment.info.other
 
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.sangmee.fashionpeople.ui.fragment.info.content.FeedImageFragment
+import com.sangmee.fashionpeople.ui.fragment.info.content.SavedImageFragment
 
-class OtherViewPagerAdapter(fm: FragmentActivity) : FragmentStateAdapter(fm) {
+class OtherViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     override fun getItemCount() = 2
 
     override fun createFragment(position: Int): Fragment {
