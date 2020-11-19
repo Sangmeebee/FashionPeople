@@ -21,16 +21,15 @@ class InfoViewModel : ViewModel() {
     val callActivity = SingleLiveEvent<Int>()
     val errorMsg = MutableLiveData<String>()
 
-    fun callProfile() {
+    fun callProfile(userId: String) {
         //프로필 세팅
-        if (customId !== "empty") {
-            fUserRepository.getFUser(customId, success = {
-                profileImgName.value = it.profileImage
-                userName.value = it.name
-                followerNum.value = it.followerNum
-                followingNum.value = it.followingNum
-            }, failed = { errorMsg.value = it })
-        }
+        fUserRepository.getFUser(userId, success = {
+            profileImgName.value = it.profileImage
+            userName.value = it.name
+            followerNum.value = it.followerNum
+            followingNum.value = it.followingNum
+        }, failed = { errorMsg.value = it })
+
     }
 
     fun callOtherActivity(num: Int) {

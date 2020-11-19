@@ -45,7 +45,7 @@ class InfoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModelCallback()
-        vm.callProfile()
+        vm.callProfile(vm.customId)
         //tablayout 세팅
         viewPager.adapter = ViewPagerAdapter(this)
 
@@ -76,7 +76,7 @@ class InfoFragment : Fragment() {
     private fun viewModelCallback() {
 
         vm.callActivity.observe(viewLifecycleOwner, Observer {
-            (activity as MainActivity).replaceFragmentUseBackStack(FollowFragment.newInstance(it))
+            (activity as MainActivity).replaceFragmentUseBackStack(FollowFragment.newInstance(it, customId))
         })
     }
     companion object {

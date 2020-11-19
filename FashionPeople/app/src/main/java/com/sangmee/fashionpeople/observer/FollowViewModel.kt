@@ -23,47 +23,42 @@ class FollowViewModel : ViewModel() {
     val isFollowingsFollowing = MutableLiveData<MutableMap<String, Boolean>>()
     val callActivity = SingleLiveEvent<String>()
 
-    fun callFollower() {
-        //프로필 세팅
-        if (customId !== "empty") {
-            followRepository.getFollower(customId, success = {
-                val users = arrayListOf<FUser>()
-                val isFollowingMap = mutableMapOf<String, Boolean>()
-                for (follower in it) {
-                    follower.follower?.let { f ->
-                        users.add(f)
-                    }
-                    follower.follower!!.id?.let { id ->
-                        follower.isFollowing?.let { isFollowing ->
-                            isFollowingMap[id] = isFollowing
-                        }
+    fun callFollower(userId: String) {
+        followRepository.getFollower(userId, success = {
+            val users = arrayListOf<FUser>()
+            val isFollowingMap = mutableMapOf<String, Boolean>()
+            for (follower in it) {
+                follower.follower?.let { f ->
+                    users.add(f)
+                }
+                follower.follower!!.id?.let { id ->
+                    follower.isFollowing?.let { isFollowing ->
+                        isFollowingMap[id] = isFollowing
                     }
                 }
-                followers.value = users
-                isFollowingsFollower.value = isFollowingMap
-                Log.d("sangmin", isFollowingsFollower.value.toString())
-            }, failed = { Log.e("error", it) })
-        }
+            }
+            followers.value = users
+            isFollowingsFollower.value = isFollowingMap
+            Log.d("sangmin", isFollowingsFollower.value.toString())
+        }, failed = { Log.e("error", it) })
+
     }
 
-    fun callFollowing() {
-        //프로필 세팅
-        if (customId !== "empty") {
-            followRepository.getFollowing(customId, success = {
-                val users = arrayListOf<FUser>()
-                val isFollowingMap = mutableMapOf<String, Boolean>()
-                for (following in it) {
-                    following.following?.let { f ->
-                        users.add(f)
-                    }
-                    following.following!!.id?.let { id ->
-                        isFollowingMap[id] = true
-                    }
+    fun callFollowing(userId: String) {
+        followRepository.getFollowing(userId, success = {
+            val users = arrayListOf<FUser>()
+            val isFollowingMap = mutableMapOf<String, Boolean>()
+            for (following in it) {
+                following.following?.let { f ->
+                    users.add(f)
                 }
-                followings.value = users
-                isFollowingsFollowing.value = isFollowingMap
-            }, failed = { Log.e("error", it) })
-        }
+                following.following!!.id?.let { id ->
+                    isFollowingMap[id] = true
+                }
+            }
+            followings.value = users
+            isFollowingsFollowing.value = isFollowingMap
+        }, failed = { Log.e("error", it) })
     }
 
     fun updateFollowing(followingId: String) {

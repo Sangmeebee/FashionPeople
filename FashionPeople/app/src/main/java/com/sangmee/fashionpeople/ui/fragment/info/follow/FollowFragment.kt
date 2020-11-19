@@ -14,9 +14,11 @@ import com.sangmee.fashionpeople.observer.InfoViewModel
 import kotlinx.android.synthetic.main.fragment_follow.*
 
 private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
 
 class FollowFragment : Fragment() {
     private var fragmentId: Int? = null
+    private var userId: String? = null
     private lateinit var binding: FragmentFollowBinding
     private val vm by activityViewModels<InfoViewModel>()
 
@@ -24,6 +26,7 @@ class FollowFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             fragmentId = it.getInt(ARG_PARAM1)
+            userId = it.getString(ARG_PARAM2)
         }
     }
 
@@ -47,7 +50,7 @@ class FollowFragment : Fragment() {
     private fun setTabLayout() {
         //tablayout 세팅
         vp_follow.apply {
-            adapter = FollowViewPagerAdapter(this@FollowFragment)
+            adapter = FollowViewPagerAdapter(this@FollowFragment, userId!!)
         }
         fragmentId?.let { vp_follow.post { vp_follow.currentItem = it } }
 
@@ -61,10 +64,11 @@ class FollowFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(fragmentId: Int) =
+        fun newInstance(fragmentId: Int, userId: String) =
             FollowFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_PARAM1, fragmentId)
+                    putString(ARG_PARAM2, userId)
                 }
             }
     }

@@ -19,7 +19,7 @@ import com.sangmee.fashionpeople.ui.fragment.info.other.OtherFragment
 import kotlinx.android.synthetic.main.fragment_info_follow.*
 import java.util.*
 
-class InfoFollowerFragment : Fragment() {
+class InfoFollowerFragment(private val userId: String) : Fragment() {
 
     private val infoVm by activityViewModels<InfoViewModel>()
     private val vm by activityViewModels<FollowViewModel>()
@@ -59,7 +59,7 @@ class InfoFollowerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setRecyclerView()
-        vm.callFollower()
+        vm.callFollower(userId)
         viewModelCallback()
         et_userName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

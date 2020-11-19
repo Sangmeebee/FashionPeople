@@ -18,6 +18,7 @@ class OtherViewModel : ViewModel() {
     val followingNum = MutableLiveData<Int>(0)
     val isFollowing = MutableLiveData<Boolean>()
     val followBtnEvent = SingleLiveEvent<Int>()
+    val callActivity = SingleLiveEvent<Int>()
 
     fun callProfile(customId: String) {
         //프로필 세팅
@@ -31,5 +32,9 @@ class OtherViewModel : ViewModel() {
 
     fun clickFollowBtn(fragmentId : Int){
         followBtnEvent.value = fragmentId
+    }
+
+    fun callOtherActivity(num: Int) {
+        callActivity.value = num
     }
 }

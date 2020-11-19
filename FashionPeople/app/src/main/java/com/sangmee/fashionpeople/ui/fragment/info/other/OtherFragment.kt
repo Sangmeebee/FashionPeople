@@ -14,6 +14,8 @@ import com.sangmee.fashionpeople.databinding.FragmentOtherBinding
 import com.sangmee.fashionpeople.observer.FollowViewModel
 import com.sangmee.fashionpeople.observer.InfoViewModel
 import com.sangmee.fashionpeople.observer.OtherViewModel
+import com.sangmee.fashionpeople.ui.MainActivity
+import com.sangmee.fashionpeople.ui.fragment.info.follow.FollowFragment
 import kotlinx.android.synthetic.main.fragment_info.*
 
 private const val CUSTOM_ID = "param1"
@@ -76,6 +78,9 @@ class OtherFragment : Fragment() {
             } else {
                 btnForFollowing()
             }
+        })
+        otherVm.callActivity.observe(viewLifecycleOwner, Observer {
+            (activity as MainActivity).replaceFragmentUseBackStack(FollowFragment.newInstance(it, customId!!))
         })
     }
 
