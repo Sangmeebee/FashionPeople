@@ -7,7 +7,7 @@
 
         <variable
             name="otherVm"
-            type="com.sangmee.fashionpeople.observer.OtherViewModel" />
+            type="com.sangmee.fashionpeople.observer.InfoViewModel" />
 
         <variable
             name="customId"

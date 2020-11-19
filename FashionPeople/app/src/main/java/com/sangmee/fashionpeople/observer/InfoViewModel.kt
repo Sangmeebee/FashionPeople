@@ -1,5 +1,6 @@
 package com.sangmee.fashionpeople.observer
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sangmee.fashionpeople.data.GlobalApplication
@@ -19,7 +20,8 @@ class InfoViewModel : ViewModel() {
     val followerNum = MutableLiveData<Int>(0)
     val followingNum = MutableLiveData<Int>(0)
     val callActivity = SingleLiveEvent<Int>()
-    val errorMsg = MutableLiveData<String>()
+    val isFollowing = MutableLiveData<Boolean>()
+    val followBtnEvent = SingleLiveEvent<Int>()
 
     fun callProfile(userId: String) {
         //프로필 세팅
@@ -28,12 +30,16 @@ class InfoViewModel : ViewModel() {
             userName.value = it.name
             followerNum.value = it.followerNum
             followingNum.value = it.followingNum
-        }, failed = { errorMsg.value = it })
+        }, failed = { Log.e("CALL_PROFILE_ERROR", it) })
 
     }
 
     fun callOtherActivity(num: Int) {
         callActivity.value = num
+    }
+
+    fun clickFollowBtn(fragmentId: Int) {
+        followBtnEvent.value = fragmentId
     }
 }
 
