@@ -19,6 +19,9 @@ private const val ARG_PARAM2 = "param2"
 class FollowFragment : Fragment() {
     private var fragmentId: Int? = null
     private var userId: String? = null
+    private var followerNum: Int? = null
+    private var followingNum: Int? = null
+    private var userName: String? = null
     private lateinit var binding: FragmentFollowBinding
     private val vm by activityViewModels<InfoViewModel>()
 
@@ -27,6 +30,9 @@ class FollowFragment : Fragment() {
         arguments?.let {
             fragmentId = it.getInt(ARG_PARAM1)
             userId = it.getString(ARG_PARAM2)
+            userName = vm.userName.value
+            followerNum = vm.followerNum.value
+            followingNum = vm.followingNum.value
         }
     }
 
@@ -38,13 +44,14 @@ class FollowFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_follow, container, false)?.apply {
             binding = DataBindingUtil.bind(this)!!
             binding.lifecycleOwner = viewLifecycleOwner
-            binding.vm = vm
+            binding.userName = userName
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setTabLayout()
+
     }
 
     private fun setTabLayout() {
@@ -57,8 +64,8 @@ class FollowFragment : Fragment() {
         TabLayoutMediator(tl_container, vp_follow) { tab, position ->
             when (position) {
                 0 -> tab.text =
-                    "팔로워 ${vm.followerNum.value}명"
-                else -> tab.text = "팔로잉 ${vm.followingNum.value}명"
+                    "팔로워 ${followerNum}명"
+                else -> tab.text = "팔로잉 ${followingNum}명"
             }
         }.attach()
     }

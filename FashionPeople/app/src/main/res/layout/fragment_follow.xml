@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
-            name="vm"
-            type="com.sangmee.fashionpeople.observer.InfoViewModel" />
+            name="userName"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,9 +26,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:text="@{vm.userName}"
                 android:fontFamily="@font/ygd_320"
                 android:gravity="center"
+                android:text="@{userName}"
                 android:textColor="@color/colorBlack"
                 android:textSize="18sp" />
         </androidx.appcompat.widget.Toolbar>
@@ -44,7 +45,7 @@
             app:tabPaddingTop="15dp"
             app:tabSelectedTextColor="@android:color/black"
             app:tabTextAppearance="@style/tab_text"
-            app:tabTextColor="@android:color/darker_gray"/>
+            app:tabTextColor="@android:color/darker_gray" />
 
         <View
             android:layout_width="match_parent"
