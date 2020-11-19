@@ -3,7 +3,6 @@ package com.sangmee.fashionpeople.observer
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.data.dataSource.remote.FeedImageRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.data.repository.FeedImageRepository
@@ -19,8 +18,11 @@ class FeedImageViewModel : ViewModel() {
     fun callFeedImages(userId: String) {
         feedImageRepository.getFeedImages(
             userId,
-            success = { feedImages.value = it },
-            failed = { Log.d("fail", it) })
+            success = {
+                feedImages.value = it
+                Log.d("FEED_IMAGE_LOAD_SUCCESS", "피드이미지 불러오기 성공")
+            },
+            failed = { Log.d("FEED_IMAGE_LOAD_FAIL", it) })
     }
 
 }

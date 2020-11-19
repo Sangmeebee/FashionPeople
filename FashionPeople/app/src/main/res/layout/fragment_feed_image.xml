@@ -1,18 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="isEmpty"
+            type="Boolean" />
+    </data>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_user_image"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:layout_constraintTop_toTopOf="parent"
-        app:spanCount="3"
-        tools:listitem="@layout/item_feed_image" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent">
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_user_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintTop_toTopOf="parent"
+            app:spanCount="3"
+            tools:listitem="@layout/item_feed_image"
+            bind:isGone="@{isEmpty}"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="게시물 없음"
+            android:fontFamily="@font/ygd_330"
+            android:textSize="30dp"
+            android:gravity="center"
+            bind:isGone="@{!isEmpty}" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
