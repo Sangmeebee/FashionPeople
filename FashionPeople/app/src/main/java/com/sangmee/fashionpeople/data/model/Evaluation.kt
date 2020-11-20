@@ -10,5 +10,5 @@ data class Evaluation(
     @SerializedName("evaluationPersonId")
     val evaluationPersonId: String?,
     @SerializedName("score")
-    val score: Float?
+    val score: Float
 ) : Parcelable

@@ -1,18 +1,22 @@
 package com.sangmee.fashionpeople.data.model
 
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.android.parcel.Parcelize
 
-@Parcelize
 data class Comment(
     @SerializedName("comment")
-    val comment: String?,
-    @SerializedName("id")
-    val id: Int?,
-    @SerializedName("timeStamp")
-    val timeStamp: String?,
-    @SerializedName("userId")
-    val userId: String?
-) : Parcelable
+    val content: String?,
+    @SerializedName("commentPersonId")
+    val commentPersonId: String?,
+    @SerializedName("currentDateTime")
+    val currentDateTime: String?,
+    @SerializedName("imageId")
+    val imageId: String?
+) {
+    constructor(content: String?, commentPersonId: String?, imageId: String?) : this(
+        content,
+        commentPersonId,
+        null,
+        imageId
+    )
+}

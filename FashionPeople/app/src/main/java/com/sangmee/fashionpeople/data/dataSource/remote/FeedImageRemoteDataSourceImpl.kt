@@ -32,4 +32,8 @@ class FeedImageRemoteDataSourceImpl : FeedImageRemoteDataSource {
     override fun updateImageScore(imageName: String, evaluation: Evaluation): Completable {
         return RetrofitClient.getFeedImageService().updateImageScore(imageName, evaluation)
     }
+
+    override fun getFollowingFeedImages(id: String): Single<List<FeedImage>> {
+        return RetrofitClient.getFeedImageService().getFollowingFeedImages(id)
+    }
 }

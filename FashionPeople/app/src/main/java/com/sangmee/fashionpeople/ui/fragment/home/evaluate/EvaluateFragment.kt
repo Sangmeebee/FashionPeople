@@ -3,8 +3,6 @@ package com.sangmee.fashionpeople.ui.fragment.home.evaluate
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,23 +15,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.databinding.DialogBaseBinding
 import com.sangmee.fashionpeople.databinding.FragmentEvaluateBinding
 import com.sangmee.fashionpeople.data.GlobalApplication
-import com.sangmee.fashionpeople.data.dataSource.local.FUserLocalDataSourceImpl
-import com.sangmee.fashionpeople.data.dataSource.remote.FUserRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.dataSource.remote.FeedImageRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.FeedImage
-import com.sangmee.fashionpeople.data.repository.FUserRepositoryImpl
 import com.sangmee.fashionpeople.data.repository.FeedImageRepositoryImpl
-import com.sangmee.fashionpeople.ui.fragment.home.HomeFeedAdapter
+import com.sangmee.fashionpeople.ui.fragment.comment.CommentDialogFragment
+import com.sangmee.fashionpeople.ui.fragment.grade.GradeDialogFragment
 
-class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
+class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
 
     private lateinit var binding: FragmentEvaluateBinding
-    val pref = GlobalApplication.prefs
+    private val pref = GlobalApplication.prefs
     lateinit var customId: String
 
     private val viewModel: EvaluateViewModel by lazy {
@@ -46,7 +41,7 @@ class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
         }).get(EvaluateViewModel::class.java)
     }
 
-    private lateinit var homeFeedAdapter: HomeFeedAdapter
+    private lateinit var evaluateFeedAdapter: EvaluateFeedAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,15 +62,14 @@ class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
 
     private fun setId() {
         customId = pref.getString("custom_id", "empty")
-
         viewModel.idSubject.onNext(customId)
     }
 
     private fun initViewPager() {
-        homeFeedAdapter = HomeFeedAdapter(myId = customId)
-        homeFeedAdapter.onClickListener = this@EvaluateFragment
+        evaluateFeedAdapter = EvaluateFeedAdapter(myId = customId)
+        evaluateFeedAdapter.onClickListener = this@EvaluateFragment
         binding.vpEvaluate.apply {
-            adapter = homeFeedAdapter
+            adapter = evaluateFeedAdapter
             orientation = ViewPager2.ORIENTATION_VERTICAL
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
@@ -89,13 +83,13 @@ class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
     private fun initObserve() {
         viewModel.feedImages.observe(this@EvaluateFragment, Observer {
             it?.let {
-                homeFeedAdapter.setFeedImages(it)
+                evaluateFeedAdapter.setFeedImages(it)
             }
         })
 
         viewModel.nowPage.observe(this@EvaluateFragment, Observer {
             it?.let {
-                if (homeFeedAdapter.itemCount - 1 > binding.vpEvaluate.currentItem) {
+                if (evaluateFeedAdapter.itemCount - 1 > binding.vpEvaluate.currentItem) {
                     binding.vpEvaluate.currentItem = it
                 }
             }
@@ -103,7 +97,7 @@ class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
 
         viewModel.updateFeedImages.observe(this@EvaluateFragment, Observer {
             it?.let {
-                homeFeedAdapter.updateItem(it)
+                evaluateFeedAdapter.updateItem(it)
             }
         })
 
@@ -122,7 +116,6 @@ class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
             window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             alertDialog.show()
 
-
             binding.tvDialogMessage.text = "평가가 완료되었습니다\n 사진을 저장하시겠습니까?"
             binding.btnOk.setOnClickListener {
                 viewModel.setNextPage()
@@ -133,6 +126,16 @@ class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
                 alertDialog.dismiss()
             }
         })
+    }
+
+    private fun showCommentFragment(imageName: String) {
+        CommentDialogFragment.newInstance(imageName)
+            .show(childFragmentManager, CommentDialogFragment.TAG)
+    }
+
+    private fun showGradeFragment(feedImage: FeedImage) {
+        GradeDialogFragment.newInstance(feedImage)
+            .show(childFragmentManager, GradeDialogFragment.TAG)
     }
 
     override fun onDestroy() {
@@ -148,5 +151,13 @@ class EvaluateFragment : Fragment(), HomeFeedAdapter.OnClickListener {
     ) {
         ratingBar?.rating = rating
         feedImage.imageName?.let { viewModel.ratingClick(it, rating) }
+    }
+
+    override fun onClickComment(imageName: String) {
+        showCommentFragment(imageName)
+    }
+
+    override fun onClickGrade(feedImage: FeedImage) {
+        showGradeFragment(feedImage)
     }
 }

@@ -27,4 +27,7 @@
     <string name="new_text">New</string>
     <string name="hot_text">HOT</string>
     <string name="following_text">팔로잉</string>
+    <string name="no_comment">댓글이 없어요!</string>
+    <string name="request_comment">댓글을 작성해주세요.</string>
+    <string name="comment_title">댓글 %d개</string>
 </resources>

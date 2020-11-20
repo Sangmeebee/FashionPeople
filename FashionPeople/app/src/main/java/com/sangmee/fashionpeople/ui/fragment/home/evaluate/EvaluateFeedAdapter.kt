@@ -1,7 +1,6 @@
-package com.sangmee.fashionpeople.ui.fragment.home
+package com.sangmee.fashionpeople.ui.fragment.home.evaluate
 
 import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.RatingBar
@@ -9,26 +8,40 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sangmee.fashionpeople.R
-import com.sangmee.fashionpeople.databinding.ItemHomeFeedBinding
 import com.sangmee.fashionpeople.data.model.FeedImage
-import kotlinx.android.synthetic.main.item_home_feed.view.*
+import com.sangmee.fashionpeople.databinding.ItemEvaluateFeedBinding
+import kotlinx.android.synthetic.main.item_evaluate_feed.view.*
 
-class HomeFeedAdapter(private val myId: String) : RecyclerView.Adapter<HomeFeedViewHolder>() {
+
+class EvaluateFeedAdapter(private val myId: String) : RecyclerView.Adapter<EvaluateFeedViewHolder>() {
 
     private val items = mutableListOf<FeedImage>()
     var onClickListener: OnClickListener? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeFeedViewHolder {
-        val binding = DataBindingUtil.inflate<ItemHomeFeedBinding>(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EvaluateFeedViewHolder {
+        val binding = DataBindingUtil.inflate<ItemEvaluateFeedBinding>(
             LayoutInflater.from(parent.context),
-            R.layout.item_home_feed,
+            R.layout.item_evaluate_feed,
             parent,
             false
         )
-        val viewHolder = HomeFeedViewHolder(binding, myId)
-        viewHolder.itemView.rb_home_feed.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
+        val viewHolder = EvaluateFeedViewHolder(binding, myId)
+
+        viewHolder.itemView.rb_evaluate_feed.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
             items[viewHolder.adapterPosition].let {
                 onClickListener?.onClickRatingBar(ratingBar, rating, fromUser, it)
+            }
+        }
+        viewHolder.itemView.ll_comment.setOnClickListener {
+            items[viewHolder.adapterPosition].let {
+                it.imageName?.let { imageName ->
+                    onClickListener?.onClickComment(imageName)
+                }
+            }
+        }
+        viewHolder.itemView.ll_rating_evaluate_average.setOnClickListener {
+            items[viewHolder.adapterPosition].let {
+                onClickListener?.onClickGrade(it)
             }
         }
 
@@ -36,7 +49,7 @@ class HomeFeedAdapter(private val myId: String) : RecyclerView.Adapter<HomeFeedV
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    override fun onBindViewHolder(holder: HomeFeedViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: EvaluateFeedViewHolder, position: Int) {
         holder.bind(items[position])
     }
 
@@ -49,21 +62,11 @@ class HomeFeedAdapter(private val myId: String) : RecyclerView.Adapter<HomeFeedV
         notifyDataSetChanged()
     }
 
-    fun removeImage(feedImage: FeedImage) {
-        for (i in items.indices) {
-            if (items[i].imageName == feedImage.imageName) {
-                items.remove(items[i])
-                notifyItemRemoved(i)
-            }
-        }
-    }
-
     fun updateItem(feedImage: FeedImage) {
         for (index in items.indices) {
             if (items[index].imageName == feedImage.imageName) {
                 items[index] = feedImage
                 notifyItemChanged(index)
-                Log.d("seunghwan", "aaa")
             }
         }
     }
@@ -75,6 +78,10 @@ class HomeFeedAdapter(private val myId: String) : RecyclerView.Adapter<HomeFeedV
             fromUser: Boolean,
             feedImage: FeedImage
         )
+
+        fun onClickComment(imageName: String)
+        fun onClickGrade(feedImage: FeedImage)
     }
+
 
 }

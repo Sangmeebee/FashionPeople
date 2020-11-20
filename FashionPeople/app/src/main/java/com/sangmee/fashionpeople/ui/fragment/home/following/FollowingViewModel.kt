@@ -1,13 +1,13 @@
-package com.sangmee.fashionpeople.ui.fragment.home.evaluate
+package com.sangmee.fashionpeople.ui.fragment.home.following
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.sangmee.fashionpeople.data.service.retrofit.RetrofitClient
 import com.sangmee.fashionpeople.data.model.Evaluation
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.data.repository.FeedImageRepository
+import com.sangmee.fashionpeople.data.service.retrofit.RetrofitClient
 import com.sangmee.fashionpeople.util.SingleLiveEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -15,7 +15,7 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 
-class EvaluateViewModel(
+class FollowingViewModel(
     private val feedImageRepository: FeedImageRepository
 ) : ViewModel() {
 
@@ -33,10 +33,6 @@ class EvaluateViewModel(
     val userId: LiveData<String>
         get() = _userId
 
-    private val _nowPage = MutableLiveData<Int>()
-    val nowPage: LiveData<Int>
-        get() = _nowPage
-
     private val _evaluateMessage = SingleLiveEvent<Unit>()
     val evaluateMessage: LiveData<Unit>
         get() = _evaluateMessage
@@ -48,13 +44,14 @@ class EvaluateViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 _userId.value = it
-                getOtherImages(it)
+                getFollowingImages(it)
             }, {
             }).addTo(compositeDisposable)
     }
 
-    private fun getOtherImages(id: String) {
-        feedImageRepository.getOtherImages(id)
+
+    private fun getFollowingImages(id: String) {
+        feedImageRepository.getFollowingFeedImages(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -78,10 +75,6 @@ class EvaluateViewModel(
             }, {
                 Log.d("seunghwan", it.toString())
             }).addTo(compositeDisposable)
-    }
-
-    fun setNextPage() {
-        _nowPage.value = _nowPage.value?.plus(1)
     }
 
     fun clearDisposable() {
