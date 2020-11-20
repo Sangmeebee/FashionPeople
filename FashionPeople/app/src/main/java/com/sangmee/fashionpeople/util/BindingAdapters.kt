@@ -20,6 +20,7 @@ import com.sangmee.fashionpeople.data.model.Comment
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.ui.fragment.home.TagRecyclerDecoration
 import com.sangmee.fashionpeople.ui.fragment.home.TagRecyclerViewAdapter
+import com.skydoves.progressview.ProgressView
 
 
 @RequiresApi(Build.VERSION_CODES.M)
@@ -189,5 +190,26 @@ fun setRatingText(appCompatTextView: AppCompatTextView, feedImage: FeedImage?) {
 
 @BindingAdapter("setGradeRating")
 fun setGradeRating(appCompatRatingBar: AppCompatRatingBar, feedImage: FeedImage?) {
+    var average = 0f
+    feedImage?.let { feedImage ->
+        feedImage.evaluations?.let {
+            average = getRatingFromEvaluations(it)
+        }
+    }
+
+    appCompatRatingBar.rating = average
+}
+
+@BindingAdapter("setEvaluateProgress")
+fun setEvaluateProgress(progressView: ProgressView, feedImage: FeedImage?) {
+    var total = 0
+    feedImage?.let { image ->
+        image.evaluations?.let { list ->
+            total = list.size
+        }
+
+    }
+
+
 
 }

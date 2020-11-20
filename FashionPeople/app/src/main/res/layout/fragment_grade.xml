@@ -68,7 +68,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -85,7 +84,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="16dp"
                     android:numStars="5"
                     android:rating="4.5"
                     android:stepSize="0.5"
@@ -94,11 +92,14 @@
 
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:orientation="vertical">
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical"
+                android:paddingHorizontal="4dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -124,6 +125,7 @@
 
 
                     <com.skydoves.progressview.ProgressView
+                        android:id="@+id/progress1"
                         android:layout_width="0dp"
                         android:layout_height="35dp"
                         android:layout_weight="1"
@@ -140,9 +142,11 @@
                         app:progressView_labelSpace="10dp"
                         app:progressView_labelText="1점"
                         app:progressView_labelTypeface="bold"
+                        app:progressView_max="100"
                         app:progressView_padding="1dp"
                         app:progressView_progress="40"
-                        app:progressView_radius="12dp" />
+                        app:progressView_radius="12dp"
+                        app:setEvaluateProgress="@{feedImage}" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -169,6 +173,7 @@
 
 
                     <com.skydoves.progressview.ProgressView
+                        android:id="@+id/progress2"
                         android:layout_width="0dp"
                         android:layout_height="35dp"
                         android:layout_weight="1"
@@ -185,6 +190,7 @@
                         app:progressView_labelSpace="10dp"
                         app:progressView_labelText="1점"
                         app:progressView_labelTypeface="bold"
+                        app:progressView_max="100"
                         app:progressView_padding="1dp"
                         app:progressView_progress="40"
                         app:progressView_radius="12dp" />
@@ -214,6 +220,7 @@
 
 
                     <com.skydoves.progressview.ProgressView
+                        android:id="@+id/progress3"
                         android:layout_width="0dp"
                         android:layout_height="35dp"
                         android:layout_weight="1"
@@ -230,6 +237,7 @@
                         app:progressView_labelSpace="10dp"
                         app:progressView_labelText="1점"
                         app:progressView_labelTypeface="bold"
+                        app:progressView_max="100"
                         app:progressView_padding="1dp"
                         app:progressView_progress="40"
                         app:progressView_radius="12dp" />
@@ -259,6 +267,7 @@
 
 
                     <com.skydoves.progressview.ProgressView
+                        android:id="@+id/progress4"
                         android:layout_width="0dp"
                         android:layout_height="35dp"
                         android:layout_weight="1"
@@ -275,6 +284,7 @@
                         app:progressView_labelSpace="10dp"
                         app:progressView_labelText="1점"
                         app:progressView_labelTypeface="bold"
+                        app:progressView_max="100"
                         app:progressView_padding="1dp"
                         app:progressView_progress="40"
                         app:progressView_radius="12dp" />
@@ -305,6 +315,7 @@
 
 
                     <com.skydoves.progressview.ProgressView
+                        android:id="@+id/progress5"
                         android:layout_width="0dp"
                         android:layout_height="35dp"
                         android:layout_weight="1"
@@ -321,6 +332,7 @@
                         app:progressView_labelSpace="10dp"
                         app:progressView_labelText="1점"
                         app:progressView_labelTypeface="bold"
+                        app:progressView_max="100"
                         app:progressView_padding="1dp"
                         app:progressView_progress="40"
                         app:progressView_radius="12dp" />

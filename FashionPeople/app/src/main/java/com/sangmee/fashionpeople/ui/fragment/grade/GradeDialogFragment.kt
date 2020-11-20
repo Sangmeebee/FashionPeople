@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.sangmee.fashionpeople.R
+import com.sangmee.fashionpeople.data.model.Evaluation
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.databinding.FragmentGradeBinding
 
@@ -19,6 +20,7 @@ import com.sangmee.fashionpeople.databinding.FragmentGradeBinding
 class GradeDialogFragment : BottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentGradeBinding
+    private lateinit var evaluationList: List<Evaluation>
 
     private val viewModel: GradeViewModel by lazy {
         ViewModelProvider(this, object : ViewModelProvider.Factory {
@@ -44,9 +46,69 @@ class GradeDialogFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        arguments?.getParcelable<FeedImage>(IMAGE_NAME)?.let {
-            binding.feedImage = it
+        arguments?.getParcelable<FeedImage>(IMAGE_NAME)?.let { feedImage ->
+            binding.feedImage = feedImage
+            feedImage.evaluations?.let {
+                evaluationList = it
+            }
         }
+        setProgressView()
+    }
+
+    private fun setProgressView() {
+        val total = evaluationList.size
+
+        var progressValue1 = 0
+        var progressValue2 = 0
+        var progressValue3 = 0
+        var progressValue4 = 0
+        var progressValue5 = 0
+
+        if (evaluationList.isNotEmpty()) {
+            for (i in evaluationList.indices) {
+                when (evaluationList[i].score) {
+                    1f -> {
+                        progressValue1++
+                    }
+                    2f -> {
+                        progressValue2++
+                    }
+                    3f -> {
+                        progressValue3++
+                    }
+                    4f -> {
+                        progressValue4++
+                    }
+                    5f -> {
+                        progressValue5++
+                    }
+                }
+            }
+            binding.progress1.progress = (progressValue1 / total * 100).toFloat() + 5
+            binding.progress1.labelText = "${progressValue1}명"
+            binding.progress2.progress = (progressValue2 / total * 100).toFloat() + 5
+            binding.progress2.labelText = "${progressValue2}명"
+            binding.progress3.progress = (progressValue3 / total * 100).toFloat() + 5
+            binding.progress3.labelText = "${progressValue3}명"
+            binding.progress4.progress = (progressValue4 / total * 100).toFloat() + 5
+            binding.progress4.labelText = "${progressValue4}명"
+            binding.progress5.progress = (progressValue5 / total * 100).toFloat() + 5
+            binding.progress5.labelText = "${progressValue5}명"
+        } else {
+            binding.progress1.progress = 5f
+            binding.progress1.labelText = "0명"
+            binding.progress2.progress = 5f
+            binding.progress2.labelText = "0명"
+            binding.progress3.progress = 5f
+            binding.progress3.labelText = "0명"
+            binding.progress4.progress = 5f
+            binding.progress4.labelText = "0명"
+            binding.progress5.progress = 5f
+            binding.progress5.labelText = "0명"
+        }
+
+
+
 
     }
 
