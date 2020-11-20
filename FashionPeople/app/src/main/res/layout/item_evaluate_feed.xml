@@ -94,14 +94,17 @@
             toolsNs:visibility="visible" />
 
         <LinearLayout
-            android:id="@+id/ll_rating_average"
+            android:id="@+id/ll_rating_evaluate_average"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/iv_profile_evaluate_feed">
+            app:layout_constraintTop_toTopOf="@id/iv_profile_evaluate_feed"
+            android:visibility="gone"
+            app:myId="@{myId}"
+            app:setVisibleLinearLayout="@{feedImage}">
 
             <ImageView
                 android:id="@+id/iv_star"
@@ -109,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
                 android:layout_marginRight="4dp"
-                android:src="@drawable/ic_star_yellow_24"/>
+                android:src="@drawable/ic_star_yellow_24" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_rating"
@@ -166,11 +169,11 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_tags_home_feed"
+            setFeedImageTags="@{feedImage}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:scrollbars="vertical"
-            setFeedImageTags="@{feedImage}"
             app:layout_constraintBottom_toTopOf="@id/rb_evaluate_feed"
             app:layout_constraintStart_toStartOf="parent" />
         <!--        <TextView
