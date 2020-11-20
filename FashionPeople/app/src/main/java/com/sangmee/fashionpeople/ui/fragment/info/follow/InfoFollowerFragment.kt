@@ -1,6 +1,5 @@
 package com.sangmee.fashionpeople.ui.fragment.info.follow
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -27,6 +26,7 @@ class InfoFollowerFragment(private val userId: String) : Fragment() {
         InfoFollowerAdapter({
             vm.isFollowingsFollower.value?.let { isFollowings ->
                 isFollowings[it]?.let { isFollowing ->
+                    isFollowings[it] = !isFollowing
                     if (isFollowing) {
                         vm.deleteFollowing(it)
                         infoVm.followingNum.value?.let { infoVm.followingNum.value = it - 1 }
@@ -34,9 +34,8 @@ class InfoFollowerFragment(private val userId: String) : Fragment() {
                         vm.updateFollowing(it)
                         infoVm.followingNum.value?.let { infoVm.followingNum.value = it + 1 }
                     }
-                    isFollowings[it] = !isFollowing
+                    vm.isFollowingsFollower.value = isFollowings
                 }
-                vm.isFollowingsFollower.value = isFollowings
             }
 
             vm.isFollowingsFollowing.value?.let { isFollowings ->

@@ -43,8 +43,8 @@ class FollowFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_follow, container, false)?.apply {
             binding = DataBindingUtil.bind(this)!!
-            binding.lifecycleOwner = viewLifecycleOwner
             binding.userName = userName
+            binding.lifecycleOwner = viewLifecycleOwner
         }
     }
 
@@ -55,12 +55,12 @@ class FollowFragment : Fragment() {
     }
 
     private fun setTabLayout() {
-        //tablayout 세팅
+
         vp_follow.apply {
             adapter = FollowViewPagerAdapter(this@FollowFragment, userId!!)
         }
-        fragmentId?.let { vp_follow.post { vp_follow.currentItem = it } }
 
+        //tablayout 세팅
         TabLayoutMediator(tl_container, vp_follow) { tab, position ->
             when (position) {
                 0 -> tab.text =
@@ -68,6 +68,11 @@ class FollowFragment : Fragment() {
                 else -> tab.text = "팔로잉 ${followingNum}명"
             }
         }.attach()
+
+        //tab 몇번째 화면인지 세팅
+        fragmentId?.let {
+            binding.vpFollow.post { binding.vpFollow.currentItem = it }
+        }
     }
 
     companion object {

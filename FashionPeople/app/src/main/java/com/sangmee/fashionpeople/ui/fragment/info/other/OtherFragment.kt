@@ -1,6 +1,7 @@
 package com.sangmee.fashionpeople.ui.fragment.info.other
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +34,8 @@ class OtherFragment : Fragment() {
         arguments?.let {
             customId = it.getString(CUSTOM_ID)
             fragmentId = it.getInt(FRAGMENT_ID)
+            Log.d("FSP_CUSTOM_ID", customId.toString())
+            Log.d("FSP_FRAGMENT_ID", fragmentId.toString())
             fragmentId?.let { fragmentId -> findIsFollowing(fragmentId) }
         }
     }
@@ -112,8 +115,8 @@ class OtherFragment : Fragment() {
                         infoVm.followerNum.value?.let { infoVm.followerNum.value = it + 1 }
                     }
                     isFollowings[customId] = !isFollowing
+                    followVm.isFollowingsFollower.value = isFollowings
                 }
-                followVm.isFollowingsFollower.value = isFollowings
             }
 
             followVm.isFollowingsFollowing.value?.let { isFollowings ->
@@ -131,12 +134,6 @@ class OtherFragment : Fragment() {
             followVm.isFollowingsFollowing.value?.let { isFollowings ->
                 isFollowings[customId]?.let { isFollowing ->
                     isFollowings[customId] = !isFollowing
-                }
-                followVm.isFollowingsFollowing.value = isFollowings
-            }
-
-            followVm.isFollowingsFollower.value?.let { isFollowings ->
-                isFollowings[customId]?.let { isFollowing ->
                     if (isFollowing) {
                         followVm.deleteFollowing(customId)
                         infoVm.followerNum.value?.let { infoVm.followerNum.value = it - 1 }
@@ -144,6 +141,12 @@ class OtherFragment : Fragment() {
                         followVm.updateFollowing(customId)
                         infoVm.followerNum.value?.let { infoVm.followerNum.value = it + 1 }
                     }
+                    followVm.isFollowingsFollowing.value = isFollowings
+                }
+            }
+
+            followVm.isFollowingsFollower.value?.let { isFollowings ->
+                isFollowings[customId]?.let { isFollowing ->
                     isFollowings[customId] = !isFollowing
                     followVm.isFollowingsFollower.value = isFollowings
                 }

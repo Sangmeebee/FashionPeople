@@ -27,12 +27,6 @@ class InfoFollowingFragment(private val userId: String) : Fragment() {
             vm.isFollowingsFollowing.value?.let { isFollowings ->
                 isFollowings[it]?.let { isFollowing ->
                     isFollowings[it] = !isFollowing
-                }
-                vm.isFollowingsFollowing.value = isFollowings
-            }
-
-            vm.isFollowingsFollower.value?.let { isFollowings ->
-                isFollowings[it]?.let { isFollowing ->
                     if (isFollowing) {
                         vm.deleteFollowing(it)
                         infoVm.followingNum.value?.let { infoVm.followingNum.value = it - 1 }
@@ -40,6 +34,12 @@ class InfoFollowingFragment(private val userId: String) : Fragment() {
                         vm.updateFollowing(it)
                         infoVm.followingNum.value?.let { infoVm.followingNum.value = it + 1 }
                     }
+                    vm.isFollowingsFollowing.value = isFollowings
+                }
+            }
+
+            vm.isFollowingsFollower.value?.let { isFollowings ->
+                isFollowings[it]?.let { isFollowing ->
                     isFollowings[it] = !isFollowing
                     vm.isFollowingsFollower.value = isFollowings
                 }
