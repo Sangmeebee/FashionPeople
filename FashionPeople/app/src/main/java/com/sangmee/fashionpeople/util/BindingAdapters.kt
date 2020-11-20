@@ -10,6 +10,7 @@ import android.widget.LinearLayout
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.AppCompatRatingBar
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -92,7 +93,9 @@ fun setVisibleEmptyView(textView: TextView, comments: List<Comment>?) {
 
 @BindingAdapter("setCommentTitle")
 fun setCommentTitle(textView: TextView, comments: List<Comment>?) {
-    comments?.let {
+    if (comments.isNullOrEmpty()) {
+        textView.text = "댓글 0개"
+    } else {
         textView.text = textView.context.getString(R.string.comment_title, comments.size)
     }
 }
@@ -182,4 +185,9 @@ fun setRatingText(appCompatTextView: AppCompatTextView, feedImage: FeedImage?) {
     val text = "$average"
 
     appCompatTextView.text = text
+}
+
+@BindingAdapter("setGradeRating")
+fun setGradeRating(appCompatRatingBar: AppCompatRatingBar, feedImage: FeedImage?) {
+
 }
