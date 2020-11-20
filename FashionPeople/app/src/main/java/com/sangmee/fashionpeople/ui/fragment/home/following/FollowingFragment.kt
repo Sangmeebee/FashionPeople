@@ -23,10 +23,12 @@ import com.sangmee.fashionpeople.data.repository.FeedImageRepositoryImpl
 import com.sangmee.fashionpeople.databinding.DialogBaseBinding
 import com.sangmee.fashionpeople.databinding.FragmentFollowingBinding
 import com.sangmee.fashionpeople.ui.fragment.comment.CommentDialogFragment
+import com.sangmee.fashionpeople.ui.fragment.grade.GradeDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.home.evaluate.EvaluateFeedAdapter
 import com.sangmee.fashionpeople.ui.fragment.home.evaluate.EvaluateViewModel
 
-class FollowingFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
+class FollowingFragment : Fragment(), EvaluateFeedAdapter.OnClickListener,
+    FollowingFeedAdapter.OnClickListener {
 
     private lateinit var binding: FragmentFollowingBinding
     private val pref = GlobalApplication.prefs
@@ -125,6 +127,10 @@ class FollowingFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
             .show(childFragmentManager, CommentDialogFragment.TAG)
     }
 
+    private fun showGradeFragment(feedImage: FeedImage) {
+        GradeDialogFragment.newInstance(feedImage)
+            .show(childFragmentManager, GradeDialogFragment.TAG)
+    }
 
     override fun onDestroy() {
         viewModel.clearDisposable()
@@ -144,4 +150,11 @@ class FollowingFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
     override fun onClickComment(imageName: String) {
         showCommentFragment(imageName)
     }
+
+    override fun onClickGrade(feedImage: FeedImage) {
+        showGradeFragment(feedImage)
+    }
+
+
+
 }

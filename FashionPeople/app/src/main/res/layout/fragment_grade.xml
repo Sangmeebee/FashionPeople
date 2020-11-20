@@ -12,12 +12,13 @@
         <variable
             name="feedImage"
             type="com.sangmee.fashionpeople.data.model.FeedImage" />
-        
+
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <View
             android:layout_width="30dp"
@@ -25,10 +26,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:background="#C1C1C1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:background="#C1C1C1" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,10 +46,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="평점"
-                    app:setSpannableRating="@{feedImage}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:setSpannableRating="@{feedImage}" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/iv_close"
@@ -70,43 +68,268 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tv_rating"
+                    style="@style/CommentTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    tools:text="패션 점수는 4.32점 입니다"
-                    style="@style/CommentTextStyle"
                     android:layout_marginTop="8dp"
-                    />
+                    tools:text="패션 점수는 4.32점 입니다" />
 
                 <androidx.appcompat.widget.AppCompatRatingBar
-                    android:layout_marginTop="16dp"
                     android:id="@+id/rb_grade_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:numStars="5"
-                    android:stepSize="0.5"
                     android:layout_gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:numStars="5"
+                    android:rating="4.5"
+                    android:stepSize="0.5"
+                    app:setGradeRating="@{feedImage}"
                     tools:rating="4.5" />
 
 
             </LinearLayout>
-
-
-
-
             <LinearLayout
-                android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginRight="4dp"
+                        android:src="@drawable/ic_star_yellow_24" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_rating1"
+                        style="@style/CommentTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginRight="16dp"
+                        android:text="1점" />
+
+
+                    <com.skydoves.progressview.ProgressView
+                        android:layout_width="0dp"
+                        android:layout_height="35dp"
+                        android:layout_weight="1"
+                        app:progressView_colorBackground="@color/colorWhite"
+                        app:progressView_colorGradientEnd="@color/colorPrimary"
+                        app:progressView_colorGradientStart="@color/colorPrimary"
+                        app:progressView_colorProgress="@color/colorPrimary"
+                        app:progressView_highlightAlpha="0.8"
+                        app:progressView_highlightColor="@color/colorPrimary"
+                        app:progressView_highlightWidth="1dp"
+                        app:progressView_labelColorInner="@color/colorBlack"
+                        app:progressView_labelColorOuter="@color/colorBlack"
+                        app:progressView_labelSize="13sp"
+                        app:progressView_labelSpace="10dp"
+                        app:progressView_labelText="1점"
+                        app:progressView_labelTypeface="bold"
+                        app:progressView_padding="1dp"
+                        app:progressView_progress="40"
+                        app:progressView_radius="12dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginRight="4dp"
+                        android:src="@drawable/ic_star_yellow_24" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_rating2"
+                        style="@style/CommentTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginRight="16dp"
+                        android:text="2점" />
+
+
+                    <com.skydoves.progressview.ProgressView
+                        android:layout_width="0dp"
+                        android:layout_height="35dp"
+                        android:layout_weight="1"
+                        app:progressView_colorBackground="@color/colorWhite"
+                        app:progressView_colorGradientEnd="@color/colorPrimary"
+                        app:progressView_colorGradientStart="@color/colorPrimary"
+                        app:progressView_colorProgress="@color/colorPrimary"
+                        app:progressView_highlightAlpha="0.8"
+                        app:progressView_highlightColor="@color/colorPrimary"
+                        app:progressView_highlightWidth="1dp"
+                        app:progressView_labelColorInner="@color/colorBlack"
+                        app:progressView_labelColorOuter="@color/colorBlack"
+                        app:progressView_labelSize="13sp"
+                        app:progressView_labelSpace="10dp"
+                        app:progressView_labelText="1점"
+                        app:progressView_labelTypeface="bold"
+                        app:progressView_padding="1dp"
+                        app:progressView_progress="40"
+                        app:progressView_radius="12dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginRight="4dp"
+                        android:src="@drawable/ic_star_yellow_24" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_rating3"
+                        style="@style/CommentTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginRight="16dp"
+                        android:text="3점" />
+
+
+                    <com.skydoves.progressview.ProgressView
+                        android:layout_width="0dp"
+                        android:layout_height="35dp"
+                        android:layout_weight="1"
+                        app:progressView_colorBackground="@color/colorWhite"
+                        app:progressView_colorGradientEnd="@color/colorPrimary"
+                        app:progressView_colorGradientStart="@color/colorPrimary"
+                        app:progressView_colorProgress="@color/colorPrimary"
+                        app:progressView_highlightAlpha="0.8"
+                        app:progressView_highlightColor="@color/colorPrimary"
+                        app:progressView_highlightWidth="1dp"
+                        app:progressView_labelColorInner="@color/colorBlack"
+                        app:progressView_labelColorOuter="@color/colorBlack"
+                        app:progressView_labelSize="13sp"
+                        app:progressView_labelSpace="10dp"
+                        app:progressView_labelText="1점"
+                        app:progressView_labelTypeface="bold"
+                        app:progressView_padding="1dp"
+                        app:progressView_progress="40"
+                        app:progressView_radius="12dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginRight="4dp"
+                        android:src="@drawable/ic_star_yellow_24" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_rating4"
+                        style="@style/CommentTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginRight="16dp"
+                        android:text="4점" />
+
+
+                    <com.skydoves.progressview.ProgressView
+                        android:layout_width="0dp"
+                        android:layout_height="35dp"
+                        android:layout_weight="1"
+                        app:progressView_colorBackground="@color/colorWhite"
+                        app:progressView_colorGradientEnd="@color/colorPrimary"
+                        app:progressView_colorGradientStart="@color/colorPrimary"
+                        app:progressView_colorProgress="@color/colorPrimary"
+                        app:progressView_highlightAlpha="0.8"
+                        app:progressView_highlightColor="@color/colorPrimary"
+                        app:progressView_highlightWidth="1dp"
+                        app:progressView_labelColorInner="@color/colorBlack"
+                        app:progressView_labelColorOuter="@color/colorBlack"
+                        app:progressView_labelSize="13sp"
+                        app:progressView_labelSpace="10dp"
+                        app:progressView_labelText="1점"
+                        app:progressView_labelTypeface="bold"
+                        app:progressView_padding="1dp"
+                        app:progressView_progress="40"
+                        app:progressView_radius="12dp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginRight="4dp"
+                        android:src="@drawable/ic_star_yellow_24" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_rating5"
+                        style="@style/CommentTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginRight="16dp"
+                        android:text="5점" />
+
+
+                    <com.skydoves.progressview.ProgressView
+                        android:layout_width="0dp"
+                        android:layout_height="35dp"
+                        android:layout_weight="1"
+                        app:progressView_colorBackground="@color/colorWhite"
+                        app:progressView_colorGradientEnd="@color/colorPrimary"
+                        app:progressView_colorGradientStart="@color/colorPrimary"
+                        app:progressView_colorProgress="@color/colorPrimary"
+                        app:progressView_highlightAlpha="0.8"
+                        app:progressView_highlightColor="@color/colorPrimary"
+                        app:progressView_highlightWidth="1dp"
+                        app:progressView_labelColorInner="@color/colorBlack"
+                        app:progressView_labelColorOuter="@color/colorBlack"
+                        app:progressView_labelSize="13sp"
+                        app:progressView_labelSpace="10dp"
+                        app:progressView_labelText="1점"
+                        app:progressView_labelTypeface="bold"
+                        app:progressView_padding="1dp"
+                        app:progressView_progress="40"
+                        app:progressView_radius="12dp" />
+                </LinearLayout>
 
             </LinearLayout>
+
         </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
 </layout>

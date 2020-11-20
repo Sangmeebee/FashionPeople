@@ -1,8 +1,10 @@
 package com.sangmee.fashionpeople.ui.fragment.home.following
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.RatingBar
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sangmee.fashionpeople.R
@@ -16,7 +18,7 @@ class FollowingFeedAdapter(private val myId: String) :
     RecyclerView.Adapter<FollowingFeedViewHolder>() {
 
     private val items = mutableListOf<FeedImage>()
-    var onClickListener: EvaluateFeedAdapter.OnClickListener? = null
+    var onClickListener: FollowingFeedAdapter.OnClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FollowingFeedViewHolder {
         val binding = DataBindingUtil.inflate<ItemFollowingFeedBinding>(
@@ -39,12 +41,17 @@ class FollowingFeedAdapter(private val myId: String) :
                 }
             }
         }
-        viewHolder.itemView
+        viewHolder.itemView.ll_rating_average.setOnClickListener {
+            items[viewHolder.adapterPosition].let {
+                onClickListener?.onClickGrade(it)
+            }
+        }
 
 
         return viewHolder
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onBindViewHolder(holder: FollowingFeedViewHolder, position: Int) {
         holder.bind(items[position])
     }
@@ -76,5 +83,6 @@ class FollowingFeedAdapter(private val myId: String) :
         )
 
         fun onClickComment(imageName: String)
+        fun onClickGrade(feedImage: FeedImage)
     }
 }

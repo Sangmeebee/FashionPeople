@@ -39,6 +39,12 @@ class EvaluateFeedAdapter(private val myId: String) : RecyclerView.Adapter<Evalu
                 }
             }
         }
+        viewHolder.itemView.ll_rating_evaluate_average.setOnClickListener {
+            items[viewHolder.adapterPosition].let {
+                onClickListener?.onClickGrade(it)
+            }
+        }
+
         return viewHolder
     }
 
@@ -74,6 +80,7 @@ class EvaluateFeedAdapter(private val myId: String) : RecyclerView.Adapter<Evalu
         )
 
         fun onClickComment(imageName: String)
+        fun onClickGrade(feedImage: FeedImage)
     }
 
 
