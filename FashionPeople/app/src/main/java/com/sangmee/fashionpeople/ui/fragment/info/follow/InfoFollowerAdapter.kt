@@ -53,9 +53,10 @@ class InfoFollowerAdapter(val setBtn: (String) -> Unit, val callActivity: (Strin
 
     class InfoFollowerViewHolder(private val binding: ItemFollowerBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        private var isGone = true
 
         fun bind(follower: FUser, isFollowing: Boolean) {
+            var isGone = true
+
             binding.follower = follower
             follower.instagramId?.let {
                 if (it.isNotEmpty()) {

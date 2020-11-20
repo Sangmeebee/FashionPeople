@@ -17,7 +17,7 @@ class FeedImageFragment(private val userId: String) : Fragment() {
 
     private lateinit var binding: FragmentFeedImageBinding
     private val vm by activityViewModels<FeedImageViewModel>()
-    private var isEmpty = true
+    private var isEmpty = false
     private val feedImageAdapter by lazy {
         FeedImageAdapter(userId)
     }
@@ -27,6 +27,7 @@ class FeedImageFragment(private val userId: String) : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModelCallback()
         return inflater.inflate(R.layout.fragment_feed_image, container, false)?.apply {
             binding = DataBindingUtil.bind(this)!!
             binding.lifecycleOwner = viewLifecycleOwner
@@ -36,11 +37,6 @@ class FeedImageFragment(private val userId: String) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         vm.callFeedImages(userId)
-        vm.feedImages.value?.let {
-            isEmpty = it.isEmpty()
-            binding.isEmpty = isEmpty
-        }
-        viewModelCallback()
         setRecyclerView()
     }
 
@@ -53,6 +49,8 @@ class FeedImageFragment(private val userId: String) : Fragment() {
 
     private fun viewModelCallback() {
         vm.feedImages.observe(viewLifecycleOwner, Observer {
+            isEmpty = it.isEmpty()
+            binding.isEmpty = isEmpty
             feedImageAdapter.setFeedImages(it)
         })
     }

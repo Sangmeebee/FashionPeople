@@ -17,8 +17,8 @@ class FollowViewModel : ViewModel() {
         )
     }
     val customId = GlobalApplication.prefs.getString("custom_id", "empty")
-    val followers = MutableLiveData<List<FUser>>()
-    val followings = MutableLiveData<List<FUser>>()
+    val followers = SingleLiveEvent<List<FUser>>()
+    val followings = SingleLiveEvent<List<FUser>>()
     val isFollowingsFollower = MutableLiveData<MutableMap<String, Boolean>>()
     val isFollowingsFollowing = MutableLiveData<MutableMap<String, Boolean>>()
     val callActivity = SingleLiveEvent<String>()
@@ -39,7 +39,6 @@ class FollowViewModel : ViewModel() {
             }
             followers.value = users
             isFollowingsFollower.value = isFollowingMap
-            Log.d("sangmin", isFollowingsFollower.value.toString())
         }, failed = { Log.e("error", it) })
 
     }
