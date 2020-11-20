@@ -16,16 +16,17 @@
         <item name="tabTextAppearance">@style/TabTextAppearance</item> <!-- 여기서 한번에 바꾸어 줘도 된다.-->
     </style>
 
+    <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">13sp</item>
+        <item name="textAllCaps">true</item> <!--text의 소문자를 모두 대문자로 만듬-->
+    </style>
+
     <style name="tab_text" parent="@android:style/TextAppearance.Widget.TabWidget">
         <item name="android:fontFamily">@font/ygd_330</item>
         <item name="android:textSize">13sp</item>
     </style>
 
-    <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
-        <item name="android:textSize">27sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="textAllCaps">true</item> <!--text의 소문자를 모두 대문자로 만듬-->
-    </style>
+
 
     <style name="MyActionBarStyle" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="displayOptions">showHome|homeAsUp</item>
