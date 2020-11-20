@@ -86,6 +86,7 @@
                     android:layout_gravity="center"
                     android:numStars="5"
                     android:rating="4.5"
+                    android:isIndicator="true"
                     android:stepSize="0.5"
                     app:setGradeRating="@{feedImage}"
                     tools:rating="4.5" />

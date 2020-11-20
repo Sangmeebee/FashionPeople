@@ -8,11 +8,8 @@ import retrofit2.http.Path
 
 interface CommentRemoteDataSource {
 
-    fun getImageComments(@Path("image_name") imageName: String): Single<List<Comment>>
+    fun getImageComments(imageName: String): Single<List<Comment>>
 
-    fun updateImageComment(
-        @Path("image_name") imageName: String,
-        @Body comment: Comment
-    ): Completable
+    fun updateImageComment(userId: String, imageName: String, comment: Comment): Completable
 
 }

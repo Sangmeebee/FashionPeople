@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.library.baseAdapters.BR
 import androidx.fragment.app.DialogFragment
@@ -15,8 +16,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.sangmee.fashionpeople.R
+import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.data.dataSource.remote.CommentRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.dataSource.remote.FeedImageRemoteDataSourceImpl
+import com.sangmee.fashionpeople.data.model.Comment
 import com.sangmee.fashionpeople.data.repository.CommentRepositoryImpl
 import com.sangmee.fashionpeople.data.repository.FeedImageRepositoryImpl
 import com.sangmee.fashionpeople.databinding.FragmentCommentBinding
@@ -25,6 +28,7 @@ import com.sangmee.fashionpeople.ui.fragment.home.evaluate.EvaluateViewModel
 class CommentDialogFragment : BottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentCommentBinding
+    private lateinit var myId: String
 
     private val commentRecyclerView: CommentRecyclerAdapter by lazy {
         CommentRecyclerAdapter()
@@ -53,6 +57,7 @@ class CommentDialogFragment : BottomSheetDialogFragment() {
         dialog?.let {
             it.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
+        myId = GlobalApplication.prefs.getString("custom_id", "")
         return binding.root
     }
 
@@ -68,9 +73,19 @@ class CommentDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun initView() {
-        arguments?.getString(IMAGE_NAME)?.let {
-            viewModel.imageNameSubject.onNext(it)
+        arguments?.getString(IMAGE_NAME)?.let { imageName ->
+            viewModel.imageNameSubject.onNext(imageName)
+            binding.ivSend.setOnClickListener {
+                binding.etCommentInput.text?.let {
+                   if(it.equals("")) {
+                       Toast.makeText(requireContext(), "메시지를 입력하세요", Toast.LENGTH_SHORT).show()
+                   } else {
+                       viewModel.updateFeedImageComment(myId, imageName, Comment(it.toString(), myId, imageName))
+                   }
+                }
+            }
         }
+
     }
 
 

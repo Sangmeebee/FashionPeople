@@ -55,7 +55,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"
-                    android:text="와우 너무 멋있네요~~~~~~~~~~!!!!!!!!"
+                    android:text="@{comment.content}"
                     android:textColor="@color/colorBlack" />
 
                 <TextView

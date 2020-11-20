@@ -13,8 +13,12 @@ class CommentRepositoryImpl(
         return commentRemoteDataSource.getImageComments(imageName)
     }
 
-    override fun updateImageComment(imageName: String, comment: Comment): Completable {
-        return commentRemoteDataSource.updateImageComment(imageName, comment)
+    override fun updateImageComment(
+        userId: String,
+        imageName: String,
+        comment: Comment
+    ): Completable {
+        return commentRemoteDataSource.updateImageComment(userId, imageName, comment)
     }
 
 

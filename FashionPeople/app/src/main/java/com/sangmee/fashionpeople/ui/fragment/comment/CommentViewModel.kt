@@ -70,6 +70,19 @@ class CommentViewModel(
             }).addTo(compositeDisposable)
     }
 
+    fun updateFeedImageComment(userId: String, imageName: String, comment: Comment) {
+        commentRepository.updateImageComment(userId, imageName, comment)
+            .subscribeOn(Schedulers.io())
+            .andThen(commentRepository.getImageComments(imageName))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                _comments.value = it
+            }, {
+
+            }).addTo(compositeDisposable)
+    }
+
 
     fun clearDisposable() {
         compositeDisposable.clear()

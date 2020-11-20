@@ -11,7 +11,9 @@ data class Comment(
     @SerializedName("currentDateTime")
     val currentDateTime: String?,
     @SerializedName("imageId")
-    val imageId: String?
+    val imageId: String?,
+    @SerializedName("user_id")
+    val user: FUser?
 ) {
     constructor(content: String?, commentPersonId: String?, imageId: String?) : this(
         content,

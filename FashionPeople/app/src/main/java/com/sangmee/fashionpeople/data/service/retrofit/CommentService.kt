@@ -13,7 +13,11 @@ interface CommentService {
     @GET("feedImage/comment/{image_name}")
     fun getImageComments(@Path("image_name") imageName: String): Single<List<Comment>>
 
-    @PUT("feedImage/comment/{image_name}")
-    fun updateImageComment(@Path("image_name") imageName: String, @Body comment: Comment): Completable
+    @PUT("feedImage/comment/{userId}/{imageName}")
+    fun updateImageComment(
+        @Path("userId") userId: String,
+        @Path("imageName") imageName: String,
+        @Body comment: Comment
+    ): Completable
 
 }

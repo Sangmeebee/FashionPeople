@@ -10,8 +10,12 @@ class CommentRemoteDataSourceImpl : CommentRemoteDataSource {
         return RetrofitClient.getCommentService().getImageComments(imageName)
     }
 
-    override fun updateImageComment(imageName: String, comment: Comment): Completable {
-        return RetrofitClient.getCommentService().updateImageComment(imageName, comment)
+    override fun updateImageComment(
+        userId: String,
+        imageName: String,
+        comment: Comment
+    ): Completable {
+        return RetrofitClient.getCommentService().updateImageComment(userId, imageName, comment)
     }
 
 }
