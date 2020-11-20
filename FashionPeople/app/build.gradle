@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.sangmee.fashionpeople"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 29
         multiDexEnabled true
         versionCode 1
@@ -105,4 +105,7 @@ dependencies {
 
     // FlexBoxLayout
     implementation 'com.google.android:flexbox:2.0.1'
+
+    // ProgressView
+    implementation "com.github.skydoves:progressview:1.1.0"
 }

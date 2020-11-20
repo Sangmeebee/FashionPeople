@@ -23,6 +23,7 @@ import com.sangmee.fashionpeople.data.dataSource.remote.FeedImageRemoteDataSourc
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.data.repository.FeedImageRepositoryImpl
 import com.sangmee.fashionpeople.ui.fragment.comment.CommentDialogFragment
+import com.sangmee.fashionpeople.ui.fragment.grade.GradeDialogFragment
 
 class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
 
@@ -132,6 +133,11 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
             .show(childFragmentManager, CommentDialogFragment.TAG)
     }
 
+    private fun showGradeFragment(feedImage: FeedImage) {
+        GradeDialogFragment.newInstance(feedImage)
+            .show(childFragmentManager, GradeDialogFragment.TAG)
+    }
+
     override fun onDestroy() {
         viewModel.clearDisposable()
         super.onDestroy()
@@ -149,5 +155,9 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
 
     override fun onClickComment(imageName: String) {
         showCommentFragment(imageName)
+    }
+
+    override fun onClickGrade(feedImage: FeedImage) {
+        showGradeFragment(feedImage)
     }
 }

@@ -10,8 +10,8 @@ import com.sangmee.fashionpeople.util.dpToPx
 import kotlin.properties.Delegates
 
 class TagRecyclerDecoration(
-    private val context: Context,
-    private val _space: Float
+    context: Context,
+    _space: Float
 ): RecyclerView.ItemDecoration() {
 
     private var spacePx by Delegates.notNull<Int>()

@@ -7,7 +7,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FeedImage
-import com.sangmee.fashionpeople.databinding.ItemHomeFeedBinding
 import com.sangmee.fashionpeople.databinding.ItemTagBinding
 
 class TagRecyclerViewAdapter : RecyclerView.Adapter<TagViewHolder>() {

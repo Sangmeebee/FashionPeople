@@ -34,4 +34,8 @@ class FeedImageRepositoryImpl(
     override fun postFeedImage(id: String, feedImage: FeedImage): Call<FeedImage> {
         return feedImageRemoteDataSource.postFeedImage(id, feedImage)
     }
+
+    override fun getFollowingFeedImages(id: String): Single<List<FeedImage>> {
+        return feedImageRemoteDataSource.getFollowingFeedImages(id)
+    }
 }

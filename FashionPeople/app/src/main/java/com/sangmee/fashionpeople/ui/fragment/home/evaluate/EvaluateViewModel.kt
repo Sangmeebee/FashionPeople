@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import com.sangmee.fashionpeople.data.service.retrofit.RetrofitClient
 import com.sangmee.fashionpeople.data.model.Evaluation
 import com.sangmee.fashionpeople.data.model.FeedImage
-import com.sangmee.fashionpeople.data.repository.FUserRepository
 import com.sangmee.fashionpeople.data.repository.FeedImageRepository
 import com.sangmee.fashionpeople.util.SingleLiveEvent
 import io.reactivex.android.schedulers.AndroidSchedulers

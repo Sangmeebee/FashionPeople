@@ -20,7 +20,7 @@
         toolsNs:background="@color/colorBlack">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_item_evaluate_feed"
+            android:id="@+id/iv_item_following_feed"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
@@ -77,14 +77,14 @@
         </LinearLayout>
 
 
-        <RatingBar
+        <androidx.appcompat.widget.AppCompatRatingBar
             android:id="@+id/rb_following_feed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
             android:isIndicator="false"
             android:numStars="5"
-            android:stepSize="0.5"
+            android:stepSize="1"
             android:theme="@style/RatingBarStyle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -92,6 +92,40 @@
             app:myId="@{myId}"
             app:setVisibleRating="@{feedImage}"
             toolsNs:visibility="visible" />
+
+        <LinearLayout
+            android:id="@+id/ll_rating_average"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_profile_following_feed"
+            app:myId="@{myId}"
+            app:setVisibleLinearLayout="@{feedImage}">
+
+            <ImageView
+                android:id="@+id/iv_star"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
+                android:src="@drawable/ic_star_yellow_24" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_rating"
+                style="@style/HomeFeedTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                app:setRatingText="@{feedImage}"
+                toolsNs:text="3.5" />
+
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/tv_user_name_home_feed"
@@ -104,7 +138,7 @@
             android:ellipsize="end"
             android:text="@{feedImage.user.name}"
             app:layout_constraintBottom_toTopOf="@id/rv_tags_home_feed"
-            app:layout_constraintStart_toEndOf="@id/iv_profile_evaluate_feed"
+            app:layout_constraintStart_toEndOf="@id/iv_profile_following_feed"
             toolsNs:text="서승환" />
 
         <TextView
@@ -122,7 +156,7 @@
             toolsNs:text="팔로잉" />
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/iv_profile_evaluate_feed"
+            android:id="@+id/iv_profile_following_feed"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="24dp"
@@ -136,11 +170,11 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_tags_home_feed"
+            setFeedImageTags="@{feedImage}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:scrollbars="vertical"
-            setFeedImageTags="@{feedImage}"
             app:layout_constraintBottom_toTopOf="@id/rb_following_feed"
             app:layout_constraintStart_toStartOf="parent" />
         <!--        <TextView

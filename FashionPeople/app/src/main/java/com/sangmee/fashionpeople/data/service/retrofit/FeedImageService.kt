@@ -27,4 +27,7 @@ interface FeedImageService {
     @POST("feedImage/{id}")
     fun postFeedImage(@Path("id") id: String, @Body feedImage: FeedImage): Call<FeedImage>
 
+    @GET("feedImage/following/{userId}")
+    fun getFollowingFeedImages(@Path("userId") id: String): Single<List<FeedImage>>
+
 }
