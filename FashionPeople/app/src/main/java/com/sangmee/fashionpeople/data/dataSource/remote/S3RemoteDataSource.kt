@@ -1,4 +1,4 @@
-package com.sangmee.fashionpeople.data.service.s3
+package com.sangmee.fashionpeople.data.dataSource.remote
 
 import java.io.File
 

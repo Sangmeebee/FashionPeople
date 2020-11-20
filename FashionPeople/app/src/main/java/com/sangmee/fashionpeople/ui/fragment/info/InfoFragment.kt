@@ -2,42 +2,31 @@ package com.sangmee.fashionpeople.ui.fragment.info
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
-import com.sangmee.fashionpeople.data.dataSource.local.FUserLocalDataSourceImpl
-import com.sangmee.fashionpeople.data.dataSource.remote.FUserRemoteDataSourceImpl
-import com.sangmee.fashionpeople.data.repository.FUserRepository
-import com.sangmee.fashionpeople.data.repository.FUserRepositoryImpl
+import com.sangmee.fashionpeople.databinding.FragmentInfoBinding
+import com.sangmee.fashionpeople.observer.InfoViewModel
 import com.sangmee.fashionpeople.ui.LoginActivity
+import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.SettingActivity
 import com.sangmee.fashionpeople.ui.fragment.info.content.ViewPagerAdapter
+import com.sangmee.fashionpeople.ui.fragment.info.follow.FollowFragment
 import kotlinx.android.synthetic.main.fragment_info.*
-
 
 class InfoFragment : Fragment() {
 
-    lateinit var customId: String
-    private val FUserRepository: FUserRepository by lazy {
-        FUserRepositoryImpl(
-            FUserLocalDataSourceImpl(), FUserRemoteDataSourceImpl()
-        )
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        customId = GlobalApplication.prefs.getString("custom_id", "")
-    }
+    val customId by lazy { GlobalApplication.prefs.getString("custom_id", "") }
+    lateinit var binding: FragmentInfoBinding
+    private val vm by activityViewModels<InfoViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,14 +34,20 @@ class InfoFragment : Fragment() {
     ): View? {
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_info, container, false)
+        return inflater.inflate(R.layout.fragment_info, container, false)?.apply {
+            binding = DataBindingUtil.bind(this)!!
+            binding.vm = vm
+            binding.lifecycleOwner = viewLifecycleOwner
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModelCallback()
+        vm.callProfile(vm.customId)
         //tablayout 세팅
-        viewPager.adapter = ViewPagerAdapter(this)
+        viewPager.adapter = ViewPagerAdapter(this, customId)
 
         TabLayoutMediator(tl_container, viewPager) { tab, position ->
             when (position) {
@@ -61,34 +56,12 @@ class InfoFragment : Fragment() {
             }
         }.attach()
 
-        setProfile(view)
-
         btn_setting.setOnClickListener {
             val intent = Intent(context, SettingActivity::class.java)
             startActivityForResult(intent, LOGOUT_CODE)
         }
     }
 
-    private fun setProfile(view: View) {
-        //프로필 세팅
-        FUserRepository.getFUser(customId, success = {
-            val profileImgName = it.profileImage
-            val userName = it.name
-            val profileImg = view.findViewById<ImageView>(R.id.iv_profile)
-            val tvNickName = view.findViewById<TextView>(R.id.tv_nickname)
-
-            userName?.let { name ->
-                tvNickName.text = name
-            }
-            //프로필 이미지
-            profileImgName?.let {
-                Glide.with(context!!)
-                    .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${customId}/profile/${it}")
-                    .apply(RequestOptions().circleCrop())
-                    .error(R.drawable.user).into(profileImg)
-            }
-        }, failed = { Log.e("fashionPeopleError", it) })
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -100,6 +73,12 @@ class InfoFragment : Fragment() {
         }
     }
 
+    private fun viewModelCallback() {
+
+        vm.callActivity.observe(viewLifecycleOwner, Observer {
+            (activity as MainActivity).replaceFragmentUseBackStack(FollowFragment.newInstance(it, customId))
+        })
+    }
     companion object {
         private const val LOGOUT_CODE = 210
     }

@@ -27,8 +27,12 @@ class FeedImageRepositoryImpl(
         return feedImageRemoteDataSource.updateImageScore(imageName, evaluation)
     }
 
-    override fun getFeedImages(id: String): Call<List<FeedImage>> {
-        return feedImageRemoteDataSource.getFeedImages(id)
+    override fun getFeedImages(
+        id: String,
+        success: (List<FeedImage>) -> Unit,
+        failed: (String) -> Unit
+    ) {
+        return feedImageRemoteDataSource.getFeedImages(id, success, failed)
     }
 
     override fun postFeedImage(id: String, feedImage: FeedImage): Call<FeedImage> {

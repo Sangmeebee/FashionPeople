@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 
-class SavedImageFragment : Fragment() {
+class SavedImageFragment(private val userId: String) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,

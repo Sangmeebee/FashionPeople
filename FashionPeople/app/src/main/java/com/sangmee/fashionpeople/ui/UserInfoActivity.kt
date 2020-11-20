@@ -15,13 +15,12 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
-import com.sangmee.fashionpeople.data.dataSource.local.FUserLocalDataSourceImpl
 import com.sangmee.fashionpeople.data.dataSource.remote.FUserRemoteDataSourceImpl
+import com.sangmee.fashionpeople.data.dataSource.remote.S3RemoteDataSource
+import com.sangmee.fashionpeople.data.dataSource.remote.S3RemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.data.repository.FUserRepository
 import com.sangmee.fashionpeople.data.repository.FUserRepositoryImpl
-import com.sangmee.fashionpeople.data.service.s3.S3RemoteDataSource
-import com.sangmee.fashionpeople.data.service.s3.S3RemoteDataSourceImpl
 import kotlinx.android.synthetic.main.activity_user_info.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.io.File
@@ -35,9 +34,7 @@ class UserInfoActivity : AppCompatActivity() {
     private val customId by lazy { pref.getString("custom_id", "empty") }
     private val CHOOSE_PROFILEIMG = 200
     private val FUserRepository: FUserRepository by lazy {
-        FUserRepositoryImpl(
-            FUserLocalDataSourceImpl(), FUserRemoteDataSourceImpl()
-        )
+        FUserRepositoryImpl(FUserRemoteDataSourceImpl())
     }
     private val s3RemoteDataSource: S3RemoteDataSource by lazy {
         S3RemoteDataSourceImpl(
@@ -114,7 +111,8 @@ class UserInfoActivity : AppCompatActivity() {
                 name,
                 instagramId,
                 profileImage,
-                listOf()
+                0,
+                0
             ), { redirectUserInfoActivity() }, { Log.e("sangmin_error", it) }
         )
     }

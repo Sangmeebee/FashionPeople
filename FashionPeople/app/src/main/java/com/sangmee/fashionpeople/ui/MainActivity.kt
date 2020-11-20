@@ -13,10 +13,11 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
+import com.sangmee.fashionpeople.ui.add.TagActivity
 import com.sangmee.fashionpeople.ui.fragment.AlarmFragment
+import com.sangmee.fashionpeople.ui.fragment.SearchFragment
 import com.sangmee.fashionpeople.ui.fragment.home.HomeFragment
 import com.sangmee.fashionpeople.ui.fragment.info.InfoFragment
-import com.sangmee.fashionpeople.ui.fragment.SearchFragment
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -95,8 +96,18 @@ class MainActivity : AppCompatActivity() {
 
     //fragment 교체
     private fun replaceFragment(fragment: Fragment) {
+        for (i in 0..supportFragmentManager.backStackEntryCount) {
+            supportFragmentManager.popBackStack();
+        }
         supportFragmentManager.beginTransaction()
             .replace(R.id.frameLayout, fragment).commit()
+    }
+
+    //fragment 교체(백스택 사용)
+    fun replaceFragmentUseBackStack(fragment: Fragment) {
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.addToBackStack(null)
+        transaction.replace(R.id.frameLayout, fragment).commit()
     }
 
     //갤러리에서 사진 등록

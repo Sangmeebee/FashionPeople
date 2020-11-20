@@ -6,6 +6,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RatingBar
 import android.widget.TextView
@@ -14,11 +15,12 @@ import androidx.appcompat.widget.AppCompatRatingBar
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.flexbox.*
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.Comment
 import com.sangmee.fashionpeople.data.model.FeedImage
-import com.sangmee.fashionpeople.ui.fragment.home.TagRecyclerDecoration
 import com.sangmee.fashionpeople.ui.fragment.home.TagRecyclerViewAdapter
 import com.skydoves.progressview.ProgressView
 
@@ -81,6 +83,18 @@ fun setVisibleComments(recyclerView: RecyclerView, comments: List<Comment>?) {
     }
 }
 
+@BindingAdapter("setCustomId", "setImageName")
+fun ImageView.setLoadUrl(customId: String?, imageName: String?) {
+    customId?.let { customId ->
+        imageName?.let { imageName ->
+            Glide.with(context!!)
+                .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${customId}/profile/${imageName}")
+                .apply(RequestOptions().circleCrop())
+                .error(R.drawable.user).into(this)
+        }
+    }
+}
+
 @BindingAdapter("setVisibleEmptyView")
 fun setVisibleEmptyView(textView: TextView, comments: List<Comment>?) {
     comments?.let {
@@ -97,7 +111,8 @@ fun setCommentTitle(textView: TextView, comments: List<Comment>?) {
     if (comments.isNullOrEmpty()) {
         textView.text = "댓글 0개"
     } else {
-        textView.text = textView.context.getString(R.string.comment_title, comments.size)
+        textView.text =
+            textView.context.getString(R.string.comment_title, comments.size)
     }
 }
 
@@ -114,7 +129,10 @@ fun setFeedImageTags(recyclerView: RecyclerView, feedImage: FeedImage?) {
     val decoration = FlexboxItemDecoration(recyclerView.context)
     decoration.setOrientation(FlexboxItemDecoration.BOTH)
     val drawable = GradientDrawable().apply {
-        setSize(5.toFloat().dpToPx(recyclerView.context), 5.toFloat().dpToPx(recyclerView.context))
+        setSize(
+            5.toFloat().dpToPx(recyclerView.context),
+            5.toFloat().dpToPx(recyclerView.context)
+        )
     }
     decoration.setDrawable(drawable)
 
@@ -196,7 +214,6 @@ fun setGradeRating(appCompatRatingBar: AppCompatRatingBar, feedImage: FeedImage?
             average = getRatingFromEvaluations(it)
         }
     }
-
     appCompatRatingBar.rating = average
 }
 
@@ -209,7 +226,13 @@ fun setEvaluateProgress(progressView: ProgressView, feedImage: FeedImage?) {
         }
 
     }
+}
 
-
-
+@BindingAdapter("isGone")
+fun View.bindIsGone(isGone: Boolean) {
+    this.visibility = if (isGone) {
+        View.GONE
+    } else {
+        View.VISIBLE
+    }
 }

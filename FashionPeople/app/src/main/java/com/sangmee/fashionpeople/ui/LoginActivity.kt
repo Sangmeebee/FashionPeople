@@ -15,7 +15,6 @@ import com.kakao.usermgmt.response.MeV2Response
 import com.kakao.util.exception.KakaoException
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
-import com.sangmee.fashionpeople.data.dataSource.local.FUserLocalDataSourceImpl
 import com.sangmee.fashionpeople.data.dataSource.remote.FUserRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.repository.FUserRepository
 import com.sangmee.fashionpeople.data.repository.FUserRepositoryImpl
@@ -24,10 +23,8 @@ import kotlinx.android.synthetic.main.activity_login.*
 class LoginActivity : AppCompatActivity() {
 
     private var callback: SessionCallback = SessionCallback()
-    private val FUserRepository: FUserRepository by lazy {
-        FUserRepositoryImpl(
-            FUserLocalDataSourceImpl(), FUserRemoteDataSourceImpl()
-        )
+    private val fUserRepository: FUserRepository by lazy {
+        FUserRepositoryImpl(FUserRemoteDataSourceImpl())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,9 +78,9 @@ class LoginActivity : AppCompatActivity() {
                     checkNotNull(result) { "session response null" }
                     // 데이터베이스에 아이디 이미 있는지 체크
                     var exist = false
-                    FUserRepository.getAllFUser(success = {
-                        for(fUser in it) {
-                            if(fUser.id == custom_id) {
+                    fUserRepository.getAllFUser(success = {
+                        for (fUser in it) {
+                            if (fUser.id == custom_id) {
                                 exist = true
                             }
                         }

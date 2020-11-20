@@ -6,6 +6,8 @@ import com.sangmee.fashionpeople.data.service.retrofit.RetrofitClient
 import io.reactivex.Completable
 import io.reactivex.Single
 import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class FeedImageRemoteDataSourceImpl : FeedImageRemoteDataSource {
 
@@ -17,8 +19,26 @@ class FeedImageRemoteDataSourceImpl : FeedImageRemoteDataSource {
         return RetrofitClient.getFeedImageService().getFeedImageByName(imageName)
     }
 
-    override fun getFeedImages(id: String): Call<List<FeedImage>> {
-        return RetrofitClient.getFeedImageService().getFeedImages(id)
+    override fun getFeedImages(
+        id: String,
+        success: (List<FeedImage>) -> Unit,
+        failed: (String) -> Unit
+    ) {
+        RetrofitClient.getFeedImageService().getFeedImages(id)
+            .enqueue(object : Callback<List<FeedImage>> {
+                override fun onResponse(
+                    call: Call<List<FeedImage>>,
+                    response: Response<List<FeedImage>>
+                ) {
+                    response.body()?.let {
+                        success(it)
+                    }
+                }
+
+                override fun onFailure(call: Call<List<FeedImage>>, t: Throwable) {
+                    failed(t.message.toString())
+                }
+            })
     }
 
     override fun getOtherImages(id: String): Single<List<FeedImage>> {
