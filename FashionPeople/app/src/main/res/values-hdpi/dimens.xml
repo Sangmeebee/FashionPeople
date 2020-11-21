@@ -3,4 +3,6 @@
     <dimen name="sv_margin_top">650dp</dimen>
     <dimen name="iv_plus_width">-1.0px</dimen>
     <dimen name="iv_plus_height">-1.0px</dimen>
+    <dimen name="is_me_margin">30dp</dimen>
+    <dimen name="not_is_me_margin">80dp</dimen>
 </resources>

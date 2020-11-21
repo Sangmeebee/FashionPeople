@@ -25,6 +25,10 @@ private const val FRAGMENT_ID = "param2"
 class OtherFragment : Fragment() {
     private var customId: String? = null
     private var fragmentId: Int? = null
+
+    //otherfragment에서 내 계정 인지 판단
+    var isMe = false
+
     lateinit var binding: FragmentOtherBinding
     private val followVm by activityViewModels<FollowViewModel>()
     private val infoVm by activityViewModels<InfoViewModel>()
@@ -33,6 +37,9 @@ class OtherFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             customId = it.getString(CUSTOM_ID)
+            if (customId == infoVm.customId) {
+                isMe = true
+            }
             fragmentId = it.getInt(FRAGMENT_ID)
             Log.d("FSP_CUSTOM_ID", customId.toString())
             Log.d("FSP_FRAGMENT_ID", fragmentId.toString())
@@ -47,6 +54,7 @@ class OtherFragment : Fragment() {
         customId?.let { infoVm.callProfile(it) }
         return inflater.inflate(R.layout.fragment_other, container, false)?.apply {
             binding = DataBindingUtil.bind(this)!!
+            binding.isMe = isMe
             binding.apply {
                 customId = this@OtherFragment.customId
                 otherVm = this@OtherFragment.infoVm

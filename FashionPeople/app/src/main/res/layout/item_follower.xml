@@ -20,6 +20,10 @@
             type="java.lang.Boolean" />
 
         <variable
+            name="isMe"
+            type="java.lang.Boolean" />
+
+        <variable
             name="id"
             type="String" />
 
@@ -92,33 +96,40 @@
             </LinearLayout>
         </LinearLayout>
 
-        <Button
-            android:layout_width="90dp"
-            android:layout_height="30dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            android:background="@color/colorYellow"
-            android:fontFamily="@font/ygd_330"
-            android:onClick="@{() -> adapter.setButton(id)}"
-            android:text="팔로우"
-            android:textSize="10sp"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            bind:isGone="@{isFollowing}" />
+            bind:isGone="@{isMe}">
 
-        <Button
-            android:layout_width="90dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:background="@android:color/white"
-            android:fontFamily="@font/ygd_330"
-            android:onClick="@{() -> adapter.setButton(id)}"
-            android:text="팔로잉"
-            android:textSize="10sp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            bind:isGone="@{!isFollowing}" />
+            <Button
+                android:layout_width="90dp"
+                android:layout_height="30dp"
+                android:background="@color/colorYellow"
+                android:fontFamily="@font/ygd_330"
+                android:onClick="@{() -> adapter.setButton(id)}"
+                android:text="팔로우"
+                android:textSize="10sp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                bind:isGone="@{isFollowing}" />
+
+            <Button
+                android:layout_width="90dp"
+                android:layout_height="30dp"
+                android:background="@color/followingBtn"
+                android:fontFamily="@font/ygd_330"
+                android:onClick="@{() -> adapter.setButton(id)}"
+                android:text="팔로잉"
+                android:textSize="10sp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                bind:isGone="@{!isFollowing}" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

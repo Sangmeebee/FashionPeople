@@ -5,10 +5,14 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sangmee.fashionpeople.R
+import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.databinding.ItemFollowingBinding
 
-class InfoFollowingAdapter(val setBtn: (String) -> Unit, val callActivity: (String, Boolean) -> Unit) :
+class InfoFollowingAdapter(
+    val setBtn: (String) -> Unit,
+    val callActivity: (String, Boolean) -> Unit
+) :
     RecyclerView.Adapter<InfoFollowingAdapter.InfoFollowingViewHolder>() {
 
     private val followList = arrayListOf<FUser>()
@@ -54,8 +58,11 @@ class InfoFollowingAdapter(val setBtn: (String) -> Unit, val callActivity: (Stri
     class InfoFollowingViewHolder(private val binding: ItemFollowingBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        val customId = GlobalApplication.prefs.getString("custom_id", "empty")
+
         fun bind(following: FUser, isFollowing: Boolean) {
             var isGone = true
+            var isMe = false
 
             binding.following = following
             following.instagramId?.let {
@@ -63,6 +70,10 @@ class InfoFollowingAdapter(val setBtn: (String) -> Unit, val callActivity: (Stri
                     isGone = false
                 }
             }
+            if (following.id == customId) {
+                isMe = true
+            }
+            binding.isMe = isMe
             binding.id = following.id
             binding.isGone = isGone
             binding.isFollowing = isFollowing

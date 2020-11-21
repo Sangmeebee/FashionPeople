@@ -5,10 +5,14 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sangmee.fashionpeople.R
+import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.databinding.ItemFollowerBinding
 
-class InfoFollowerAdapter(val setBtn: (String) -> Unit, val callActivity: (String, Boolean) -> Unit) :
+class InfoFollowerAdapter(
+    val setBtn: (String) -> Unit,
+    val callActivity: (String, Boolean) -> Unit
+) :
     RecyclerView.Adapter<InfoFollowerAdapter.InfoFollowerViewHolder>() {
 
     private val followList = arrayListOf<FUser>()
@@ -43,19 +47,22 @@ class InfoFollowerAdapter(val setBtn: (String) -> Unit, val callActivity: (Strin
         notifyDataSetChanged()
     }
 
-    fun setButton(id: String){
+    fun setButton(id: String) {
         setBtn(id)
     }
 
-    fun callOtherActivity(customId: String){
+    fun callOtherActivity(customId: String) {
         callActivity(customId, true)
     }
 
     class InfoFollowerViewHolder(private val binding: ItemFollowerBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        val customId = GlobalApplication.prefs.getString("custom_id", "empty")
+
         fun bind(follower: FUser, isFollowing: Boolean) {
             var isGone = true
+            var isMe = false
 
             binding.follower = follower
             follower.instagramId?.let {
@@ -63,6 +70,10 @@ class InfoFollowerAdapter(val setBtn: (String) -> Unit, val callActivity: (Strin
                     isGone = false
                 }
             }
+            if (follower.id == customId) {
+                isMe = true
+            }
+            binding.isMe = isMe
             binding.id = follower.id
             binding.isGone = isGone
             binding.isFollowing = isFollowing

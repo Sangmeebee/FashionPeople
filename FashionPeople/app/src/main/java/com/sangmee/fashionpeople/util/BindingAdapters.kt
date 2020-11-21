@@ -6,6 +6,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RatingBar
@@ -85,10 +86,10 @@ fun setVisibleComments(recyclerView: RecyclerView, comments: List<Comment>?) {
 
 @BindingAdapter("setCustomId", "setImageName")
 fun ImageView.setLoadUrl(customId: String?, imageName: String?) {
-    customId?.let { customId ->
+    customId?.let { id ->
         imageName?.let { imageName ->
             Glide.with(context!!)
-                .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${customId}/profile/${imageName}")
+                .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${id}/profile/${imageName}")
                 .apply(RequestOptions().circleCrop())
                 .error(R.drawable.user).into(this)
         }
@@ -235,4 +236,11 @@ fun View.bindIsGone(isGone: Boolean) {
     } else {
         View.VISIBLE
     }
+}
+
+@BindingAdapter("marginTop")
+fun View.setMarginTop(marginTop: Float) {
+    val layoutParams = layoutParams as ViewGroup.MarginLayoutParams
+    layoutParams.topMargin = marginTop.toInt()
+    this.layoutParams = layoutParams
 }
