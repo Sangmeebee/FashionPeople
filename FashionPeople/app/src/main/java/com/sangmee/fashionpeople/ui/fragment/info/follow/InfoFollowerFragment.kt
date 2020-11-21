@@ -44,7 +44,7 @@ class InfoFollowerFragment(private val userId: String) : Fragment() {
                     vm.isFollowingsFollowing.value = isFollowings
                 }
             }
-        }, { vm.callOtherActivity(it) })
+        }, { customId, isFollower -> vm.callOtherActivity(customId, isFollower) })
     }
 
     override fun onCreateView(
@@ -106,8 +106,13 @@ class InfoFollowerFragment(private val userId: String) : Fragment() {
         vm.isFollowingsFollower.observe(viewLifecycleOwner, Observer {
             vm.isFollowingsFollower.value?.let { followerAdapter.clearAndAddButtonType(it) }
         })
+
         vm.callActivity.observe(viewLifecycleOwner, Observer {
-            (activity as MainActivity).replaceFragmentUseBackStack(OtherFragment.newInstance(it, 0))
+            if(vm.isFollower.value!!){
+                (activity as MainActivity).replaceFragmentUseBackStack(OtherFragment.newInstance(it, 0))
+            } else {
+                (activity as MainActivity).replaceFragmentUseBackStack(OtherFragment.newInstance(it, 1))
+            }
         })
     }
 }

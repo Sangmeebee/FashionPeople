@@ -24,6 +24,7 @@ class FollowViewModel : ViewModel() {
     //팔로잉의 팔로잉 여부
     val isFollowingsFollowing = MutableLiveData<MutableMap<String, Boolean>>()
     val callActivity = SingleLiveEvent<String>()
+    val isFollower = MutableLiveData<Boolean>(true)
 
     fun callFollower(userId: String) {
         followRepository.getFollowing(customId, success = { mFollowings ->
@@ -93,7 +94,8 @@ class FollowViewModel : ViewModel() {
         }, failed = { Log.d("DELETE_FOLLOWING", "error") })
     }
 
-    fun callOtherActivity(customId: String) {
+    fun callOtherActivity(customId: String, isF: Boolean) {
+        isFollower.value = isF
         callActivity.value = customId
     }
 }

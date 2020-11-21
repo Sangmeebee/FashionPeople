@@ -60,6 +60,11 @@ class FollowFragment : Fragment() {
             adapter = FollowViewPagerAdapter(this@FollowFragment, userId!!)
         }
 
+        //tab 몇번째 화면인지 세팅
+        fragmentId?.let {
+            binding.vpFollow.post { binding.vpFollow.currentItem = it }
+        }
+
         //tablayout 세팅
         TabLayoutMediator(tl_container, vp_follow) { tab, position ->
             when (position) {
@@ -69,10 +74,6 @@ class FollowFragment : Fragment() {
             }
         }.attach()
 
-        //tab 몇번째 화면인지 세팅
-        fragmentId?.let {
-            binding.vpFollow.post { binding.vpFollow.currentItem = it }
-        }
     }
 
     companion object {
