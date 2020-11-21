@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        navigationView.post { navigationView.selectedItemId = R.id.homeItem }
         navigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.homeItem -> {
@@ -146,7 +147,7 @@ class MainActivity : AppCompatActivity() {
 
 
     companion object {
-        private var currentFragment = "homeItem"
+        private var currentFragment = ""
         private const val CHOOSE_PROFILE_IMG = 200
     }
 }

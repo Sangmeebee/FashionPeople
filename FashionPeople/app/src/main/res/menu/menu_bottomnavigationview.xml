@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/homeItem"
-        android:icon="@drawable/war"
-        android:title="전쟁" />
-    <item
-        android:id="@+id/searchItem"
-        android:icon="@drawable/rank"
-        android:title="랭크" />
-    <item
-        android:id="@+id/addItem"
-        android:icon="@drawable/add"
-        android:title="추가" />
-    <item
-        android:id="@+id/alarmItem"
-        android:icon="@drawable/search"
-        android:title="찾기" />
-    <item
-        android:id="@+id/infoItem"
-        android:icon="@drawable/info"
-        android:title="나" />
+    <group
+        android:id="@+id/group"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/homeItem"
+            android:icon="@drawable/war"
+            android:title="전쟁" />
+        <item
+            android:id="@+id/searchItem"
+            android:icon="@drawable/rank"
+            android:title="랭크" />
+        <item
+            android:id="@+id/addItem"
+            android:icon="@drawable/add"
+            android:title="추가" />
+        <item
+            android:id="@+id/alarmItem"
+            android:icon="@drawable/search"
+            android:title="찾기" />
+        <item
+            android:id="@+id/infoItem"
+            android:icon="@drawable/info"
+            android:title="나" />
+    </group>
 </menu>
