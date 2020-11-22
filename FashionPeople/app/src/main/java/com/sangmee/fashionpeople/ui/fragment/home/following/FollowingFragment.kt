@@ -70,13 +70,13 @@ class FollowingFragment : Fragment(), EvaluateFeedAdapter.OnClickListener,
             }
         })
 
-        viewModel.updateFeedImages.observe(this@FollowingFragment, Observer {
+        viewModel.updateFeedImages.observe(viewLifecycleOwner, Observer {
             it?.let {
                 followingFeedAdapter.updateItem(it)
             }
         })
 
-        viewModel.evaluateMessage.observe(this@FollowingFragment, Observer {
+        viewModel.evaluateMessage.observe(viewLifecycleOwner, Observer {
             val binding = DataBindingUtil.inflate<DialogBaseBinding>(
                 layoutInflater,
                 R.layout.dialog_base,

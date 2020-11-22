@@ -14,6 +14,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
@@ -77,6 +78,7 @@ class CommentDialogFragment : BottomSheetDialogFragment() {
             viewModel.imageNameSubject.onNext(imageName)
             binding.ivSend.setOnClickListener {
                 binding.etCommentInput.text?.let {
+                    Log.d("seunghwan", it.toString())
                    if(it.equals("")) {
                        Toast.makeText(requireContext(), "메시지를 입력하세요", Toast.LENGTH_SHORT).show()
                    } else {

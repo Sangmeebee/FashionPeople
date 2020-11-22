@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:toolsNs="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -26,7 +26,7 @@
             app:civ_border_width="2dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            toolsNs:src="@drawable/ic_person" />
+            tools:src="@drawable/ic_person" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -43,7 +43,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorBlack"
-                toolsNs:text="서승환" />
+                android:text="@{comment.user.name}"
+                android:textStyle="bold"
+                tools:text="서승환" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -54,14 +56,14 @@
                     android:id="@+id/tv_comment_content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"
                     android:text="@{comment.content}"
-                    android:textColor="@color/colorBlack" />
+                    android:textColor="@color/colorBlack"
+                    tools:text="sd,ofpsakfpsdfkpadspfkpadsfkapsdfkpsfd"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    toolsNs:text="2020-01" />
+                    tools:text="2020-01" />
             </LinearLayout>
         </LinearLayout>
 

@@ -133,10 +133,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginLeft="12dp"
-            android:layout_marginBottom="12dp"
             android:ellipsize="end"
             android:text="@{feedImage.user.name}"
-            app:layout_constraintBottom_toTopOf="@id/rv_tags_home_feed"
+            app:layout_constraintTop_toTopOf="@id/iv_profile_evaluate_feed"
+            app:layout_constraintBottom_toBottomOf="@id/iv_profile_evaluate_feed"
             app:layout_constraintStart_toEndOf="@id/iv_profile_evaluate_feed"
             toolsNs:text="서승환" />
 
@@ -149,22 +149,20 @@
             android:gravity="center"
             android:textColor="@color/colorPrimary"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/tv_user_name_home_feed"
+            app:layout_constraintTop_toTopOf="@id/iv_profile_evaluate_feed"
+            app:layout_constraintBottom_toBottomOf="@id/iv_profile_evaluate_feed"
             app:layout_constraintStart_toEndOf="@id/tv_user_name_home_feed"
-            app:layout_constraintTop_toTopOf="@id/tv_user_name_home_feed"
             toolsNs:text="팔로잉" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_profile_evaluate_feed"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
             android:layout_marginBottom="12dp"
             app:civ_border_color="@color/colorWhite"
             app:civ_border_width="2dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_user_name_home_feed"
+            app:layout_constraintStart_toStartOf="@id/rv_tags_home_feed"
+            app:layout_constraintBottom_toTopOf="@id/rv_tags_home_feed"
             toolsNs:src="@drawable/ic_person_white" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -174,6 +172,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:scrollbars="vertical"
+            android:layout_marginStart="24dp"
             app:layout_constraintBottom_toTopOf="@id/rb_evaluate_feed"
             app:layout_constraintStart_toStartOf="parent" />
         <!--        <TextView
