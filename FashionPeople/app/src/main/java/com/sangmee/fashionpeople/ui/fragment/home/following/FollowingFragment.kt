@@ -22,10 +22,12 @@ import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.data.repository.FeedImageRepositoryImpl
 import com.sangmee.fashionpeople.databinding.DialogBaseBinding
 import com.sangmee.fashionpeople.databinding.FragmentFollowingBinding
+import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.comment.CommentDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.grade.GradeDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.home.evaluate.EvaluateFeedAdapter
 import com.sangmee.fashionpeople.ui.fragment.home.evaluate.EvaluateViewModel
+import com.sangmee.fashionpeople.ui.fragment.info.other.OtherFragment
 
 class FollowingFragment : Fragment(), EvaluateFeedAdapter.OnClickListener,
     FollowingFeedAdapter.OnClickListener {
@@ -64,7 +66,7 @@ class FollowingFragment : Fragment(), EvaluateFeedAdapter.OnClickListener,
     }
 
     private fun initObserve() {
-        viewModel.feedImages.observe(this@FollowingFragment, Observer {
+        viewModel.feedImages.observe(viewLifecycleOwner, Observer {
             it?.let {
                 followingFeedAdapter.setFeedImages(it)
             }
@@ -155,6 +157,14 @@ class FollowingFragment : Fragment(), EvaluateFeedAdapter.OnClickListener,
         showGradeFragment(feedImage)
     }
 
+    override fun onClickProfile(feedImage: FeedImage) {
+        (activity as MainActivity).replaceFragmentUseBackStack(
+            OtherFragment.newInstance(
+                customId,
+                0
+            )
+        )
+    }
 
 
 }

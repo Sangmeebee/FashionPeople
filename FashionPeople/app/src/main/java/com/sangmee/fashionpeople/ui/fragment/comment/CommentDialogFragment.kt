@@ -2,12 +2,16 @@ package com.sangmee.fashionpeople.ui.fragment.comment
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.library.baseAdapters.BR
 import androidx.fragment.app.DialogFragment
@@ -79,14 +83,38 @@ class CommentDialogFragment : BottomSheetDialogFragment() {
             binding.ivSend.setOnClickListener {
                 binding.etCommentInput.text?.let {
                     Log.d("seunghwan", it.toString())
-                   if(it.equals("")) {
-                       Toast.makeText(requireContext(), "메시지를 입력하세요", Toast.LENGTH_SHORT).show()
-                   } else {
-                       viewModel.updateFeedImageComment(myId, imageName, Comment(it.toString(), myId, imageName))
-                   }
+                    if (it.isEmpty()) {
+                        Toast.makeText(requireContext(), "메시지를 입력하세요", Toast.LENGTH_SHORT).show()
+                    } else {
+                        viewModel.updateFeedImageComment(
+                            myId,
+                            imageName,
+                            Comment(it.toString(), myId, imageName)
+                        )
+                    }
                 }
             }
         }
+
+        binding.etCommentInput.addTextChangedListener(object: TextWatcher {
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+            override fun afterTextChanged(s: Editable?) {
+                if (s != null) {
+                    if(s.isNotEmpty()) {
+                        binding.ivSend.setImageDrawable(context?.getDrawable(R.drawable.ic_send_red_24))
+                    } else {
+                        binding.ivSend.setImageDrawable(context?.getDrawable(R.drawable.ic_send_gray_24))
+                    }
+                }
+            }
+        })
 
     }
 
@@ -99,6 +127,10 @@ class CommentDialogFragment : BottomSheetDialogFragment() {
 
         viewModel.feedImage.observe(viewLifecycleOwner, Observer {
             binding
+        })
+
+        viewModel.submitEvent.observe(viewLifecycleOwner, Observer {
+            binding.etCommentInput.setText("")
         })
     }
 

@@ -46,6 +46,11 @@ class FollowingFeedAdapter(private val myId: String) :
                 onClickListener?.onClickGrade(it)
             }
         }
+        viewHolder.itemView.iv_item_following_feed.setOnClickListener {
+            items[viewHolder.adapterPosition].let {
+                onClickListener?.onClickProfile(it)
+            }
+        }
 
 
         return viewHolder
@@ -84,5 +89,6 @@ class FollowingFeedAdapter(private val myId: String) :
 
         fun onClickComment(imageName: String)
         fun onClickGrade(feedImage: FeedImage)
+        fun onClickProfile(feedImage: FeedImage)
     }
 }

@@ -8,6 +8,7 @@ import com.sangmee.fashionpeople.data.model.Comment
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.data.repository.CommentRepository
 import com.sangmee.fashionpeople.data.repository.FeedImageRepository
+import com.sangmee.fashionpeople.util.SingleLiveEvent
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -32,6 +33,10 @@ class CommentViewModel(
     private val _feedImage = MutableLiveData<FeedImage>()
     val feedImage: LiveData<FeedImage>
         get() = _feedImage
+
+    private val _submitEvent = SingleLiveEvent<Unit>()
+    val submitEvent: LiveData<Unit>
+        get() = _submitEvent
 
     init {
         imageNameSubject
@@ -78,6 +83,7 @@ class CommentViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 _comments.value = it
+                _submitEvent.call()
             }, {
 
             }).addTo(compositeDisposable)
