@@ -17,6 +17,7 @@ data class FUser(
     @SerializedName("followerNum")
     val followerNum: Int?,
     @SerializedName("followingNum")
-    val followingNum: Int?
-
-): Parcelable
+    val followingNum: Int?,
+    @SerializedName("evaluateNow")
+    val evaluateNow: Boolean?
+) : Parcelable
