@@ -13,6 +13,10 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
+import com.sangmee.fashionpeople.data.dataSource.remote.FUserRemoteDataSourceImpl
+import com.sangmee.fashionpeople.data.repository.FUserRepository
+import com.sangmee.fashionpeople.data.repository.FUserRepositoryImpl
+import com.sangmee.fashionpeople.ui.add.AddFragment
 import com.sangmee.fashionpeople.ui.add.TagActivity
 import com.sangmee.fashionpeople.ui.fragment.AlarmFragment
 import com.sangmee.fashionpeople.ui.fragment.SearchFragment
@@ -24,6 +28,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    private val fUserRepository: FUserRepository by lazy {
+        FUserRepositoryImpl(FUserRemoteDataSourceImpl())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +52,22 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 R.id.addItem -> {
-                    addPhoto()
+                    fUserRepository.getFUser(
+                        GlobalApplication.prefs.getString("custom_id", ""),
+                        { user ->
+                            user.evaluateNow?.let { evaluateNow ->
+                                if (evaluateNow) {
+                                    if (currentFragment != "addItem") {
+                                        replaceFragment(AddFragment())
+                                        currentFragment = "addItem"
+                                    }
+                                } else {
+                                    addPhoto()
+                                }
+
+                            }
+                        },
+                        { error -> Log.d("CALL_PROFILE_ERROR", error) })
                 }
 
                 R.id.alarmItem -> {

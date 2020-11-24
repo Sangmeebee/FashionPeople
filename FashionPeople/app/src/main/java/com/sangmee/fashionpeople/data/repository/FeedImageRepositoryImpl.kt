@@ -42,4 +42,12 @@ class FeedImageRepositoryImpl(
     override fun getFollowingFeedImages(id: String): Single<List<FeedImage>> {
         return feedImageRemoteDataSource.getFollowingFeedImages(id)
     }
+
+    override fun getEvaluatedFeedImage(
+        id: String,
+        success: (FeedImage) -> Unit,
+        failed: (String) -> Unit
+    ) {
+        return feedImageRemoteDataSource.getEvaluatedFeedImage(id, success, failed)
+    }
 }

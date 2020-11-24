@@ -23,5 +23,7 @@ interface FeedImageRemoteDataSource {
     fun postFeedImage(@Path("id") id: String, @Body feedImage: FeedImage): Call<FeedImage>
 
     fun getFollowingFeedImages(@Path("userId") id: String): Single<List<FeedImage>>
+
+    fun getEvaluatedFeedImage(id: String, success: (FeedImage) -> Unit, failed: (String) -> Unit)
 }
 

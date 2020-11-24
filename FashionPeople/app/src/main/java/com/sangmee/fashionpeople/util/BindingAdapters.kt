@@ -96,6 +96,17 @@ fun ImageView.setLoadUrl(customId: String?, imageName: String?) {
     }
 }
 
+@BindingAdapter("setFeedCustomId", "setFeedImageName")
+fun ImageView.setFeedUrl(customId: String?, imageName: String?) {
+    customId?.let { id ->
+        imageName?.let { imageName ->
+            Glide.with(context!!)
+                .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${id}/feed/${imageName}")
+                .error(R.drawable.user).into(this)
+        }
+    }
+}
+
 @BindingAdapter("setVisibleEmptyView")
 fun setVisibleEmptyView(textView: TextView, comments: List<Comment>?) {
     comments?.let {
@@ -178,6 +189,34 @@ fun setSpannableRating(appCompatTextView: AppCompatTextView, feedImage: FeedImag
     val target = "${average}점"
 
     val text = "${feedImage?.user?.name}님의 패션 점수는 $target 입니다."
+    val spannableString = SpannableString(text)
+    val targetStartIndex = text.indexOf(target)
+    val targetEndIndex = targetStartIndex + target.length
+
+    spannableString.setSpan(
+        ForegroundColorSpan(appCompatTextView.resources.getColor(R.color.colorPrimary)),
+        targetStartIndex,
+        targetEndIndex,
+        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+    )
+
+    appCompatTextView.text = spannableString
+
+
+}
+
+@BindingAdapter("setEvaluatedText")
+fun setEvaluatedText(appCompatTextView: AppCompatTextView, feedImage: FeedImage?) {
+
+    var average = 0f
+    feedImage?.let { feedImage ->
+        feedImage.evaluations?.let {
+            average = getRatingFromEvaluations(it)
+        }
+    }
+    val target = "${average}점"
+
+    val text = "평가중... 현재 $target 입니다."
     val spannableString = SpannableString(text)
     val targetStartIndex = text.indexOf(target)
     val targetEndIndex = targetStartIndex + target.length
