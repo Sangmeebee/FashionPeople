@@ -67,8 +67,13 @@ class FollowingFragment : Fragment(), EvaluateFeedAdapter.OnClickListener,
 
     private fun initObserve() {
         viewModel.feedImages.observe(viewLifecycleOwner, Observer {
-            it?.let {
+            if (!it.isNullOrEmpty()) {
+                binding.vpFollowing.visibility = View.VISIBLE
+                binding.tvEmptyResult.visibility = View.GONE
                 followingFeedAdapter.setFeedImages(it)
+            } else {
+                binding.vpFollowing.visibility = View.GONE
+                binding.tvEmptyResult.visibility = View.VISIBLE
             }
         })
 

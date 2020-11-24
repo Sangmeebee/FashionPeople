@@ -84,8 +84,13 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
 
     private fun initObserve() {
         viewModel.feedImages.observe(viewLifecycleOwner, Observer {
-            it?.let {
+            if (!it.isNullOrEmpty()) {
+                binding.vpEvaluate.visibility = View.VISIBLE
+                binding.tvEmptyResult.visibility = View.GONE
                 evaluateFeedAdapter.setFeedImages(it)
+            } else {
+                binding.vpEvaluate.visibility = View.GONE
+                binding.tvEmptyResult.visibility = View.VISIBLE
             }
         })
 

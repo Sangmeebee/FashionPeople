@@ -11,7 +11,7 @@ data class FeedImage(
     @SerializedName("imageName")
     val imageName: String?,
     @SerializedName("timeStamp")
-    val timeStamp: LocalDateTime?,
+    val timeStamp: String?,
     @SerializedName("style")
     val style: String?,
     @SerializedName("top")
@@ -29,7 +29,7 @@ data class FeedImage(
     @SerializedName("resultRating")
     val resultRating: Float?,
     @SerializedName("resultTimeStamp")
-    val resultTimeStamp: LocalDateTime?,
+    val resultTimeStamp: String?,
     @SerializedName("user")
     val user: FUser?
 ) : Parcelable
