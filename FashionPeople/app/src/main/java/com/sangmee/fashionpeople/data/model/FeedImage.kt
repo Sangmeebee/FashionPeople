@@ -4,13 +4,14 @@ package com.sangmee.fashionpeople.data.model
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
+import java.time.LocalDateTime
 
 @Parcelize
 data class FeedImage(
     @SerializedName("imageName")
     val imageName: String?,
     @SerializedName("timeStamp")
-    val timeStamp: String?,
+    val timeStamp: LocalDateTime?,
     @SerializedName("style")
     val style: String?,
     @SerializedName("top")
@@ -21,10 +22,14 @@ data class FeedImage(
     val shoes: String?,
     @SerializedName("rank")
     val rank: Int?,
-    @SerializedName("battleNow")
-    val battleNow: Boolean?,
+    @SerializedName("evaluateNow")
+    val evaluateNow: Boolean?,
     @SerializedName("evaluations")
     val evaluations: List<Evaluation>?,
+    @SerializedName("resultRating")
+    val resultRating: Float?,
+    @SerializedName("resultTimeStamp")
+    val resultTimeStamp: LocalDateTime?,
     @SerializedName("user")
     val user: FUser?
 ) : Parcelable
