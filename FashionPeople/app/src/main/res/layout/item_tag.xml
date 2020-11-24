@@ -23,7 +23,7 @@
             app:createTag="@{tag}"
             style="@style/TagTextStyle"
             android:textColor="@color/colorPrimary"
-            android:background="@color/colorBlack"
+            android:background="@android:color/transparent"
             tools:text="검색"
             />
 

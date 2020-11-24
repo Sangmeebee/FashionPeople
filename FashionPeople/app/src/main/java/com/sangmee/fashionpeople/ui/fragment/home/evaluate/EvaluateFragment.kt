@@ -22,8 +22,10 @@ import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.data.dataSource.remote.FeedImageRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.data.repository.FeedImageRepositoryImpl
+import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.comment.CommentDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.grade.GradeDialogFragment
+import com.sangmee.fashionpeople.ui.fragment.info.other.OtherFragment
 
 class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
 
@@ -81,13 +83,13 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
     }
 
     private fun initObserve() {
-        viewModel.feedImages.observe(this@EvaluateFragment, Observer {
+        viewModel.feedImages.observe(viewLifecycleOwner, Observer {
             it?.let {
                 evaluateFeedAdapter.setFeedImages(it)
             }
         })
 
-        viewModel.nowPage.observe(this@EvaluateFragment, Observer {
+        viewModel.nowPage.observe(viewLifecycleOwner, Observer {
             it?.let {
                 if (evaluateFeedAdapter.itemCount - 1 > binding.vpEvaluate.currentItem) {
                     binding.vpEvaluate.currentItem = it
@@ -95,13 +97,13 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
             }
         })
 
-        viewModel.updateFeedImages.observe(this@EvaluateFragment, Observer {
+        viewModel.updateFeedImages.observe(viewLifecycleOwner, Observer {
             it?.let {
                 evaluateFeedAdapter.updateItem(it)
             }
         })
 
-        viewModel.evaluateMessage.observe(this@EvaluateFragment, Observer {
+        viewModel.evaluateMessage.observe(viewLifecycleOwner, Observer {
             val binding = DataBindingUtil.inflate<DialogBaseBinding>(
                 layoutInflater,
                 R.layout.dialog_base,
@@ -159,5 +161,14 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
 
     override fun onClickGrade(feedImage: FeedImage) {
         showGradeFragment(feedImage)
+    }
+
+    override fun onClickProfile(feedImage: FeedImage) {
+        (activity as MainActivity).replaceFragmentUseBackStack(
+            OtherFragment.newInstance(
+                customId,
+                0
+            )
+        )
     }
 }

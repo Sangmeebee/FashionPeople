@@ -1,7 +1,9 @@
 package com.sangmee.fashionpeople.ui.fragment.comment
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sangmee.fashionpeople.R
@@ -22,6 +24,7 @@ class CommentRecyclerAdapter : RecyclerView.Adapter<CommentRecyclerViewHolder>()
         return viewHolder
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onBindViewHolder(holder: CommentRecyclerViewHolder, position: Int) {
         return holder.bind(items[position])
     }

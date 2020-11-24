@@ -45,6 +45,12 @@ class EvaluateFeedAdapter(private val myId: String) : RecyclerView.Adapter<Evalu
             }
         }
 
+        viewHolder.itemView.iv_profile_evaluate_feed.setOnClickListener {
+            items[viewHolder.adapterPosition].let {
+                onClickListener?.onClickProfile(it)
+            }
+        }
+
         return viewHolder
     }
 
@@ -81,6 +87,7 @@ class EvaluateFeedAdapter(private val myId: String) : RecyclerView.Adapter<Evalu
 
         fun onClickComment(imageName: String)
         fun onClickGrade(feedImage: FeedImage)
+        fun onClickProfile(feedImage: FeedImage)
     }
 
 
