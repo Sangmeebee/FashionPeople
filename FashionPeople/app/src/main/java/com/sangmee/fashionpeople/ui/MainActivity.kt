@@ -18,6 +18,7 @@ import com.sangmee.fashionpeople.ui.fragment.AlarmFragment
 import com.sangmee.fashionpeople.ui.fragment.SearchFragment
 import com.sangmee.fashionpeople.ui.fragment.home.HomeFragment
 import com.sangmee.fashionpeople.ui.fragment.info.InfoFragment
+import com.sangmee.fashionpeople.ui.fragment.rank.RankFragment
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -38,10 +39,10 @@ class MainActivity : AppCompatActivity() {
                         currentFragment = "homeItem"
                     }
                 }
-                R.id.searchItem -> {
-                    if (currentFragment != "searchItem") {
-                        replaceFragment(SearchFragment())
-                        currentFragment = "searchItem"
+                R.id.rankItem -> {
+                    if (currentFragment != "rankItem") {
+                        replaceFragment(RankFragment())
+                        currentFragment = "rankItem"
                     }
                 }
                 R.id.addItem -> {
