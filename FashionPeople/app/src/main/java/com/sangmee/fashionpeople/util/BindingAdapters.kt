@@ -1,5 +1,7 @@
 package com.sangmee.fashionpeople.util
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.text.Spannable
@@ -14,6 +16,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatRatingBar
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -23,7 +26,9 @@ import com.google.android.flexbox.*
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.Comment
 import com.sangmee.fashionpeople.data.model.FeedImage
+import com.sangmee.fashionpeople.data.model.RankImage
 import com.sangmee.fashionpeople.ui.fragment.home.TagRecyclerViewAdapter
+import com.sangmee.fashionpeople.ui.fragment.info.FeedImageDetailActivity
 import com.skydoves.progressview.ProgressView
 
 
@@ -246,17 +251,30 @@ fun View.setMarginTop(marginTop: Float) {
     this.layoutParams = layoutParams
 }
 
+@SuppressLint("SetTextI18n")
 @RequiresApi(Build.VERSION_CODES.M)
 @BindingAdapter("setTvBackGround")
 fun setTvBackGround(textView: TextView, rank: Int) {
 
-    val drawable = ContextCompat.getDrawable(textView.context, R.drawable.bg_ranking_text) as GradientDrawable
+    val drawable =
+        ContextCompat.getDrawable(textView.context, R.drawable.bg_ranking_text) as GradientDrawable
 
-    if(rank == 0) {
+    if (rank == 0) {
         drawable.setColor(textView.context.getColor(R.color.colorPrimary))
     } else {
         drawable.setColor(textView.context.getColor(R.color.colorBlack))
     }
     textView.background = drawable
-    textView.text = "${rank+1}위"
+    textView.text = "${rank + 1}위"
+}
+
+@BindingAdapter("linkToDetail")
+fun linkToDetail(constraintLayout: ConstraintLayout, rankImage: RankImage?) {
+    rankImage?.feedImage?.let { feedImage ->
+        constraintLayout.setOnClickListener {
+            val intent = Intent(it.context, FeedImageDetailActivity::class.java)
+            intent.putExtra(FeedImageDetailActivity.KEY_FEED_IMAGE, feedImage)
+            it.context.startActivity(intent)
+        }
+    }
 }

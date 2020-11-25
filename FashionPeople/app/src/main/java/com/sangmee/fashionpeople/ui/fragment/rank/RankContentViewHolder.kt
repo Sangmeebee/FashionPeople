@@ -11,6 +11,7 @@ class RankContentViewHolder(
 
     fun bind(item: RankImage, rank: Int) {
         binding.rank = rank
+        binding.rankImage = item
         Glide.with(itemView.context)
             .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${item.feedImage?.user?.id}/feed/${item.feedImage?.imageName}")
             .into(binding.ivRank)

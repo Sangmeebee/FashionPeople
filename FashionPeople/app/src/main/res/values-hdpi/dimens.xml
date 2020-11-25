@@ -5,4 +5,10 @@
     <dimen name="iv_plus_height">-1.0px</dimen>
     <dimen name="is_me_margin">30dp</dimen>
     <dimen name="not_is_me_margin">80dp</dimen>
+    <dimen name="pageMargin">30dp</dimen>
+    <dimen name="offset">30dp</dimen>
+    <dimen name="pageMarginAndOffset">50dp</dimen>
+    <dimen name="viewpager_next_item_visible">26dp</dimen>
+    <dimen name="viewpager_current_item_horizontal_margin">42dp</dimen>
+
 </resources>
