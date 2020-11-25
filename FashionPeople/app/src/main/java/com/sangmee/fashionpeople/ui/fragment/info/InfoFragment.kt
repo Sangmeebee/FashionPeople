@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sangmee.fashionpeople.R
@@ -26,7 +26,7 @@ class InfoFragment : Fragment() {
 
     val customId by lazy { GlobalApplication.prefs.getString("custom_id", "") }
     lateinit var binding: FragmentInfoBinding
-    private val vm by activityViewModels<InfoViewModel>()
+    private val vm: InfoViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -76,9 +76,18 @@ class InfoFragment : Fragment() {
     private fun viewModelCallback() {
 
         vm.callActivity.observe(viewLifecycleOwner, Observer {
-            (activity as MainActivity).replaceFragmentUseBackStack(FollowFragment.newInstance(it, customId))
+            (activity as MainActivity).replaceFragmentUseBackStack(
+                FollowFragment.newInstance(
+                    it,
+                    customId,
+                    vm.userName.value!!,
+                    vm.followerNum.value!!,
+                    vm.followingNum.value!!
+                )
+            )
         })
     }
+
     companion object {
         private const val LOGOUT_CODE = 210
     }
