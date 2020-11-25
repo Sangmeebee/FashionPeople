@@ -76,7 +76,6 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    Toast.makeText(context, position.toString(), Toast.LENGTH_SHORT).show()
                 }
             })
         }

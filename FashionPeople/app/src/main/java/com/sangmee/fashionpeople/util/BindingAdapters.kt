@@ -54,11 +54,16 @@ fun setVisibleRating(ratingBar: RatingBar, feedImage: FeedImage?, myId: String) 
     feedImage?.let {
         myId.let {
             feedImage.evaluations?.let {
+                if(it.size >= 3) {
+                    ratingBar.visibility = View.INVISIBLE
+                }
                 for (evaluation in feedImage.evaluations) {
                     if (evaluation.evaluationPersonId == myId) {
                         ratingBar.visibility = View.INVISIBLE
+                        break;
                     }
                 }
+
             }
         }
     }
@@ -73,6 +78,9 @@ fun setVisibleLinearLayout(linearLayout: LinearLayout, feedImage: FeedImage?, my
                     if (evaluation.evaluationPersonId == myId) {
                         linearLayout.visibility = View.VISIBLE
                     }
+                }
+                if(it.size >= 3) {
+                    linearLayout.visibility = View.VISIBLE
                 }
             }
         }
@@ -181,7 +189,7 @@ fun setSpannableRating(appCompatTextView: AppCompatTextView, feedImage: FeedImag
             average = getRatingFromEvaluations(it)
         }
     }
-    val target = "${average}점"
+    val target = String.format("%.1f점", average)
 
     val text = "${feedImage?.user?.name}님의 패션 점수는 $target 입니다."
     val spannableString = SpannableString(text)
@@ -208,7 +216,7 @@ fun setRatingText(appCompatTextView: AppCompatTextView, feedImage: FeedImage?) {
             average = getRatingFromEvaluations(it)
         }
     }
-    val text = "$average"
+    val text = String.format("%.1f", average)
 
     appCompatTextView.text = text
 }
