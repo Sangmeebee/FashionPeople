@@ -7,21 +7,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.observer.FollowViewModel
 import com.sangmee.fashionpeople.observer.InfoViewModel
-import com.sangmee.fashionpeople.ui.MainActivity
-import com.sangmee.fashionpeople.ui.fragment.info.other.OtherFragment
 import kotlinx.android.synthetic.main.fragment_info_follow.*
 import java.util.*
 
 class InfoFollowingFragment(private val userId: String) : Fragment() {
 
-    private val infoVm by activityViewModels<InfoViewModel>()
-    private val vm by activityViewModels<FollowViewModel>()
+    private val infoVm: InfoViewModel by viewModels(
+        ownerProducer = { requireParentFragment() }
+    )
+    private val vm: FollowViewModel by viewModels(
+        ownerProducer = { requireParentFragment() }
+    )
+
     private val followingAdapter by lazy {
         InfoFollowingAdapter({
             vm.isFollowingsFollowing.value?.let { isFollowings ->
@@ -44,14 +47,13 @@ class InfoFollowingFragment(private val userId: String) : Fragment() {
                     vm.isFollowingsFollower.value = isFollowings
                 }
             }
-        }, { customId, isFollower -> vm.callOtherActivity(customId, isFollower) })
+        }, { vm.callOtherActivity(it) })
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_info_follow, container, false)
     }
 
@@ -59,6 +61,7 @@ class InfoFollowingFragment(private val userId: String) : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setRecyclerView()
         vm.callFollowing(userId)
+        vm.callFollowingsFollowing(userId)
         viewModelCallback()
         et_userName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

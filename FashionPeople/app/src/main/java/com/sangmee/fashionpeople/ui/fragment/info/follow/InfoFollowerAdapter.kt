@@ -11,7 +11,7 @@ import com.sangmee.fashionpeople.databinding.ItemFollowerBinding
 
 class InfoFollowerAdapter(
     val setBtn: (String) -> Unit,
-    val callActivity: (String, Boolean) -> Unit
+    val callActivity: (String) -> Unit
 ) :
     RecyclerView.Adapter<InfoFollowerAdapter.InfoFollowerViewHolder>() {
 
@@ -30,7 +30,9 @@ class InfoFollowerAdapter(
     }
 
     override fun onBindViewHolder(holder: InfoFollowerViewHolder, position: Int) {
-        holder.bind(followList[position], isFollowings[followList[position].id]!!)
+        isFollowings[followList[position].id]?.let {
+            holder.bind(followList[position], it)
+        }
     }
 
     override fun getItemCount() = followList.size
@@ -52,7 +54,7 @@ class InfoFollowerAdapter(
     }
 
     fun callOtherActivity(customId: String) {
-        callActivity(customId, true)
+        callActivity(customId)
     }
 
     class InfoFollowerViewHolder(private val binding: ItemFollowerBinding) :

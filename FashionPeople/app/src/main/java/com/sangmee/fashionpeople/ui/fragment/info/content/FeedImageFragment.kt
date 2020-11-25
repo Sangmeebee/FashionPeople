@@ -6,8 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.databinding.FragmentFeedImageBinding
 import com.sangmee.fashionpeople.observer.FeedImageViewModel
@@ -16,7 +17,13 @@ import kotlinx.android.synthetic.main.fragment_feed_image.*
 class FeedImageFragment(private val userId: String) : Fragment() {
 
     private lateinit var binding: FragmentFeedImageBinding
-    private val vm by activityViewModels<FeedImageViewModel>()
+    private val vm: FeedImageViewModel by lazy {
+        ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return FeedImageViewModel() as T
+            }
+        }).get(FeedImageViewModel::class.java)
+    }
     private var isEmpty = false
     private val feedImageAdapter by lazy {
         FeedImageAdapter(userId)

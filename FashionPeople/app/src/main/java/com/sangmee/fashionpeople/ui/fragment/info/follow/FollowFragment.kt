@@ -6,15 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.databinding.FragmentFollowBinding
-import com.sangmee.fashionpeople.observer.InfoViewModel
 import kotlinx.android.synthetic.main.fragment_follow.*
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
+private const val ARG_PARAM3 = "param3"
+private const val ARG_PARAM4 = "param4"
+private const val ARG_PARAM5 = "param5"
 
 class FollowFragment : Fragment() {
     private var fragmentId: Int? = null
@@ -23,16 +24,15 @@ class FollowFragment : Fragment() {
     private var followingNum: Int? = null
     private var userName: String? = null
     private lateinit var binding: FragmentFollowBinding
-    private val vm by activityViewModels<InfoViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             fragmentId = it.getInt(ARG_PARAM1)
             userId = it.getString(ARG_PARAM2)
-            userName = vm.userName.value
-            followerNum = vm.followerNum.value
-            followingNum = vm.followingNum.value
+            userName = it.getString(ARG_PARAM3)
+            followerNum = it.getInt(ARG_PARAM4)
+            followingNum = it.getInt(ARG_PARAM5)
         }
     }
 
@@ -77,11 +77,20 @@ class FollowFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(fragmentId: Int, userId: String) =
+        fun newInstance(
+            fragmentId: Int,
+            userId: String,
+            userName: String,
+            followerNum: Int,
+            followingNum: Int
+        ) =
             FollowFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_PARAM1, fragmentId)
                     putString(ARG_PARAM2, userId)
+                    putString(ARG_PARAM3, userName)
+                    putInt(ARG_PARAM4, followerNum)
+                    putInt(ARG_PARAM5, followingNum)
                 }
             }
     }

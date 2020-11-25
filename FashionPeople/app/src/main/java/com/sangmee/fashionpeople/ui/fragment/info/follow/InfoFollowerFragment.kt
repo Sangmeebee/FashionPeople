@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FUser
@@ -20,8 +20,12 @@ import java.util.*
 
 class InfoFollowerFragment(private val userId: String) : Fragment() {
 
-    private val infoVm by activityViewModels<InfoViewModel>()
-    private val vm by activityViewModels<FollowViewModel>()
+    private val infoVm: InfoViewModel by viewModels(
+        ownerProducer = { requireParentFragment() }
+    )
+    private val vm: FollowViewModel by viewModels(
+        ownerProducer = { requireParentFragment() }
+    )
     private val followerAdapter by lazy {
         InfoFollowerAdapter({
             vm.isFollowingsFollower.value?.let { isFollowings ->
@@ -44,20 +48,20 @@ class InfoFollowerFragment(private val userId: String) : Fragment() {
                     vm.isFollowingsFollowing.value = isFollowings
                 }
             }
-        }, { customId, isFollower -> vm.callOtherActivity(customId, isFollower) })
+        }, { vm.callOtherActivity(it) })
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_info_follow, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setRecyclerView()
+        vm.callFollowingsFollower(userId)
         vm.callFollower(userId)
         viewModelCallback()
         et_userName.addTextChangedListener(object : TextWatcher {
@@ -108,11 +112,7 @@ class InfoFollowerFragment(private val userId: String) : Fragment() {
         })
 
         vm.callActivity.observe(viewLifecycleOwner, Observer {
-            if(vm.isFollower.value!!){
-                (activity as MainActivity).replaceFragmentUseBackStack(OtherFragment.newInstance(it, 0))
-            } else {
-                (activity as MainActivity).replaceFragmentUseBackStack(OtherFragment.newInstance(it, 1))
-            }
+            (activity as MainActivity).replaceFragmentUseBackStack(OtherFragment.newInstance(it))
         })
     }
 }
