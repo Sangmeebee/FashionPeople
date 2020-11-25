@@ -76,7 +76,6 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    Toast.makeText(context, position.toString(), Toast.LENGTH_SHORT).show()
                 }
             })
         }
@@ -84,16 +83,13 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
 
     private fun initObserve() {
         viewModel.feedImages.observe(viewLifecycleOwner, Observer {
-            it?.let {
+            if (!it.isNullOrEmpty()) {
+                binding.vpEvaluate.visibility = View.VISIBLE
+                binding.tvEmptyResult.visibility = View.GONE
                 evaluateFeedAdapter.setFeedImages(it)
-            }
-        })
-
-        viewModel.nowPage.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                if (evaluateFeedAdapter.itemCount - 1 > binding.vpEvaluate.currentItem) {
-                    binding.vpEvaluate.currentItem = it
-                }
+            } else {
+                binding.vpEvaluate.visibility = View.GONE
+                binding.tvEmptyResult.visibility = View.VISIBLE
             }
         })
 
@@ -120,7 +116,6 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
 
             binding.tvDialogMessage.text = "평가가 완료되었습니다\n 사진을 저장하시겠습니까?"
             binding.btnOk.setOnClickListener {
-                viewModel.setNextPage()
                 alertDialog.dismiss()
             }
 

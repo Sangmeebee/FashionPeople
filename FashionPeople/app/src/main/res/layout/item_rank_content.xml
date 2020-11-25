@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="rank"
+            type="Integer" />
+
+        <variable
+            name="rankImage"
+            type="com.sangmee.fashionpeople.data.model.RankImage" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:linkToDetail="@{rankImage}"
+        android:orientation="vertical">
+
+
+
+        <ImageView
+            android:id="@+id/iv_rank"
+            android:layout_width="match_parent"
+            android:layout_height="320dp"
+            android:src="@color/colorBlack"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_rank"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:textColor="@color/colorWhite"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toStartOf="@id/iv_rank"
+            app:layout_constraintTop_toTopOf="@id/iv_rank"
+            app:setTvBackGround="@{rank}" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

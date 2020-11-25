@@ -1,5 +1,7 @@
 package com.sangmee.fashionpeople.util
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.text.Spannable
@@ -14,6 +16,8 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatRatingBar
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -22,7 +26,9 @@ import com.google.android.flexbox.*
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.Comment
 import com.sangmee.fashionpeople.data.model.FeedImage
+import com.sangmee.fashionpeople.data.model.RankImage
 import com.sangmee.fashionpeople.ui.fragment.home.TagRecyclerViewAdapter
+import com.sangmee.fashionpeople.ui.fragment.info.FeedImageDetailActivity
 import com.skydoves.progressview.ProgressView
 
 
@@ -48,11 +54,16 @@ fun setVisibleRating(ratingBar: RatingBar, feedImage: FeedImage?, myId: String) 
     feedImage?.let {
         myId.let {
             feedImage.evaluations?.let {
+                if(it.size >= 3) {
+                    ratingBar.visibility = View.INVISIBLE
+                }
                 for (evaluation in feedImage.evaluations) {
                     if (evaluation.evaluationPersonId == myId) {
                         ratingBar.visibility = View.INVISIBLE
+                        break;
                     }
                 }
+
             }
         }
     }
@@ -67,6 +78,9 @@ fun setVisibleLinearLayout(linearLayout: LinearLayout, feedImage: FeedImage?, my
                     if (evaluation.evaluationPersonId == myId) {
                         linearLayout.visibility = View.VISIBLE
                     }
+                }
+                if(it.size >= 3) {
+                    linearLayout.visibility = View.VISIBLE
                 }
             }
         }
@@ -186,7 +200,7 @@ fun setSpannableRating(appCompatTextView: AppCompatTextView, feedImage: FeedImag
             average = getRatingFromEvaluations(it)
         }
     }
-    val target = "${average}점"
+    val target = String.format("%.1f점", average)
 
     val text = "${feedImage?.user?.name}님의 패션 점수는 $target 입니다."
     val spannableString = SpannableString(text)
@@ -241,7 +255,7 @@ fun setRatingText(appCompatTextView: AppCompatTextView, feedImage: FeedImage?) {
             average = getRatingFromEvaluations(it)
         }
     }
-    val text = "$average"
+    val text = String.format("%.1f", average)
 
     appCompatTextView.text = text
 }
@@ -282,4 +296,32 @@ fun View.setMarginTop(marginTop: Float) {
     val layoutParams = layoutParams as ViewGroup.MarginLayoutParams
     layoutParams.topMargin = marginTop.toInt()
     this.layoutParams = layoutParams
+}
+
+@SuppressLint("SetTextI18n")
+@RequiresApi(Build.VERSION_CODES.M)
+@BindingAdapter("setTvBackGround")
+fun setTvBackGround(textView: TextView, rank: Int) {
+
+    val drawable =
+        ContextCompat.getDrawable(textView.context, R.drawable.bg_ranking_text) as GradientDrawable
+
+    if (rank == 0) {
+        drawable.setColor(textView.context.getColor(R.color.colorPrimary))
+    } else {
+        drawable.setColor(textView.context.getColor(R.color.colorBlack))
+    }
+    textView.background = drawable
+    textView.text = "${rank + 1}위"
+}
+
+@BindingAdapter("linkToDetail")
+fun linkToDetail(constraintLayout: ConstraintLayout, rankImage: RankImage?) {
+    rankImage?.feedImage?.let { feedImage ->
+        constraintLayout.setOnClickListener {
+            val intent = Intent(it.context, FeedImageDetailActivity::class.java)
+            intent.putExtra(FeedImageDetailActivity.KEY_FEED_IMAGE, feedImage)
+            it.context.startActivity(intent)
+        }
+    }
 }

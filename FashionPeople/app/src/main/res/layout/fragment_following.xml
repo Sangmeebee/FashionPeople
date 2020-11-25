@@ -15,5 +15,21 @@
             android:id="@+id/vp_following"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_empty_result"
+            android:background="@color/colorBlack"
+            android:layout_width="match_parent"
+            android:textStyle="bold"
+            android:textColor="@color/colorWhite"
+            android:textSize="23sp"
+            android:text="팔로잉하는 유저가 없어요!"
+            android:gravity="center"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
