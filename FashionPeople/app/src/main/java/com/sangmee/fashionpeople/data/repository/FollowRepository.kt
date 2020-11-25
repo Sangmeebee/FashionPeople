@@ -9,6 +9,22 @@ interface FollowRepository {
 
     fun getFollowing(userId: String, success: (List<Following>) -> Unit, failed: (String) -> Unit)
 
+    fun getIsFollowing(userId: String, customId:String, success: (Boolean) -> Unit, failed: (String) -> Unit)
+
+    fun getIsFollowingsFollowing(
+        userId: String,
+        customId: String,
+        success: (Map<String, Boolean>) -> Unit,
+        failed: (String) -> Unit
+    )
+
+    fun getIsFollowingsFollower(
+        userId: String,
+        customId: String,
+        success: (Map<String, Boolean>) -> Unit,
+        failed: (String) -> Unit
+    )
+
     fun updateFollowing(
         userId: String,
         followingId: String,

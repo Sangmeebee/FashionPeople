@@ -4,7 +4,8 @@ import com.sangmee.fashionpeople.data.dataSource.remote.FollowRemoteDataSource
 import com.sangmee.fashionpeople.data.model.Follower
 import com.sangmee.fashionpeople.data.model.Following
 
-class FollowRepositoryImpl(private val followRemoteDataSource: FollowRemoteDataSource) : FollowRepository {
+class FollowRepositoryImpl(private val followRemoteDataSource: FollowRemoteDataSource) :
+    FollowRepository {
     override fun getFollower(
         userId: String,
         success: (List<Follower>) -> Unit,
@@ -39,4 +40,30 @@ class FollowRepositoryImpl(private val followRemoteDataSource: FollowRemoteDataS
         followRemoteDataSource.deleteFollowing(userId, followingId, success, failed)
     }
 
+    override fun getIsFollowing(
+        userId: String,
+        customId: String,
+        success: (Boolean) -> Unit,
+        failed: (String) -> Unit
+    ) {
+        followRemoteDataSource.getIsFollowing(userId, customId, success, failed)
+    }
+
+    override fun getIsFollowingsFollowing(
+        userId: String,
+        customId: String,
+        success: (Map<String, Boolean>) -> Unit,
+        failed: (String) -> Unit
+    ) {
+        followRemoteDataSource.getIsFollowingsFollowing(userId, customId, success, failed)
+    }
+
+    override fun getIsFollowingsFollower(
+        userId: String,
+        customId: String,
+        success: (Map<String, Boolean>) -> Unit,
+        failed: (String) -> Unit
+    ) {
+        followRemoteDataSource.getIsFollowingsFollower(userId, customId, success, failed)
+    }
 }

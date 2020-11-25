@@ -12,6 +12,15 @@ interface FollowingService {
     @GET("following/{userId}")
     fun getFollowing(@Path("userId") userId: String): Call<List<Following>>
 
+    @GET("following/{userId}/{customId}")
+    fun getIsFollowing(@Path("userId") userId: String, @Path("customId") customId: String): Call<Boolean>
+
+    @GET("following/isFollowingsFollowing/{userId}/{customId}")
+    fun getIsFollowingsFollowing(@Path("userId") userId: String, @Path("customId") customId: String): Call<Map<String, Boolean>>
+
+    @GET("following/isFollowingsFollower/{userId}/{customId}")
+    fun getIsFollowingsFollower(@Path("userId") userId: String, @Path("customId") customId: String): Call<Map<String, Boolean>>
+
     @PUT("following/{userId}/{followingId}")
     fun updateFollowing(
         @Path("userId") userId: String,
