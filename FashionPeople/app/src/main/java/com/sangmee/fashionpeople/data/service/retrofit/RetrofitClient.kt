@@ -29,5 +29,6 @@ object RetrofitClient {
     fun getCommentService(): CommentService = retrofit.create(CommentService::class.java)
     fun getFollowerService(): FollowerService = retrofit.create(FollowerService::class.java)
     fun getFollowingService(): FollowingService = retrofit.create(FollowingService::class.java)
+    fun getRankImageService(): RankImageService = retrofit.create(RankImageService::class.java)
 }
 
