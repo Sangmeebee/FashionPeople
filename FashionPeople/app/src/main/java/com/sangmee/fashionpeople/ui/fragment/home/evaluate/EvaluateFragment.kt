@@ -94,14 +94,6 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
             }
         })
 
-        viewModel.nowPage.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                if (evaluateFeedAdapter.itemCount - 1 > binding.vpEvaluate.currentItem) {
-                    binding.vpEvaluate.currentItem = it
-                }
-            }
-        })
-
         viewModel.updateFeedImages.observe(viewLifecycleOwner, Observer {
             it?.let {
                 evaluateFeedAdapter.updateItem(it)
@@ -125,7 +117,6 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
 
             binding.tvDialogMessage.text = "평가가 완료되었습니다\n 사진을 저장하시겠습니까?"
             binding.btnOk.setOnClickListener {
-                viewModel.setNextPage()
                 alertDialog.dismiss()
             }
 

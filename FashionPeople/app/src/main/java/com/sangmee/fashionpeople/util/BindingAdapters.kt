@@ -14,6 +14,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatRatingBar
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -243,4 +244,19 @@ fun View.setMarginTop(marginTop: Float) {
     val layoutParams = layoutParams as ViewGroup.MarginLayoutParams
     layoutParams.topMargin = marginTop.toInt()
     this.layoutParams = layoutParams
+}
+
+@RequiresApi(Build.VERSION_CODES.M)
+@BindingAdapter("setTvBackGround")
+fun setTvBackGround(textView: TextView, rank: Int) {
+
+    val drawable = ContextCompat.getDrawable(textView.context, R.drawable.bg_ranking_text) as GradientDrawable
+
+    if(rank == 0) {
+        drawable.setColor(textView.context.getColor(R.color.colorPrimary))
+    } else {
+        drawable.setColor(textView.context.getColor(R.color.colorBlack))
+    }
+    textView.background = drawable
+    textView.text = "${rank+1}위"
 }

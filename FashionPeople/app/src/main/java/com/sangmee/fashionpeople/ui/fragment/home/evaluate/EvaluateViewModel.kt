@@ -80,9 +80,6 @@ class EvaluateViewModel(
             }).addTo(compositeDisposable)
     }
 
-    fun setNextPage() {
-        _nowPage.value = _nowPage.value?.plus(1)
-    }
 
     fun clearDisposable() {
         compositeDisposable.clear()
