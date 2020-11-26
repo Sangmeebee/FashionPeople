@@ -14,9 +14,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="랭킹"
+            android:text="주간 랭킹"
+            android:fontFamily="@font/ygd_320"
             android:textColor="@color/colorWhite"
-            android:textSize="33sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
     </androidx.appcompat.widget.Toolbar>

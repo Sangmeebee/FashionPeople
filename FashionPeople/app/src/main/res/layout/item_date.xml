@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -20,20 +19,24 @@
             android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/ygd_320"
             android:gravity="center"
             android:text="4월 1주차"
             android:textColor="@color/colorWhite"
-            android:textSize="33sp"
+            android:textSize="18sp"
             android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="40dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vp_ranking"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:clipChildren="false"
             android:clipToPadding="false"
-            android:layout_height="wrap_content"
             android:orientation="horizontal" />
 
     </LinearLayout>
