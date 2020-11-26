@@ -84,15 +84,15 @@ class GradeDialogFragment : BottomSheetDialogFragment() {
                     }
                 }
             }
-            binding.progress1.progress = (progressValue1 / total * 100).toFloat() + 5
+            binding.progress1.progress = ((progressValue1 * 100 ) / total).toFloat() + 5
             binding.progress1.labelText = "${progressValue1}명"
-            binding.progress2.progress = (progressValue2 / total * 100).toFloat() + 5
+            binding.progress2.progress = ((progressValue2 * 100) / total).toFloat() + 5
             binding.progress2.labelText = "${progressValue2}명"
-            binding.progress3.progress = (progressValue3 / total * 100).toFloat() + 5
+            binding.progress3.progress = ((progressValue3 * 100) / total).toFloat() + 5
             binding.progress3.labelText = "${progressValue3}명"
-            binding.progress4.progress = (progressValue4 / total * 100).toFloat() + 5
+            binding.progress4.progress = ((progressValue4 * 100) / total).toFloat() + 5
             binding.progress4.labelText = "${progressValue4}명"
-            binding.progress5.progress = (progressValue5 / total * 100).toFloat() + 5
+            binding.progress5.progress = ((progressValue5 * 100) / total).toFloat() + 5
             binding.progress5.labelText = "${progressValue5}명"
         } else {
             binding.progress1.progress = 5f

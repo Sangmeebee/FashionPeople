@@ -34,7 +34,6 @@ class TagRecyclerDecoration(
 
         outRect.left = spacePx
         outRect.right = spacePx
-        outRect.bottom = spacePx
     }
 
 }
