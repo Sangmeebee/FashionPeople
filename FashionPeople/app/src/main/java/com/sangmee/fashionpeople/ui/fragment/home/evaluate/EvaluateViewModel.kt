@@ -33,9 +33,6 @@ class EvaluateViewModel(
     val userId: LiveData<String>
         get() = _userId
 
-    private val _nowPage = MutableLiveData<Int>()
-    val nowPage: LiveData<Int>
-        get() = _nowPage
 
     private val _evaluateMessage = SingleLiveEvent<Unit>()
     val evaluateMessage: LiveData<Unit>

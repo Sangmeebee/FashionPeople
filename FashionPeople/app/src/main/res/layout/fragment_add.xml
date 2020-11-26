@@ -27,7 +27,7 @@
             android:id="@+id/iv_feed_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleType="centerInside"
+            android:scaleType="fitStart"
             bind:setFeedCustomId="@{vm.customId}"
             bind:setFeedImageName="@{feedImage.imageName}" />
 

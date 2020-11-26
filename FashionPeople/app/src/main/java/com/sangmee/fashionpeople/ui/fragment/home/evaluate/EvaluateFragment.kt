@@ -73,11 +73,6 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
         binding.vpEvaluate.apply {
             adapter = evaluateFeedAdapter
             orientation = ViewPager2.ORIENTATION_VERTICAL
-            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                }
-            })
         }
     }
 
