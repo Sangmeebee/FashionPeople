@@ -26,6 +26,7 @@ class FeedImageAdapter(
                 FeedImageDetailActivity.KEY_FEED_IMAGE,
                 feedImageList[viewHolder.adapterPosition]
             )
+            intent.putExtra("custom_id", customId)
             parent.context.startActivity(intent)
         }
 

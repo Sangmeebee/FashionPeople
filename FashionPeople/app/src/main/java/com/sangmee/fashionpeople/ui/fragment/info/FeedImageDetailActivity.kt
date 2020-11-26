@@ -16,8 +16,7 @@ class FeedImageDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_feed_image_detail)
 
-        customId = GlobalApplication.prefs.getString("custom_id", "")
-
+        customId = intent.getStringExtra("custom_id")
         intent?.getParcelableExtra<FeedImage>(KEY_FEED_IMAGE)?.let { feedImage ->
             Glide.with(this)
                 .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/$customId/feed/${feedImage.imageName}")

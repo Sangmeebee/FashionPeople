@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         app:linkToDetail="@{rankImage}"
+        app:setCustomIdForLink="@{rankImage.feedImage.user.id}"
         android:orientation="vertical">
 
 

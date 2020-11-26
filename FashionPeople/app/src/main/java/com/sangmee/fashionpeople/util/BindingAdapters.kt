@@ -315,13 +315,16 @@ fun setTvBackGround(textView: TextView, rank: Int) {
     textView.text = "${rank + 1}위"
 }
 
-@BindingAdapter("linkToDetail")
-fun linkToDetail(constraintLayout: ConstraintLayout, rankImage: RankImage?) {
+@BindingAdapter("linkToDetail", "setCustomIdForLink")
+fun linkToDetail(constraintLayout: ConstraintLayout, rankImage: RankImage?, customId: String?) {
     rankImage?.feedImage?.let { feedImage ->
-        constraintLayout.setOnClickListener {
-            val intent = Intent(it.context, FeedImageDetailActivity::class.java)
-            intent.putExtra(FeedImageDetailActivity.KEY_FEED_IMAGE, feedImage)
-            it.context.startActivity(intent)
+        customId?.let {customId ->
+            constraintLayout.setOnClickListener {
+                val intent = Intent(it.context, FeedImageDetailActivity::class.java)
+                intent.putExtra("custom_id", customId)
+                intent.putExtra(FeedImageDetailActivity.KEY_FEED_IMAGE, feedImage)
+                it.context.startActivity(intent)
+            }
         }
     }
 }
