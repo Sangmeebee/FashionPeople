@@ -9,6 +9,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
+import java.util.*
+import kotlin.collections.ArrayList
 
 class RankViewModel(
     private val rankImageRepository: RankImageRepository
@@ -34,6 +36,9 @@ class RankViewModel(
                 for (key in map.keys) {
                     map[key]?.let { CustomDate(key, it) }?.let { arrayList.add(it) }
                 }
+                arrayList.sortWith(Comparator { o1, o2 ->
+                    o2.date.compareTo(o1.date)
+                })
                 dates.value = arrayList.toList()
             }, {
                 Log.d("seunghwan", it.toString())
