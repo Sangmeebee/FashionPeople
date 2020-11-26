@@ -162,12 +162,9 @@ class FollowingFragment : Fragment(), EvaluateFeedAdapter.OnClickListener,
     }
 
     override fun onClickProfile(feedImage: FeedImage) {
-        (activity as MainActivity).replaceFragmentUseBackStack(
-            OtherFragment.newInstance(
-                customId,
-                0
-            )
-        )
+        feedImage.user?.id?.let { OtherFragment.newInstance(it) }?.let {
+            (activity as MainActivity).replaceFragmentUseBackStack(it)
+        }
     }
 
 
