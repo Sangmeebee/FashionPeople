@@ -1,4 +1,4 @@
-package com.sangmee.fashionpeople.ui
+package com.sangmee.fashionpeople.ui.login
 
 import android.Manifest
 import android.content.Intent
@@ -21,6 +21,7 @@ import com.sangmee.fashionpeople.data.dataSource.remote.S3RemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.data.repository.FUserRepository
 import com.sangmee.fashionpeople.data.repository.FUserRepositoryImpl
+import com.sangmee.fashionpeople.ui.MainActivity
 import kotlinx.android.synthetic.main.activity_user_info.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.io.File
