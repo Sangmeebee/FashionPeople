@@ -38,6 +38,46 @@ class LoginActivity : AppCompatActivity() {
             Session.getCurrentSession().open(AuthType.KAKAO_LOGIN_ALL, this)
         }
 
+        btn_email_login.setOnClickListener {
+            clickEmailBtn()
+        }
+
+    }
+
+    //이메일 로그인
+    private fun clickEmailBtn() {
+        val intent = Intent(this, EmailLoginActivity::class.java)
+        startActivity(intent)
+    }
+
+    //화면전환 메소드
+    private fun redirectUserInfoActivity(exist: Boolean) {
+        val intent =
+            if (exist) {
+                Intent(this, MainActivity::class.java)
+            } else {
+                Intent(this, UserInfoActivity::class.java)
+            }
+        startActivity(intent)
+        if (exist) {
+            finish()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        //카카오톡 로그인 결과
+        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
+            Log.i("Log", "session get current session")
+            return
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    //카카오 로그인
+    override fun onDestroy() {
+        super.onDestroy()
+        Session.getCurrentSession().removeCallback(callback)
+
     }
 
     //카카오톡 로그인 콜백
@@ -89,36 +129,6 @@ class LoginActivity : AppCompatActivity() {
                 }
             })
         }
-
-    }
-
-    //화면전환 메소드
-    private fun redirectUserInfoActivity(exist: Boolean) {
-        val intent =
-            if (exist) {
-                Intent(this, MainActivity::class.java)
-            } else {
-                Intent(this, UserInfoActivity::class.java)
-            }
-        startActivity(intent)
-        if (exist) {
-            finish()
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        //카카오톡 로그인 결과
-        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
-            Log.i("Log", "session get current session")
-            return
-        }
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-
-    //카카오 로그인
-    override fun onDestroy() {
-        super.onDestroy()
-        Session.getCurrentSession().removeCallback(callback)
 
     }
 }

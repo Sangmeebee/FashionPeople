@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
+import android.text.Html
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -327,4 +328,9 @@ fun linkToDetail(constraintLayout: ConstraintLayout, rankImage: RankImage?, cust
             }
         }
     }
+}
+
+@BindingAdapter("setHTMLText")
+fun TextView.setHtmlText(stringId: Int) {
+    this.text = Html.fromHtml(String.format(this.context.getString(stringId)))
 }

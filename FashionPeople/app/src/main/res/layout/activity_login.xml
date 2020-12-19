@@ -26,4 +26,13 @@
         app:layout_constraintTop_toBottomOf="@id/iv_logo"
         app:srcCompat="@drawable/kakao_login_medium_wide" />
 
+    <Button
+        android:id="@+id/btn_email_login"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="이메일 로그인"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_kakao_login" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

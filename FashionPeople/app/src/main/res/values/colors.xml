@@ -9,11 +9,13 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
     <color name="colorYellow">#FFD855</color>
+    <color name="colorDarkYellow">#EDFAC925</color>
     <color name="colorSettingText">#FFF6D8</color>
     <color name="colorGray">#F4F4F4</color>
     <color name="brandTextColor">#9B9B9B</color>
     <color name="brandList">#909090</color>
     <color name="colorRed">#FA3526</color>
     <color name="followingBtn">#DDDBDB</color>
+    <color name="colorHintText">#CFCDCD</color>
 </resources>
 

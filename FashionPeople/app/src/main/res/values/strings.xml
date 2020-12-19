@@ -30,4 +30,6 @@
     <string name="no_comment">댓글이 없어요!</string>
     <string name="request_comment">댓글을 작성해주세요.</string>
     <string name="comment_title">댓글 %d개</string>
+    <string name="sign_in">&lt;u>1분만에 가입하기&lt;/u></string>
+    <string name="find_info">&lt;u>아이디/비밀번호 찾기&lt;/u></string>
 </resources>
