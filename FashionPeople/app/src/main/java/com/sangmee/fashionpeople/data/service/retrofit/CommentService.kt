@@ -1,8 +1,8 @@
 package com.sangmee.fashionpeople.data.service.retrofit
 
 import com.sangmee.fashionpeople.data.model.Comment
-import io.reactivex.Completable
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
 import retrofit2.http.*
 
 interface CommentService {

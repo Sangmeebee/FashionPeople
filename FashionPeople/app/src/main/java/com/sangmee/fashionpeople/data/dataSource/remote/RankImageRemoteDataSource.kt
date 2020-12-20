@@ -1,8 +1,7 @@
 package com.sangmee.fashionpeople.data.dataSource.remote
 
 import com.sangmee.fashionpeople.data.model.RankImage
-import io.reactivex.Single
-import retrofit2.http.GET
+import io.reactivex.rxjava3.core.Single
 
 interface RankImageRemoteDataSource {
 

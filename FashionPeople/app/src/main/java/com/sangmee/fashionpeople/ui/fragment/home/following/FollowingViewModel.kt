@@ -9,11 +9,11 @@ import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.data.repository.FeedImageRepository
 import com.sangmee.fashionpeople.data.service.retrofit.RetrofitClient
 import com.sangmee.fashionpeople.util.SingleLiveEvent
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.addTo
-import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.kotlin.addTo
+import io.reactivex.rxjava3.schedulers.Schedulers.io
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 class FollowingViewModel(
     private val feedImageRepository: FeedImageRepository
@@ -40,7 +40,7 @@ class FollowingViewModel(
     val idSubject = BehaviorSubject.create<String>()
 
     init {
-        idSubject.subscribeOn(Schedulers.io())
+        idSubject.subscribeOn(io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 _userId.value = it
@@ -52,7 +52,7 @@ class FollowingViewModel(
 
     private fun getFollowingImages(id: String) {
         feedImageRepository.getFollowingFeedImages(id)
-            .subscribeOn(Schedulers.io())
+            .subscribeOn(io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 _feedImages.value = it
@@ -62,9 +62,9 @@ class FollowingViewModel(
 
     fun ratingClick(imageName: String, rating: Float) {
         feedImageRepository.updateImageScore(imageName, Evaluation(userId.value, rating))
-            .subscribeOn(Schedulers.io())
+            .subscribeOn(io())
             .andThen(RetrofitClient.getFeedImageService().getFeedImageByName(imageName))
-            .subscribeOn(Schedulers.io())
+            .subscribeOn(io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 it?.let {

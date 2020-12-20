@@ -1,10 +1,8 @@
 package com.sangmee.fashionpeople.data.repository
 
 import com.sangmee.fashionpeople.data.model.Comment
-import io.reactivex.Completable
-import io.reactivex.Single
-import retrofit2.http.Body
-import retrofit2.http.Path
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
 
 interface CommentRepository {
 

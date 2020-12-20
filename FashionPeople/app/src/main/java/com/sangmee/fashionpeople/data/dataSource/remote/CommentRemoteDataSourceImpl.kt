@@ -2,8 +2,8 @@ package com.sangmee.fashionpeople.data.dataSource.remote
 
 import com.sangmee.fashionpeople.data.model.Comment
 import com.sangmee.fashionpeople.data.service.retrofit.RetrofitClient
-import io.reactivex.Completable
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
 
 class CommentRemoteDataSourceImpl : CommentRemoteDataSource {
     override fun getImageComments(imageName: String): Single<List<Comment>> {
