@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "834642126311",
+    "project_id": "fashionpeople-f4a38",
+    "storage_bucket": "fashionpeople-f4a38.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:834642126311:android:89295a48088717e4a90942",
+        "android_client_info": {
+          "package_name": "com.sangmee.fashionpeople"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "834642126311-2akcvhvdl8fsd2crju05uhn81k2l9kfj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbJVk3rMEXf7VQSxrC5TjiR_FrcyImjdM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "834642126311-2akcvhvdl8fsd2crju05uhn81k2l9kfj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

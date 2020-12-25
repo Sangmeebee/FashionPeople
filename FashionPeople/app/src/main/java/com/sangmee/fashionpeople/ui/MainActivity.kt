@@ -29,6 +29,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
     private val fUserRepository: FUserRepository by lazy {
         FUserRepositoryImpl(FUserRemoteDataSourceImpl())
     }
@@ -54,7 +55,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.addItem -> {
                     fUserRepository.getFUser(
-                        GlobalApplication.prefs.getString("custom_id", ""),
+                        GlobalApplication.prefs.getString("${loginType}_custom_id", ""),
                         { user ->
                             user.evaluateNow?.let { evaluateNow ->
                                 if (evaluateNow) {

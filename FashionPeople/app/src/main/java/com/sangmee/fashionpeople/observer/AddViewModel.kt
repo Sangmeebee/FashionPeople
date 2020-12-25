@@ -13,7 +13,8 @@ class AddViewModel : ViewModel() {
     private val feedImageRepository: FeedImageRepository by lazy {
         FeedImageRepositoryImpl(FeedImageRemoteDataSourceImpl())
     }
-    val customId = GlobalApplication.prefs.getString("custom_id", "empty")
+    private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
+    val customId = GlobalApplication.prefs.getString("${loginType}_custom_id", "empty")
 
     val evaluatedFeedImage = MutableLiveData<FeedImage>()
 

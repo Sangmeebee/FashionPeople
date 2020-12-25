@@ -60,7 +60,8 @@ class InfoFollowingAdapter(
     class InfoFollowingViewHolder(private val binding: ItemFollowingBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        val customId = GlobalApplication.prefs.getString("custom_id", "empty")
+        private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
+        val customId = GlobalApplication.prefs.getString("${loginType}_custom_id", "empty")
 
         fun bind(following: FUser, isFollowing: Boolean) {
             var isGone = true

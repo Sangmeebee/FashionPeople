@@ -32,4 +32,6 @@
     <string name="comment_title">댓글 %d개</string>
     <string name="sign_in">&lt;u>1분만에 가입하기&lt;/u></string>
     <string name="find_info">&lt;u>아이디/비밀번호 찾기&lt;/u></string>
+    <string name="authentication">&lt;u>인증하기&lt;/u></string>
+    <string name="authentication_mail">본인인증이 완료되지 않았습니다\n메일을 확인해주세요</string>
 </resources>

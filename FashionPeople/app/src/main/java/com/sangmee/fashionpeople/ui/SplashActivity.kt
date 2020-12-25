@@ -15,15 +15,22 @@ class SplashActivity : AppCompatActivity() {
 
         Handler().postDelayed({
 
-            val customId = GlobalApplication.prefs.getString("custom_id", "empty")
-            if (customId == "empty") {
+            val loginType = GlobalApplication.prefs.getString("login_type", "empty")
+            if (loginType == "empty") {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 finish()
             } else {
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish()
+                val customId = GlobalApplication.prefs.getString("${loginType}_custom_id", "empty")
+                if (customId == "empty") {
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
             }
         }, 1000)
     }

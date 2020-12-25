@@ -24,7 +24,8 @@ class InfoViewModel : ViewModel() {
         )
     }
 
-    val customId = GlobalApplication.prefs.getString("custom_id", "empty")
+    private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
+    val customId = GlobalApplication.prefs.getString("${loginType}_custom_id", "empty")
     val profileImgName = MutableLiveData<String>()
     val userName = MutableLiveData<String>()
     val followerNum = MutableLiveData<Int>(0)

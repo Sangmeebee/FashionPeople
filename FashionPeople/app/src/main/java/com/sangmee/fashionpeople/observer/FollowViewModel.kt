@@ -16,7 +16,8 @@ class FollowViewModel : ViewModel() {
             FollowRemoteDataSourceImpl()
         )
     }
-    val customId = GlobalApplication.prefs.getString("custom_id", "empty")
+    private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
+    val customId = GlobalApplication.prefs.getString("${loginType}_custom_id", "empty")
     val followers = MutableLiveData<List<FUser>>()
     val followings = MutableLiveData<List<FUser>>()
     //팔로워의 팔로잉 여부

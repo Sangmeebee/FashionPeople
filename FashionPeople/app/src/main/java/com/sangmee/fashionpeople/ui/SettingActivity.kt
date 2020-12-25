@@ -18,14 +18,14 @@ class SettingActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySettingBinding
     private lateinit var customId: String
-
+    private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_setting)
         binding.activity = this@SettingActivity
         setToolbar(binding.tbSetting)
-        customId = GlobalApplication.prefs.getString("custom_id", "empty")
+        customId = GlobalApplication.prefs.getString("${loginType}_custom_id", "empty")
 
         initView()
 
@@ -38,7 +38,8 @@ class SettingActivity : AppCompatActivity() {
                 .setPositiveButton("네") { dialog, which ->
                     UserManagement.getInstance().requestLogout(object : LogoutResponseCallback() {
                         override fun onCompleteLogout() {
-                            GlobalApplication.prefs.remove("custom_id")
+                            GlobalApplication.prefs.remove("${loginType}_custom_id")
+                            GlobalApplication.prefs.remove("login_type")
                             setResult(Activity.RESULT_OK)
                             this@SettingActivity.finish()
                         }

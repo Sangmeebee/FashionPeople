@@ -63,7 +63,8 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
     }
 
     private fun setId() {
-        customId = pref.getString("custom_id", "empty")
+        val loginType = GlobalApplication.prefs.getString("login_type", "empty")
+        customId = pref.getString("${loginType}_custom_id", "empty")
         viewModel.idSubject.onNext(customId)
     }
 

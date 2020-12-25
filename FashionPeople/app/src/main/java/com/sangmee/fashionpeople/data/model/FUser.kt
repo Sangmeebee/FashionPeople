@@ -8,6 +8,8 @@ import kotlinx.android.parcel.Parcelize
 data class FUser(
     @SerializedName("id")
     val id: String?,
+    @SerializedName("password")
+    val password: String?,
     @SerializedName("name")
     val name: String?,
     @SerializedName("introduce")

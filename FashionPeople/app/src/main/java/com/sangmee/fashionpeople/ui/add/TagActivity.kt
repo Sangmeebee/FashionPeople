@@ -23,7 +23,8 @@ import java.util.*
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class TagActivity : AppCompatActivity() {
 
-    private val customId by lazy { GlobalApplication.prefs.getString("custom_id", "empty") }
+    private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
+    private val customId by lazy { GlobalApplication.prefs.getString("${loginType}_custom_id", "empty") }
     private val s3RemoteDataSource: S3RemoteDataSource by lazy {
         S3RemoteDataSourceImpl(
             applicationContext,
@@ -36,7 +37,6 @@ class TagActivity : AppCompatActivity() {
         setContentView(R.layout.activity_tag)
 
         lateinit var battleImageFile: File
-        val customId = GlobalApplication.prefs.getString("custom_id", "")
         lateinit var resultUri: Uri
         val resultUriStr = GlobalApplication.prefs.getString("resultUri", "")
         if (resultUriStr != "") {

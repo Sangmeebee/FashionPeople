@@ -62,7 +62,8 @@ class CommentDialogFragment : BottomSheetDialogFragment() {
         dialog?.let {
             it.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
-        myId = GlobalApplication.prefs.getString("custom_id", "")
+        val loginType = GlobalApplication.prefs.getString("login_type", "empty")
+        myId = GlobalApplication.prefs.getString("${loginType}_custom_id", "")
         return binding.root
     }
 

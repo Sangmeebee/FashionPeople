@@ -24,7 +24,8 @@ import kotlinx.android.synthetic.main.fragment_info.*
 
 class InfoFragment : Fragment() {
 
-    val customId by lazy { GlobalApplication.prefs.getString("custom_id", "") }
+    private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
+    val customId by lazy { GlobalApplication.prefs.getString("${loginType}_custom_id", "") }
     lateinit var binding: FragmentInfoBinding
     private val vm: InfoViewModel by viewModels()
 

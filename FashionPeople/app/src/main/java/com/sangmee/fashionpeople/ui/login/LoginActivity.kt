@@ -34,6 +34,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         iv_kakao_login.setOnClickListener {
+            GlobalApplication.prefs.setString("login_type", "kakao")
             Toast.makeText(this, "카카오톡으로 로그인합니다.", Toast.LENGTH_SHORT).show()
             //카카오 콜백 추가
             Session.getCurrentSession().addCallback(callback)
@@ -41,6 +42,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         btn_email_login.setOnClickListener {
+            GlobalApplication.prefs.setString("login_type", "email")
             clickEmailBtn()
         }
 
@@ -107,6 +109,7 @@ class LoginActivity : AppCompatActivity() {
                     Log.d("sangmin", "연결 성공")
                     custom_id = result!!.id.toString()
                     customId = custom_id
+                    GlobalApplication.prefs.setString("kakao_custom_id", customId)
                     Log.i("sangmin", "아이디 : ${custom_id}")
                     Log.i("Log", "이메일 : ${result.kakaoAccount.email}")
                     Log.i("Log", "성별 : ${result.kakaoAccount.gender}")

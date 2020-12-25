@@ -97,7 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="90dp"
-            android:onClick="@{()->activity.clickSignInBtn()}"
+            android:onClick="@{()->activity.clickSignUpBtn()}"
             android:textColor="@color/colorHintText"
             android:textSize="12sp"
             app:layout_constraintLeft_toLeftOf="@+id/ll_info"
