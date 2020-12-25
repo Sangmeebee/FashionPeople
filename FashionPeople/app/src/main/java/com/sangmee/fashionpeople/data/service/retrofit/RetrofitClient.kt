@@ -7,7 +7,7 @@ import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-const val BASE_URL = "http://15.165.254.24:3333/api/v1/"
+const val BASE_URL = "http://54.180.224.29:3333/api/v1/"
 
 object RetrofitClient {
 

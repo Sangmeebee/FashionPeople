@@ -1,28 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.sangmee.fashionpeople.ui.login.UserInfoActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <data>
+
+        <variable
+            name="customId"
+            type="String" />
+
+        <variable
+            name="activity"
+            type="com.sangmee.fashionpeople.ui.login.UserInfoActivity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <include layout="@layout/toolbar" />
+        tools:context="com.sangmee.fashionpeople.ui.login.UserInfoActivity">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:weightSum="12">
+            android:orientation="vertical">
+
+            <include layout="@layout/toolbar" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="11"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="50dp">
 
@@ -32,6 +39,7 @@
                     android:layout_height="100dp"
                     android:layout_gravity="center"
                     android:layout_marginBottom="50dp"
+                    android:onClick="@{() -> activity.selectProfileImage()}"
                     android:src="@drawable/user"
                     app:civ_border_color="@color/lightgray"
                     app:civ_border_width="2dp" />
@@ -44,12 +52,53 @@
                     android:textColor="@android:color/black" />
 
                 <EditText
-                    android:id="@+id/nickname"
+                    android:id="@+id/et_nickname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="40dp"
+                    android:layout_marginBottom="5dp"
                     android:inputType="text"
                     android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_alert"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:text="닉네임을 입력해주세요"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="12sp"
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:text="성별"
+                    android:textColor="@android:color/black" />
+
+                <RadioGroup
+                    android:id="@+id/rg_gender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="45dp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rb_man"
+                        style="@style/ToggleButton"
+                        android:layout_width="90dp"
+                        android:checked="true"
+                        android:gravity="center"
+                        android:text="남" />
+
+                    <RadioButton
+                        android:id="@+id/rb_woman"
+                        style="@style/ToggleButton"
+                        android:layout_width="90dp"
+                        android:gravity="center"
+                        android:text="여" />
+                </RadioGroup>
+
 
                 <TextView
                     android:layout_width="match_parent"
@@ -59,27 +108,29 @@
                     android:textColor="@android:color/black" />
 
                 <EditText
-                    android:id="@+id/instagram_id"
+                    android:id="@+id/et_introduce"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="40dp"
-                    android:hint="소셜 아이디 / 홍보하고 싶은 글"
                     android:textSize="16sp" />
 
             </LinearLayout>
 
-
-            <Button
-                android:id="@+id/authorization_btn"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="가입완료"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
-                android:textStyle="bold" />
         </LinearLayout>
 
-
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/btn_complete"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_round_disable"
+            android:onClick="@{()->activity.saveUser(customId)}"
+            android:stateListAnimator="@null"
+            android:text="완료"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

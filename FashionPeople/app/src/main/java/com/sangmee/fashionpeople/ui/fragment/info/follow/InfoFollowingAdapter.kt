@@ -67,7 +67,7 @@ class InfoFollowingAdapter(
             var isMe = false
 
             binding.following = following
-            following.instagramId?.let {
+            following.introduce?.let {
                 if (it.isNotEmpty()) {
                     isGone = false
                 }

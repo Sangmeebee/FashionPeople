@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 class LoginActivity : AppCompatActivity() {
 
     private var callback: SessionCallback = SessionCallback()
+    private lateinit var customId: String
     private val fUserRepository: FUserRepository by lazy {
         FUserRepositoryImpl(FUserRemoteDataSourceImpl())
     }
@@ -57,7 +58,7 @@ class LoginActivity : AppCompatActivity() {
             if (exist) {
                 Intent(this, MainActivity::class.java)
             } else {
-                Intent(this, UserInfoActivity::class.java)
+                Intent(this, UserInfoActivity::class.java).putExtra("custom_id", customId)
             }
         startActivity(intent)
         if (exist) {
@@ -105,11 +106,7 @@ class LoginActivity : AppCompatActivity() {
                 override fun onSuccess(result: MeV2Response?) {
                     Log.d("sangmin", "연결 성공")
                     custom_id = result!!.id.toString()
-                    GlobalApplication.prefs.setString("custom_id", custom_id)
-                    GlobalApplication.prefs.setString(
-                        "custom_gender",
-                        result.kakaoAccount.gender.toString()
-                    )
+                    customId = custom_id
                     Log.i("sangmin", "아이디 : ${custom_id}")
                     Log.i("Log", "이메일 : ${result.kakaoAccount.email}")
                     Log.i("Log", "성별 : ${result.kakaoAccount.gender}")

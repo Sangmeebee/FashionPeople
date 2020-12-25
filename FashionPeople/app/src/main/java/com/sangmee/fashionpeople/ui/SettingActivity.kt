@@ -38,7 +38,7 @@ class SettingActivity : AppCompatActivity() {
                 .setPositiveButton("네") { dialog, which ->
                     UserManagement.getInstance().requestLogout(object : LogoutResponseCallback() {
                         override fun onCompleteLogout() {
-                            GlobalApplication.prefs.remove(customId)
+                            GlobalApplication.prefs.remove("custom_id")
                             setResult(Activity.RESULT_OK)
                             this@SettingActivity.finish()
                         }

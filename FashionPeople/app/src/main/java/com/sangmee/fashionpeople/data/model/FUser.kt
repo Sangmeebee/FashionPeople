@@ -10,8 +10,10 @@ data class FUser(
     val id: String?,
     @SerializedName("name")
     val name: String?,
-    @SerializedName("instagramId")
-    val instagramId: String?,
+    @SerializedName("introduce")
+    val introduce: String?,
+    @SerializedName("gender")
+    val gender: String?,
     @SerializedName("profileImage")
     val profileImage: String?,
     @SerializedName("followerNum")

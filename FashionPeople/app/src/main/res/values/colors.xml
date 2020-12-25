@@ -16,6 +16,13 @@
     <color name="brandList">#909090</color>
     <color name="colorRed">#FA3526</color>
     <color name="followingBtn">#DDDBDB</color>
-    <color name="colorHintText">#CFCDCD</color>
+    <color name="colorHintText">#9E9C9C</color>
+    <color name="toggle_hover">@color/toggle_selected</color>
+    <color name="toggle_normal">@color/gainsboro</color>
+    <color name="toggle_active">@color/silver</color>
+    <color name="toggle_normal_off">@color/darkgray</color>
+    <color name="gainsboro">#DCdCdC</color>
+    <color name="silver">#C0C0C0</color>
+    <color name="toggle_selected">#FFD855</color>
 </resources>
 
