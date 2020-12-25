@@ -55,10 +55,9 @@ class UserInfoActivity : AppCompatActivity() {
         binding.customId = customId
         binding.activity = this
 
-        setToolbar()
         checkWrittenNeeds()
 
-        rg_gender.setOnCheckedChangeListener { group, checkedId ->
+        binding.rgGender.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
                 R.id.rb_man -> {
                     gender = "남"
@@ -72,26 +71,9 @@ class UserInfoActivity : AppCompatActivity() {
         }
     }
 
-    private fun setToolbar() {
-        setSupportActionBar(app_toolbar)
-        val actionBar = supportActionBar!!
-        actionBar.setDisplayShowTitleEnabled(false)
-        toolbar_title.text = "정보 입력"
-        actionBar.setDisplayHomeAsUpEnabled(true)
-    }
-
-    //툴바 뒤로가기 버튼
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.getItemId()) {
-            android.R.id.home -> { //toolbar의 back키 눌렀을 때 동작
-                finish()
-            }
-        }
-        return super.onOptionsItemSelected(item!!);
-    }
 
     private fun checkWrittenNeeds() {
-        et_nickname.doOnTextChanged { text, start, before, count ->
+        binding.etNickname.doOnTextChanged { text, start, before, count ->
             if (text.isNullOrEmpty()) {
                 btn_complete.background =
                     ContextCompat.getDrawable(this, R.drawable.bg_round_disable)
@@ -214,7 +196,7 @@ class UserInfoActivity : AppCompatActivity() {
         }
     }
 
-    companion object{
+    companion object {
         private const val CHOOSE_PROFILEIMG = 200
     }
 }

@@ -57,7 +57,7 @@
             android:orientation="vertical"
             android:paddingHorizontal="50dp"
             android:paddingTop="50dp"
-            android:paddingBottom="10dp"
+            android:paddingBottom="20dp"
             app:layout_constraintTop_toBottomOf="@id/tv_login">
 
             <TextView
@@ -84,6 +84,7 @@
 
             <EditText
                 android:id="@+id/et_password"
+                android:inputType="textPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16sp" />
@@ -95,7 +96,7 @@
             android:id="@+id/tv_sign_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="80dp"
+            android:layout_marginStart="90dp"
             android:onClick="@{()->activity.clickSignInBtn()}"
             android:textColor="@color/colorHintText"
             android:textSize="12sp"
@@ -107,7 +108,7 @@
             android:id="@+id/tv_find_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="80dp"
+            android:layout_marginEnd="90dp"
             android:onClick="@{()->activity.clickFindInfoBtn()}"
             android:textColor="@color/colorHintText"
             android:textSize="12sp"
