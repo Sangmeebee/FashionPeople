@@ -57,8 +57,9 @@ class EmailLoginActivity : AppCompatActivity() {
                         binding.etEmail.text.toString()
                     )
                     val intent = Intent(this, MainActivity::class.java)
+                    intent.flags =
+                        Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                     startActivity(intent)
-                    finish()
                 }
             }
         }, failed = { Log.e("fashionPeopleError", it) })

@@ -8,6 +8,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.kakao.usermgmt.UserManagement
 import com.kakao.usermgmt.callback.LogoutResponseCallback
 import com.sangmee.fashionpeople.R
@@ -40,6 +42,7 @@ class SettingActivity : AppCompatActivity() {
                         override fun onCompleteLogout() {
                             GlobalApplication.prefs.remove("${loginType}_custom_id")
                             GlobalApplication.prefs.remove("login_type")
+                            Firebase.auth.signOut()
                             setResult(Activity.RESULT_OK)
                             this@SettingActivity.finish()
                         }

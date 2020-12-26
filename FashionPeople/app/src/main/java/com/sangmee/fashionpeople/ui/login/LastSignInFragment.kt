@@ -129,10 +129,7 @@ class LastSignInFragment : Fragment() {
                         0,
                         false
                     ), {
-                        val intent = Intent(activity, EmailLoginActivity::class.java)
-                        intent.flags =
-                            Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                        startActivity(intent)
+                        requireActivity().finish()
                     }, { e -> Log.e("sangmin_error", e) }
                 )
             }
