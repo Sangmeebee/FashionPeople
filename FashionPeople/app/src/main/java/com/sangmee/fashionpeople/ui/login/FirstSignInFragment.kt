@@ -49,7 +49,7 @@ class FirstSignInFragment(private val finishActivity: () -> Unit) : Fragment() {
             if (!android.util.Patterns.EMAIL_ADDRESS.matcher(binding.etEmail.text.toString())
                     .matches()
             ) {
-                Toast.makeText(context, "입력하신 내용을 확인해주세요", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "입력한 내용을 확인해주세요", Toast.LENGTH_SHORT).show()
             } else {
                 vm.customId.value = binding.etEmail.text.toString()
                 (activity as EmailSignInActivity).replaceFragmentUseBackStack(SecondSignInFragment())

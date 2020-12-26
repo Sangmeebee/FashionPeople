@@ -52,11 +52,11 @@ class SecondSignInFragment : Fragment() {
         vm.nextBtnEvent.observe(this, Observer {
 
             if (!Pattern.matches(
-                    "^(?=.*\\d)(?=.*[a-zA-Z]).{8,20}$",
+                    "^(?=.*\\d)(?=.*[a-zA-Z]).{6,20}$",
                     binding.etPassword.text.toString()
                 )
             ) {
-                Toast.makeText(context, "입력하신 내용을 확인해주세요", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "입력한 내용을 확인해주세요", Toast.LENGTH_SHORT).show()
             } else {
                 vm.password.value = binding.etPassword.text.toString()
                 (activity as EmailSignInActivity).replaceFragmentUseBackStack(
@@ -81,7 +81,7 @@ class SecondSignInFragment : Fragment() {
             .subscribe {
                 try {
                     if (!Pattern.matches(
-                            "^(?=.*\\d)(?=.*[a-zA-Z]).{8,20}$",
+                            "^(?=.*\\d)(?=.*[a-zA-Z]).{6,20}$",
                             it.toString()
                         ) && it.isNotEmpty()
                     ) {

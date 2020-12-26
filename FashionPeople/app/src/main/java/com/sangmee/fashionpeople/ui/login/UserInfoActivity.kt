@@ -65,7 +65,6 @@ class UserInfoActivity : AppCompatActivity() {
         fUserRepository.addUser(
             FUser(
                 customId,
-                null,
                 name,
                 introduce,
                 gender,

@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:gravity="center"
-            android:text="입력하신 비밀번호와 일치하지 않습니다."
+            android:text="입력한 비밀번호와 일치하지 않습니다."
             android:textColor="@android:color/holo_red_dark"
             android:textSize="12sp"
             android:visibility="gone"

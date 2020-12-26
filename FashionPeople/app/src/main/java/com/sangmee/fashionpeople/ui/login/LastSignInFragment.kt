@@ -120,7 +120,6 @@ class LastSignInFragment : Fragment() {
                 fUserRepository.addUser(
                     FUser(
                         vm.customId.value.toString(),
-                        vm.password.value.toString(),
                         name,
                         introduce,
                         gender,
