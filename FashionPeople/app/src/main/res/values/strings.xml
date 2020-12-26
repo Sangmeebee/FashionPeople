@@ -30,7 +30,7 @@
     <string name="no_comment">댓글이 없어요!</string>
     <string name="request_comment">댓글을 작성해주세요.</string>
     <string name="comment_title">댓글 %d개</string>
-    <string name="sign_in">&lt;u>순식간에 가입하기&lt;/u></string>
+    <string name="sign_in">&lt;u>빠르게 가입하기!&lt;/u></string>
     <string name="find_info">&lt;u>비밀번호가 뭐였죠?&lt;/u></string>
     <string name="authentication">&lt;u>인증하기&lt;/u></string>
     <string name="authentication_mail">본인인증이 완료되지 않았습니다\n메일을 확인해주세요</string>

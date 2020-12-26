@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
-            android:text="회원가입"
+            android:text="빠르게 가입하기!"
             android:textColor="@android:color/black"
             android:textSize="15sp"
             android:textStyle="bold"
