@@ -132,4 +132,9 @@ class LoginActivity : AppCompatActivity() {
         }
 
     }
+
+    override fun onBackPressed() {
+        GlobalApplication.prefs.remove("login_type")
+        super.onBackPressed()
+    }
 }

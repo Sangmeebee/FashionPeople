@@ -11,6 +11,7 @@ import com.sangmee.fashionpeople.data.repository.FUserRepositoryImpl
 import com.sangmee.fashionpeople.data.repository.FollowRepository
 import com.sangmee.fashionpeople.data.repository.FollowRepositoryImpl
 import com.sangmee.fashionpeople.util.SingleLiveEvent
+import io.reactivex.rxjava3.subjects.PublishSubject
 
 class InfoViewModel : ViewModel() {
 
@@ -33,6 +34,8 @@ class InfoViewModel : ViewModel() {
     val callActivity = SingleLiveEvent<Int>()
     val isFollowing = MutableLiveData<Boolean>()
     val followBtnEvent = SingleLiveEvent<Unit>()
+    val galleryBtnEvent = SingleLiveEvent<Unit>()
+    val publishSubject = PublishSubject.create<Unit>()
 
     fun callProfile(userId: String) {
         //프로필 세팅
@@ -71,6 +74,10 @@ class InfoViewModel : ViewModel() {
         followRepository.deleteFollowing(customId, followingId, success = {
             Log.d("DELETE_FOLLOWING", "팔로잉 삭제")
         }, failed = { Log.d("DELETE_FOLLOWING", "error") })
+    }
+
+    fun clickGalleryBtn() {
+        galleryBtnEvent.value = Unit
     }
 }
 

@@ -1,10 +1,12 @@
 package com.sangmee.fashionpeople.ui.login
 
+import android.app.Service
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -33,7 +35,9 @@ class SecondConfirmSignInFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.etPasswordConfirm.requestFocus()
         observerCallback()
+        showKeyBoard(binding.etPasswordConfirm)
     }
 
     private fun observerCallback() {
@@ -52,5 +56,13 @@ class SecondConfirmSignInFragment : Fragment() {
             fragmentManager.beginTransaction().remove(this).commit()
             fragmentManager.popBackStack()
         })
+    }
+
+    private fun showKeyBoard(view: View) {
+        view.requestFocus()
+        val imm = requireContext().getSystemService(Service.INPUT_METHOD_SERVICE) as InputMethodManager
+        view.postDelayed({
+            imm.showSoftInput(view, 0)
+        }, 30)
     }
 }

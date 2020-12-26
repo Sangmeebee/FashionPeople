@@ -1,9 +1,11 @@
 package com.sangmee.fashionpeople.ui.login
 
+import android.app.Service
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -42,6 +44,7 @@ class SecondSignInFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         observerCallback()
         checkPasswordForm()
+        showKeyBoard(binding.etPassword)
     }
 
     private fun observerCallback() {
@@ -71,28 +74,33 @@ class SecondSignInFragment : Fragment() {
     }
 
     private fun checkPasswordForm() {
-        binding.etPassword.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                //텍스트가 변할때 이메일 형식인지 체크
-                binding.etPassword.textChanges()
-                    .debounce(500, TimeUnit.MILLISECONDS)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        try {
-                            if (!Pattern.matches(
-                                    "^(?=.*\\d)(?=.*[a-zA-Z]).{8,20}$",
-                                    it.toString()
-                                ) && it.isNotEmpty()
-                            ) {
-                                tv_alert.visibility = View.VISIBLE
-                            } else {
-                                tv_alert.visibility = View.GONE
-                            }
-                        } catch (e: IllegalStateException) {
-                        }
-                    }.addTo(compositeDisposable)
-            }
-        }
+        //텍스트가 변할때 이메일 형식인지 체크
+        binding.etPassword.textChanges()
+            .debounce(500, TimeUnit.MILLISECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                try {
+                    if (!Pattern.matches(
+                            "^(?=.*\\d)(?=.*[a-zA-Z]).{8,20}$",
+                            it.toString()
+                        ) && it.isNotEmpty()
+                    ) {
+                        tv_alert.visibility = View.VISIBLE
+                    } else {
+                        tv_alert.visibility = View.GONE
+                    }
+                } catch (e: IllegalStateException) {
+                }
+            }.addTo(compositeDisposable)
+
+    }
+
+    private fun showKeyBoard(view: View) {
+        view.requestFocus()
+        val imm = requireContext().getSystemService(Service.INPUT_METHOD_SERVICE) as InputMethodManager
+        view.postDelayed({
+            imm.showSoftInput(view, 0)
+        }, 30)
     }
 
     override fun onDestroy() {

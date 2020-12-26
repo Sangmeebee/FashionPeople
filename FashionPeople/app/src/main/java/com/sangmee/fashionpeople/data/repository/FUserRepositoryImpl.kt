@@ -17,4 +17,13 @@ class FUserRepositoryImpl(
     override fun addUser(user: FUser, success: () -> Unit, failed: (String) -> Unit) {
         FUserRemoteDataSource.addUser(user, success, failed)
     }
+
+    override fun updateUser(
+        id: String,
+        user: FUser,
+        success: () -> Unit,
+        failed: (String) -> Unit
+    ) {
+        FUserRemoteDataSource.updateUser(id, user, success, failed)
+    }
 }

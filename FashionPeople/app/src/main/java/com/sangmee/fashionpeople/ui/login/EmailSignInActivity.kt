@@ -3,6 +3,7 @@ package com.sangmee.fashionpeople.ui.login
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.google.firebase.auth.FirebaseAuth
 import com.sangmee.fashionpeople.R
 
 class EmailSignInActivity : AppCompatActivity() {
@@ -25,6 +26,9 @@ class EmailSignInActivity : AppCompatActivity() {
         if (index==0) {
             finish()
         } else {
+            if(index==4){
+                FirebaseAuth.getInstance().currentUser?.delete()
+            }
             supportFragmentManager.popBackStack()
         }
     }

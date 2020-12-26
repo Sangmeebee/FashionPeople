@@ -1,11 +1,20 @@
 package com.sangmee.fashionpeople.ui.fragment.info
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.database.Cursor
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -13,14 +22,24 @@ import androidx.lifecycle.Observer
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
+import com.sangmee.fashionpeople.data.dataSource.remote.FUserRemoteDataSourceImpl
+import com.sangmee.fashionpeople.data.dataSource.remote.S3RemoteDataSource
+import com.sangmee.fashionpeople.data.dataSource.remote.S3RemoteDataSourceImpl
+import com.sangmee.fashionpeople.data.repository.FUserRepository
+import com.sangmee.fashionpeople.data.repository.FUserRepositoryImpl
 import com.sangmee.fashionpeople.databinding.FragmentInfoBinding
 import com.sangmee.fashionpeople.observer.InfoViewModel
-import com.sangmee.fashionpeople.ui.login.LoginActivity
 import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.SettingActivity
 import com.sangmee.fashionpeople.ui.fragment.info.content.ViewPagerAdapter
 import com.sangmee.fashionpeople.ui.fragment.info.follow.FollowFragment
+import com.sangmee.fashionpeople.ui.login.LoginActivity
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.kotlin.addTo
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_info.*
+import java.io.File
 
 class InfoFragment : Fragment() {
 
@@ -28,6 +47,17 @@ class InfoFragment : Fragment() {
     val customId by lazy { GlobalApplication.prefs.getString("${loginType}_custom_id", "") }
     lateinit var binding: FragmentInfoBinding
     private val vm: InfoViewModel by viewModels()
+    private val s3RemoteDataSource: S3RemoteDataSource by lazy {
+        S3RemoteDataSourceImpl(
+            binding.root.context,
+            customId
+        )
+    }
+    private val fUserRepository: FUserRepository by lazy {
+        FUserRepositoryImpl(FUserRemoteDataSourceImpl())
+    }
+    private val compositeDisposable = CompositeDisposable()
+    private lateinit var file: File
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,9 +102,29 @@ class InfoFragment : Fragment() {
             val intent = Intent(context, LoginActivity::class.java)
             startActivity(intent)
         }
+
+        if (requestCode == CHOOSE_PROFILEIMG) {
+            if (resultCode == AppCompatActivity.RESULT_OK) {
+                try {
+                    val uri: Uri = data!!.data!!
+                    val imagePath = getRealPathFromUri(uri)
+                    file = File(imagePath)
+                    vm.publishSubject.onNext(Unit)
+                    binding.ivProfile.setImageURI(uri)
+                } catch (e: Exception) {
+                    Toast.makeText(context, e.message.toString(), Toast.LENGTH_LONG).show();
+                }
+            } else if (resultCode == AppCompatActivity.RESULT_CANCELED) {
+                Toast.makeText(context, "사진 선택 취소", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     private fun viewModelCallback() {
+
+        vm.galleryBtnEvent.observe(this, Observer {
+            selectProfileImage()
+        })
 
         vm.callActivity.observe(viewLifecycleOwner, Observer {
             (activity as MainActivity).replaceFragmentUseBackStack(
@@ -87,9 +137,92 @@ class InfoFragment : Fragment() {
                 )
             )
         })
+
+        vm.publishSubject
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .observeOn(Schedulers.io())
+            .subscribe { saveImageToServer(file) }
+            .addTo(compositeDisposable)
+    }
+
+    private fun saveImageToServer(file: File?) {
+        //프로필 사진 s3에 저장
+        Log.d("Sangmeebee", "Hi")
+        val profileImage = file?.name
+        profileImage?.let {
+            s3RemoteDataSource.uploadWithTransferUtility(it, file, "profile")
+        }
+
+        fUserRepository.getFUser(customId, { user ->
+            profileImage?.let { user.profileImage = it }
+            fUserRepository.updateUser(customId, user, {}, {})
+        }, { error -> Log.d("CALL_PROFILE_ERROR", error) })
+    }
+
+    //이미지Uri -- > 절대경로로 바꿔서 리턴시켜주는 메소드
+    private fun getRealPathFromUri(uri: Uri): String {
+        val proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
+        val c: Cursor =
+            (activity as MainActivity).contentResolver.query(uri, proj, null, null, null)!!
+        val index = c.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        c.moveToFirst()
+
+        return c.getString(index)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String?>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            100 -> if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(context, "외부 메모리 읽기/쓰기 사용 가능", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "외부 메모리 읽기/쓰기 제한", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun selectProfileImage() {
+        //외부 쓰기 퍼미션이 있다면
+        if (ContextCompat.checkSelfPermission(
+                binding.root.context,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
+                binding.root.context,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            try {
+                //갤러리 앱 실행
+                val intent = Intent(Intent.ACTION_PICK)
+                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
+                startActivityForResult(intent, CHOOSE_PROFILEIMG)
+
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+            }
+        } else {
+            ActivityCompat.requestPermissions(
+                activity as MainActivity,
+                arrayOf(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ),
+                100
+            )
+        }
+    }
+
+    override fun onDestroy() {
+        compositeDisposable.clear()
+        super.onDestroy()
     }
 
     companion object {
+        private const val CHOOSE_PROFILEIMG = 200
         private const val LOGOUT_CODE = 210
     }
 

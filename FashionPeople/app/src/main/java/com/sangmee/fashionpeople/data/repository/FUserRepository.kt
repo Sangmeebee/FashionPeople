@@ -19,4 +19,11 @@ interface FUserRepository {
         success: () -> Unit,
         failed: (String) -> Unit
     )
+
+    fun updateUser(
+        id: String,
+        user: FUser,
+        success: () -> Unit,
+        failed: (String) -> Unit
+    )
 }

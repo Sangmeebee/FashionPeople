@@ -58,8 +58,25 @@ class FUserRemoteDataSourceImpl : FUserRemoteDataSource {
                 failed(t.message.toString())
             }
 
-            override fun onResponse(call: retrofit2.Call<FUser>, response: Response<FUser>) {
+            override fun onResponse(call: Call<FUser>, response: Response<FUser>) {
                 success()
+            }
+        })
+    }
+
+    override fun updateUser(
+        id: String,
+        user: FUser,
+        success: () -> Unit,
+        failed: (String) -> Unit
+    ) {
+        RetrofitClient.getFUserService().updateUserById(id, user).enqueue(object : Callback<FUser> {
+            override fun onResponse(call: Call<FUser>, response: Response<FUser>) {
+                success()
+            }
+
+            override fun onFailure(call: Call<FUser>, t: Throwable) {
+                failed(t.message.toString())
             }
         })
     }

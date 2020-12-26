@@ -1,7 +1,6 @@
 package com.sangmee.fashionpeople.ui.login
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,9 +16,7 @@ import com.sangmee.fashionpeople.observer.LoginViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
-import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.first_sign_in_fragment.*
-import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 class FirstSignInFragment(private val finishActivity: () -> Unit) : Fragment() {
@@ -65,25 +62,23 @@ class FirstSignInFragment(private val finishActivity: () -> Unit) : Fragment() {
     }
 
     private fun checkEmailForm() {
-        binding.etEmail.setOnFocusChangeListener { v, hasFocus ->
-            if (hasFocus) {
-                //텍스트가 변할때 이메일 형식인지 체크
-                binding.etEmail.textChanges()
-                    .debounce(500, TimeUnit.MILLISECONDS)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        try {
-                            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(it.toString()).matches() && it.isNotEmpty()) {
-                                tv_alert.visibility = View.VISIBLE
-                            } else {
-                                tv_alert.visibility = View.GONE
-                            }
-                        } catch (e: IllegalStateException) {
-                        }
+        //텍스트가 변할때 이메일 형식인지 체크
+        binding.etEmail.textChanges()
+            .debounce(500, TimeUnit.MILLISECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                try {
+                    if (!android.util.Patterns.EMAIL_ADDRESS.matcher(it.toString())
+                            .matches() && it.isNotEmpty()
+                    ) {
+                        tv_alert.visibility = View.VISIBLE
+                    } else {
+                        tv_alert.visibility = View.GONE
+                    }
+                } catch (e: IllegalStateException) {
+                }
 
-                    }.addTo(compositeDisposable)
-            }
-        }
+            }.addTo(compositeDisposable)
     }
 
     override fun onDestroy() {

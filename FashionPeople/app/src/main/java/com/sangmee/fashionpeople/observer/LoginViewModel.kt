@@ -13,7 +13,6 @@ class LoginViewModel : ViewModel() {
     val backBtnEvent = SingleLiveEvent<Unit>()
     val authBtnEvent = SingleLiveEvent<Unit>()
     val emailBtnEvent = SingleLiveEvent<Unit>()
-    val galleryBtnEvent = SingleLiveEvent<Unit>()
     val loadingSubject = BehaviorSubject.createDefault(false)
 
     fun clickNextBtn() {
@@ -30,9 +29,5 @@ class LoginViewModel : ViewModel() {
 
     fun clickEmailBtn() {
         emailBtnEvent.value = Unit
-    }
-
-    fun clickGalleryBtn() {
-        galleryBtnEvent.value = Unit
     }
 }

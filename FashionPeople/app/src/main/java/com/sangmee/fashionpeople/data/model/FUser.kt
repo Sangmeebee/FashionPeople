@@ -17,7 +17,7 @@ data class FUser(
     @SerializedName("gender")
     val gender: String?,
     @SerializedName("profileImage")
-    val profileImage: String?,
+    var profileImage: String?,
     @SerializedName("followerNum")
     val followerNum: Int?,
     @SerializedName("followingNum")
