@@ -2,6 +2,7 @@ package com.sangmee.fashionpeople.data.dataSource.remote
 
 import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.data.service.retrofit.RetrofitClient
+import io.reactivex.rxjava3.core.Completable
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -79,5 +80,9 @@ class FUserRemoteDataSourceImpl : FUserRemoteDataSource {
                 failed(t.message.toString())
             }
         })
+    }
+
+    override fun deleteUser(id: String): Completable {
+        return RetrofitClient.getFUserService().deleteUser(id)
     }
 }

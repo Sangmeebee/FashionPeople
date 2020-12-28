@@ -1,6 +1,7 @@
 package com.sangmee.fashionpeople.data.dataSource.remote
 
 import com.sangmee.fashionpeople.data.model.FUser
+import io.reactivex.rxjava3.core.Completable
 
 interface FUserRemoteDataSource {
     fun getAllFUser(
@@ -26,4 +27,6 @@ interface FUserRemoteDataSource {
         success: () -> Unit,
         failed: (String) -> Unit
     )
+
+    fun deleteUser(id: String): Completable
 }

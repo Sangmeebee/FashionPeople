@@ -1,19 +1,29 @@
 package com.sangmee.fashionpeople.observer
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.data.dataSource.remote.FUserRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.dataSource.remote.FollowRemoteDataSourceImpl
+import com.sangmee.fashionpeople.data.model.Comment
 import com.sangmee.fashionpeople.data.repository.FUserRepository
 import com.sangmee.fashionpeople.data.repository.FUserRepositoryImpl
 import com.sangmee.fashionpeople.data.repository.FollowRepository
 import com.sangmee.fashionpeople.data.repository.FollowRepositoryImpl
 import com.sangmee.fashionpeople.util.SingleLiveEvent
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.kotlin.addTo
+import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
 
 class InfoViewModel : ViewModel() {
+
+    private val compositeDisposable = CompositeDisposable()
+    val loadingSubject = BehaviorSubject.createDefault(false)
 
     private val fUserRepository: FUserRepository by lazy {
         FUserRepositoryImpl(FUserRemoteDataSourceImpl())
@@ -78,6 +88,24 @@ class InfoViewModel : ViewModel() {
 
     fun clickGalleryBtn() {
         galleryBtnEvent.value = Unit
+    }
+
+
+    fun deleteUser(customId: String) {
+        fUserRepository.deleteUser(customId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { loadingSubject.onNext(true) }
+            .doAfterTerminate { loadingSubject.onNext(false) }
+            .subscribe({
+
+            }, {
+
+            }).addTo(compositeDisposable)
+    }
+
+    fun unbindViewModel() {
+        compositeDisposable.clear()
     }
 }
 

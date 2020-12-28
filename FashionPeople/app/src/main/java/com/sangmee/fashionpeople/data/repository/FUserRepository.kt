@@ -1,6 +1,7 @@
 package com.sangmee.fashionpeople.data.repository
 
 import com.sangmee.fashionpeople.data.model.FUser
+import io.reactivex.rxjava3.core.Completable
 
 interface FUserRepository {
     fun getAllFUser(
@@ -26,4 +27,6 @@ interface FUserRepository {
         success: () -> Unit,
         failed: (String) -> Unit
     )
+
+    fun deleteUser(id: String): Completable
 }

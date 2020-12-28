@@ -2,6 +2,7 @@ package com.sangmee.fashionpeople.data.repository
 
 import com.sangmee.fashionpeople.data.dataSource.remote.FUserRemoteDataSource
 import com.sangmee.fashionpeople.data.model.FUser
+import io.reactivex.rxjava3.core.Completable
 
 class FUserRepositoryImpl(
     private val FUserRemoteDataSource: FUserRemoteDataSource
@@ -25,5 +26,9 @@ class FUserRepositoryImpl(
         failed: (String) -> Unit
     ) {
         FUserRemoteDataSource.updateUser(id, user, success, failed)
+    }
+
+    override fun deleteUser(id: String): Completable {
+        return FUserRemoteDataSource.deleteUser(id)
     }
 }

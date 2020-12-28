@@ -1,6 +1,7 @@
 package com.sangmee.fashionpeople.data.service.retrofit
 
 import com.sangmee.fashionpeople.data.model.FUser
+import io.reactivex.rxjava3.core.Completable
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -22,5 +23,8 @@ interface FUserService {
         @Path("id") id: String,
         @Body body: FUser
     ): Call<FUser>
+
+    @DELETE("users/{id}")
+    fun deleteUser(@Path("id") id: String): Completable
 
 }
