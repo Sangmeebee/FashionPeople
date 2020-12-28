@@ -23,7 +23,6 @@ import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.databinding.ActivitySettingBinding
 import com.sangmee.fashionpeople.observer.InfoViewModel
-import com.sangmee.fashionpeople.ui.login.UserInfoActivity
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
