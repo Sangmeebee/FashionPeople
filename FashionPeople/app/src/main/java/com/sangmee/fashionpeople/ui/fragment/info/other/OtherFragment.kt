@@ -14,8 +14,8 @@ import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.databinding.FragmentOtherBinding
 import com.sangmee.fashionpeople.observer.InfoViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
-import com.sangmee.fashionpeople.ui.fragment.info.content.ViewPagerAdapter
 import com.sangmee.fashionpeople.ui.fragment.info.follow.FollowFragment
+import com.sangmee.fashionpeople.ui.fragment.info.image_content.ViewPagerAdapter
 import kotlinx.android.synthetic.main.fragment_info.*
 
 private const val CUSTOM_ID = "param1"

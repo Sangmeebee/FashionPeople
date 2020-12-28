@@ -1,4 +1,4 @@
-package com.sangmee.fashionpeople.ui.fragment.info.content
+package com.sangmee.fashionpeople.ui.fragment.info.image_content
 
 import android.os.Bundle
 import android.view.LayoutInflater

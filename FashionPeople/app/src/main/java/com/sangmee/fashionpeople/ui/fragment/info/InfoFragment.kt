@@ -30,9 +30,8 @@ import com.sangmee.fashionpeople.data.repository.FUserRepositoryImpl
 import com.sangmee.fashionpeople.databinding.FragmentInfoBinding
 import com.sangmee.fashionpeople.observer.InfoViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
-import com.sangmee.fashionpeople.ui.SettingActivity
-import com.sangmee.fashionpeople.ui.fragment.info.content.ViewPagerAdapter
 import com.sangmee.fashionpeople.ui.fragment.info.follow.FollowFragment
+import com.sangmee.fashionpeople.ui.fragment.info.image_content.ViewPagerAdapter
 import com.sangmee.fashionpeople.ui.login.LoginActivity
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable

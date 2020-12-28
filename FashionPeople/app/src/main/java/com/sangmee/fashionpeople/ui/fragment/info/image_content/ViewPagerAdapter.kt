@@ -1,4 +1,4 @@
-package com.sangmee.fashionpeople.ui.fragment.info.content
+package com.sangmee.fashionpeople.ui.fragment.info.image_content
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter

@@ -1,20 +1,21 @@
-package com.sangmee.fashionpeople.ui
+package com.sangmee.fashionpeople.ui.fragment.info
 
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.appcompat.widget.Toolbar
+import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.kakao.usermgmt.UserManagement
 import com.kakao.usermgmt.callback.LogoutResponseCallback
 import com.sangmee.fashionpeople.R
-import com.sangmee.fashionpeople.databinding.ActivitySettingBinding
 import com.sangmee.fashionpeople.data.GlobalApplication
+import com.sangmee.fashionpeople.databinding.ActivitySettingBinding
 
 class SettingActivity : AppCompatActivity() {
 
@@ -60,7 +61,7 @@ class SettingActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.run {
             setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(R.drawable.ic_arrow)
+            setHomeAsUpIndicator(R.drawable.arrow_back_yellow)
             setDisplayShowTitleEnabled(false)
         }
     }
@@ -76,6 +77,16 @@ class SettingActivity : AppCompatActivity() {
         }
     }
 
+    // 뒤로가기 버튼 눌렀을 때
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     companion object {
         const val DEVELOPER_EMAIL1 = "slflfl12@naver.com"
