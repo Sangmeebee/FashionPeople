@@ -69,9 +69,9 @@ class UserInfoActivity : AppCompatActivity() {
                 introduce,
                 gender,
                 null,
-                0,
-                0,
-                false
+                false,
+                listOf(),
+                listOf()
             ), {
                 val intent = Intent(this, MainActivity::class.java)
                 intent.flags =

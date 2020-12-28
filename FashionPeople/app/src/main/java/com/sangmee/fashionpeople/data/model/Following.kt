@@ -9,6 +9,6 @@ import kotlinx.android.parcel.Parcelize
 data class Following(
     @SerializedName("user")
     val user: FUser?,
-    @SerializedName("following")
-    val following: FUser?
+    @SerializedName("followingId")
+    val followingId: String?
 ) : Parcelable

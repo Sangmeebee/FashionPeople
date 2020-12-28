@@ -1,13 +1,12 @@
 package com.sangmee.fashionpeople.data.dataSource.remote
 
-import com.sangmee.fashionpeople.data.model.Follower
-import com.sangmee.fashionpeople.data.model.Following
+import com.sangmee.fashionpeople.data.model.FUser
 
 interface FollowRemoteDataSource {
 
-    fun getFollower(userId: String, success: (List<Follower>) -> Unit, failed: (String) -> Unit)
+    fun getFollower(userId: String, success: (List<FUser>) -> Unit, failed: (String) -> Unit)
 
-    fun getFollowing(userId: String, success: (List<Following>) -> Unit, failed: (String) -> Unit)
+    fun getFollowing(userId: String, success: (List<FUser>) -> Unit, failed: (String) -> Unit)
 
     fun updateFollowing(
         userId: String,

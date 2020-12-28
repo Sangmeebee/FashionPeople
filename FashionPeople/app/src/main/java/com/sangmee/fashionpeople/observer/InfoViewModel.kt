@@ -42,8 +42,8 @@ class InfoViewModel : ViewModel() {
         fUserRepository.getFUser(userId, success = {
             profileImgName.value = it.profileImage
             userName.value = it.name
-            followerNum.value = it.followerNum
-            followingNum.value = it.followingNum
+            followerNum.value = it.followers?.size
+            followingNum.value = it.followings?.size
         }, failed = { Log.e("CALL_PROFILE_ERROR", it) })
 
     }

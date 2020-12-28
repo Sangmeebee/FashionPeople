@@ -2,7 +2,6 @@ package com.sangmee.fashionpeople.ui.fragment.rank
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sangmee.fashionpeople.R
@@ -21,7 +20,10 @@ class RankRecyclerAdapter : RecyclerView.Adapter<RankContentViewHolder>() {
             false
         )
 
-        binding.root.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        binding.root.layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
 
         return RankContentViewHolder(binding)
     }

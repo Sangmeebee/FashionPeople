@@ -1,14 +1,16 @@
 package com.sangmee.fashionpeople.data.repository
 
 import com.sangmee.fashionpeople.data.dataSource.remote.FollowRemoteDataSource
+import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.data.model.Follower
 import com.sangmee.fashionpeople.data.model.Following
 
 class FollowRepositoryImpl(private val followRemoteDataSource: FollowRemoteDataSource) :
     FollowRepository {
+
     override fun getFollower(
         userId: String,
-        success: (List<Follower>) -> Unit,
+        success: (List<FUser>) -> Unit,
         failed: (String) -> Unit
     ) {
         followRemoteDataSource.getFollower(userId, success, failed)
@@ -16,7 +18,7 @@ class FollowRepositoryImpl(private val followRemoteDataSource: FollowRemoteDataS
 
     override fun getFollowing(
         userId: String,
-        success: (List<Following>) -> Unit,
+        success: (List<FUser>) -> Unit,
         failed: (String) -> Unit
     ) {
         followRemoteDataSource.getFollowing(userId, success, failed)

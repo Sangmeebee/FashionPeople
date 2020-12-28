@@ -1,13 +1,14 @@
 package com.sangmee.fashionpeople.data.repository
 
+import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.data.model.Follower
 import com.sangmee.fashionpeople.data.model.Following
 
 interface FollowRepository {
 
-    fun getFollower(userId: String, success: (List<Follower>) -> Unit, failed: (String) -> Unit)
+    fun getFollower(userId: String, success: (List<FUser>) -> Unit, failed: (String) -> Unit)
 
-    fun getFollowing(userId: String, success: (List<Following>) -> Unit, failed: (String) -> Unit)
+    fun getFollowing(userId: String, success: (List<FUser>) -> Unit, failed: (String) -> Unit)
 
     fun getIsFollowing(userId: String, customId:String, success: (Boolean) -> Unit, failed: (String) -> Unit)
 

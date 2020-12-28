@@ -11,6 +11,6 @@ data class Follower(
     val isFollowing: Boolean?,
     @SerializedName("user")
     val user: FUser?,
-    @SerializedName("follower")
-    val follower: FUser?
+    @SerializedName("followerId")
+    val followerId: String?
 ) : Parcelable

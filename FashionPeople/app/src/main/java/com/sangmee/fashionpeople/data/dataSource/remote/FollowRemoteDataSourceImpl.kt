@@ -1,7 +1,6 @@
 package com.sangmee.fashionpeople.data.dataSource.remote
 
-import com.sangmee.fashionpeople.data.model.Follower
-import com.sangmee.fashionpeople.data.model.Following
+import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.data.service.retrofit.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -10,14 +9,14 @@ import retrofit2.Response
 class FollowRemoteDataSourceImpl : FollowRemoteDataSource {
     override fun getFollower(
         userId: String,
-        success: (List<Follower>) -> Unit,
+        success: (List<FUser>) -> Unit,
         failed: (String) -> Unit
     ) {
         RetrofitClient.getFollowerService().getFollower(userId)
-            .enqueue(object : Callback<List<Follower>> {
+            .enqueue(object : Callback<List<FUser>> {
                 override fun onResponse(
-                    call: Call<List<Follower>>,
-                    response: Response<List<Follower>>
+                    call: Call<List<FUser>>,
+                    response: Response<List<FUser>>
                 ) {
                     val res = response.body()
                     res?.let {
@@ -25,7 +24,7 @@ class FollowRemoteDataSourceImpl : FollowRemoteDataSource {
                     }
                 }
 
-                override fun onFailure(call: Call<List<Follower>>, t: Throwable) {
+                override fun onFailure(call: Call<List<FUser>>, t: Throwable) {
                     failed(t.message.toString())
                 }
             })
@@ -33,14 +32,14 @@ class FollowRemoteDataSourceImpl : FollowRemoteDataSource {
 
     override fun getFollowing(
         userId: String,
-        success: (List<Following>) -> Unit,
+        success: (List<FUser>) -> Unit,
         failed: (String) -> Unit
     ) {
         RetrofitClient.getFollowingService().getFollowing(userId)
-            .enqueue(object : Callback<List<Following>> {
+            .enqueue(object : Callback<List<FUser>> {
                 override fun onResponse(
-                    call: Call<List<Following>>,
-                    response: Response<List<Following>>
+                    call: Call<List<FUser>>,
+                    response: Response<List<FUser>>
                 ) {
                     val res = response.body()
                     res?.let {
@@ -48,7 +47,7 @@ class FollowRemoteDataSourceImpl : FollowRemoteDataSource {
                     }
                 }
 
-                override fun onFailure(call: Call<List<Following>>, t: Throwable) {
+                override fun onFailure(call: Call<List<FUser>>, t: Throwable) {
                     failed(t.message.toString())
                 }
             })
@@ -61,12 +60,12 @@ class FollowRemoteDataSourceImpl : FollowRemoteDataSource {
         failed: (String) -> Unit
     ) {
         RetrofitClient.getFollowingService().updateFollowing(userId, followingId).enqueue(object :
-            Callback<Following> {
-            override fun onResponse(call: Call<Following>, response: Response<Following>) {
+            Callback<Unit> {
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                 success()
             }
 
-            override fun onFailure(call: Call<Following>, t: Throwable) {
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
                 failed(t.message.toString())
             }
         })

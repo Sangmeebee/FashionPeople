@@ -90,7 +90,7 @@ class CommentDialogFragment : BottomSheetDialogFragment() {
                         viewModel.updateFeedImageComment(
                             myId,
                             imageName,
-                            Comment(it.toString(), myId, imageName)
+                            Comment(it.toString(), myId)
                         )
                     }
                 }

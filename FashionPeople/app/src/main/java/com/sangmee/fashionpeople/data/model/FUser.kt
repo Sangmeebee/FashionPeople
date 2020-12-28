@@ -16,10 +16,10 @@ data class FUser(
     val gender: String?,
     @SerializedName("profileImage")
     var profileImage: String?,
-    @SerializedName("followerNum")
-    val followerNum: Int?,
-    @SerializedName("followingNum")
-    val followingNum: Int?,
     @SerializedName("evaluateNow")
-    val evaluateNow: Boolean?
+    val evaluateNow: Boolean?,
+    @SerializedName("followers")
+    val followers: List<Follower>?,
+    @SerializedName("followings")
+    val followings: List<Following>?
 ) : Parcelable

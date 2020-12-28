@@ -1,6 +1,5 @@
 package com.sangmee.fashionpeople.ui.login
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -124,9 +123,9 @@ class LastSignInFragment : Fragment() {
                         introduce,
                         gender,
                         null,
-                        0,
-                        0,
-                        false
+                        false,
+                        listOf(),
+                        listOf()
                     ), {
                         requireActivity().finish()
                     }, { e -> Log.e("sangmin_error", e) }
