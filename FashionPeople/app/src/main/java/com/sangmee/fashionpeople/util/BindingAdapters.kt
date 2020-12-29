@@ -292,6 +292,15 @@ fun View.bindIsGone(isGone: Boolean) {
     }
 }
 
+@BindingAdapter("isInvisible")
+fun View.bindIsInvisible(isInvisible: Boolean) {
+    this.visibility = if (isInvisible) {
+        View.INVISIBLE
+    } else {
+        View.VISIBLE
+    }
+}
+
 @BindingAdapter("marginTop")
 fun View.setMarginTop(marginTop: Float) {
     val layoutParams = layoutParams as ViewGroup.MarginLayoutParams

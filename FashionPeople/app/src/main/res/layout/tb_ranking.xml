@@ -15,7 +15,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="주간 랭킹"
-            android:fontFamily="@font/ygd_320"
             android:textColor="@color/colorWhite"
             android:textSize="18sp"
             android:textStyle="bold" />

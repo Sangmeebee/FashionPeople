@@ -1,13 +1,11 @@
 package com.sangmee.fashionpeople.observer
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.data.dataSource.remote.FUserRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.dataSource.remote.FollowRemoteDataSourceImpl
-import com.sangmee.fashionpeople.data.model.Comment
 import com.sangmee.fashionpeople.data.repository.FUserRepository
 import com.sangmee.fashionpeople.data.repository.FUserRepositoryImpl
 import com.sangmee.fashionpeople.data.repository.FollowRepository
@@ -39,18 +37,21 @@ class InfoViewModel : ViewModel() {
     val customId = GlobalApplication.prefs.getString("${loginType}_custom_id", "empty")
     val profileImgName = MutableLiveData<String>()
     val userName = MutableLiveData<String>()
+    val introduce = MutableLiveData<String?>()
     val followerNum = MutableLiveData<Int>(0)
     val followingNum = MutableLiveData<Int>(0)
     val callActivity = SingleLiveEvent<Int>()
     val isFollowing = MutableLiveData<Boolean>()
     val followBtnEvent = SingleLiveEvent<Unit>()
     val galleryBtnEvent = SingleLiveEvent<Unit>()
+    val isInvisible = MutableLiveData<Boolean>(false)
     val publishSubject = PublishSubject.create<Unit>()
 
     fun callProfile(userId: String) {
         //프로필 세팅
         fUserRepository.getFUser(userId, success = {
             profileImgName.value = it.profileImage
+            introduce.value = it.introduce
             userName.value = it.name
             followerNum.value = it.followers?.size
             followingNum.value = it.followings?.size

@@ -8,17 +8,17 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
@@ -76,22 +76,48 @@ class InfoFragment : Fragment() {
 
         viewModelCallback()
         vm.callProfile(vm.customId)
+
+        //자기소개글 있는지 판단
+        vm.introduce.value?.let {
+            if (it.isNotEmpty()) {
+                vm.isInvisible.value = true
+            }
+        }
+        binding.isInvisible = vm.isInvisible.value
+
+        //툴바 세팅
+        setToolbar(binding.tbProfile)
+        setHasOptionsMenu(true)
         //tablayout 세팅
         viewPager.adapter = ViewPagerAdapter(this, customId)
 
         TabLayoutMediator(tl_container, viewPager) { tab, position ->
             when (position) {
-                0 -> tab.text = "게시물"
-                else -> tab.text = "저장함"
+                0 -> {
+                    tab.setIcon(R.drawable.photo_library_selector)
+                }
+                else -> {
+                    tab.setIcon(R.drawable.photo_saved_selector)
+                }
             }
         }.attach()
-
-        btn_setting.setOnClickListener {
-            val intent = Intent(context, SettingActivity::class.java)
-            startActivityForResult(intent, LOGOUT_CODE)
-        }
     }
 
+    //메뉴 버튼 세팅
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.setting_toolbar, menu)
+    }
+
+    //메뉴 버튼 이벤트
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_setting -> {
+                Toast.makeText(context, "click", Toast.LENGTH_SHORT).show()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -212,6 +238,13 @@ class InfoFragment : Fragment() {
                 ),
                 100
             )
+        }
+    }
+
+    private fun setToolbar(toolbar: Toolbar) {
+        (activity as MainActivity).setSupportActionBar(toolbar)
+        (activity as MainActivity).supportActionBar?.run {
+            setDisplayShowTitleEnabled(false)
         }
     }
 

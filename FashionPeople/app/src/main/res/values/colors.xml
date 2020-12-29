@@ -24,5 +24,6 @@
     <color name="gainsboro">#DCdCdC</color>
     <color name="silver">#C0C0C0</color>
     <color name="toggle_selected">#FFD855</color>
+    <color name="background_yellow">#FDFBF1</color>
 </resources>
 
