@@ -62,7 +62,7 @@
                 bind:setImageName="@{vm.profileImgName}" />
 
             <TextView
-                android:id="@+id/tv_nickname"
+                android:id="@+id/tv_introduce"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
@@ -83,7 +83,7 @@
                 android:orientation="vertical"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/ll_following"
-                app:layout_constraintTop_toBottomOf="@id/tv_nickname">
+                app:layout_constraintTop_toBottomOf="@id/tv_introduce">
 
                 <TextView
                     android:id="@+id/tv_follower_num"
@@ -113,7 +113,7 @@
                 android:orientation="vertical"
                 app:layout_constraintLeft_toRightOf="@id/ll_follower"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_nickname">
+                app:layout_constraintTop_toBottomOf="@id/tv_introduce">
 
                 <TextView
                     android:id="@+id/tv_following_num"

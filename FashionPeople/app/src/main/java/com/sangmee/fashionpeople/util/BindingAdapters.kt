@@ -301,13 +301,6 @@ fun View.bindIsInvisible(isInvisible: Boolean) {
     }
 }
 
-@BindingAdapter("marginTop")
-fun View.setMarginTop(marginTop: Float) {
-    val layoutParams = layoutParams as ViewGroup.MarginLayoutParams
-    layoutParams.topMargin = marginTop.toInt()
-    this.layoutParams = layoutParams
-}
-
 @SuppressLint("SetTextI18n")
 @RequiresApi(Build.VERSION_CODES.M)
 @BindingAdapter("setTvBackGround")

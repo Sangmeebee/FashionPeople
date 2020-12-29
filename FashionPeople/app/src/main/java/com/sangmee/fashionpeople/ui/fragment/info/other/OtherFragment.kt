@@ -2,9 +2,11 @@ package com.sangmee.fashionpeople.ui.fragment.info.other
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -17,6 +19,7 @@ import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.info.follow.FollowFragment
 import com.sangmee.fashionpeople.ui.fragment.info.image_content.ViewPagerAdapter
 import kotlinx.android.synthetic.main.fragment_info.*
+
 
 private const val CUSTOM_ID = "param1"
 
@@ -63,6 +66,18 @@ class OtherFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setTabLayout()
         observeCallBack()
+
+        //자기소개글 있는지 판단
+        infoVm.introduce.value?.let {
+            if (it.isNotEmpty()) {
+                infoVm.isInvisible.value = true
+            }
+        }
+        binding.isInvisible = infoVm.isInvisible.value
+
+        //툴바 세팅
+        setToolbar(binding.tbProfile)
+        setHasOptionsMenu(true)
     }
 
     private fun setTabLayout() {
@@ -70,8 +85,12 @@ class OtherFragment : Fragment() {
 
         TabLayoutMediator(tl_container, viewPager) { tab, position ->
             when (position) {
-                0 -> tab.text = "게시물"
-                else -> tab.text = "저장함"
+                0 -> {
+                    tab.setIcon(R.drawable.photo_library_selector)
+                }
+                else -> {
+                    tab.setIcon(R.drawable.photo_saved_selector)
+                }
             }
         }.attach()
     }
@@ -106,6 +125,30 @@ class OtherFragment : Fragment() {
                     infoVm.isFollowing.value = !isFollowing
                 }
             }
+        }
+    }
+
+
+    //메뉴 버튼 세팅
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.setting_toolbar, menu)
+    }
+
+    //메뉴 버튼 이벤트
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_setting -> {
+                Toast.makeText(context, "click", Toast.LENGTH_SHORT).show()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun setToolbar(toolbar: Toolbar) {
+        (activity as MainActivity).setSupportActionBar(toolbar)
+        (activity as MainActivity).supportActionBar?.run {
+            setDisplayShowTitleEnabled(false)
         }
     }
 
