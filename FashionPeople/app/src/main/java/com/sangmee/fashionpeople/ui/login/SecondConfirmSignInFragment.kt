@@ -2,7 +2,6 @@ package com.sangmee.fashionpeople.ui.login
 
 import android.app.Service
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,7 +43,9 @@ class SecondConfirmSignInFragment : Fragment() {
 
         vm.nextBtnEvent.observe(this, Observer {
             if (vm.password.value.toString() == binding.etPasswordConfirm.text.toString()) {
-                (activity as EmailSignInActivity).replaceFragmentUseBackStack(ThirdSignInFragment())
+                (activity as EmailSignInActivity).replaceFragmentUseBackStack(
+                    ThirdConfirmSignInFragment()
+                )
             } else {
                 tv_alert.visibility = View.VISIBLE
             }
@@ -60,7 +61,8 @@ class SecondConfirmSignInFragment : Fragment() {
 
     private fun showKeyBoard(view: View) {
         view.requestFocus()
-        val imm = requireContext().getSystemService(Service.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm =
+            requireContext().getSystemService(Service.INPUT_METHOD_SERVICE) as InputMethodManager
         view.postDelayed({
             imm.showSoftInput(view, 0)
         }, 30)

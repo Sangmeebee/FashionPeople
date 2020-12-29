@@ -1,12 +1,17 @@
 package com.sangmee.fashionpeople.ui.login
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.google.firebase.auth.FirebaseAuth
 import com.sangmee.fashionpeople.R
+import com.sangmee.fashionpeople.data.GlobalApplication
+import com.sangmee.fashionpeople.observer.LoginViewModel
 
 class EmailSignInActivity : AppCompatActivity() {
+    private val vm by viewModels<LoginViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,8 +31,10 @@ class EmailSignInActivity : AppCompatActivity() {
         if (index==0) {
             finish()
         } else {
-            if(index==4){
-                FirebaseAuth.getInstance().currentUser?.delete()
+            if(index==3){
+                if(vm.isOk.value!!){
+                    FirebaseAuth.getInstance().currentUser?.delete()
+                }
             }
             supportFragmentManager.popBackStack()
         }
