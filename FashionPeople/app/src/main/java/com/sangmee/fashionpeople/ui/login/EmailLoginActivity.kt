@@ -29,8 +29,6 @@ class EmailLoginActivity : AppCompatActivity() {
     }
 
     fun clickLoginBtn() {
-
-        //Todo retrofit에서 아이디체크로 바꾸기
         val id: String? = binding.etEmail.text.toString()
         val pw: String? = binding.etPassword.text.toString()
         if (id.isNullOrEmpty()) {
@@ -56,10 +54,10 @@ class EmailLoginActivity : AppCompatActivity() {
                         // If sign in fails, display a message to the user.
                         Log.w("Sangmeebee", "signInWithEmail:failure", task.exception)
                         val message = task.exception?.message.toString()
-                        if("There is no user" in message) {
+                        if ("There is no user" in message) {
                             Toast.makeText(this, "이메일이 일치하지 않습니다", Toast.LENGTH_SHORT).show()
                         }
-                        if("The password is invalid" in message) {
+                        if ("The password is invalid" in message) {
                             Toast.makeText(this, "비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show()
                         }
                     }

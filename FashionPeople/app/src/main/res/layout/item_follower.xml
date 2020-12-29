@@ -79,6 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:paddingRight="200dp"
                 app:layout_constraintLeft_toRightOf="@+id/iv_profile"
                 bind:isGone="@{isGone}">
 
@@ -90,7 +91,9 @@
                     android:id="@+id/tv_intro"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
                     android:fontFamily="@font/ygd_320"
+                    android:singleLine="true"
                     android:text="@{String.valueOf(follower.introduce)}"
                     android:textSize="12sp" />
             </LinearLayout>

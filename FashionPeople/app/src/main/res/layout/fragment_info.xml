@@ -62,6 +62,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
+                android:maxLines="5"
+                android:paddingHorizontal="100dp"
                 android:text="@{vm.introduce}"
                 android:textColor="@color/colorBlack"
                 android:textSize="14sp"
