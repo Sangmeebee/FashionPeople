@@ -17,12 +17,11 @@ interface FUserService {
     @POST("users")
     fun addUser(@Body body: FUser): Call<FUser>
 
-
     @PUT("users/{id}")
     fun updateUserById(
         @Path("id") id: String,
         @Body body: FUser
-    ): Call<FUser>
+    ): Completable
 
     @DELETE("users/{id}")
     fun deleteUser(@Path("id") id: String): Completable

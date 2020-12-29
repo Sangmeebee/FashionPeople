@@ -8,10 +8,6 @@
         <variable
             name="vm"
             type="com.sangmee.fashionpeople.observer.InfoViewModel" />
-
-        <variable
-            name="isInvisible"
-            type="Boolean" />
     </data>
 
     <LinearLayout
@@ -71,8 +67,7 @@
                 android:textSize="14sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_profile"
-                bind:isInvisible="@{isInvisible}" />
+                app:layout_constraintTop_toBottomOf="@id/iv_profile" />
 
             <LinearLayout
                 android:id="@+id/ll_follower"
@@ -140,6 +135,7 @@
                 android:layout_marginHorizontal="100dp"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/bg_revise_profile"
+                android:onClick="@{()->vm.clickProfileReviseBtn()}"
                 android:text="프로필 편집"
                 android:textSize="13sp"
                 app:layout_constraintTop_toBottomOf="@id/ll_following" />

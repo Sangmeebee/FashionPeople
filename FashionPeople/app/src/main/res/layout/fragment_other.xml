@@ -17,10 +17,6 @@
             name="isMe"
             type="Boolean" />
 
-        <variable
-            name="isInvisible"
-            type="Boolean" />
-
     </data>
 
     <LinearLayout
@@ -80,8 +76,7 @@
                 android:textSize="14sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_profile"
-                bind:isInvisible="@{isInvisible}" />
+                app:layout_constraintTop_toBottomOf="@id/iv_profile" />
 
             <LinearLayout
                 android:id="@+id/ll_follower"

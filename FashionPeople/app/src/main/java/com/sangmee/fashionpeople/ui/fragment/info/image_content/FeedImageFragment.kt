@@ -14,8 +14,9 @@ import com.sangmee.fashionpeople.databinding.FragmentFeedImageBinding
 import com.sangmee.fashionpeople.observer.FeedImageViewModel
 import kotlinx.android.synthetic.main.fragment_feed_image.*
 
-class FeedImageFragment(private val userId: String) : Fragment() {
+class FeedImageFragment : Fragment() {
 
+    private var userId: String? = null
     private lateinit var binding: FragmentFeedImageBinding
     private val vm: FeedImageViewModel by lazy {
         ViewModelProvider(this, object : ViewModelProvider.Factory {
@@ -26,7 +27,16 @@ class FeedImageFragment(private val userId: String) : Fragment() {
     }
     private var isEmpty = false
     private val feedImageAdapter by lazy {
-        FeedImageAdapter(userId)
+        userId?.let {
+            FeedImageAdapter(it)
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            userId = it.getString("custom_id")
+        }
     }
 
     override fun onCreateView(
@@ -43,7 +53,7 @@ class FeedImageFragment(private val userId: String) : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        vm.callFeedImages(userId)
+        userId?.let { vm.callFeedImages(it) }
         setRecyclerView()
     }
 
@@ -58,7 +68,17 @@ class FeedImageFragment(private val userId: String) : Fragment() {
         vm.feedImages.observe(viewLifecycleOwner, Observer {
             isEmpty = it.isEmpty()
             binding.isEmpty = isEmpty
-            feedImageAdapter.setFeedImages(it)
+            feedImageAdapter?.setFeedImages(it)
         })
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(userId: String) =
+            FeedImageFragment().apply {
+                arguments = Bundle().apply {
+                    putString("custom_id", userId)
+                }
+            }
     }
 }

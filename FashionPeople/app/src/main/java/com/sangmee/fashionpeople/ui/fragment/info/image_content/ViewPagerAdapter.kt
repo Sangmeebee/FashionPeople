@@ -10,7 +10,7 @@ class ViewPagerAdapter(fragment: Fragment, private val userId: String) :
     override fun createFragment(position: Int): Fragment {
 
         return when (position) {
-            0 -> FeedImageFragment(userId)
+            0 -> FeedImageFragment.newInstance(userId)
             else -> SavedImageFragment(userId)
         }
     }

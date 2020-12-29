@@ -18,22 +18,18 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
-import com.sangmee.fashionpeople.data.dataSource.remote.FUserRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.dataSource.remote.S3RemoteDataSource
 import com.sangmee.fashionpeople.data.dataSource.remote.S3RemoteDataSourceImpl
-import com.sangmee.fashionpeople.data.repository.FUserRepository
-import com.sangmee.fashionpeople.data.repository.FUserRepositoryImpl
+import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.databinding.FragmentInfoBinding
 import com.sangmee.fashionpeople.observer.InfoViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.info.follow.FollowFragment
 import com.sangmee.fashionpeople.ui.fragment.info.image_content.ViewPagerAdapter
 import com.sangmee.fashionpeople.ui.login.LoginActivity
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -52,9 +48,6 @@ class InfoFragment : Fragment() {
             customId
         )
     }
-    private val fUserRepository: FUserRepository by lazy {
-        FUserRepositoryImpl(FUserRemoteDataSourceImpl())
-    }
     private val compositeDisposable = CompositeDisposable()
     private lateinit var file: File
 
@@ -71,36 +64,21 @@ class InfoFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        onRevise()
+        super.onResume()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModelCallback()
         vm.callProfile(vm.customId)
 
-        //자기소개글 있는지 판단
-        vm.introduce.value?.let {
-            if (it.isNotEmpty()) {
-                vm.isInvisible.value = true
-            }
-        }
-        binding.isInvisible = vm.isInvisible.value
-
         //툴바 세팅
         setToolbar(binding.tbProfile)
-        setHasOptionsMenu(true)
         //tablayout 세팅
-        viewPager.adapter = ViewPagerAdapter(this, customId)
-
-        TabLayoutMediator(tl_container, viewPager) { tab, position ->
-            when (position) {
-                0 -> {
-                    tab.setIcon(R.drawable.photo_library_selector)
-                }
-                else -> {
-                    tab.setIcon(R.drawable.photo_saved_selector)
-                }
-            }
-        }.attach()
+        setTabLayout()
     }
 
     //메뉴 버튼 세팅
@@ -113,7 +91,8 @@ class InfoFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_setting -> {
-                Toast.makeText(context, "click", Toast.LENGTH_SHORT).show()
+                val intent = Intent(context, SettingActivity::class.java)
+                startActivityForResult(intent, LOGOUT_CODE)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -134,7 +113,7 @@ class InfoFragment : Fragment() {
                     val uri: Uri = data!!.data!!
                     val imagePath = getRealPathFromUri(uri)
                     file = File(imagePath)
-                    vm.publishSubject.onNext(Unit)
+                    vm.behaviorSubject.onNext(Unit)
                     binding.ivProfile.setImageURI(uri)
                 } catch (e: Exception) {
                     Toast.makeText(context, e.message.toString(), Toast.LENGTH_LONG).show();
@@ -143,12 +122,33 @@ class InfoFragment : Fragment() {
                 Toast.makeText(context, "사진 선택 취소", Toast.LENGTH_LONG).show();
             }
         }
+
+//        if(requestCode == PROFILE_UPDATE && resultCode == AppCompatActivity.RESULT_OK) {
+//            vm.userName.value = data?.getStringExtra("nick_name")
+//            vm.gender.value = data?.getStringExtra("gender")
+//            data?.getStringExtra("introduce")?.let {
+//                vm.introduce.value = it
+//            }
+//        }
     }
 
     private fun viewModelCallback() {
 
         vm.galleryBtnEvent.observe(this, Observer {
             selectProfileImage()
+        })
+
+        vm.profileReviseBtnEvent.observe(this, Observer {
+            val intent = Intent(context, ReviseUserInfoActivity::class.java)
+            intent.putExtra("nick_name", vm.userName.value.toString())
+            intent.putExtra("gender", vm.gender.value.toString())
+            vm.profileImgName.value?.let {
+                intent.putExtra("profile_image_name", it)
+            }
+            vm.introduce.value?.let {
+                intent.putExtra("introduce", it)
+            }
+            startActivityForResult(intent, PROFILE_UPDATE)
         })
 
         vm.callActivity.observe(viewLifecycleOwner, Observer {
@@ -163,8 +163,7 @@ class InfoFragment : Fragment() {
             )
         })
 
-        vm.publishSubject
-            .subscribeOn(AndroidSchedulers.mainThread())
+        vm.behaviorSubject
             .observeOn(Schedulers.io())
             .subscribe { saveImageToServer(file) }
             .addTo(compositeDisposable)
@@ -177,11 +176,18 @@ class InfoFragment : Fragment() {
         profileImage?.let {
             s3RemoteDataSource.uploadWithTransferUtility(it, file, "profile")
         }
+        val fUser = FUser(
+            customId,
+            vm.userName.value,
+            vm.introduce.value,
+            vm.gender.value,
+            profileImage,
+            null,
+            null,
+            null
+        )
+        vm.updateProfile(customId, fUser)
 
-        fUserRepository.getFUser(customId, { user ->
-            profileImage?.let { user.profileImage = it }
-            fUserRepository.updateUser(customId, user, {}, {})
-        }, { error -> Log.d("CALL_PROFILE_ERROR", error) })
     }
 
     //이미지Uri -- > 절대경로로 바꿔서 리턴시켜주는 메소드
@@ -241,11 +247,27 @@ class InfoFragment : Fragment() {
         }
     }
 
+    private fun setTabLayout() {
+        viewPager.adapter = ViewPagerAdapter(this, customId)
+
+        TabLayoutMediator(tl_container, viewPager) { tab, position ->
+            when (position) {
+                0 -> {
+                    tab.setIcon(R.drawable.photo_library_selector)
+                }
+                else -> {
+                    tab.setIcon(R.drawable.photo_saved_selector)
+                }
+            }
+        }.attach()
+    }
+
     private fun setToolbar(toolbar: Toolbar) {
         (activity as MainActivity).setSupportActionBar(toolbar)
         (activity as MainActivity).supportActionBar?.run {
             setDisplayShowTitleEnabled(false)
         }
+        setHasOptionsMenu(true)
     }
 
     override fun onDestroy() {
@@ -253,9 +275,28 @@ class InfoFragment : Fragment() {
         super.onDestroy()
     }
 
+    private fun onRevise() {
+        val userName = GlobalApplication.prefs.getString("user_name", "empty")
+        if(userName!="empty"){
+            vm.userName.value = userName
+        }
+        val gender = GlobalApplication.prefs.getString("gender", "empty")
+        if(gender!="empty"){
+            vm.gender.value = gender
+        }
+        val introduce = GlobalApplication.prefs.getString("introduce", "empty")
+        if(introduce!="empty"){
+            vm.introduce.value = introduce
+        }
+        GlobalApplication.prefs.remove("user_name")
+        GlobalApplication.prefs.remove("gender")
+        GlobalApplication.prefs.remove("introduce")
+    }
+
     companion object {
         private const val CHOOSE_PROFILEIMG = 200
         private const val LOGOUT_CODE = 210
+        private const val PROFILE_UPDATE = 210
     }
 
 

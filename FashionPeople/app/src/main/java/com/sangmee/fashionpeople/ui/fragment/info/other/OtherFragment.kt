@@ -5,8 +5,6 @@ import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -66,14 +64,6 @@ class OtherFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setTabLayout()
         observeCallBack()
-
-        //자기소개글 있는지 판단
-        infoVm.introduce.value?.let {
-            if (it.isNotEmpty()) {
-                infoVm.isInvisible.value = true
-            }
-        }
-        binding.isInvisible = infoVm.isInvisible.value
 
         //툴바 세팅
         setToolbar(binding.tbProfile)

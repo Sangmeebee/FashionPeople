@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.data.dataSource.remote.FUserRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.dataSource.remote.FollowRemoteDataSourceImpl
+import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.data.repository.FUserRepository
 import com.sangmee.fashionpeople.data.repository.FUserRepositoryImpl
 import com.sangmee.fashionpeople.data.repository.FollowRepository
@@ -16,7 +17,6 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
-import io.reactivex.rxjava3.subjects.PublishSubject
 
 class InfoViewModel : ViewModel() {
 
@@ -37,15 +37,16 @@ class InfoViewModel : ViewModel() {
     val customId = GlobalApplication.prefs.getString("${loginType}_custom_id", "empty")
     val profileImgName = MutableLiveData<String>()
     val userName = MutableLiveData<String>()
+    val gender = MutableLiveData<String>()
     val introduce = MutableLiveData<String?>()
-    val followerNum = MutableLiveData<Int>(0)
-    val followingNum = MutableLiveData<Int>(0)
+    val followerNum = MutableLiveData(0)
+    val followingNum = MutableLiveData(0)
     val callActivity = SingleLiveEvent<Int>()
     val isFollowing = MutableLiveData<Boolean>()
     val followBtnEvent = SingleLiveEvent<Unit>()
     val galleryBtnEvent = SingleLiveEvent<Unit>()
-    val isInvisible = MutableLiveData<Boolean>(false)
-    val publishSubject = PublishSubject.create<Unit>()
+    val profileReviseBtnEvent = SingleLiveEvent<Unit>()
+    val behaviorSubject = BehaviorSubject.create<Unit>()
 
     fun callProfile(userId: String) {
         //프로필 세팅
@@ -53,10 +54,17 @@ class InfoViewModel : ViewModel() {
             profileImgName.value = it.profileImage
             introduce.value = it.introduce
             userName.value = it.name
+            gender.value = it.gender
             followerNum.value = it.followers?.size
             followingNum.value = it.followings?.size
         }, failed = { Log.e("CALL_PROFILE_ERROR", it) })
 
+    }
+
+    fun updateProfile(customId: String, fUser: FUser) {
+        fUserRepository.updateUser(customId, fUser)
+            .subscribeOn(Schedulers.io())
+            .subscribe { }.addTo(compositeDisposable)
     }
 
     fun callIsFollowing(customId: String) {
@@ -91,6 +99,9 @@ class InfoViewModel : ViewModel() {
         galleryBtnEvent.value = Unit
     }
 
+    fun clickProfileReviseBtn() {
+        profileReviseBtnEvent.value = Unit
+    }
 
     fun deleteUser(customId: String) {
         fUserRepository.deleteUser(customId)

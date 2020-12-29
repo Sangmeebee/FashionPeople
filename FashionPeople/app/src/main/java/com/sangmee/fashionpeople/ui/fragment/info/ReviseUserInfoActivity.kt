@@ -79,7 +79,7 @@ class ReviseUserInfoActivity : AppCompatActivity() {
         //닉네임
         val name = binding.etNickname.text.toString()
         //소개 글
-        val introduce = binding.etIntroduce.text.toString()
+        binding.etIntroduce.text?.let { introduce = it.toString() }
 
         val fUser = FUser(customId, name, introduce, gender, profileImageName, null, null, null)
         vm.updateProfile(customId, fUser)
@@ -105,12 +105,23 @@ class ReviseUserInfoActivity : AppCompatActivity() {
     }
 
     private fun finishThisActivity() {
+        setProfile()
         Toast.makeText(
             applicationContext,
             "회원정보를 수정했습니다.",
             Toast.LENGTH_SHORT
         ).show()
         finish()
+    }
+
+    private fun setProfile() {
+        val name = binding.etNickname.text.toString()
+        //소개 글
+        binding.etIntroduce.text?.let { introduce = it.toString() }
+
+        GlobalApplication.prefs.setString("user_name", name)
+        introduce?.let { GlobalApplication.prefs.setString("introduce", it) }
+        GlobalApplication.prefs.setString("gender", gender)
     }
 
     private fun bindViewModel() {
