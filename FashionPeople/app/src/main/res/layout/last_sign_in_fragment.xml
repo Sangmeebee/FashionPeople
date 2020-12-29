@@ -8,6 +8,10 @@
         <variable
             name="vm"
             type="com.sangmee.fashionpeople.observer.LoginViewModel" />
+
+        <variable
+            name="gender"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -96,12 +100,25 @@
                 android:textSize="12sp"
                 android:visibility="invisible" />
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:text="성별"
-                android:textColor="@android:color/black" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="성별 : "
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/tv_gender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{gender}"
+                    android:textColor="@color/blue"/>
+            </LinearLayout>
 
             <RadioGroup
                 android:id="@+id/rg_gender"

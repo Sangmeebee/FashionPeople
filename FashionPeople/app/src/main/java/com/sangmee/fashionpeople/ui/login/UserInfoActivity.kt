@@ -37,6 +37,7 @@ class UserInfoActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_user_info)
         customId = intent.getStringExtra("custom_id")!!
         binding.customId = customId
+        binding.gender = "남자"
         binding.activity = this
 
         checkFillInTheBlanks()
@@ -45,11 +46,13 @@ class UserInfoActivity : AppCompatActivity() {
             when (checkedId) {
                 R.id.rb_man -> {
                     gender = "남"
-                    Toast.makeText(this, "남자", Toast.LENGTH_SHORT).show()
+                    binding.gender = "남자"
+                    binding.tvGender.setTextColor(ContextCompat.getColor(this, R.color.blue))
                 }
                 R.id.rb_woman -> {
                     gender = "여"
-                    Toast.makeText(this, "여자", Toast.LENGTH_SHORT).show()
+                    binding.gender = "여자"
+                    binding.tvGender.setTextColor(ContextCompat.getColor(this, R.color.pink))
                 }
             }
         }

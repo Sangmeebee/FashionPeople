@@ -49,6 +49,7 @@ class LastSignInFragment : Fragment() {
         return inflater.inflate(R.layout.last_sign_in_fragment, container, false)?.apply {
             binding = DataBindingUtil.bind(this)!!
             binding.vm = vm
+            binding.gender = "남자"
             binding.lifecycleOwner = viewLifecycleOwner
         }
     }
@@ -60,11 +61,13 @@ class LastSignInFragment : Fragment() {
             when (checkedId) {
                 R.id.rb_man -> {
                     gender = "남"
-                    Toast.makeText(context, "남자", Toast.LENGTH_SHORT).show()
+                    binding.gender = "남자"
+                    binding.tvGender.setTextColor(ContextCompat.getColor(requireContext(), R.color.blue))
                 }
                 R.id.rb_woman -> {
                     gender = "여"
-                    Toast.makeText(context, "여자", Toast.LENGTH_SHORT).show()
+                    binding.gender = "여자"
+                    binding.tvGender.setTextColor(ContextCompat.getColor(requireContext(), R.color.pink))
                 }
             }
         }
