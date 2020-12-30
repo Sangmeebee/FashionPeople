@@ -64,10 +64,6 @@ class InfoFragment : Fragment() {
         }
     }
 
-    override fun onResume() {
-        onRevise()
-        super.onResume()
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -122,6 +118,13 @@ class InfoFragment : Fragment() {
                 Toast.makeText(context, "사진 선택 취소", Toast.LENGTH_LONG).show();
             }
         }
+
+        if (requestCode == REVISE_PROFILE && resultCode == AppCompatActivity.RESULT_OK) {
+            vm.userName.value = data?.getStringExtra("nick_name")
+            vm.gender.value = data?.getStringExtra("gender")
+            vm.introduce.value = data?.getStringExtra("introduce")
+            Log.d("Sangmeebee", "${vm.userName.value.toString()}, ${vm.gender.value.toString()}, ${vm.introduce.value.toString()}")
+        }
     }
 
     private fun viewModelCallback() {
@@ -140,7 +143,7 @@ class InfoFragment : Fragment() {
             vm.introduce.value?.let {
                 intent.putExtra("introduce", it)
             }
-            startActivity(intent)
+            startActivityForResult(intent, REVISE_PROFILE)
         })
 
         vm.callActivity.observe(viewLifecycleOwner, Observer {
@@ -267,27 +270,10 @@ class InfoFragment : Fragment() {
         super.onDestroy()
     }
 
-    private fun onRevise() {
-        val userName = GlobalApplication.prefs.getString("user_name", "empty")
-        if(userName!="empty"){
-            vm.userName.value = userName
-        }
-        val gender = GlobalApplication.prefs.getString("gender", "empty")
-        if(gender!="empty"){
-            vm.gender.value = gender
-        }
-        val introduce = GlobalApplication.prefs.getString("introduce", "empty")
-        if(introduce!="empty"){
-            vm.introduce.value = introduce
-        }
-        GlobalApplication.prefs.remove("user_name")
-        GlobalApplication.prefs.remove("gender")
-        GlobalApplication.prefs.remove("introduce")
-    }
-
     companion object {
         private const val CHOOSE_PROFILEIMG = 200
         private const val LOGOUT_CODE = 210
+        private const val REVISE_PROFILE = 220
     }
 
 

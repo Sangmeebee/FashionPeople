@@ -1,5 +1,6 @@
 package com.sangmee.fashionpeople.ui.fragment.info
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.view.View
@@ -105,23 +106,20 @@ class ReviseUserInfoActivity : AppCompatActivity() {
     }
 
     private fun finishThisActivity() {
-        setProfile()
+        val name = binding.etNickname.text.toString()
+        //소개 글
+        binding.etIntroduce.text?.let { introduce = it.toString() }
+        val intent = Intent()
+        intent.putExtra("nick_name", name)
+        intent.putExtra("gender", gender)
+        intent.putExtra("introduce", introduce)
         Toast.makeText(
             applicationContext,
             "회원정보를 수정했습니다.",
             Toast.LENGTH_SHORT
         ).show()
+        setResult(RESULT_OK, intent)
         finish()
-    }
-
-    private fun setProfile() {
-        val name = binding.etNickname.text.toString()
-        //소개 글
-        binding.etIntroduce.text?.let { introduce = it.toString() }
-
-        GlobalApplication.prefs.setString("user_name", name)
-        introduce?.let { GlobalApplication.prefs.setString("introduce", it) }
-        GlobalApplication.prefs.setString("gender", gender)
     }
 
     private fun bindViewModel() {
