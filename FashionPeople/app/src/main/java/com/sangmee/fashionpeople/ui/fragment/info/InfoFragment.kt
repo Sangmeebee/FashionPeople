@@ -122,14 +122,6 @@ class InfoFragment : Fragment() {
                 Toast.makeText(context, "사진 선택 취소", Toast.LENGTH_LONG).show();
             }
         }
-
-//        if(requestCode == PROFILE_UPDATE && resultCode == AppCompatActivity.RESULT_OK) {
-//            vm.userName.value = data?.getStringExtra("nick_name")
-//            vm.gender.value = data?.getStringExtra("gender")
-//            data?.getStringExtra("introduce")?.let {
-//                vm.introduce.value = it
-//            }
-//        }
     }
 
     private fun viewModelCallback() {
@@ -148,7 +140,7 @@ class InfoFragment : Fragment() {
             vm.introduce.value?.let {
                 intent.putExtra("introduce", it)
             }
-            startActivityForResult(intent, PROFILE_UPDATE)
+            startActivity(intent)
         })
 
         vm.callActivity.observe(viewLifecycleOwner, Observer {
@@ -296,7 +288,6 @@ class InfoFragment : Fragment() {
     companion object {
         private const val CHOOSE_PROFILEIMG = 200
         private const val LOGOUT_CODE = 210
-        private const val PROFILE_UPDATE = 210
     }
 
 

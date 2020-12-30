@@ -1,9 +1,11 @@
 package com.sangmee.fashionpeople.ui.fragment.info.other
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -14,8 +16,11 @@ import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.databinding.FragmentOtherBinding
 import com.sangmee.fashionpeople.observer.InfoViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
+import com.sangmee.fashionpeople.ui.fragment.info.InfoFragment
+import com.sangmee.fashionpeople.ui.fragment.info.SettingActivity
 import com.sangmee.fashionpeople.ui.fragment.info.follow.FollowFragment
 import com.sangmee.fashionpeople.ui.fragment.info.image_content.ViewPagerAdapter
+import com.sangmee.fashionpeople.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.fragment_info.*
 
 
@@ -119,6 +124,16 @@ class OtherFragment : Fragment() {
     }
 
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == LOGOUT_CODE && resultCode == AppCompatActivity.RESULT_OK) {
+            activity?.finish()
+            val intent = Intent(context, LoginActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
     //메뉴 버튼 세팅
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
@@ -129,7 +144,8 @@ class OtherFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_setting -> {
-                Toast.makeText(context, "click", Toast.LENGTH_SHORT).show()
+                val intent = Intent(context, SettingActivity::class.java)
+                startActivityForResult(intent, LOGOUT_CODE)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -143,6 +159,8 @@ class OtherFragment : Fragment() {
     }
 
     companion object {
+        private const val LOGOUT_CODE = 270
+
         @JvmStatic
         fun newInstance(customId: String) =
             OtherFragment().apply {
