@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
@@ -17,6 +16,7 @@ import com.sangmee.fashionpeople.databinding.FragmentOtherBinding
 import com.sangmee.fashionpeople.observer.InfoViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.info.InfoFragment
+import com.sangmee.fashionpeople.ui.fragment.info.ReviseUserInfoActivity
 import com.sangmee.fashionpeople.ui.fragment.info.SettingActivity
 import com.sangmee.fashionpeople.ui.fragment.info.follow.FollowFragment
 import com.sangmee.fashionpeople.ui.fragment.info.image_content.ViewPagerAdapter
@@ -105,6 +105,19 @@ class OtherFragment : Fragment() {
                 )
             )
         })
+
+        infoVm.profileReviseBtnEvent.observe(this, Observer {
+            val intent = Intent(context, ReviseUserInfoActivity::class.java)
+            intent.putExtra("nick_name", infoVm.userName.value.toString())
+            intent.putExtra("gender", infoVm.gender.value.toString())
+            infoVm.profileImgName.value?.let {
+                intent.putExtra("profile_image_name", it)
+            }
+            infoVm.introduce.value?.let {
+                intent.putExtra("introduce", it)
+            }
+            startActivityForResult(intent, REVISE_PROFILE)
+        })
     }
 
     private fun btnForFollowing() {
@@ -131,6 +144,12 @@ class OtherFragment : Fragment() {
             activity?.finish()
             val intent = Intent(context, LoginActivity::class.java)
             startActivity(intent)
+        }
+
+        if (requestCode == REVISE_PROFILE && resultCode == AppCompatActivity.RESULT_OK) {
+            infoVm.userName.value = data?.getStringExtra("nick_name")
+            infoVm.gender.value = data?.getStringExtra("gender")
+            infoVm.introduce.value = data?.getStringExtra("introduce")
         }
     }
 
@@ -160,6 +179,7 @@ class OtherFragment : Fragment() {
 
     companion object {
         private const val LOGOUT_CODE = 270
+        private const val REVISE_PROFILE = 280
 
         @JvmStatic
         fun newInstance(customId: String) =

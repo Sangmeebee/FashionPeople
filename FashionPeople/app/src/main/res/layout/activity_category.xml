@@ -25,7 +25,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_weight="1"
-            android:fontFamily="@font/ygd_330"
             android:text="브랜드 선택"
             android:textColor="@color/colorBlack"
             android:textSize="16sp" />
@@ -39,7 +38,6 @@
         android:layout_marginTop="20dp"
         android:drawableLeft="@drawable/et_search"
         android:drawablePadding="10dp"
-        android:fontFamily="@font/ygd_320"
         android:hint="브랜드명 입력..."
         android:inputType="text"
         android:paddingBottom="20dp"
@@ -56,7 +54,6 @@
         android:id="@+id/tv_no_brand"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/ygd_320"
         android:text="브랜드를 찾을 수 없음"
         android:textSize="15sp"
         android:visibility="gone" />

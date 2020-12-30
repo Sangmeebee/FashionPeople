@@ -8,7 +8,6 @@
         android:id="@+id/tv_brand_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/ygd_320"
         android:paddingVertical="18dp"
         android:text="ex"
         android:textColor="@color/colorBlack"

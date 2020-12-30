@@ -19,7 +19,6 @@
             android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/ygd_320"
             android:gravity="center"
             android:text="4월 1주차"
             android:textColor="@color/colorWhite"

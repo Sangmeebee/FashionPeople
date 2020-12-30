@@ -69,7 +69,6 @@
                 android:id="@+id/tv_nickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/ygd_320"
                 android:text="@{String.valueOf(following.name)}"
                 android:textColor="@android:color/black"
                 android:textSize="12sp" />
@@ -92,7 +91,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:fontFamily="@font/ygd_320"
                     android:singleLine="true"
                     android:text="@{String.valueOf(following.introduce)}"
                     android:textSize="12sp" />
@@ -112,7 +110,6 @@
                 android:layout_width="90dp"
                 android:layout_height="30dp"
                 android:background="@color/colorYellow"
-                android:fontFamily="@font/ygd_330"
                 android:onClick="@{() -> adapter.setButton(id)}"
                 android:text="팔로우"
                 android:textSize="10sp"
@@ -124,7 +121,6 @@
                 android:layout_width="90dp"
                 android:layout_height="30dp"
                 android:background="@color/followingBtn"
-                android:fontFamily="@font/ygd_330"
                 android:onClick="@{() -> adapter.setButton(id)}"
                 android:text="팔로잉"
                 android:textSize="10sp"

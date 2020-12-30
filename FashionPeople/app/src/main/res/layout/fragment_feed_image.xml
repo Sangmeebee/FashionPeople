@@ -30,7 +30,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="게시물 없음"
-            android:fontFamily="@font/ygd_330"
             android:textSize="30dp"
             android:gravity="center"
             bind:isGone="@{!isEmpty}" />

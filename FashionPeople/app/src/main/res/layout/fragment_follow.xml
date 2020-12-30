@@ -26,9 +26,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:fontFamily="@font/ygd_320"
                 android:gravity="center"
                 android:text="@{userName}"
+                android:textStyle="bold"
                 android:textColor="@color/colorBlack"
                 android:textSize="18sp" />
         </androidx.appcompat.widget.Toolbar>
