@@ -25,6 +25,7 @@
     <color name="silver">#C0C0C0</color>
     <color name="toggle_selected">#FFD855</color>
     <color name="background_yellow">#FDFBF1</color>
+    <color name="background_yellow_little_dark">#FBF5D7</color>
     <color name="blue">#2196F3</color>
     <color name="pink">#FD8AD7</color>
 </resources>

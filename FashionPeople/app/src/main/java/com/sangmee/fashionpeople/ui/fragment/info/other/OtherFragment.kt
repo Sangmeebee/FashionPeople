@@ -15,7 +15,6 @@ import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.databinding.FragmentOtherBinding
 import com.sangmee.fashionpeople.observer.InfoViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
-import com.sangmee.fashionpeople.ui.fragment.info.InfoFragment
 import com.sangmee.fashionpeople.ui.fragment.info.ReviseUserInfoActivity
 import com.sangmee.fashionpeople.ui.fragment.info.SettingActivity
 import com.sangmee.fashionpeople.ui.fragment.info.follow.FollowFragment
@@ -117,6 +116,10 @@ class OtherFragment : Fragment() {
                 intent.putExtra("introduce", it)
             }
             startActivityForResult(intent, REVISE_PROFILE)
+            requireActivity().overridePendingTransition(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            )
         })
     }
 
@@ -165,6 +168,10 @@ class OtherFragment : Fragment() {
             R.id.menu_setting -> {
                 val intent = Intent(context, SettingActivity::class.java)
                 startActivityForResult(intent, LOGOUT_CODE)
+                requireActivity().overridePendingTransition(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left
+                )
             }
         }
         return super.onOptionsItemSelected(item)

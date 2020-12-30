@@ -28,9 +28,9 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:text="@{userName}"
-                android:textStyle="bold"
                 android:textColor="@color/colorBlack"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textStyle="bold" />
         </androidx.appcompat.widget.Toolbar>
 
         <com.google.android.material.tabs.TabLayout

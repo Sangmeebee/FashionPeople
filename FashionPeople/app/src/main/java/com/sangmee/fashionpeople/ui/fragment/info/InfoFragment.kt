@@ -89,6 +89,7 @@ class InfoFragment : Fragment() {
             R.id.menu_setting -> {
                 val intent = Intent(context, SettingActivity::class.java)
                 startActivityForResult(intent, LOGOUT_CODE)
+                requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -144,6 +145,7 @@ class InfoFragment : Fragment() {
                 intent.putExtra("introduce", it)
             }
             startActivityForResult(intent, REVISE_PROFILE)
+            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         })
 
         vm.callActivity.observe(viewLifecycleOwner, Observer {

@@ -13,8 +13,9 @@
     <string name="plus_text2">사진을 등록하세요</string>
     <string name="setting_text">설정</string>
     <string name="account_text">계정</string>
+    <string name="information_use">정보</string>
     <string name="modify_profile_text">프로필 수정</string>
-    <string name="system_text">시스템</string>
+    <string name="system_text">로그인</string>
     <string name="logout_text">로그아웃</string>
     <string name="version_text">버전정보</string>
     <string name="ask_logout_text">로그아웃 하시겠습니까?</string>
