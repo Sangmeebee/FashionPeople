@@ -9,7 +9,6 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RatingBar
@@ -55,7 +54,7 @@ fun setVisibleRating(ratingBar: RatingBar, feedImage: FeedImage?, myId: String) 
     feedImage?.let {
         myId.let {
             feedImage.evaluations?.let {
-                if(it.size >= 3) {
+                if (it.size >= 3) {
                     ratingBar.visibility = View.INVISIBLE
                 }
                 for (evaluation in feedImage.evaluations) {
@@ -80,7 +79,7 @@ fun setVisibleLinearLayout(linearLayout: LinearLayout, feedImage: FeedImage?, my
                         linearLayout.visibility = View.VISIBLE
                     }
                 }
-                if(it.size >= 3) {
+                if (it.size >= 3) {
                     linearLayout.visibility = View.VISIBLE
                 }
             }
@@ -102,7 +101,9 @@ fun setVisibleComments(recyclerView: RecyclerView, comments: List<Comment>?) {
 @BindingAdapter("setCustomId", "setImageName")
 fun ImageView.setLoadUrl(customId: String?, imageName: String?) {
     customId?.let { id ->
-        imageName?.let { imageName ->
+        if (imageName.isNullOrEmpty()) {
+            setImageResource(R.drawable.user)
+        } else {
             Glide.with(context!!)
                 .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${id}/profile/${imageName}")
                 .apply(RequestOptions().circleCrop())
@@ -321,7 +322,7 @@ fun setTvBackGround(textView: TextView, rank: Int) {
 @BindingAdapter("linkToDetail", "setCustomIdForLink")
 fun linkToDetail(constraintLayout: ConstraintLayout, rankImage: RankImage?, customId: String?) {
     rankImage?.feedImage?.let { feedImage ->
-        customId?.let {customId ->
+        customId?.let { customId ->
             constraintLayout.setOnClickListener {
                 val intent = Intent(it.context, FeedImageDetailActivity::class.java)
                 intent.putExtra("custom_id", customId)
