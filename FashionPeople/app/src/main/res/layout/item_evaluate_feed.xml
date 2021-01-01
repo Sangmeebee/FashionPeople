@@ -17,65 +17,56 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        toolsNs:background="@color/colorBlack">
+        toolsNs:background="@color/background_yellow">
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <ImageView
             android:id="@+id/iv_item_evaluate_feed"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            app:layout_constraintBottom_toTopOf="@+id/iv_profile_evaluate_feed"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <!--추후 이미지 생기면 wrap_content로 변경-->
-        <ImageView
-            android:id="@+id/iv_save_image"
-            android:layout_width="80dp"
-            android:layout_height="0dp"
-            android:contentDescription="이미지 저장"
-            app:layout_constraintBottom_toBottomOf="@id/ll_comment"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/ll_comment" />
-
-
-        <LinearLayout
-            android:id="@+id/ll_comment"
-            setVisibleLinearLayout="@{feedImage}"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:background="@drawable/background_comment"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="20dp"
             android:orientation="horizontal"
             android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@id/rb_evaluate_feed"
-            app:layout_constraintEnd_toStartOf="@id/iv_save_image"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/rb_evaluate_feed"
-            app:myId="@{myId}">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/iv_comment_profile"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                app:civ_border_color="@color/colorWhite"
-                app:civ_border_width="2dp" />
+            app:myId="@{myId}"
+            app:setVisibleView="@{feedImage}">
 
             <TextView
                 android:id="@+id/tv_comment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginRight="24dp"
-                android:ellipsize="end"
-                android:textColor="@color/colorWhite"
-                android:textStyle="bold"
-                toolsNs:text="000님의 댓글 외 0개의 댓글이 있습니다." />
-        </LinearLayout>
+                android:layout_height="50dp"
+                android:layout_marginEnd="100dp"
+                android:background="@drawable/background_comment"
+                android:gravity="center"
+                android:text="댓글로 폭풍 칭찬해주세요~!"
+                android:textColor="@color/colorBlack"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/iv_save_image"
+                app:layout_constraintStart_toStartOf="parent" />
 
+            <ImageView
+                android:id="@+id/iv_save_image"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/bg_save_image"
+                android:padding="8dp"
+                android:src="@drawable/ic_photo_saved_black"
+                app:civ_border_width="1dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.appcompat.widget.AppCompatRatingBar
             android:id="@+id/rb_evaluate_feed"
@@ -97,14 +88,13 @@
             android:id="@+id/ll_rating_evaluate_average"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="20dp"
             android:orientation="horizontal"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/iv_profile_evaluate_feed"
-            android:visibility="gone"
             app:myId="@{myId}"
-            app:setVisibleLinearLayout="@{feedImage}">
+            app:setVisibleView="@{feedImage}">
 
             <ImageView
                 android:id="@+id/iv_star"
@@ -119,12 +109,22 @@
                 style="@style/HomeFeedTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
                 app:setRatingText="@{feedImage}"
                 toolsNs:text="3.5" />
 
         </LinearLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_profile_evaluate_feed"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            app:civ_border_color="@color/colorBlack"
+            app:civ_border_width="2dp"
+            app:layout_constraintBottom_toTopOf="@id/rv_tags_home_feed"
+            app:layout_constraintStart_toStartOf="@id/rv_tags_home_feed"
+            app:layout_constraintTop_toBottomOf="@+id/iv_item_evaluate_feed"
+            toolsNs:src="@drawable/ic_person_black" />
 
         <TextView
             android:id="@+id/tv_user_name_home_feed"
@@ -132,62 +132,23 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginLeft="12dp"
             android:ellipsize="end"
             android:text="@{feedImage.user.name}"
-            app:layout_constraintTop_toTopOf="@id/iv_profile_evaluate_feed"
             app:layout_constraintBottom_toBottomOf="@id/iv_profile_evaluate_feed"
             app:layout_constraintStart_toEndOf="@id/iv_profile_evaluate_feed"
-            toolsNs:text="서승환" />
-
-        <TextView
-            android:id="@+id/tv_follow_unfollow"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:gravity="center"
-            android:textColor="@color/colorPrimary"
-            android:textStyle="bold"
             app:layout_constraintTop_toTopOf="@id/iv_profile_evaluate_feed"
-            app:layout_constraintBottom_toBottomOf="@id/iv_profile_evaluate_feed"
-            app:layout_constraintStart_toEndOf="@id/tv_user_name_home_feed"
-            toolsNs:text="팔로잉" />
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/iv_profile_evaluate_feed"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginBottom="12dp"
-            app:civ_border_color="@color/colorWhite"
-            app:civ_border_width="2dp"
-            app:layout_constraintStart_toStartOf="@id/rv_tags_home_feed"
-            app:layout_constraintBottom_toTopOf="@id/rv_tags_home_feed"
-            toolsNs:src="@drawable/ic_person_white" />
+            toolsNs:text="000" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_tags_home_feed"
-            setFeedImageTags="@{feedImage}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
             android:scrollbars="vertical"
-            android:layout_marginStart="24dp"
-            app:layout_constraintBottom_toTopOf="@id/rb_evaluate_feed"
-            app:layout_constraintStart_toStartOf="parent" />
-        <!--        <TextView
-                    android:id="@+id/tv_info_home_feed"
-                    style="@style/HomeFeedTextStyle"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginBottom="24dp"
-                    app:layout_constraintBottom_toTopOf="@id/rb_home_feed"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:text="abacascasdsfasd"
-                    toolsNs:text="#엠엘비 #나이키 # 아디다스 #구찌 #마르지엘라" />-->
-
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_profile_evaluate_feed"
+            app:setFeedImageTags="@{feedImage}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

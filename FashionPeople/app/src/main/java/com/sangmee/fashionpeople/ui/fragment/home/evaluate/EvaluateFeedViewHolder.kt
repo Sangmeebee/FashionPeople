@@ -20,11 +20,15 @@ class EvaluateFeedViewHolder(private val binding: ItemEvaluateFeedBinding, priva
                 .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${feedImage.user?.id}/feed/${feedImage.imageName}")
                 .into(binding.ivItemEvaluateFeed)
 
-            Glide.with(context)
-                .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${feedImage.user?.id}/profile/${feedImage.user?.profileImage}")
-                .error(context.getDrawable(R.drawable.ic_person_white))
-                .placeholder(context.getDrawable(R.drawable.ic_person_white))
-                .into(binding.ivProfileEvaluateFeed)
+            if(feedImage.user?.profileImage.isNullOrEmpty()){
+                binding.ivProfileEvaluateFeed.setImageDrawable(context.getDrawable(R.drawable.ic_person_black))
+            } else{
+                Glide.with(context)
+                    .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${feedImage.user?.id}/profile/${feedImage.user?.profileImage}")
+                    .error(context.getDrawable(R.drawable.ic_person_black))
+                    .placeholder(context.getDrawable(R.drawable.ic_person_black))
+                    .into(binding.ivProfileEvaluateFeed)
+            }
         }
     }
 }

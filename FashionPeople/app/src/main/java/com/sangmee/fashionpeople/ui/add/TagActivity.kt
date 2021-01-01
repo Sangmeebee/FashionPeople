@@ -144,6 +144,5 @@ class TagActivity : AppCompatActivity() {
 
     companion object {
         private const val CHOOSING_CATEGORY = 100
-        private const val BUCKET_NAME = "fashionprofile-images"
     }
 }

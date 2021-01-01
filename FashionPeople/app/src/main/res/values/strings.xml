@@ -36,4 +36,5 @@
     <string name="find_info">&lt;u>비밀번호가 뭐였죠?&lt;/u></string>
     <string name="authentication">&lt;u>인증하기&lt;/u></string>
     <string name="authentication_mail">본인인증이 완료되지 않았습니다\n메일을 확인해주세요</string>
+    <string name="complete_evaluation_text">소중한 평가 감사합니다\n사진을 저장하시겠습니까?</string>
 </resources>

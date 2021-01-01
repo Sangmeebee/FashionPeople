@@ -13,12 +13,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.library.baseAdapters.BR
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
@@ -28,7 +26,6 @@ import com.sangmee.fashionpeople.data.model.Comment
 import com.sangmee.fashionpeople.data.repository.CommentRepositoryImpl
 import com.sangmee.fashionpeople.data.repository.FeedImageRepositoryImpl
 import com.sangmee.fashionpeople.databinding.FragmentCommentBinding
-import com.sangmee.fashionpeople.ui.fragment.home.evaluate.EvaluateViewModel
 
 class CommentDialogFragment : BottomSheetDialogFragment() {
 
@@ -83,7 +80,6 @@ class CommentDialogFragment : BottomSheetDialogFragment() {
             viewModel.imageNameSubject.onNext(imageName)
             binding.ivSend.setOnClickListener {
                 binding.etCommentInput.text?.let {
-                    Log.d("seunghwan", it.toString())
                     if (it.isEmpty()) {
                         Toast.makeText(requireContext(), "메시지를 입력하세요", Toast.LENGTH_SHORT).show()
                     } else {
@@ -97,7 +93,7 @@ class CommentDialogFragment : BottomSheetDialogFragment() {
             }
         }
 
-        binding.etCommentInput.addTextChangedListener(object: TextWatcher {
+        binding.etCommentInput.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
             }
@@ -108,7 +104,7 @@ class CommentDialogFragment : BottomSheetDialogFragment() {
             @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
             override fun afterTextChanged(s: Editable?) {
                 if (s != null) {
-                    if(s.isNotEmpty()) {
+                    if (s.isNotEmpty()) {
                         binding.ivSend.setImageDrawable(context?.getDrawable(R.drawable.ic_send_red_24))
                     } else {
                         binding.ivSend.setImageDrawable(context?.getDrawable(R.drawable.ic_send_gray_24))
@@ -123,12 +119,8 @@ class CommentDialogFragment : BottomSheetDialogFragment() {
     private fun initObserve() {
         viewModel.comments.observe(viewLifecycleOwner, Observer {
             commentRecyclerView.setComments(it)
-            Log.d("seunghwan", "bind items = ${it}")
         })
 
-        viewModel.feedImage.observe(viewLifecycleOwner, Observer {
-            binding
-        })
 
         viewModel.submitEvent.observe(viewLifecycleOwner, Observer {
             binding.etCommentInput.setText("")

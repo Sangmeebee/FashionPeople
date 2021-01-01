@@ -36,14 +36,7 @@ class CategoryActivity : AppCompatActivity(), OnListItemSelectedInterface {
         if (subject == "style") {
             readFromAssets("style.txt")
         } else {
-            val gender = GlobalApplication.prefs.getString("custom_gender", "")
-
-            if (gender == "MALE") {
-                readFromAssets("man_brand.txt")
-            }
-            if (gender == "FEMALE") {
-                readFromAssets("woman_brand.txt")
-            }
+            readFromAssets("man_brand.txt")
         }
         categoryAdapter.setTitleList(categoryList)
 

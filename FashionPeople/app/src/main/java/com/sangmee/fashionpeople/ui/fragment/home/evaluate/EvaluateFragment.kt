@@ -1,5 +1,6 @@
 package com.sangmee.fashionpeople.ui.fragment.home.evaluate
 
+import android.app.Activity
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -15,6 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
+import com.google.firebase.auth.FirebaseAuth
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.databinding.DialogBaseBinding
 import com.sangmee.fashionpeople.databinding.FragmentEvaluateBinding
@@ -96,28 +98,12 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
         })
 
         viewModel.evaluateMessage.observe(viewLifecycleOwner, Observer {
-            val binding = DataBindingUtil.inflate<DialogBaseBinding>(
-                layoutInflater,
-                R.layout.dialog_base,
-                null,
-                false
-            )
-            val builder = AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme)
-            builder.setView(binding.root)
+            AlertDialog.Builder(requireContext()).setMessage(R.string.complete_evaluation_text)
+                .setPositiveButton("네") { dialog, which ->
+                }
+                .setNegativeButton("아니오") { dialog, which ->
 
-            val alertDialog = builder.create()
-            val window = alertDialog.window
-            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            alertDialog.show()
-
-            binding.tvDialogMessage.text = "평가가 완료되었습니다\n 사진을 저장하시겠습니까?"
-            binding.btnOk.setOnClickListener {
-                alertDialog.dismiss()
-            }
-
-            binding.btnCancel.setOnClickListener {
-                alertDialog.dismiss()
-            }
+                }.create().show()
         })
     }
 

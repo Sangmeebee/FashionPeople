@@ -84,28 +84,12 @@ class FollowingFragment : Fragment(), EvaluateFeedAdapter.OnClickListener,
         })
 
         viewModel.evaluateMessage.observe(viewLifecycleOwner, Observer {
-            val binding = DataBindingUtil.inflate<DialogBaseBinding>(
-                layoutInflater,
-                R.layout.dialog_base,
-                null,
-                false
-            )
-            val builder = AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme)
-            builder.setView(binding.root)
+            AlertDialog.Builder(requireContext()).setMessage(R.string.complete_evaluation_text)
+                .setPositiveButton("네") { dialog, which ->
+                }
+                .setNegativeButton("아니오") { dialog, which ->
 
-            val alertDialog = builder.create()
-            val window = alertDialog.window
-            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            alertDialog.show()
-
-            binding.tvDialogMessage.text = "평가가 완료되었습니다\n 사진을 저장하시겠습니까?"
-            binding.btnOk.setOnClickListener {
-                alertDialog.dismiss()
-            }
-
-            binding.btnCancel.setOnClickListener {
-                alertDialog.dismiss()
-            }
+                }.create().show()
         })
     }
 

@@ -13,7 +13,8 @@ import com.sangmee.fashionpeople.databinding.ItemEvaluateFeedBinding
 import kotlinx.android.synthetic.main.item_evaluate_feed.view.*
 
 
-class EvaluateFeedAdapter(private val myId: String) : RecyclerView.Adapter<EvaluateFeedViewHolder>() {
+class EvaluateFeedAdapter(private val myId: String) :
+    RecyclerView.Adapter<EvaluateFeedViewHolder>() {
 
     private val items = mutableListOf<FeedImage>()
     var onClickListener: OnClickListener? = null
@@ -32,7 +33,7 @@ class EvaluateFeedAdapter(private val myId: String) : RecyclerView.Adapter<Evalu
                 onClickListener?.onClickRatingBar(ratingBar, rating, fromUser, it)
             }
         }
-        viewHolder.itemView.ll_comment.setOnClickListener {
+        viewHolder.itemView.cl_comment.setOnClickListener {
             items[viewHolder.adapterPosition].let {
                 it.imageName?.let { imageName ->
                     onClickListener?.onClickComment(imageName)

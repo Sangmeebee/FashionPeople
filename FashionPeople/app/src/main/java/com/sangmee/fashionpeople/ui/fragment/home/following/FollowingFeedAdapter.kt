@@ -10,8 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.databinding.ItemFollowingFeedBinding
-import com.sangmee.fashionpeople.ui.fragment.home.evaluate.EvaluateFeedAdapter
-import kotlinx.android.synthetic.main.item_evaluate_feed.view.ll_comment
 import kotlinx.android.synthetic.main.item_following_feed.view.*
 
 class FollowingFeedAdapter(private val myId: String) :
@@ -34,7 +32,7 @@ class FollowingFeedAdapter(private val myId: String) :
                 onClickListener?.onClickRatingBar(ratingBar, rating, fromUser, it)
             }
         }
-        viewHolder.itemView.ll_comment.setOnClickListener {
+        viewHolder.itemView.cl_comment.setOnClickListener {
             items[viewHolder.adapterPosition].let {
                 it.imageName?.let { imageName ->
                     onClickListener?.onClickComment(imageName)

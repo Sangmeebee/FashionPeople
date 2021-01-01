@@ -23,8 +23,8 @@ class FollowingFeedViewHolder(private val binding: ItemFollowingFeedBinding, pri
 
             Glide.with(context)
                 .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${feedImage.user?.id}/profile/${feedImage.user?.profileImage}")
-                .error(context.getDrawable(R.drawable.ic_person_white))
-                .placeholder(context.getDrawable(R.drawable.ic_person_white))
+                .error(context.getDrawable(R.drawable.ic_person_black))
+                .placeholder(context.getDrawable(R.drawable.ic_person_black))
                 .into(binding.ivProfileFollowingFeed)
         }
     }

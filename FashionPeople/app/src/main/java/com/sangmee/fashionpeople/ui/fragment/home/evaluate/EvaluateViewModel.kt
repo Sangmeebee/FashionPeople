@@ -70,7 +70,6 @@ class EvaluateViewModel(
                 it?.let {
                     _updateFeedImage.value = it
                 }
-                Log.d("seunghwan", it.toString())
                 _evaluateMessage.call()
             }, {
                 Log.d("seunghwan", it.toString())

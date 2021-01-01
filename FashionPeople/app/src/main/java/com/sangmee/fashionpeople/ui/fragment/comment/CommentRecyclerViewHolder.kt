@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.Comment
 import com.sangmee.fashionpeople.databinding.ItemCommentBinding
+import org.jetbrains.anko.appcompat.v7.Appcompat
 
 class CommentRecyclerViewHolder(
     private val binding: ItemCommentBinding
@@ -18,12 +19,16 @@ class CommentRecyclerViewHolder(
         Log.d("seunghwan", "binditem = $item")
         with(binding) {
             comment = item
-            Glide.with(itemView.context)
-                .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${item.user?.id}/profile/${item.user?.profileImage}")
-                .error(itemView.context.getDrawable(R.drawable.ic_person_white))
-                .placeholder(itemView.context.getDrawable(R.drawable.ic_person_white))
-                .into(binding.ivProfileImage)
-            executePendingBindings()
+            if(item.user?.profileImage.isNullOrEmpty()){
+                binding.ivProfileImage.setImageDrawable(binding.root.context.getDrawable(R.drawable.ic_person_black))
+            } else {
+                Glide.with(itemView.context)
+                    .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${item.user?.id}/profile/${item.user?.profileImage}")
+                    .error(itemView.context.getDrawable(R.drawable.ic_person_black))
+                    .placeholder(itemView.context.getDrawable(R.drawable.ic_person_black))
+                    .into(binding.ivProfileImage)
+                executePendingBindings()
+            }
         }
     }
 }

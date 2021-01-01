@@ -69,18 +69,18 @@ fun setVisibleRating(ratingBar: RatingBar, feedImage: FeedImage?, myId: String) 
     }
 }
 
-@BindingAdapter("setVisibleLinearLayout", "myId")
-fun setVisibleLinearLayout(linearLayout: LinearLayout, feedImage: FeedImage?, myId: String) {
+@BindingAdapter("setVisibleView", "myId")
+fun setVisibleView(view: View, feedImage: FeedImage?, myId: String) {
     feedImage?.let {
         myId.let {
             feedImage.evaluations?.let {
                 for (evaluation in feedImage.evaluations) {
                     if (evaluation.evaluationPersonId == myId) {
-                        linearLayout.visibility = View.VISIBLE
+                        view.visibility = View.VISIBLE
                     }
                 }
                 if (it.size >= 3) {
-                    linearLayout.visibility = View.VISIBLE
+                    view.visibility = View.VISIBLE
                 }
             }
         }

@@ -22,21 +22,12 @@ class GradeDialogFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentGradeBinding
     private lateinit var evaluationList: List<Evaluation>
 
-    private val viewModel: GradeViewModel by lazy {
-        ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return GradeViewModel() as T
-            }
-        }).get(GradeViewModel::class.java)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_grade, container, false)
-        binding.vm = viewModel
         binding.lifecycleOwner = this
         dialog?.let {
             it.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
