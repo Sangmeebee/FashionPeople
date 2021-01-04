@@ -1,6 +1,8 @@
 package com.sangmee.fashionpeople.ui.fragment.info.image_content
 
+import android.graphics.Point
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.databinding.FragmentFeedImageBinding
 import com.sangmee.fashionpeople.observer.FeedImageViewModel
-import kotlinx.android.synthetic.main.fragment_feed_image.*
 
 class FeedImageFragment : Fragment() {
 
@@ -58,8 +59,10 @@ class FeedImageFragment : Fragment() {
     }
 
     private fun setRecyclerView() {
-        rv_user_image.apply {
+        val height = getDisplayHeight()
+        binding.rvUserImage.apply {
             setHasFixedSize(true)
+            minimumHeight = height
             adapter = feedImageAdapter
         }
     }
@@ -71,6 +74,32 @@ class FeedImageFragment : Fragment() {
             feedImageAdapter?.setFeedImages(it)
         })
     }
+
+    private fun getDisplayHeight(): Int {
+        val display = requireActivity().windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        var height = size.y
+        val tv = TypedValue()
+        if (requireActivity().theme.resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+            val actionBarHeight = TypedValue.complexToDimensionPixelSize(
+                tv.data,
+                resources.displayMetrics
+            )
+            height -= (actionBarHeight * 2)
+        }
+        val resourceId = resources.getIdentifier(
+            "design_bottom_navigation_height",
+            "dimen",
+            requireContext().packageName
+        )
+        if (resourceId > 0) {
+            var navigationBarHeight = resources.getDimensionPixelSize(resourceId)
+            height -= navigationBarHeight
+        }
+        return height
+    }
+
 
     companion object {
         @JvmStatic

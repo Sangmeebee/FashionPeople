@@ -19,21 +19,11 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_user_image"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
+            android:layout_height="wrap_content"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layout_constraintTop_toTopOf="parent"
             app:spanCount="3"
-            bind:isGone="@{isEmpty}"
             tools:listitem="@layout/item_feed_image" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="게시물 없음"
-            android:textSize="30dp"
-            bind:isGone="@{!isEmpty}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
