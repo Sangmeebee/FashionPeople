@@ -2,6 +2,7 @@ package com.sangmee.fashionpeople.data.service.retrofit
 
 import com.sangmee.fashionpeople.data.model.FUser
 import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -12,7 +13,7 @@ interface FUserService {
     fun getAllFUser(): Call<List<FUser>>
 
     @GET("users/{id}")
-    fun getFUser(@Path("id") id: String): Call<FUser>
+    fun getFUser(@Path("id") id: String): Single<FUser>
 
     @POST("users")
     fun addUser(@Body body: FUser): Call<FUser>

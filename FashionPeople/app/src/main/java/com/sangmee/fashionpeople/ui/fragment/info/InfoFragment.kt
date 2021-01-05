@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -164,6 +165,23 @@ class InfoFragment : Fragment() {
             .observeOn(Schedulers.io())
             .subscribe { saveImageToServer(file) }
             .addTo(compositeDisposable)
+
+        vm.isCallFeedImageComplete.observe(viewLifecycleOwner, Observer {
+            if(it){
+                if(vm.isCallProfileComplete.value!!){
+                    binding.pbLoading.isVisible = false
+                    binding.clContainer.isVisible = true
+                }
+            }
+        })
+        vm.isCallProfileComplete.observe(viewLifecycleOwner, Observer {
+            if(it){
+                if(vm.isCallFeedImageComplete.value!!){
+                    binding.pbLoading.isVisible = false
+                    binding.clContainer.isVisible = true
+                }
+            }
+        })
     }
 
     private fun saveImageToServer(file: File?) {
@@ -245,7 +263,9 @@ class InfoFragment : Fragment() {
     }
 
     private fun setTabLayout() {
-        viewPager.adapter = ViewPagerAdapter(this, customId)
+        viewPager.adapter = ViewPagerAdapter(this, customId) {
+            vm.isCallFeedImageComplete.value = it
+        }
 
         TabLayoutMediator(tl_container, viewPager) { tab, position ->
             when (position) {

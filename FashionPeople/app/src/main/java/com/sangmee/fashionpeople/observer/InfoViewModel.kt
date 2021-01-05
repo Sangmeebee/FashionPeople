@@ -47,17 +47,25 @@ class InfoViewModel : ViewModel() {
     val galleryBtnEvent = SingleLiveEvent<Unit>()
     val profileReviseBtnEvent = SingleLiveEvent<Unit>()
     val behaviorSubject = BehaviorSubject.create<Unit>()
+    var isCallProfileComplete = MutableLiveData(false)
+    var isCallFeedImageComplete = MutableLiveData(false)
 
     fun callProfile(userId: String) {
         //프로필 세팅
-        fUserRepository.getFUser(userId, success = {
-            profileImgName.value = it.profileImage
-            introduce.value = it.introduce
-            userName.value = it.name
-            gender.value = it.gender
-            followerNum.value = it.followers?.size
-            followingNum.value = it.followings?.size
-        }, failed = { Log.e("CALL_PROFILE_ERROR", it) })
+        fUserRepository.getFUser(userId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnTerminate { isCallProfileComplete.value = true }
+            .subscribe({
+                profileImgName.value = it.profileImage
+                introduce.value = it.introduce
+                userName.value = it.name
+                gender.value = it.gender
+                followerNum.value = it.followers?.size
+                followingNum.value = it.followings?.size
+            }, { t ->
+                Log.e("CALL_PROFILE_ERROR", t.message.toString())
+            }).addTo(compositeDisposable)
 
     }
 

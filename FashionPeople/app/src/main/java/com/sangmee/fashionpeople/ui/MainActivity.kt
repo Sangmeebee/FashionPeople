@@ -19,12 +19,15 @@ import com.sangmee.fashionpeople.data.repository.FUserRepositoryImpl
 import com.sangmee.fashionpeople.ui.add.AddFragment
 import com.sangmee.fashionpeople.ui.add.TagActivity
 import com.sangmee.fashionpeople.ui.fragment.AlarmFragment
-import com.sangmee.fashionpeople.ui.fragment.SearchFragment
 import com.sangmee.fashionpeople.ui.fragment.home.HomeFragment
 import com.sangmee.fashionpeople.ui.fragment.info.InfoFragment
 import com.sangmee.fashionpeople.ui.fragment.rank.RankFragment
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.kotlin.addTo
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -33,6 +36,8 @@ class MainActivity : AppCompatActivity() {
     private val fUserRepository: FUserRepository by lazy {
         FUserRepositoryImpl(FUserRemoteDataSourceImpl())
     }
+    private val compositeDisposable = CompositeDisposable()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,8 +60,11 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.addItem -> {
                     fUserRepository.getFUser(
-                        GlobalApplication.prefs.getString("${loginType}_custom_id", ""),
-                        { user ->
+                        GlobalApplication.prefs.getString("${loginType}_custom_id", "")
+                    )
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({ user ->
                             user.evaluateNow?.let { evaluateNow ->
                                 if (evaluateNow) {
                                     if (currentFragment != "addItem") {
@@ -66,11 +74,12 @@ class MainActivity : AppCompatActivity() {
                                 } else {
                                     addPhoto()
                                 }
-
                             }
-                        },
-                        { error -> Log.d("CALL_PROFILE_ERROR", error) })
+                        } , { t ->
+                            Log.e("CALL_PROFILE_ERROR", t.message.toString())
+                        }).addTo(compositeDisposable)
                 }
+
 
                 R.id.alarmItem -> {
                     if (currentFragment != "alarmItem") {
@@ -169,6 +178,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        compositeDisposable.clear()
+        super.onDestroy()
+    }
 
     companion object {
         private var currentFragment = ""

@@ -19,212 +19,224 @@
 
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/ab_container"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb_profile"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorWhite"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:gravity="center"
+                android:text="@{otherVm.userName}"
+                android:textColor="@color/colorBlack"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </androidx.appcompat.widget.Toolbar>
+
+        <ProgressBar
+            android:id="@+id/pb_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tb_profile" />
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/cl_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:visibility="invisible"
+            app:layout_constraintTop_toBottomOf="@id/tb_profile">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/ab_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/background_yellow"
-                    android:paddingBottom="30dp">
-
-                    <View
-                        android:id="@+id/v_temp"
-                        android:layout_width="match_parent"
-                        android:layout_height="?attr/actionBarSize"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/iv_profile"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_marginTop="30dp"
-                        android:layout_marginBottom="10dp"
-                        android:src="@drawable/user"
-                        app:civ_border_color="@color/lightgray"
-                        app:civ_border_width="2dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/v_temp"
-                        bind:setCustomId="@{customId}"
-                        bind:setImageName="@{otherVm.profileImgName}" />
-
-                    <TextView
-                        android:id="@+id/tv_introduce"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:maxLines="5"
-                        android:paddingHorizontal="100dp"
-                        android:text="@{otherVm.introduce}"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="14sp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/iv_profile" />
-
-                    <LinearLayout
-                        android:id="@+id/ll_follower"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:onClick="@{() -> otherVm.callOtherActivity(0)}"
-                        android:orientation="vertical"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toLeftOf="@id/ll_following"
-                        app:layout_constraintTop_toBottomOf="@id/tv_introduce">
-
-                        <TextView
-                            android:id="@+id/tv_follower_num"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="@{String.valueOf(otherVm.followerNum)}"
-                            android:textColor="@color/colorBlack"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="팔로워"
-                            android:textColor="@color/colorHintText"
-                            android:textSize="13sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/ll_following"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:onClick="@{() -> otherVm.callOtherActivity(1)}"
-                        android:orientation="vertical"
-                        app:layout_constraintLeft_toRightOf="@id/ll_follower"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_introduce">
-
-                        <TextView
-                            android:id="@+id/tv_following_num"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="@{String.valueOf(otherVm.followingNum)}"
-                            android:textColor="@color/colorBlack"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="팔로잉"
-                            android:textColor="@color/colorHintText"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-
-                    <Button
-                        android:id="@+id/btn_revise_profile"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginHorizontal="100dp"
-                        android:layout_marginTop="15dp"
-                        android:background="@drawable/bg_revise_profile"
-                        android:onClick="@{()->otherVm.clickProfileReviseBtn()}"
-                        android:text="프로필 편집"
-                        android:textSize="13sp"
-                        app:layout_constraintTop_toBottomOf="@id/ll_following"
-                        bind:isGone="@{!isMe}" />
+                    android:layout_height="wrap_content"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:orientation="vertical"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/ll_following"
-                        bind:isGone="@{isMe}">
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/background_yellow"
+                        android:paddingBottom="30dp">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/iv_profile"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_marginTop="30dp"
+                            android:layout_marginBottom="10dp"
+                            android:src="@drawable/user"
+                            app:civ_border_color="@color/lightgray"
+                            app:civ_border_width="2dp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            bind:setCustomId="@{customId}"
+                            bind:setImageName="@{otherVm.profileImgName}" />
+
+                        <TextView
+                            android:id="@+id/tv_introduce"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:maxLines="5"
+                            android:paddingHorizontal="100dp"
+                            android:text="@{otherVm.introduce}"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="14sp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/iv_profile" />
+
+                        <LinearLayout
+                            android:id="@+id/ll_follower"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:onClick="@{() -> otherVm.callOtherActivity(0)}"
+                            android:orientation="vertical"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toLeftOf="@id/ll_following"
+                            app:layout_constraintTop_toBottomOf="@id/tv_introduce">
+
+                            <TextView
+                                android:id="@+id/tv_follower_num"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="@{String.valueOf(otherVm.followerNum)}"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="팔로워"
+                                android:textColor="@color/colorHintText"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_following"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:onClick="@{() -> otherVm.callOtherActivity(1)}"
+                            android:orientation="vertical"
+                            app:layout_constraintLeft_toRightOf="@id/ll_follower"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_introduce">
+
+                            <TextView
+                                android:id="@+id/tv_following_num"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="@{String.valueOf(otherVm.followingNum)}"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="팔로잉"
+                                android:textColor="@color/colorHintText"
+                                android:textSize="13sp" />
+                        </LinearLayout>
 
                         <Button
-                            android:id="@+id/btn_follow"
-                            android:layout_width="190dp"
-                            android:layout_height="35dp"
-                            android:background="@color/colorYellow"
-                            android:onClick="@{()->otherVm.clickFollowBtn()}"
-                            android:text="팔로우"
-                            android:textColor="@android:color/black"
+                            android:id="@+id/btn_revise_profile"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginHorizontal="100dp"
+                            android:layout_marginTop="15dp"
+                            android:background="@drawable/bg_revise_profile"
+                            android:onClick="@{()->otherVm.clickProfileReviseBtn()}"
+                            android:text="프로필 편집"
                             android:textSize="13sp"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            bind:isGone="@{otherVm.isFollowing}" />
+                            app:layout_constraintTop_toBottomOf="@id/ll_following"
+                            bind:isGone="@{!isMe}" />
 
-                        <Button
-                            android:id="@+id/btn_following"
-                            android:layout_width="190dp"
-                            android:layout_height="35dp"
-                            android:background="@color/followingBtn"
-                            android:onClick="@{()->otherVm.clickFollowBtn()}"
-                            android:text="팔로잉"
-                            android:textColor="@android:color/black"
-                            android:textSize="13sp"
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:orientation="vertical"
                             app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            bind:isGone="@{!otherVm.isFollowing}" />
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/ll_following"
+                            bind:isGone="@{isMe}">
 
+                            <Button
+                                android:id="@+id/btn_follow"
+                                android:layout_width="190dp"
+                                android:layout_height="35dp"
+                                android:background="@color/colorYellow"
+                                android:onClick="@{()->otherVm.clickFollowBtn()}"
+                                android:text="팔로우"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                bind:isGone="@{otherVm.isFollowing}" />
+
+                            <Button
+                                android:id="@+id/btn_following"
+                                android:layout_width="190dp"
+                                android:layout_height="35dp"
+                                android:background="@color/followingBtn"
+                                android:onClick="@{()->otherVm.clickFollowBtn()}"
+                                android:text="팔로잉"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                bind:isGone="@{!otherVm.isFollowing}" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/tb_profile"
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tl_container"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:background="@color/colorWhite"
-                    app:layout_collapseMode="pin"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:layout_gravity="bottom"
+                    android:background="@android:color/white"
+                    app:tabIndicatorHeight="3dp"
+                    app:tabMode="fixed" />
+            </com.google.android.material.appbar.AppBarLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:gravity="center"
-                        android:text="@{otherVm.userName}"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-                </androidx.appcompat.widget.Toolbar>
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tl_container"
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPager"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_gravity="bottom"
+                android:layout_height="wrap_content"
                 android:background="@android:color/white"
-                app:tabIndicatorHeight="3dp"
-                app:tabMode="fixed" />
-        </com.google.android.material.appbar.AppBarLayout>
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:layout_constraintTop_toBottomOf="@+id/v_line" />
 
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPager"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:layout_constraintTop_toBottomOf="@+id/v_line" />
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

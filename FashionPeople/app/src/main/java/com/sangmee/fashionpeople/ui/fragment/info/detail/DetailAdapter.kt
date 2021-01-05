@@ -80,6 +80,7 @@ class DetailAdapter(private val myId: String) :
         fun bind(feedImage: FeedImage) {
             binding.myId = myId
             binding.feedImage = feedImage
+            binding.executePendingBindings()
             with(itemView) {
                 Glide.with(context)
                     .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${feedImage.user?.id}/feed/${feedImage.imageName}")

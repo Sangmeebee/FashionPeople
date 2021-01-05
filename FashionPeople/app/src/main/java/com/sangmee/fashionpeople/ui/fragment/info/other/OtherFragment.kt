@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -75,7 +76,9 @@ class OtherFragment : Fragment() {
     }
 
     private fun setTabLayout() {
-        viewPager.adapter = ViewPagerAdapter(this, customId!!)
+        viewPager.adapter = ViewPagerAdapter(this, customId!!) {
+            infoVm.isCallFeedImageComplete.value = it
+        }
 
         TabLayoutMediator(tl_container, viewPager) { tab, position ->
             when (position) {
@@ -120,6 +123,23 @@ class OtherFragment : Fragment() {
                 R.anim.slide_in_right,
                 R.anim.slide_out_left
             )
+        })
+
+        infoVm.isCallFeedImageComplete.observe(viewLifecycleOwner, Observer {
+            if(it){
+                if(infoVm.isCallProfileComplete.value!!){
+                    binding.pbLoading.isVisible = false
+                    binding.clContainer.isVisible = true
+                }
+            }
+        })
+        infoVm.isCallProfileComplete.observe(viewLifecycleOwner, Observer {
+            if(it){
+                if(infoVm.isCallFeedImageComplete.value!!){
+                    binding.pbLoading.isVisible = false
+                    binding.clContainer.isVisible = true
+                }
+            }
         })
     }
 

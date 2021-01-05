@@ -3,6 +3,7 @@ package com.sangmee.fashionpeople.data.repository
 import com.sangmee.fashionpeople.data.dataSource.remote.FUserRemoteDataSource
 import com.sangmee.fashionpeople.data.model.FUser
 import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
 
 class FUserRepositoryImpl(
     private val FUserRemoteDataSource: FUserRemoteDataSource
@@ -11,8 +12,8 @@ class FUserRepositoryImpl(
         FUserRemoteDataSource.getAllFUser(success, failed)
     }
 
-    override fun getFUser(id: String, success: (FUser) -> Unit, failed: (String) -> Unit) {
-        FUserRemoteDataSource.getFUser(id, success, failed)
+    override fun getFUser(id: String): Single<FUser> {
+        return FUserRemoteDataSource.getFUser(id)
     }
 
     override fun addUser(user: FUser, success: () -> Unit, failed: (String) -> Unit) {

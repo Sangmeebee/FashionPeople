@@ -20,12 +20,14 @@ class FeedImageViewModel : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
 
     val feedImages = MutableLiveData<List<FeedImage>>()
+    val isComplete = MutableLiveData<Boolean>()
 
     fun callFeedImages(userId: String) {
         feedImageRepository.getFeedImages(
             userId
         ).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnTerminate { isComplete.value = true }
             .subscribe({
                 feedImages.value = it
             }, {

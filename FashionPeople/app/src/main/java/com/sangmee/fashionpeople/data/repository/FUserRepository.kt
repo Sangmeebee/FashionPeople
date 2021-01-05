@@ -2,6 +2,8 @@ package com.sangmee.fashionpeople.data.repository
 
 import com.sangmee.fashionpeople.data.model.FUser
 import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
+import retrofit2.http.Path
 
 interface FUserRepository {
     fun getAllFUser(
@@ -9,11 +11,7 @@ interface FUserRepository {
         failed: (String) -> Unit
     )
 
-    fun getFUser(
-        id: String,
-        success: (FUser) -> Unit,
-        failed: (String) -> Unit
-    )
+    fun getFUser(@Path("id") id: String): Single<FUser>
 
     fun addUser(
         user: FUser,
