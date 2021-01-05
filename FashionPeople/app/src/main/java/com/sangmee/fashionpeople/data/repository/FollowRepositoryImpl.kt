@@ -4,24 +4,17 @@ import com.sangmee.fashionpeople.data.dataSource.remote.FollowRemoteDataSource
 import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.data.model.Follower
 import com.sangmee.fashionpeople.data.model.Following
+import io.reactivex.rxjava3.core.Single
 
 class FollowRepositoryImpl(private val followRemoteDataSource: FollowRemoteDataSource) :
     FollowRepository {
 
-    override fun getFollower(
-        userId: String,
-        success: (List<FUser>) -> Unit,
-        failed: (String) -> Unit
-    ) {
-        followRemoteDataSource.getFollower(userId, success, failed)
+    override fun getFollower(userId: String): Single<List<FUser>> {
+        return followRemoteDataSource.getFollower(userId)
     }
 
-    override fun getFollowing(
-        userId: String,
-        success: (List<FUser>) -> Unit,
-        failed: (String) -> Unit
-    ) {
-        followRemoteDataSource.getFollowing(userId, success, failed)
+    override fun getFollowing(userId: String): Single<List<FUser>> {
+        return followRemoteDataSource.getFollowing(userId)
     }
 
     override fun updateFollowing(

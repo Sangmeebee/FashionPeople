@@ -2,6 +2,7 @@ package com.sangmee.fashionpeople.data.service.retrofit
 
 import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.data.model.Following
+import io.reactivex.rxjava3.core.Single
 import retrofit2.Call
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -11,7 +12,7 @@ import retrofit2.http.Path
 interface FollowingService {
 
     @GET("following/{userId}")
-    fun getFollowing(@Path("userId") userId: String): Call<List<FUser>>
+    fun getFollowing(@Path("userId") userId: String): Single<List<FUser>>
 
     @GET("following/{userId}/{customId}")
     fun getIsFollowing(@Path("userId") userId: String, @Path("customId") customId: String): Call<Boolean>

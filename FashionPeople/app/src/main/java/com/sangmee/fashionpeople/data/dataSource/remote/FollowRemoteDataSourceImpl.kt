@@ -2,55 +2,19 @@ package com.sangmee.fashionpeople.data.dataSource.remote
 
 import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.data.service.retrofit.RetrofitClient
+import io.reactivex.rxjava3.core.Single
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class FollowRemoteDataSourceImpl : FollowRemoteDataSource {
-    override fun getFollower(
-        userId: String,
-        success: (List<FUser>) -> Unit,
-        failed: (String) -> Unit
-    ) {
-        RetrofitClient.getFollowerService().getFollower(userId)
-            .enqueue(object : Callback<List<FUser>> {
-                override fun onResponse(
-                    call: Call<List<FUser>>,
-                    response: Response<List<FUser>>
-                ) {
-                    val res = response.body()
-                    res?.let {
-                        success(it)
-                    }
-                }
 
-                override fun onFailure(call: Call<List<FUser>>, t: Throwable) {
-                    failed(t.message.toString())
-                }
-            })
+    override fun getFollower(userId: String): Single<List<FUser>> {
+        return RetrofitClient.getFollowerService().getFollower(userId)
     }
 
-    override fun getFollowing(
-        userId: String,
-        success: (List<FUser>) -> Unit,
-        failed: (String) -> Unit
-    ) {
-        RetrofitClient.getFollowingService().getFollowing(userId)
-            .enqueue(object : Callback<List<FUser>> {
-                override fun onResponse(
-                    call: Call<List<FUser>>,
-                    response: Response<List<FUser>>
-                ) {
-                    val res = response.body()
-                    res?.let {
-                        success(it)
-                    }
-                }
-
-                override fun onFailure(call: Call<List<FUser>>, t: Throwable) {
-                    failed(t.message.toString())
-                }
-            })
+    override fun getFollowing(userId: String): Single<List<FUser>> {
+        return RetrofitClient.getFollowingService().getFollowing(userId)
     }
 
     override fun updateFollowing(

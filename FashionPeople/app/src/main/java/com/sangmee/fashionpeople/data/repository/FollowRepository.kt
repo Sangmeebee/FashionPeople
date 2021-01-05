@@ -3,12 +3,14 @@ package com.sangmee.fashionpeople.data.repository
 import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.data.model.Follower
 import com.sangmee.fashionpeople.data.model.Following
+import io.reactivex.rxjava3.core.Single
+import retrofit2.http.Path
 
 interface FollowRepository {
 
-    fun getFollower(userId: String, success: (List<FUser>) -> Unit, failed: (String) -> Unit)
+    fun getFollower(@Path("userId") userId: String): Single<List<FUser>>
 
-    fun getFollowing(userId: String, success: (List<FUser>) -> Unit, failed: (String) -> Unit)
+    fun getFollowing(@Path("userId") userId: String): Single<List<FUser>>
 
     fun getIsFollowing(userId: String, customId:String, success: (Boolean) -> Unit, failed: (String) -> Unit)
 

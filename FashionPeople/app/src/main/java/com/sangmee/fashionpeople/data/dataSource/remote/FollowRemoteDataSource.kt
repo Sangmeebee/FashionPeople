@@ -1,12 +1,14 @@
 package com.sangmee.fashionpeople.data.dataSource.remote
 
 import com.sangmee.fashionpeople.data.model.FUser
+import io.reactivex.rxjava3.core.Single
+import retrofit2.http.Path
 
 interface FollowRemoteDataSource {
 
-    fun getFollower(userId: String, success: (List<FUser>) -> Unit, failed: (String) -> Unit)
+    fun getFollower(@Path("userId") userId: String): Single<List<FUser>>
 
-    fun getFollowing(userId: String, success: (List<FUser>) -> Unit, failed: (String) -> Unit)
+    fun getFollowing(@Path("userId") userId: String): Single<List<FUser>>
 
     fun updateFollowing(
         userId: String,
