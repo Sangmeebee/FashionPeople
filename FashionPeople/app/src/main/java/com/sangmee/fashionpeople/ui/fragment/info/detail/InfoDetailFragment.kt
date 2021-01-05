@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -63,6 +64,18 @@ class InfoDetailFragment(private val customId: String, private val position: Int
         viewModel.feedImages.observe(viewLifecycleOwner, Observer {
             detailAdapter.setFeedImages(it)
         })
+
+        viewModel.isComplete.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                pb_loading.isVisible = !it
+                vp_detail.apply {
+                    post {
+                        setCurrentItem(position, false)
+                        isVisible = it
+                    }
+                }
+            }
+        })
     }
 
     private fun showCommentFragment(imageName: String) {
@@ -92,9 +105,5 @@ class InfoDetailFragment(private val customId: String, private val position: Int
         feedImage.user?.id?.let { OtherFragment.newInstance(it) }?.let {
             (activity as MainActivity).replaceFragmentUseBackStack(it)
         }
-    }
-
-    override fun setMyCurrentItem() {
-        vp_detail.post{ vp_detail.setCurrentItem(position, false)}
     }
 }

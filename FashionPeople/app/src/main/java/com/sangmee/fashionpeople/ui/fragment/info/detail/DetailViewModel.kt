@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.data.repository.FeedImageRepository
-import com.sangmee.fashionpeople.util.SingleLiveEvent
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
@@ -22,17 +21,13 @@ class DetailViewModel(
     val feedImages: LiveData<List<FeedImage>>
         get() = _feedImages
 
-    private val _userId = MutableLiveData<String>()
-    val userId: LiveData<String>
-        get() = _userId
-
     val idSubject = BehaviorSubject.create<String>()
+    val isComplete = MutableLiveData(false)
 
     init {
         idSubject.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                _userId.value = it
                 getImages(it)
             }, {
             }).addTo(compositeDisposable)
@@ -42,6 +37,7 @@ class DetailViewModel(
         feedImageRepository.getFeedImages(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doAfterTerminate { isComplete.value = true }
             .subscribe({
                 _feedImages.value = it
             }, {

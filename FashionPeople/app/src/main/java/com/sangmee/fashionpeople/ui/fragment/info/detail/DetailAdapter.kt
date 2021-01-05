@@ -62,7 +62,6 @@ class DetailAdapter(private val myId: String) :
         items.clear()
         items.addAll(list)
         notifyDataSetChanged()
-        onClickListener?.setMyCurrentItem()
     }
 
 
@@ -70,7 +69,6 @@ class DetailAdapter(private val myId: String) :
         fun onClickComment(imageName: String)
         fun onClickGrade(feedImage: FeedImage)
         fun onClickProfile(feedImage: FeedImage)
-        fun setMyCurrentItem()
     }
 
     class DetailViewHolder(private val binding: ItemInfoDetailFeedBinding, private val myId: String) :
