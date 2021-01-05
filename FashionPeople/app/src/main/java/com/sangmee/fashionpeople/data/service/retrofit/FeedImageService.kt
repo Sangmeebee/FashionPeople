@@ -25,7 +25,7 @@ interface FeedImageService {
     fun getFeedImages(@Path("id") id: String): Single<List<FeedImage>>
 
     @GET("feedImage/evaluated/{id}")
-    fun getEvaluatedFeedImage(@Path("id") id: String): Call<FeedImage>
+    fun getEvaluatedFeedImage(@Path("id") id: String): Single<FeedImage>
 
     @POST("feedImage/{id}")
     fun postFeedImage(@Path("id") id: String, @Body feedImage: FeedImage): Call<FeedImage>

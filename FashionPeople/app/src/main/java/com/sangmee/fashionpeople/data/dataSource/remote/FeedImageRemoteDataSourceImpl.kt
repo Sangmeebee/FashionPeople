@@ -40,22 +40,7 @@ class FeedImageRemoteDataSourceImpl : FeedImageRemoteDataSource {
         return RetrofitClient.getFeedImageService().getFollowingFeedImages(id)
     }
 
-    override fun getEvaluatedFeedImage(
-        id: String,
-        success: (FeedImage) -> Unit,
-        failed: (String) -> Unit
-    ) {
-        RetrofitClient.getFeedImageService().getEvaluatedFeedImage(id)
-            .enqueue(object : Callback<FeedImage> {
-                override fun onResponse(call: Call<FeedImage>, response: Response<FeedImage>) {
-                    response.body()?.let {
-                        success(it)
-                    }
-                }
-
-                override fun onFailure(call: Call<FeedImage>, t: Throwable) {
-                    failed(t.message.toString())
-                }
-            })
+    override fun getEvaluatedFeedImage(id: String): Single<FeedImage> {
+        return RetrofitClient.getFeedImageService().getEvaluatedFeedImage(id)
     }
 }
