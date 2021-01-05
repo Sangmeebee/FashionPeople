@@ -62,7 +62,7 @@ class FollowFragment : Fragment() {
 
         //tab 몇번째 화면인지 세팅
         fragmentId?.let {
-            binding.vpFollow.post { binding.vpFollow.currentItem = it }
+            binding.vpFollow.post { binding.vpFollow.setCurrentItem(it, false) }
         }
 
         //tablayout 세팅

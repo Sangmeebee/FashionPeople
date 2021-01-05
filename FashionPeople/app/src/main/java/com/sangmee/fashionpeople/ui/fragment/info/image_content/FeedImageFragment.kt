@@ -100,6 +100,10 @@ class FeedImageFragment : Fragment() {
         return height
     }
 
+    override fun onDestroy() {
+        vm.unBindDisposable()
+        super.onDestroy()
+    }
 
     companion object {
         @JvmStatic

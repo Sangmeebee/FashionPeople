@@ -10,7 +10,6 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -28,7 +27,6 @@ import com.sangmee.fashionpeople.data.model.Comment
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.data.model.RankImage
 import com.sangmee.fashionpeople.ui.fragment.home.TagRecyclerViewAdapter
-import com.sangmee.fashionpeople.ui.fragment.info.FeedImageDetailActivity
 import com.skydoves.progressview.ProgressView
 
 
@@ -324,10 +322,10 @@ fun linkToDetail(constraintLayout: ConstraintLayout, rankImage: RankImage?, cust
     rankImage?.feedImage?.let { feedImage ->
         customId?.let { customId ->
             constraintLayout.setOnClickListener {
-                val intent = Intent(it.context, FeedImageDetailActivity::class.java)
-                intent.putExtra("custom_id", customId)
-                intent.putExtra(FeedImageDetailActivity.KEY_FEED_IMAGE, feedImage)
-                it.context.startActivity(intent)
+//                val intent = Intent(it.context, FeedImageDetailActivity::class.java)
+//                intent.putExtra("custom_id", customId)
+//                intent.putExtra(FeedImageDetailActivity.KEY_FEED_IMAGE, feedImage)
+//                it.context.startActivity(intent)
             }
         }
     }

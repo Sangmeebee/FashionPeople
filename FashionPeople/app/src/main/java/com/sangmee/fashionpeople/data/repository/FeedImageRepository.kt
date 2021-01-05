@@ -17,7 +17,7 @@ interface FeedImageRepository {
 
     fun updateImageScore(@Path("imageName") imageName: String, @Body evaluation: Evaluation): Completable
 
-    fun getFeedImages(id: String, success: (List<FeedImage>) -> Unit, failed: (String) -> Unit)
+    fun getFeedImages(@Path("id") id: String) : Single<List<FeedImage>>
 
     fun postFeedImage(@Path("id") id: String, @Body feedImage: FeedImage): Call<FeedImage>
 

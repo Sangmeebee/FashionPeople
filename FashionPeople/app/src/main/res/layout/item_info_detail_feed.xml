@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:toolsNs="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="feedImage"
+            type="com.sangmee.fashionpeople.data.model.FeedImage" />
+
+        <variable
+            name="myId"
+            type="String" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        toolsNs:background="@color/background_yellow">
+
+        <ImageView
+            android:id="@+id/iv_item_evaluate_feed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            app:layout_constraintBottom_toTopOf="@+id/iv_profile_evaluate_feed"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:myId="@{myId}"
+            app:setVisibleView="@{feedImage}">
+
+            <TextView
+                android:id="@+id/tv_comment"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginEnd="100dp"
+                android:background="@drawable/background_comment"
+                android:gravity="center"
+                android:text="댓글로 폭풍 칭찬해주세요~!"
+                android:textColor="@color/colorBlack"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/iv_save_image"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_save_image"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/bg_save_image"
+                android:padding="8dp"
+                android:src="@drawable/ic_photo_saved_black"
+                app:civ_border_width="1dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_rating_evaluate_average"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_profile_evaluate_feed"
+            app:myId="@{myId}"
+            app:setVisibleView="@{feedImage}">
+
+            <ImageView
+                android:id="@+id/iv_star"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
+                android:src="@drawable/ic_star_yellow_24" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_rating"
+                style="@style/HomeFeedTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:setRatingText="@{feedImage}" />
+
+        </LinearLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_profile_evaluate_feed"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            app:civ_border_color="@color/colorBlack"
+            app:civ_border_width="2dp"
+            app:layout_constraintBottom_toTopOf="@id/rv_tags_home_feed"
+            app:layout_constraintStart_toStartOf="@id/rv_tags_home_feed"
+            app:layout_constraintTop_toBottomOf="@+id/iv_item_evaluate_feed"
+            toolsNs:src="@drawable/ic_person_black" />
+
+        <TextView
+            android:id="@+id/tv_user_name_home_feed"
+            style="@style/HomeFeedTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:ellipsize="end"
+            android:text="@{feedImage.user.name}"
+            app:layout_constraintBottom_toBottomOf="@id/iv_profile_evaluate_feed"
+            app:layout_constraintStart_toEndOf="@id/iv_profile_evaluate_feed"
+            app:layout_constraintTop_toTopOf="@id/iv_profile_evaluate_feed"
+            toolsNs:text="000" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_tags_home_feed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:scrollbars="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_profile_evaluate_feed"
+            app:setFeedImageTags="@{feedImage}" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

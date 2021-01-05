@@ -1,6 +1,5 @@
 package com.sangmee.fashionpeople.ui.fragment.info.image_content
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FeedImage
-import com.sangmee.fashionpeople.ui.fragment.info.FeedImageDetailActivity
+import com.sangmee.fashionpeople.ui.MainActivity
+import com.sangmee.fashionpeople.ui.fragment.info.detail.InfoDetailFragment
 
 class FeedImageAdapter(
     private val customId: String
@@ -21,13 +21,19 @@ class FeedImageAdapter(
             LayoutInflater.from(parent.context).inflate(R.layout.item_feed_image, parent, false)
         val viewHolder = FeedImageViewHolder(view)
         viewHolder.itemView.setOnClickListener {
-            val intent = Intent(parent.context, FeedImageDetailActivity::class.java)
-            intent.putExtra(
-                FeedImageDetailActivity.KEY_FEED_IMAGE,
-                feedImageList[viewHolder.adapterPosition]
+//            val intent = Intent(parent.context, FeedImageDetailActivity::class.java)
+//            intent.putExtra(
+//                FeedImageDetailActivity.KEY_FEED_IMAGE,
+//                feedImageList[viewHolder.adapterPosition]
+//            )
+//            intent.putExtra("custom_id", customId)
+//            parent.context.startActivity(intent)
+            (parent.context as MainActivity).replaceFragmentUseBackStack(
+                InfoDetailFragment(
+                    customId,
+                    viewHolder.adapterPosition
+                )
             )
-            intent.putExtra("custom_id", customId)
-            parent.context.startActivity(intent)
         }
 
         return viewHolder

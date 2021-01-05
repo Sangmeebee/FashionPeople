@@ -22,7 +22,7 @@ interface FeedImageService {
     fun updateImageScore(@Path("imageName") imageName: String, @Body evaluation: Evaluation): Completable
 
     @GET("feedImage/{id}")
-    fun getFeedImages(@Path("id") id: String): Call<List<FeedImage>>
+    fun getFeedImages(@Path("id") id: String): Single<List<FeedImage>>
 
     @GET("feedImage/evaluated/{id}")
     fun getEvaluatedFeedImage(@Path("id") id: String): Call<FeedImage>
