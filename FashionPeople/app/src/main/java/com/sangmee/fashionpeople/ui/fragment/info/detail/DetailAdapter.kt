@@ -78,7 +78,6 @@ class DetailAdapter(private val myId: String) :
 
         @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
         fun bind(feedImage: FeedImage) {
-            binding.myId = myId
             binding.feedImage = feedImage
             binding.executePendingBindings()
             with(itemView) {

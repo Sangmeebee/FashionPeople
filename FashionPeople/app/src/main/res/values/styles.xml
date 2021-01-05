@@ -43,6 +43,12 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="DetailScoreTextStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="android:background">@color/darkGray2</item>
         <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
