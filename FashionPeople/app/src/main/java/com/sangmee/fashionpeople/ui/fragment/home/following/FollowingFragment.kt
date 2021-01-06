@@ -1,32 +1,25 @@
 package com.sangmee.fashionpeople.ui.fragment.home.following
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RatingBar
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
-import com.sangmee.fashionpeople.data.dataSource.remote.FeedImageRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.FeedImage
-import com.sangmee.fashionpeople.data.repository.FeedImageRepositoryImpl
-import com.sangmee.fashionpeople.databinding.DialogBaseBinding
 import com.sangmee.fashionpeople.databinding.FragmentFollowingBinding
 import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.comment.CommentDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.grade.GradeDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.home.evaluate.EvaluateFeedAdapter
-import com.sangmee.fashionpeople.ui.fragment.home.evaluate.EvaluateViewModel
 import com.sangmee.fashionpeople.ui.fragment.info.other.OtherFragment
 
 class FollowingFragment : Fragment(), EvaluateFeedAdapter.OnClickListener,
@@ -38,15 +31,7 @@ class FollowingFragment : Fragment(), EvaluateFeedAdapter.OnClickListener,
 
     private lateinit var followingFeedAdapter: FollowingFeedAdapter
 
-
-    private val viewModel: FollowingViewModel by lazy {
-        ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return FollowingViewModel(FeedImageRepositoryImpl(FeedImageRemoteDataSourceImpl())) as T
-            }
-        }).get(FollowingViewModel::class.java)
-    }
-
+    private val viewModel: FollowingViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -90,6 +75,14 @@ class FollowingFragment : Fragment(), EvaluateFeedAdapter.OnClickListener,
                 .setNegativeButton("아니오") { dialog, which ->
 
                 }.create().show()
+        })
+
+        viewModel.isComplete.observe(viewLifecycleOwner, Observer {
+
+            if (it) {
+                binding.pbLoading.isVisible = false
+                binding.vpFollowing.isVisible = true
+            }
         })
     }
 

@@ -4,10 +4,11 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.sangmee.fashionpeople.data.service.retrofit.RetrofitClient
+import com.sangmee.fashionpeople.data.dataSource.remote.FeedImageRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.Evaluation
 import com.sangmee.fashionpeople.data.model.FeedImage
-import com.sangmee.fashionpeople.data.repository.FeedImageRepository
+import com.sangmee.fashionpeople.data.repository.FeedImageRepositoryImpl
+import com.sangmee.fashionpeople.data.service.retrofit.RetrofitClient
 import com.sangmee.fashionpeople.util.SingleLiveEvent
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -15,9 +16,9 @@ import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 
-class EvaluateViewModel(
-    private val feedImageRepository: FeedImageRepository
-) : ViewModel() {
+class EvaluateViewModel : ViewModel() {
+
+    private val feedImageRepository = FeedImageRepositoryImpl(FeedImageRemoteDataSourceImpl())
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -38,6 +39,8 @@ class EvaluateViewModel(
     val evaluateMessage: LiveData<Unit>
         get() = _evaluateMessage
 
+    val isComplete = MutableLiveData(false)
+
     val idSubject = BehaviorSubject.create<String>()
 
     init {
@@ -54,6 +57,7 @@ class EvaluateViewModel(
         feedImageRepository.getOtherImages(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doAfterTerminate { isComplete.value = true}
             .subscribe({
                 _feedImages.value = it
             }, {

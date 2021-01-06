@@ -6,12 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.databinding.FragmentHomeBinding
-import kotlinx.android.synthetic.main.fragment_home.*
 
 
 class HomeFragment : Fragment() {
@@ -20,7 +18,6 @@ class HomeFragment : Fragment() {
     private lateinit var homeFragmentStateAdapter: HomeFragmentStateAdapter
 
     private val tabNameList = arrayListOf("평가", "팔로잉")
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +47,5 @@ class HomeFragment : Fragment() {
             tab.text = tabNameList[position]
         }.attach()
     }
-
-
 }
 

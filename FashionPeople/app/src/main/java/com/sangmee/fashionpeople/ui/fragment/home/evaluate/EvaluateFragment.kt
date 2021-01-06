@@ -1,29 +1,23 @@
 package com.sangmee.fashionpeople.ui.fragment.home.evaluate
 
-import android.app.Activity
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RatingBar
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
-import com.google.firebase.auth.FirebaseAuth
 import com.sangmee.fashionpeople.R
-import com.sangmee.fashionpeople.databinding.DialogBaseBinding
-import com.sangmee.fashionpeople.databinding.FragmentEvaluateBinding
 import com.sangmee.fashionpeople.data.GlobalApplication
-import com.sangmee.fashionpeople.data.dataSource.remote.FeedImageRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.FeedImage
-import com.sangmee.fashionpeople.data.repository.FeedImageRepositoryImpl
+import com.sangmee.fashionpeople.databinding.FragmentEvaluateBinding
 import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.comment.CommentDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.grade.GradeDialogFragment
@@ -35,15 +29,7 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
     private val pref = GlobalApplication.prefs
     lateinit var customId: String
 
-    private val viewModel: EvaluateViewModel by lazy {
-        ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return EvaluateViewModel(
-                    FeedImageRepositoryImpl(feedImageRemoteDataSource = FeedImageRemoteDataSourceImpl())
-                ) as T
-            }
-        }).get(EvaluateViewModel::class.java)
-    }
+    private val viewModel: EvaluateViewModel by activityViewModels()
 
     private lateinit var evaluateFeedAdapter: EvaluateFeedAdapter
 
@@ -104,6 +90,14 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
                 .setNegativeButton("아니오") { dialog, which ->
 
                 }.create().show()
+        })
+
+
+        viewModel.isComplete.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                binding.pbLoading.isVisible = false
+                binding.vpEvaluate.isVisible = true
+            }
         })
     }
 

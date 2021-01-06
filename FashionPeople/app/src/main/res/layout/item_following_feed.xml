@@ -17,7 +17,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        toolsNs:background="@color/background_yellow">
+        toolsNs:background="@color/colorWhite">
 
         <ImageView
             android:id="@+id/iv_item_following_feed"
