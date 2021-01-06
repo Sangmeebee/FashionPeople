@@ -30,5 +30,6 @@ object RetrofitClient {
     fun getFollowerService(): FollowerService = retrofit.create(FollowerService::class.java)
     fun getFollowingService(): FollowingService = retrofit.create(FollowingService::class.java)
     fun getRankImageService(): RankImageService = retrofit.create(RankImageService::class.java)
+    fun getSaveImageService(): SaveImageService = retrofit.create(SaveImageService::class.java)
 }
 
