@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RatingBar
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -19,11 +20,9 @@ import com.sangmee.fashionpeople.databinding.FragmentFollowingBinding
 import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.comment.CommentDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.grade.GradeDialogFragment
-import com.sangmee.fashionpeople.ui.fragment.home.evaluate.EvaluateFeedAdapter
 import com.sangmee.fashionpeople.ui.fragment.info.other.OtherFragment
 
-class FollowingFragment : Fragment(), EvaluateFeedAdapter.OnClickListener,
-    FollowingFeedAdapter.OnClickListener {
+class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
 
     private lateinit var binding: FragmentFollowingBinding
     private val pref = GlobalApplication.prefs
@@ -84,6 +83,12 @@ class FollowingFragment : Fragment(), EvaluateFeedAdapter.OnClickListener,
                 binding.vpFollowing.isVisible = true
             }
         })
+
+        viewModel.saveComplete.observe(this, Observer {
+            if (it) {
+                Toast.makeText(context, "사진을 저장했습니다.", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun initViewPager() {
@@ -137,6 +142,10 @@ class FollowingFragment : Fragment(), EvaluateFeedAdapter.OnClickListener,
 
     override fun onClickGrade(feedImage: FeedImage) {
         showGradeFragment(feedImage)
+    }
+
+    override fun onClickSave(userId: String, imageName: String) {
+        viewModel.postSaveImage(userId, imageName)
     }
 
     override fun onClickProfile(feedImage: FeedImage) {

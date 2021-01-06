@@ -5,9 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sangmee.fashionpeople.data.dataSource.remote.FeedImageRemoteDataSourceImpl
+import com.sangmee.fashionpeople.data.dataSource.remote.SaveImageRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.Evaluation
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.data.repository.FeedImageRepositoryImpl
+import com.sangmee.fashionpeople.data.repository.SaveImageRepositoryImpl
 import com.sangmee.fashionpeople.data.service.retrofit.RetrofitClient
 import com.sangmee.fashionpeople.util.SingleLiveEvent
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -19,6 +21,7 @@ import io.reactivex.rxjava3.subjects.BehaviorSubject
 class EvaluateViewModel : ViewModel() {
 
     private val feedImageRepository = FeedImageRepositoryImpl(FeedImageRemoteDataSourceImpl())
+    private val saveImageRepository = SaveImageRepositoryImpl(SaveImageRemoteDataSourceImpl())
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -40,6 +43,7 @@ class EvaluateViewModel : ViewModel() {
         get() = _evaluateMessage
 
     val isComplete = MutableLiveData(false)
+    val saveComplete = SingleLiveEvent<Boolean>()
 
     val idSubject = BehaviorSubject.create<String>()
 
@@ -64,9 +68,16 @@ class EvaluateViewModel : ViewModel() {
             }).addTo(compositeDisposable)
     }
 
+    fun postSaveImage(id: String, imageName: String){
+        saveImageRepository.postSaveImage(id, imageName)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doAfterTerminate { saveComplete.value = true }
+            .subscribe {  }.addTo(compositeDisposable)
+    }
+
     fun ratingClick(imageName: String, rating: Float) {
         feedImageRepository.updateImageScore(imageName, Evaluation(userId.value, rating))
-            .subscribeOn(Schedulers.io())
             .andThen(RetrofitClient.getFeedImageService().getFeedImageByName(imageName))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

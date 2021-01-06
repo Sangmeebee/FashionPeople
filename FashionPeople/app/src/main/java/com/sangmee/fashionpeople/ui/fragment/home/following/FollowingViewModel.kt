@@ -5,9 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sangmee.fashionpeople.data.dataSource.remote.FeedImageRemoteDataSourceImpl
+import com.sangmee.fashionpeople.data.dataSource.remote.SaveImageRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.Evaluation
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.data.repository.FeedImageRepositoryImpl
+import com.sangmee.fashionpeople.data.repository.SaveImageRepositoryImpl
 import com.sangmee.fashionpeople.data.service.retrofit.RetrofitClient
 import com.sangmee.fashionpeople.util.SingleLiveEvent
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -19,6 +21,7 @@ import io.reactivex.rxjava3.subjects.BehaviorSubject
 class FollowingViewModel : ViewModel() {
 
     private val feedImageRepository = FeedImageRepositoryImpl(FeedImageRemoteDataSourceImpl())
+    private val saveImageRepository = SaveImageRepositoryImpl(SaveImageRemoteDataSourceImpl())
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -37,6 +40,8 @@ class FollowingViewModel : ViewModel() {
     private val _evaluateMessage = SingleLiveEvent<Unit>()
     val evaluateMessage: LiveData<Unit>
         get() = _evaluateMessage
+
+    val saveComplete = SingleLiveEvent<Boolean>()
 
     val idSubject = BehaviorSubject.create<String>()
 
@@ -64,6 +69,15 @@ class FollowingViewModel : ViewModel() {
                 _feedImages.value = it
             }, {
             }).addTo(compositeDisposable)
+    }
+
+
+    fun postSaveImage(id: String, imageName: String) {
+        saveImageRepository.postSaveImage(id, imageName)
+            .subscribeOn(io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doAfterTerminate { saveComplete.value = true }
+            .subscribe { }.addTo(compositeDisposable)
     }
 
     fun ratingClick(imageName: String, rating: Float) {

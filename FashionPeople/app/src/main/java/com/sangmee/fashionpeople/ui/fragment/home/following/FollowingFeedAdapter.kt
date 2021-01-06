@@ -32,7 +32,7 @@ class FollowingFeedAdapter(private val myId: String) :
                 onClickListener?.onClickRatingBar(ratingBar, rating, fromUser, it)
             }
         }
-        viewHolder.itemView.cl_comment.setOnClickListener {
+        viewHolder.itemView.tv_comment.setOnClickListener {
             items[viewHolder.adapterPosition].let {
                 it.imageName?.let { imageName ->
                     onClickListener?.onClickComment(imageName)
@@ -50,6 +50,11 @@ class FollowingFeedAdapter(private val myId: String) :
             }
         }
 
+        viewHolder.itemView.iv_save_image.setOnClickListener {
+            items[viewHolder.adapterPosition].let {
+                onClickListener?.onClickSave(myId, it.imageName!!)
+            }
+        }
 
         return viewHolder
     }
@@ -85,6 +90,7 @@ class FollowingFeedAdapter(private val myId: String) :
             feedImage: FeedImage
         )
 
+        fun onClickSave(userId: String, imageName: String)
         fun onClickComment(imageName: String)
         fun onClickGrade(feedImage: FeedImage)
         fun onClickProfile(feedImage: FeedImage)
