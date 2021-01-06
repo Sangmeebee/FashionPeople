@@ -44,7 +44,7 @@ class FollowingFeedAdapter(private val myId: String) :
                 onClickListener?.onClickGrade(it)
             }
         }
-        viewHolder.itemView.iv_item_following_feed.setOnClickListener {
+        viewHolder.itemView.ll_container.setOnClickListener {
             items[viewHolder.adapterPosition].let {
                 onClickListener?.onClickProfile(it)
             }

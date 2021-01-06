@@ -41,7 +41,7 @@ class DetailAdapter(private val myId: String) :
             }
         }
 
-        viewHolder.itemView.iv_profile_evaluate_feed.setOnClickListener {
+        viewHolder.itemView.ll_container.setOnClickListener {
             items[viewHolder.adapterPosition].let {
                 onClickListener?.onClickProfile(it)
             }
