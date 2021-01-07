@@ -16,7 +16,24 @@ class FollowingFeedViewHolder(
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun bind(feedImage: FeedImage) {
-        binding.myId = myId
+
+        var canEvaluate = false
+
+        if (feedImage.resultTimeStamp.isNullOrEmpty()) {
+            feedImage.evaluations?.let { evaluations ->
+                var isExist = false
+                for (evaluation in evaluations) {
+                    if (evaluation.evaluationPersonId == myId) {
+                        isExist = true
+                        break
+                    }
+                }
+                if (!isExist) {
+                    canEvaluate = true
+                }
+            }
+        }
+        binding.canEvaluate = canEvaluate
         binding.feedImage = feedImage
         with(itemView) {
             Glide.with(context)

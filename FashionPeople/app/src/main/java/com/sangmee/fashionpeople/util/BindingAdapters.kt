@@ -1,7 +1,6 @@
 package com.sangmee.fashionpeople.util
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.text.Html
@@ -10,7 +9,6 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.widget.ImageView
-import android.widget.RatingBar
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatRatingBar
@@ -28,62 +26,6 @@ import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.data.model.RankImage
 import com.sangmee.fashionpeople.ui.fragment.home.TagRecyclerViewAdapter
 import com.skydoves.progressview.ProgressView
-
-
-@RequiresApi(Build.VERSION_CODES.M)
-@BindingAdapter("createView")
-fun createView(flexBoxLayout: FlexboxLayout, feedImage: FeedImage?) {
-    feedImage?.style?.let {
-        createView(flexBoxLayout, it)
-    }
-    feedImage?.top?.let {
-        createView(flexBoxLayout, it)
-    }
-    feedImage?.pants?.let {
-        createView(flexBoxLayout, it)
-    }
-    feedImage?.shoes?.let {
-        createView(flexBoxLayout, it)
-    }
-}
-
-@BindingAdapter("setVisibleRating", "myId")
-fun setVisibleRating(ratingBar: RatingBar, feedImage: FeedImage?, myId: String) {
-    feedImage?.let {
-        myId.let {
-            feedImage.evaluations?.let {
-                if (it.size >= 3) {
-                    ratingBar.visibility = View.INVISIBLE
-                }
-                for (evaluation in feedImage.evaluations) {
-                    if (evaluation.evaluationPersonId == myId) {
-                        ratingBar.visibility = View.INVISIBLE
-                        break
-                    }
-                }
-
-            }
-        }
-    }
-}
-
-@BindingAdapter("setVisibleView", "myId")
-fun setVisibleView(view: View, feedImage: FeedImage?, myId: String) {
-    feedImage?.let {
-        myId.let {
-            feedImage.evaluations?.let {
-                for (evaluation in feedImage.evaluations) {
-                    if (evaluation.evaluationPersonId == myId) {
-                        view.visibility = View.VISIBLE
-                    }
-                }
-                if (it.size >= 3) {
-                    view.visibility = View.VISIBLE
-                }
-            }
-        }
-    }
-}
 
 @BindingAdapter("setVisibleComments")
 fun setVisibleComments(recyclerView: RecyclerView, comments: List<Comment>?) {
@@ -145,28 +87,6 @@ fun setCommentTitle(textView: TextView, comments: List<Comment>?) {
 @BindingAdapter("setFeedImageTags")
 fun setFeedImageTags(recyclerView: RecyclerView, feedImage: FeedImage?) {
     val tagAdapter = TagRecyclerViewAdapter()
-    val layoutManager = FlexboxLayoutManager(recyclerView.context).apply {
-        flexWrap = FlexWrap.WRAP
-        alignItems = AlignItems.FLEX_START
-        flexDirection = FlexDirection.ROW
-        justifyContent = JustifyContent.FLEX_START
-    }
-
-    val decoration = FlexboxItemDecoration(recyclerView.context)
-    decoration.setOrientation(FlexboxItemDecoration.BOTH)
-    val drawable = GradientDrawable().apply {
-        setSize(
-            5.toFloat().dpToPx(recyclerView.context),
-            5.toFloat().dpToPx(recyclerView.context)
-        )
-    }
-    decoration.setDrawable(drawable)
-
-    recyclerView.adapter = tagAdapter
-    recyclerView.layoutManager = layoutManager
-
-
-    recyclerView.addItemDecoration(decoration)
     feedImage?.let { feedImage ->
         if (feedImage.style != null && !feedImage.style.equals("")) {
             tagAdapter.addTag(feedImage.style)
@@ -182,6 +102,14 @@ fun setFeedImageTags(recyclerView: RecyclerView, feedImage: FeedImage?) {
         }
         tagAdapter.notifyDataSetChanged()
     }
+    val layoutManager = FlexboxLayoutManager(recyclerView.context).apply {
+        flexWrap = FlexWrap.WRAP
+        flexDirection = FlexDirection.ROW
+        justifyContent = JustifyContent.FLEX_START
+    }
+
+    recyclerView.adapter = tagAdapter
+    recyclerView.layoutManager = layoutManager
 }
 
 @BindingAdapter("createTag")

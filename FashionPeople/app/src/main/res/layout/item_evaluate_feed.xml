@@ -5,13 +5,15 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="feedImage"
             type="com.sangmee.fashionpeople.data.model.FeedImage" />
 
         <variable
-            name="myId"
-            type="String" />
+            name="canEvaluate"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -64,8 +66,8 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="15dp"
             android:scrollbars="vertical"
-            app:layout_constraintTop_toBottomOf="@+id/iv_item_evaluate_feed"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_item_evaluate_feed"
             app:setFeedImageTags="@{feedImage}" />
 
         <LinearLayout
@@ -74,11 +76,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:orientation="horizontal"
-            android:visibility="gone"
+            android:visibility="@{canEvaluate ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toTopOf="@id/cl_comment"
-            app:layout_constraintStart_toStartOf="@id/rv_tags_home_feed"
-            app:myId="@{myId}"
-            app:setVisibleView="@{feedImage}">
+            app:layout_constraintStart_toStartOf="@id/rv_tags_home_feed">
 
             <ImageView
                 android:id="@+id/iv_star"
@@ -105,11 +105,9 @@
             android:layout_marginStart="20dp"
             android:layout_marginBottom="20dp"
             android:orientation="horizontal"
-            android:visibility="invisible"
+            android:visibility="@{canEvaluate ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:myId="@{myId}"
-            app:setVisibleView="@{feedImage}">
+            app:layout_constraintStart_toStartOf="parent">
 
             <TextView
                 android:id="@+id/tv_comment"
@@ -147,12 +145,10 @@
             android:numStars="5"
             android:stepSize="1"
             android:theme="@style/RatingBarStyle"
+            android:visibility="@{canEvaluate ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:myId="@{myId}"
-            app:setVisibleRating="@{feedImage}"
-            toolsNs:visibility="visible" />
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
