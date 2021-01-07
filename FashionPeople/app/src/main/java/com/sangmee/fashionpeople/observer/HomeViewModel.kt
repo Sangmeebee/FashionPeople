@@ -1,9 +1,9 @@
-package com.sangmee.fashionpeople.ui.fragment.home.following
+package com.sangmee.fashionpeople.observer
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.data.dataSource.remote.FeedImageRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.dataSource.remote.SaveImageRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.Evaluation
@@ -15,87 +15,86 @@ import com.sangmee.fashionpeople.util.SingleLiveEvent
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
-import io.reactivex.rxjava3.schedulers.Schedulers.io
+import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 
-class FollowingViewModel : ViewModel() {
+class HomeViewModel : ViewModel() {
 
     private val feedImageRepository = FeedImageRepositoryImpl(FeedImageRemoteDataSourceImpl())
     private val saveImageRepository = SaveImageRepositoryImpl(SaveImageRemoteDataSourceImpl())
 
     private val compositeDisposable = CompositeDisposable()
 
-    private val _feedImages = MutableLiveData<List<FeedImage>>()
-    val feedImages: LiveData<List<FeedImage>>
-        get() = _feedImages
+    private val _evaluateFeedImages = MutableLiveData<List<FeedImage>>()
+    val evaluateFeedImages: LiveData<List<FeedImage>>
+        get() = _evaluateFeedImages
+
+    private val _followingFeedImages = MutableLiveData<List<FeedImage>>()
+    val followingFeedImages: LiveData<List<FeedImage>>
+        get() = _followingFeedImages
 
     private val _updateFeedImage = MutableLiveData<FeedImage>()
     val updateFeedImages: LiveData<FeedImage>
         get() = _updateFeedImage
 
-    private val _userId = MutableLiveData<String>()
-    val userId: LiveData<String>
-        get() = _userId
+    private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
+    val userId = GlobalApplication.prefs.getString("${loginType}_custom_id", "empty")
 
     private val _evaluateMessage = SingleLiveEvent<Unit>()
     val evaluateMessage: LiveData<Unit>
         get() = _evaluateMessage
 
+    val evaluateLoadingComplete = MutableLiveData(false)
+    val followingLoadingComplete = MutableLiveData(false)
+
     val saveComplete = SingleLiveEvent<Boolean>()
 
-    val idSubject = BehaviorSubject.create<String>()
-
-    val isComplete = MutableLiveData(false)
-
-    init {
-        idSubject.subscribeOn(io())
+    fun getOtherImages() {
+        feedImageRepository.getOtherImages(userId)
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doAfterTerminate { evaluateLoadingComplete.value = true }
             .subscribe({
-                _userId.value = it
-                getFollowingImages(it)
+                _evaluateFeedImages.value = it
             }, {
             }).addTo(compositeDisposable)
     }
 
-
-    private fun getFollowingImages(id: String) {
-        feedImageRepository.getFollowingFeedImages(id)
-            .subscribeOn(io())
+    fun getFollowingImages() {
+        feedImageRepository.getFollowingFeedImages(userId)
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doAfterTerminate {
-                isComplete.value = true
+                followingLoadingComplete.value = true
             }
             .subscribe({
-                _feedImages.value = it
+                _followingFeedImages.value = it
             }, {
             }).addTo(compositeDisposable)
     }
 
-
-    fun postSaveImage(id: String, imageName: String) {
-        saveImageRepository.postSaveImage(id, imageName)
-            .subscribeOn(io())
+    fun postSaveImage(imageName: String) {
+        saveImageRepository.postSaveImage(userId, imageName)
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doAfterTerminate { saveComplete.value = true }
             .subscribe { }.addTo(compositeDisposable)
     }
 
     fun ratingClick(imageName: String, rating: Float) {
-        feedImageRepository.updateImageScore(imageName, Evaluation(userId.value, rating))
-            .subscribeOn(io())
+        feedImageRepository.updateImageScore(imageName, Evaluation(userId, rating))
             .andThen(RetrofitClient.getFeedImageService().getFeedImageByName(imageName))
-            .subscribeOn(io())
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 it?.let {
                     _updateFeedImage.value = it
                 }
-                Log.d("seunghwan", it.toString())
                 _evaluateMessage.call()
             }, {
-                Log.d("seunghwan", it.toString())
             }).addTo(compositeDisposable)
     }
+
 
     fun clearDisposable() {
         compositeDisposable.clear()

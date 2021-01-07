@@ -10,12 +10,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.sangmee.fashionpeople.R
-import com.sangmee.fashionpeople.data.dataSource.remote.FeedImageRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.dataSource.remote.RankImageRemoteDataSourceImpl
-import com.sangmee.fashionpeople.data.repository.FeedImageRepositoryImpl
 import com.sangmee.fashionpeople.data.repository.RankImageRepositoryImpl
 import com.sangmee.fashionpeople.databinding.FragmentRankBinding
-import com.sangmee.fashionpeople.ui.fragment.home.following.FollowingViewModel
 
 class RankFragment : Fragment() {
 

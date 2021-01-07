@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RatingBar
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -14,9 +12,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import com.sangmee.fashionpeople.R
-import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.databinding.FragmentFollowingBinding
+import com.sangmee.fashionpeople.observer.HomeViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.comment.CommentDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.grade.GradeDialogFragment
@@ -25,12 +23,9 @@ import com.sangmee.fashionpeople.ui.fragment.info.other.OtherFragment
 class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
 
     private lateinit var binding: FragmentFollowingBinding
-    private val pref = GlobalApplication.prefs
-    lateinit var customId: String
-
     private lateinit var followingFeedAdapter: FollowingFeedAdapter
+    private val vm: HomeViewModel by activityViewModels()
 
-    private val viewModel: FollowingViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,13 +39,13 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setId()
+        vm.getFollowingImages()
         initViewPager()
         initObserve()
     }
 
     private fun initObserve() {
-        viewModel.feedImages.observe(viewLifecycleOwner, Observer {
+        vm.followingFeedImages.observe(viewLifecycleOwner, Observer {
             if (!it.isNullOrEmpty()) {
                 binding.vpFollowing.visibility = View.VISIBLE
                 binding.tvEmptyResult.visibility = View.GONE
@@ -61,38 +56,23 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
             }
         })
 
-        viewModel.updateFeedImages.observe(viewLifecycleOwner, Observer {
+        vm.updateFeedImages.observe(viewLifecycleOwner, Observer {
             it?.let {
                 followingFeedAdapter.updateItem(it)
             }
         })
 
-        viewModel.evaluateMessage.observe(viewLifecycleOwner, Observer {
-            AlertDialog.Builder(requireContext()).setMessage(R.string.complete_evaluation_text)
-                .setPositiveButton("네") { dialog, which ->
-                }
-                .setNegativeButton("아니오") { dialog, which ->
-
-                }.create().show()
-        })
-
-        viewModel.isComplete.observe(viewLifecycleOwner, Observer {
+        vm.followingLoadingComplete.observe(viewLifecycleOwner, Observer {
 
             if (it) {
                 binding.pbLoading.isVisible = false
                 binding.vpFollowing.isVisible = true
             }
         })
-
-        viewModel.saveComplete.observe(this, Observer {
-            if (it) {
-                Toast.makeText(context, "사진을 저장했습니다.", Toast.LENGTH_SHORT).show()
-            }
-        })
     }
 
     private fun initViewPager() {
-        followingFeedAdapter = FollowingFeedAdapter(myId = customId)
+        followingFeedAdapter = FollowingFeedAdapter(vm.userId)
         followingFeedAdapter.onClickListener = this@FollowingFragment
         binding.vpFollowing.apply {
             adapter = followingFeedAdapter
@@ -103,12 +83,6 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
                 }
             })
         }
-    }
-
-    private fun setId() {
-        val loginType = GlobalApplication.prefs.getString("login_type", "empty")
-        customId = pref.getString("${loginType}_custom_id", "empty")
-        viewModel.idSubject.onNext(customId)
     }
 
     private fun showCommentFragment(imageName: String) {
@@ -122,7 +96,7 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
     }
 
     override fun onDestroy() {
-        viewModel.clearDisposable()
+        vm.clearDisposable()
         super.onDestroy()
     }
 
@@ -133,7 +107,7 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
         feedImage: FeedImage
     ) {
         ratingBar?.rating = rating
-        feedImage.imageName?.let { viewModel.ratingClick(it, rating) }
+        feedImage.imageName?.let { vm.ratingClick(it, rating) }
     }
 
     override fun onClickComment(imageName: String) {
@@ -144,8 +118,8 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
         showGradeFragment(feedImage)
     }
 
-    override fun onClickSave(userId: String, imageName: String) {
-        viewModel.postSaveImage(userId, imageName)
+    override fun onClickSave(imageName: String) {
+        vm.postSaveImage(imageName)
     }
 
     override fun onClickProfile(feedImage: FeedImage) {

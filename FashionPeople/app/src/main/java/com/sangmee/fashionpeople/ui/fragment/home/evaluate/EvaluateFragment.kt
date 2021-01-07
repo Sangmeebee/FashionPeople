@@ -1,6 +1,7 @@
 package com.sangmee.fashionpeople.ui.fragment.home.evaluate
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.databinding.FragmentEvaluateBinding
+import com.sangmee.fashionpeople.observer.HomeViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.comment.CommentDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.grade.GradeDialogFragment
@@ -25,11 +27,7 @@ import com.sangmee.fashionpeople.ui.fragment.info.other.OtherFragment
 class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
 
     private lateinit var binding: FragmentEvaluateBinding
-    private val pref = GlobalApplication.prefs
-    lateinit var customId: String
-
-    private val viewModel: EvaluateViewModel by activityViewModels()
-
+    private val vm: HomeViewModel by activityViewModels()
     private lateinit var evaluateFeedAdapter: EvaluateFeedAdapter
 
     override fun onCreateView(
@@ -44,19 +42,13 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setId()
+        vm.getOtherImages()
         initViewPager()
         initObserve()
     }
 
-    private fun setId() {
-        val loginType = GlobalApplication.prefs.getString("login_type", "empty")
-        customId = pref.getString("${loginType}_custom_id", "empty")
-        viewModel.idSubject.onNext(customId)
-    }
-
     private fun initViewPager() {
-        evaluateFeedAdapter = EvaluateFeedAdapter(myId = customId)
+        evaluateFeedAdapter = EvaluateFeedAdapter(vm.userId)
         evaluateFeedAdapter.onClickListener = this@EvaluateFragment
         binding.vpEvaluate.apply {
             adapter = evaluateFeedAdapter
@@ -65,7 +57,7 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
     }
 
     private fun initObserve() {
-        viewModel.feedImages.observe(viewLifecycleOwner, Observer {
+        vm.evaluateFeedImages.observe(viewLifecycleOwner, Observer {
             if (!it.isNullOrEmpty()) {
                 binding.vpEvaluate.visibility = View.VISIBLE
                 binding.tvEmptyResult.visibility = View.GONE
@@ -76,13 +68,13 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
             }
         })
 
-        viewModel.updateFeedImages.observe(viewLifecycleOwner, Observer {
+        vm.updateFeedImages.observe(viewLifecycleOwner, Observer {
             it?.let {
                 evaluateFeedAdapter.updateItem(it)
             }
         })
 
-        viewModel.evaluateMessage.observe(viewLifecycleOwner, Observer {
+        vm.evaluateMessage.observe(viewLifecycleOwner, Observer {
             AlertDialog.Builder(requireContext()).setMessage(R.string.complete_evaluation_text)
                 .setPositiveButton("네") { dialog, which ->
                 }
@@ -92,14 +84,14 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
         })
 
 
-        viewModel.isComplete.observe(viewLifecycleOwner, Observer {
+        vm.evaluateLoadingComplete.observe(viewLifecycleOwner, Observer {
             if (it) {
                 binding.pbLoading.isVisible = false
-                binding.vpEvaluate.isVisible = true
+                binding.clContainer.isVisible = true
             }
         })
 
-        viewModel.saveComplete.observe(this, Observer {
+        vm.saveComplete.observe(this, Observer {
             if (it) {
                 Toast.makeText(context, "사진을 저장했습니다.", Toast.LENGTH_SHORT).show()
             }
@@ -117,7 +109,7 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
     }
 
     override fun onDestroy() {
-        viewModel.clearDisposable()
+        vm.clearDisposable()
         super.onDestroy()
     }
 
@@ -128,7 +120,7 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
         feedImage: FeedImage
     ) {
         ratingBar?.rating = rating
-        feedImage.imageName?.let { viewModel.ratingClick(it, rating) }
+        feedImage.imageName?.let { vm.ratingClick(it, rating) }
     }
 
     override fun onClickComment(imageName: String) {
@@ -139,8 +131,8 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
         showGradeFragment(feedImage)
     }
 
-    override fun onClickSave(userId: String, imageName: String) {
-        viewModel.postSaveImage(userId, imageName)
+    override fun onClickSave(imageName: String) {
+        vm.postSaveImage(imageName)
     }
 
     override fun onClickProfile(feedImage: FeedImage) {

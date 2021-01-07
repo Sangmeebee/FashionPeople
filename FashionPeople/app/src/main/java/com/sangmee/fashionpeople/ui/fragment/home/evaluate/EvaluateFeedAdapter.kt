@@ -54,7 +54,7 @@ class EvaluateFeedAdapter(private val myId: String) :
 
         viewHolder.itemView.iv_save_image.setOnClickListener {
             items[viewHolder.adapterPosition].let{
-                onClickListener?.onClickSave(myId, it.imageName!!)
+                onClickListener?.onClickSave(it.imageName!!)
             }
         }
 
@@ -91,7 +91,7 @@ class EvaluateFeedAdapter(private val myId: String) :
             fromUser: Boolean,
             feedImage: FeedImage
         )
-        fun onClickSave(userId: String, imageName: String)
+        fun onClickSave(imageName: String)
         fun onClickComment(imageName: String)
         fun onClickGrade(feedImage: FeedImage)
         fun onClickProfile(feedImage: FeedImage)
