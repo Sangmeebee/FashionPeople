@@ -58,7 +58,7 @@ fun setVisibleRating(ratingBar: RatingBar, feedImage: FeedImage?, myId: String) 
                 for (evaluation in feedImage.evaluations) {
                     if (evaluation.evaluationPersonId == myId) {
                         ratingBar.visibility = View.INVISIBLE
-                        break;
+                        break
                     }
                 }
 

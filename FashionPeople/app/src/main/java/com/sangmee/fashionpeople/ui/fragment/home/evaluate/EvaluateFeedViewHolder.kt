@@ -18,6 +18,7 @@ class EvaluateFeedViewHolder(private val binding: ItemEvaluateFeedBinding, priva
         with(itemView) {
             Glide.with(context)
                 .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${feedImage.user?.id}/feed/${feedImage.imageName}")
+                .placeholder(context.getDrawable(R.drawable.white_image))
                 .into(binding.ivItemEvaluateFeed)
 
             if(feedImage.user?.profileImage.isNullOrEmpty()){
