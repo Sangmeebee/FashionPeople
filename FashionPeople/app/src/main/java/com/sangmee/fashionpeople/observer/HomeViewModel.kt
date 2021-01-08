@@ -16,7 +16,6 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.schedulers.Schedulers
-import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 class HomeViewModel : ViewModel() {
 
@@ -29,9 +28,17 @@ class HomeViewModel : ViewModel() {
     val evaluateFeedImages: LiveData<List<FeedImage>>
         get() = _evaluateFeedImages
 
+    val evaluateFeedImagesIsSaved = MutableLiveData<MutableMap<String, Boolean>>()
+
     private val _followingFeedImages = MutableLiveData<List<FeedImage>>()
     val followingFeedImages: LiveData<List<FeedImage>>
         get() = _followingFeedImages
+
+    val followingFeedImagesIsSaved = MutableLiveData<MutableMap<String, Boolean>>()
+
+    private val _savedFeedImages = MutableLiveData<List<FeedImage>>()
+    val savedFeedImages: LiveData<List<FeedImage>>
+        get() = _savedFeedImages
 
     private val _updateFeedImage = MutableLiveData<FeedImage>()
     val updateFeedImages: LiveData<FeedImage>
@@ -49,24 +56,31 @@ class HomeViewModel : ViewModel() {
 
     val saveComplete = SingleLiveEvent<Boolean>()
 
+    val deleteComplete = SingleLiveEvent<Boolean>()
+
     fun getOtherImages() {
         feedImageRepository.getOtherImages(userId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doAfterTerminate { evaluateLoadingComplete.value = true }
+            .doAfterTerminate { getSaveImages() }
             .subscribe({
                 _evaluateFeedImages.value = it
             }, {
             }).addTo(compositeDisposable)
     }
 
+    private fun getSaveImages() {
+        saveImageRepository.getSaveImages(userId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ _savedFeedImages.value = it }, {}).addTo(compositeDisposable)
+    }
+
     fun getFollowingImages() {
         feedImageRepository.getFollowingFeedImages(userId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doAfterTerminate {
-                followingLoadingComplete.value = true
-            }
+            .doAfterTerminate { getSaveImages() }
             .subscribe({
                 _followingFeedImages.value = it
             }, {
@@ -78,6 +92,14 @@ class HomeViewModel : ViewModel() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doAfterTerminate { saveComplete.value = true }
+            .subscribe { }.addTo(compositeDisposable)
+    }
+
+    fun deleteSaveImage(imageName: String) {
+        saveImageRepository.deleteSaveImage(userId, imageName)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doAfterTerminate { deleteComplete.value = true }
             .subscribe { }.addTo(compositeDisposable)
     }
 

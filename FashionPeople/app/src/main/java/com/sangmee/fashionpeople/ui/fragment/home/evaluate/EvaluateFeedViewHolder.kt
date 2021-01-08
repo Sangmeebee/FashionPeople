@@ -15,7 +15,7 @@ class EvaluateFeedViewHolder(
     RecyclerView.ViewHolder(binding.root) {
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    fun bind(feedImage: FeedImage) {
+    fun bind(feedImage: FeedImage, isSaved: Boolean) {
 
         var canEvaluate = false
 
@@ -34,8 +34,8 @@ class EvaluateFeedViewHolder(
             }
         }
         binding.canEvaluate = canEvaluate
-
         binding.feedImage = feedImage
+        binding.isSaved = isSaved
         with(itemView) {
             Glide.with(context)
                 .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${feedImage.user?.id}/feed/${feedImage.imageName}")

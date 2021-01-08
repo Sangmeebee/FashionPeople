@@ -44,6 +44,27 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
         initObserve()
     }
 
+    private fun initViewPager() {
+        followingFeedAdapter = FollowingFeedAdapter(vm.userId, { key ->
+            val map = vm.followingFeedImagesIsSaved.value
+            map?.let {
+                it[key] = true
+            }
+            vm.followingFeedImagesIsSaved.value = map
+        }, { key ->
+            val map = vm.followingFeedImagesIsSaved.value
+            map?.let {
+                it[key] = false
+            }
+            vm.followingFeedImagesIsSaved.value = map
+        })
+        followingFeedAdapter.onClickListener = this@FollowingFragment
+        binding.vpFollowing.apply {
+            adapter = followingFeedAdapter
+            orientation = ViewPager2.ORIENTATION_VERTICAL
+        }
+    }
+
     private fun initObserve() {
         vm.followingFeedImages.observe(viewLifecycleOwner, Observer {
             if (!it.isNullOrEmpty()) {
@@ -54,6 +75,27 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
                 binding.vpFollowing.visibility = View.GONE
                 binding.tvEmptyResult.visibility = View.VISIBLE
             }
+        })
+
+        vm.savedFeedImages.observe(viewLifecycleOwner, Observer { saveImages ->
+            vm.followingFeedImages.value?.let { feedImages ->
+                val map = mutableMapOf<String, Boolean>()
+                for (feedImage in feedImages) {
+                    var isExist = false
+                    for (saveImage in saveImages) {
+                        if (feedImage.imageName == saveImage.imageName) {
+                            isExist = true
+                        }
+                    }
+                    map[feedImage.imageName!!] = isExist
+                }
+                vm.followingFeedImagesIsSaved.value = map
+            }
+        })
+
+        vm.followingFeedImagesIsSaved.observe(viewLifecycleOwner, Observer {
+            vm.followingLoadingComplete.value = true
+            followingFeedAdapter.setSavedButtonType(it)
         })
 
         vm.updateFeedImages.observe(viewLifecycleOwner, Observer {
@@ -69,20 +111,6 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
                 binding.vpFollowing.isVisible = true
             }
         })
-    }
-
-    private fun initViewPager() {
-        followingFeedAdapter = FollowingFeedAdapter(vm.userId)
-        followingFeedAdapter.onClickListener = this@FollowingFragment
-        binding.vpFollowing.apply {
-            adapter = followingFeedAdapter
-            orientation = ViewPager2.ORIENTATION_VERTICAL
-            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                }
-            })
-        }
     }
 
     private fun showCommentFragment(imageName: String) {
@@ -120,6 +148,10 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
 
     override fun onClickSave(imageName: String) {
         vm.postSaveImage(imageName)
+    }
+
+    override fun onClickDelete(imageName: String) {
+        vm.deleteSaveImage(imageName)
     }
 
     override fun onClickProfile(feedImage: FeedImage) {

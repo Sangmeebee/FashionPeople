@@ -15,7 +15,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import com.sangmee.fashionpeople.R
-import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.databinding.FragmentEvaluateBinding
 import com.sangmee.fashionpeople.observer.HomeViewModel
@@ -48,7 +47,19 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
     }
 
     private fun initViewPager() {
-        evaluateFeedAdapter = EvaluateFeedAdapter(vm.userId)
+        evaluateFeedAdapter = EvaluateFeedAdapter(vm.userId, { key ->
+            val map = vm.evaluateFeedImagesIsSaved.value
+            map?.let {
+                it[key] = true
+            }
+            vm.evaluateFeedImagesIsSaved.value = map
+        }, { key ->
+            val map = vm.evaluateFeedImagesIsSaved.value
+            map?.let {
+                it[key] = false
+            }
+            vm.evaluateFeedImagesIsSaved.value = map
+        })
         evaluateFeedAdapter.onClickListener = this@EvaluateFragment
         binding.vpEvaluate.apply {
             adapter = evaluateFeedAdapter
@@ -66,6 +77,26 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
                 binding.vpEvaluate.visibility = View.GONE
                 binding.tvEmptyResult.visibility = View.VISIBLE
             }
+        })
+
+        vm.savedFeedImages.observe(viewLifecycleOwner, Observer { saveImages ->
+            vm.evaluateFeedImages.value?.let { feedImages ->
+                val map = mutableMapOf<String, Boolean>()
+                for (feedImage in feedImages) {
+                    var isExist = false
+                    for (saveImage in saveImages) {
+                        if (feedImage.imageName == saveImage.imageName) {
+                            isExist = true
+                        }
+                    }
+                    map[feedImage.imageName!!] = isExist
+                }
+                vm.evaluateFeedImagesIsSaved.value = map
+            }
+        })
+        vm.evaluateFeedImagesIsSaved.observe(viewLifecycleOwner, Observer {
+            vm.evaluateLoadingComplete.value = true
+            evaluateFeedAdapter.setSavedButtonType(it)
         })
 
         vm.updateFeedImages.observe(viewLifecycleOwner, Observer {
@@ -94,6 +125,12 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
         vm.saveComplete.observe(this, Observer {
             if (it) {
                 Toast.makeText(context, "사진을 저장했습니다.", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        vm.deleteComplete.observe(this, Observer {
+            if (it) {
+                Toast.makeText(context, "사진을 삭제했습니다.", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -133,6 +170,10 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
 
     override fun onClickSave(imageName: String) {
         vm.postSaveImage(imageName)
+    }
+
+    override fun onClickDelete(imageName: String) {
+        vm.deleteSaveImage(imageName)
     }
 
     override fun onClickProfile(feedImage: FeedImage) {

@@ -15,7 +15,7 @@ class FollowingFeedViewHolder(
     RecyclerView.ViewHolder(binding.root) {
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    fun bind(feedImage: FeedImage) {
+    fun bind(feedImage: FeedImage, isSaved: Boolean) {
 
         var canEvaluate = false
 
@@ -35,9 +35,11 @@ class FollowingFeedViewHolder(
         }
         binding.canEvaluate = canEvaluate
         binding.feedImage = feedImage
+        binding.isSaved = isSaved
         with(itemView) {
             Glide.with(context)
                 .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${feedImage.user?.id}/feed/${feedImage.imageName}")
+                .placeholder(context.getDrawable(R.drawable.white_image))
                 .into(binding.ivItemFollowingFeed)
 
             if (feedImage.user?.profileImage.isNullOrEmpty()) {
