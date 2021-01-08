@@ -15,4 +15,8 @@ class SaveImageRepositoryImpl(private val saveImageRemoteDataSource: SaveImageRe
     override fun postSaveImage(userId: String, imageName: String): Completable {
         return saveImageRemoteDataSource.postSaveImage(userId, imageName)
     }
+
+    override fun deleteSaveImage(userId: String, imageName: String): Completable {
+        return saveImageRemoteDataSource.deleteSaveImage(userId, imageName)
+    }
 }

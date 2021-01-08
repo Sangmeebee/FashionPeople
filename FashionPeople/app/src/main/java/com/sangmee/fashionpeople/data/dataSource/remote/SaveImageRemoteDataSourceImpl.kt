@@ -14,4 +14,8 @@ class SaveImageRemoteDataSourceImpl : SaveImageRemoteDataSource {
     override fun postSaveImage(userId: String, imageName: String): Completable {
         return RetrofitClient.getSaveImageService().postSaveImage(userId, imageName)
     }
+
+    override fun deleteSaveImage(userId: String, imageName: String): Completable {
+        return RetrofitClient.getSaveImageService().deleteSaveImage(userId, imageName)
+    }
 }

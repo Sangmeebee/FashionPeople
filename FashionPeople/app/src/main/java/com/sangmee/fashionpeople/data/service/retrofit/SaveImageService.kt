@@ -3,9 +3,7 @@ package com.sangmee.fashionpeople.data.service.retrofit
 import com.sangmee.fashionpeople.data.model.FeedImage
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface SaveImageService {
 
@@ -14,4 +12,7 @@ interface SaveImageService {
 
     @POST("saveImage/{userId}/{imageName}")
     fun postSaveImage(@Path("userId") userId: String, @Path("imageName") imageName: String) : Completable
+
+    @DELETE("saveImage/{userId}/{imageName}")
+    fun deleteSaveImage(@Path("userId") userId: String, @Path("imageName") imageName: String) : Completable
 }
