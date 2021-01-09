@@ -23,5 +23,5 @@ interface FeedImageRepository {
 
     fun getFollowingFeedImages(@Path("userId") id: String): Single<List<FeedImage>>
 
-    fun getEvaluatedFeedImage(id: String, success: (FeedImage) -> Unit, failed: (String) -> Unit)
+    fun getEvaluatedFeedImage(@Path("id") id: String): Single<FeedImage>
 }
