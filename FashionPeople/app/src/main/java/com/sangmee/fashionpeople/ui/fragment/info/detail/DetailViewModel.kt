@@ -3,17 +3,28 @@ package com.sangmee.fashionpeople.ui.fragment.info.detail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.sangmee.fashionpeople.data.dataSource.remote.FeedImageRemoteDataSourceImpl
+import com.sangmee.fashionpeople.data.dataSource.remote.SaveImageRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.data.repository.FeedImageRepository
+import com.sangmee.fashionpeople.data.repository.FeedImageRepositoryImpl
+import com.sangmee.fashionpeople.data.repository.SaveImageRepository
+import com.sangmee.fashionpeople.data.repository.SaveImageRepositoryImpl
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 
-class DetailViewModel(
-    private val feedImageRepository: FeedImageRepository
-) : ViewModel() {
+class DetailViewModel : ViewModel() {
+
+    private val feedImageRepository: FeedImageRepository by lazy{
+        FeedImageRepositoryImpl(FeedImageRemoteDataSourceImpl())
+    }
+
+    private val saveImageRepository: SaveImageRepository by lazy {
+        SaveImageRepositoryImpl(SaveImageRemoteDataSourceImpl())
+    }
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -21,20 +32,21 @@ class DetailViewModel(
     val feedImages: LiveData<List<FeedImage>>
         get() = _feedImages
 
-    val idSubject = BehaviorSubject.create<String>()
     val isComplete = MutableLiveData(false)
 
-    init {
-        idSubject.subscribeOn(Schedulers.io())
+    fun getImages(id: String) {
+        feedImageRepository.getFeedImages(id)
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doAfterTerminate { isComplete.value = true }
             .subscribe({
-                getImages(it)
+                _feedImages.value = it
             }, {
             }).addTo(compositeDisposable)
     }
 
-    private fun getImages(id: String) {
-        feedImageRepository.getFeedImages(id)
+    fun getSaveImages(id: String) {
+        saveImageRepository.getSaveImages(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doAfterTerminate { isComplete.value = true }

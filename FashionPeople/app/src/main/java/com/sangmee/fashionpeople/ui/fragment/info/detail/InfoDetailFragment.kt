@@ -11,24 +11,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.sangmee.fashionpeople.R
-import com.sangmee.fashionpeople.data.dataSource.remote.FeedImageRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.FeedImage
-import com.sangmee.fashionpeople.data.repository.FeedImageRepositoryImpl
 import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.comment.CommentDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.grade.GradeDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.info.other.OtherFragment
 import kotlinx.android.synthetic.main.fragment_info_detail.*
 
-class InfoDetailFragment(private val customId: String, private val position: Int) : Fragment(),
+class InfoDetailFragment(private val customId: String, private val position: Int, private val mode: Int) : Fragment(),
     DetailAdapter.OnClickListener {
 
     private val viewModel: DetailViewModel by lazy {
         ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return DetailViewModel(
-                    FeedImageRepositoryImpl(feedImageRemoteDataSource = FeedImageRemoteDataSourceImpl())
-                ) as T
+                return DetailViewModel() as T
             }
         }).get(DetailViewModel::class.java)
     }
@@ -45,6 +41,11 @@ class InfoDetailFragment(private val customId: String, private val position: Int
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if(mode == 0){
+            viewModel.getImages(customId)
+        } else {
+            viewModel.getSaveImages(customId)
+        }
         initViewPager()
         initObserve()
     }
@@ -59,7 +60,6 @@ class InfoDetailFragment(private val customId: String, private val position: Int
     }
 
     private fun initObserve() {
-        viewModel.idSubject.onNext(customId)
 
         viewModel.feedImages.observe(viewLifecycleOwner, Observer {
             detailAdapter.setFeedImages(it)

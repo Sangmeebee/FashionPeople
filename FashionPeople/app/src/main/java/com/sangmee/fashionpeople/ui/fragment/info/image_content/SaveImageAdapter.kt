@@ -11,22 +11,21 @@ import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.info.detail.InfoDetailFragment
 
-class FeedImageAdapter(
+class SaveImageAdapter(
     private val customId: String
-) : RecyclerView.Adapter<FeedImageAdapter.FeedImageViewHolder>() {
-    private val feedImageList = mutableListOf<FeedImage>()
+) : RecyclerView.Adapter<SaveImageAdapter.SaveImageViewHolder>() {
+    private val saveImageList = mutableListOf<FeedImage>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedImageViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SaveImageViewHolder {
         val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_feed_image, parent, false)
-        val viewHolder = FeedImageViewHolder(view)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_save_image, parent, false)
+        val viewHolder = SaveImageViewHolder(view)
         viewHolder.itemView.setOnClickListener {
-
             (parent.context as MainActivity).replaceFragmentUseBackStack(
                 InfoDetailFragment(
                     customId,
                     viewHolder.adapterPosition,
-                    0
+                    1
                 )
             )
         }
@@ -35,25 +34,25 @@ class FeedImageAdapter(
 
     }
 
-    override fun onBindViewHolder(holder: FeedImageViewHolder, position: Int) {
-        holder.bind(feedImageList[position])
+    override fun onBindViewHolder(holder: SaveImageViewHolder, position: Int) {
+        holder.bind(saveImageList[position])
     }
 
-    override fun getItemCount(): Int = feedImageList.size
+    override fun getItemCount(): Int = saveImageList.size
 
     fun setFeedImages(list: List<FeedImage>) {
-        feedImageList.clear()
-        feedImageList.addAll(list)
+        saveImageList.clear()
+        saveImageList.addAll(list)
         notifyDataSetChanged()
     }
 
-    inner class FeedImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class SaveImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val ivFeedImage = itemView.findViewById<ImageView>(R.id.iv_feed_image)
         fun bind(feedImage: FeedImage) {
 
             with(itemView) {
                 Glide.with(context)
-                    .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/$customId/feed/${feedImage.imageName}")
+                    .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${feedImage.user?.id}/feed/${feedImage.imageName}")
                     .into(ivFeedImage)
             }
         }

@@ -11,7 +11,7 @@ class ViewPagerAdapter(fragment: Fragment, private val userId: String, private v
 
         return when (position) {
             0 -> FeedImageFragment.newInstance(userId, isComplete)
-            else -> SavedImageFragment(userId)
+            else -> SavedImageFragment.newInstance(userId)
         }
     }
 }
