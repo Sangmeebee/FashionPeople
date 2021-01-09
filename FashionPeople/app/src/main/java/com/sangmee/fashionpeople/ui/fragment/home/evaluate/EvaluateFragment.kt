@@ -47,19 +47,18 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
     }
 
     private fun initViewPager() {
-        evaluateFeedAdapter = EvaluateFeedAdapter(vm.userId, { key ->
-            val map = vm.evaluateFeedImagesIsSaved.value
-            map?.let {
-                it[key] = true
+        evaluateFeedAdapter = EvaluateFeedAdapter(vm.userId) { key, isSaved ->
+            val eMap = vm.evaluateFeedImagesIsSaved.value
+            val fMap = vm.evaluateFeedImagesIsSaved.value
+            eMap?.let {
+                it[key] = isSaved
             }
-            vm.evaluateFeedImagesIsSaved.value = map
-        }, { key ->
-            val map = vm.evaluateFeedImagesIsSaved.value
-            map?.let {
-                it[key] = false
+            fMap?.let {
+                it[key] = isSaved
             }
-            vm.evaluateFeedImagesIsSaved.value = map
-        })
+            vm.evaluateFeedImagesIsSaved.value = eMap
+            vm.followingFeedImagesIsSaved.value = fMap
+        }
         evaluateFeedAdapter.onClickListener = this@EvaluateFragment
         binding.vpEvaluate.apply {
             adapter = evaluateFeedAdapter
@@ -99,21 +98,12 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
             evaluateFeedAdapter.setSavedButtonType(it)
         })
 
-        vm.updateFeedImages.observe(viewLifecycleOwner, Observer {
+        vm.updateFeedImage.observe(viewLifecycleOwner, Observer {
             it?.let {
+                Log.d("Sangmeebee", "evaluate_${it}")
                 evaluateFeedAdapter.updateItem(it)
             }
         })
-
-        vm.evaluateMessage.observe(viewLifecycleOwner, Observer {
-            AlertDialog.Builder(requireContext()).setMessage(R.string.complete_evaluation_text)
-                .setPositiveButton("네") { dialog, which ->
-                }
-                .setNegativeButton("아니오") { dialog, which ->
-
-                }.create().show()
-        })
-
 
         vm.evaluateLoadingComplete.observe(viewLifecycleOwner, Observer {
             if (it) {

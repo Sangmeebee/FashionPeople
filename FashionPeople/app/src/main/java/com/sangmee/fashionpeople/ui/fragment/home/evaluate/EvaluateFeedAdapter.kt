@@ -13,7 +13,7 @@ import com.sangmee.fashionpeople.databinding.ItemEvaluateFeedBinding
 import kotlinx.android.synthetic.main.item_evaluate_feed.view.*
 
 
-class EvaluateFeedAdapter(private val myId: String, private val feedIsSaved: (String) -> Unit, private val feedIsDeleted: (String) -> Unit) :
+class EvaluateFeedAdapter(private val myId: String, private val feedIsSaved: (String, Boolean) -> Unit) :
     RecyclerView.Adapter<EvaluateFeedViewHolder>() {
 
     private val items = mutableListOf<FeedImage>()
@@ -56,14 +56,14 @@ class EvaluateFeedAdapter(private val myId: String, private val feedIsSaved: (St
         viewHolder.itemView.iv_save_image.setOnClickListener {
             items[viewHolder.adapterPosition].let{
                 onClickListener?.onClickSave(it.imageName!!)
-                feedIsSaved(it.imageName!!)
+                feedIsSaved(it.imageName!!, true)
             }
         }
 
         viewHolder.itemView.iv_delete_image.setOnClickListener {
             items[viewHolder.adapterPosition].let{
                 onClickListener?.onClickDelete(it.imageName!!)
-                feedIsDeleted(it.imageName!!)
+                feedIsSaved(it.imageName!!, false)
             }
         }
 

@@ -1,6 +1,7 @@
 package com.sangmee.fashionpeople.ui.fragment.home.following
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,19 +46,18 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
     }
 
     private fun initViewPager() {
-        followingFeedAdapter = FollowingFeedAdapter(vm.userId, { key ->
-            val map = vm.followingFeedImagesIsSaved.value
-            map?.let {
-                it[key] = true
+        followingFeedAdapter = FollowingFeedAdapter(vm.userId) { key, isSaved ->
+            val eMap = vm.evaluateFeedImagesIsSaved.value
+            val fMap = vm.evaluateFeedImagesIsSaved.value
+            eMap?.let {
+                it[key] = isSaved
             }
-            vm.followingFeedImagesIsSaved.value = map
-        }, { key ->
-            val map = vm.followingFeedImagesIsSaved.value
-            map?.let {
-                it[key] = false
+            fMap?.let {
+                it[key] = isSaved
             }
-            vm.followingFeedImagesIsSaved.value = map
-        })
+            vm.evaluateFeedImagesIsSaved.value = eMap
+            vm.followingFeedImagesIsSaved.value = fMap
+        }
         followingFeedAdapter.onClickListener = this@FollowingFragment
         binding.vpFollowing.apply {
             adapter = followingFeedAdapter
@@ -98,8 +98,9 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
             followingFeedAdapter.setSavedButtonType(it)
         })
 
-        vm.updateFeedImages.observe(viewLifecycleOwner, Observer {
+        vm.updateFeedImage.observe(viewLifecycleOwner, Observer {
             it?.let {
+                Log.d("Sangmeebee", "following_${it}")
                 followingFeedAdapter.updateItem(it)
             }
         })

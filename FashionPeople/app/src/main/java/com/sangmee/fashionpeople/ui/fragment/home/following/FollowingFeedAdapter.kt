@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.item_following_feed.view.iv_save_image
 import kotlinx.android.synthetic.main.item_following_feed.view.ll_container
 import kotlinx.android.synthetic.main.item_following_feed.view.tv_comment
 
-class FollowingFeedAdapter(private val myId: String, private val feedIsSaved: (String) -> Unit, private val feedIsDeleted: (String) -> Unit) :
+class FollowingFeedAdapter(private val myId: String, private val feedIsSaved: (String, Boolean) -> Unit) :
     RecyclerView.Adapter<FollowingFeedViewHolder>() {
 
     private val items = mutableListOf<FeedImage>()
@@ -60,14 +60,14 @@ class FollowingFeedAdapter(private val myId: String, private val feedIsSaved: (S
         viewHolder.itemView.iv_save_image.setOnClickListener {
             items[viewHolder.adapterPosition].let{
                 onClickListener?.onClickSave(it.imageName!!)
-                feedIsSaved(it.imageName!!)
+                feedIsSaved(it.imageName!!, true)
             }
         }
 
         viewHolder.itemView.iv_delete_image.setOnClickListener {
             items[viewHolder.adapterPosition].let{
                 onClickListener?.onClickDelete(it.imageName!!)
-                feedIsDeleted(it.imageName!!)
+                feedIsSaved(it.imageName!!, false)
             }
         }
 

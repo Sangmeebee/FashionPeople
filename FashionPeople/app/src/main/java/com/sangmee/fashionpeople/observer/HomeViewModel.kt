@@ -1,5 +1,6 @@
 package com.sangmee.fashionpeople.observer
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -41,15 +42,11 @@ class HomeViewModel : ViewModel() {
         get() = _savedFeedImages
 
     private val _updateFeedImage = MutableLiveData<FeedImage>()
-    val updateFeedImages: LiveData<FeedImage>
+    val updateFeedImage: LiveData<FeedImage>
         get() = _updateFeedImage
 
     private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
     val userId = GlobalApplication.prefs.getString("${loginType}_custom_id", "empty")
-
-    private val _evaluateMessage = SingleLiveEvent<Unit>()
-    val evaluateMessage: LiveData<Unit>
-        get() = _evaluateMessage
 
     val evaluateLoadingComplete = MutableLiveData(false)
     val followingLoadingComplete = MutableLiveData(false)
@@ -83,8 +80,7 @@ class HomeViewModel : ViewModel() {
             .doAfterTerminate { getSaveImages() }
             .subscribe({
                 _followingFeedImages.value = it
-            }, {
-            }).addTo(compositeDisposable)
+            }, { Log.d("Sangmeebee", "evaluate_${it.message}") }).addTo(compositeDisposable)
     }
 
     fun postSaveImage(imageName: String) {
@@ -92,7 +88,8 @@ class HomeViewModel : ViewModel() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doAfterTerminate { saveComplete.value = true }
-            .subscribe { }.addTo(compositeDisposable)
+            .subscribe({ }, { t -> Log.d("Sangmeebee", "evaluate_${t.message}") })
+            .addTo(compositeDisposable)
     }
 
     fun deleteSaveImage(imageName: String) {
@@ -105,14 +102,22 @@ class HomeViewModel : ViewModel() {
 
     fun ratingClick(imageName: String, rating: Float) {
         feedImageRepository.updateImageScore(imageName, Evaluation(userId, rating))
-            .andThen(RetrofitClient.getFeedImageService().getFeedImageByName(imageName))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                getFeedImage(imageName)
+            }, {
+            }).addTo(compositeDisposable)
+    }
+
+    private fun getFeedImage(imageName: String) {
+        RetrofitClient.getFeedImageService().getFeedImageByName(imageName)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 it?.let {
                     _updateFeedImage.value = it
                 }
-                _evaluateMessage.call()
             }, {
             }).addTo(compositeDisposable)
     }
@@ -120,5 +125,6 @@ class HomeViewModel : ViewModel() {
 
     fun clearDisposable() {
         compositeDisposable.clear()
+        Log.d("Sangmeebee", "clearDisposable")
     }
 }
