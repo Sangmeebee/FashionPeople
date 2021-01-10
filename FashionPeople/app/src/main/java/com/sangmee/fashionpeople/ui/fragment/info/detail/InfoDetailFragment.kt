@@ -1,7 +1,6 @@
 package com.sangmee.fashionpeople.ui.fragment.info.detail
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +21,6 @@ import com.sangmee.fashionpeople.ui.fragment.comment.CommentDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.grade.GradeDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.info.other.OtherFragment
 import kotlinx.android.synthetic.main.fragment_info_detail.*
-import kotlinx.android.synthetic.main.item_info_detail_feed.*
 
 class InfoDetailFragment(
     private val customId: String,
@@ -41,6 +39,7 @@ class InfoDetailFragment(
     private val mainVm by activityViewModels<MainViewModel>()
     private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
     val userId = GlobalApplication.prefs.getString("${loginType}_custom_id", "empty")
+    private var pos: Int? = null
 
     private lateinit var detailAdapter: DetailAdapter
 
@@ -77,41 +76,42 @@ class InfoDetailFragment(
         viewModel.feedImages.observe(viewLifecycleOwner, Observer {
             detailAdapter.setFeedImages(it)
             val saveImages = mutableListOf<String>()
-            mainVm.saveImages.value?.let{
-                for(feedImage in it){
+            mainVm.saveImages.value?.let {
+                for (feedImage in it) {
                     saveImages.add(feedImage.imageName!!)
                 }
-                detailAdapter.setSaveItems(saveImages)
+                detailAdapter.setSaveItems(saveImages, null)
             }
         })
 
         viewModel.saveImages.observe(viewLifecycleOwner, Observer {
             detailAdapter.setFeedImages(it)
             val saveImages = mutableListOf<String>()
-            mainVm.saveImages.value?.let{
-                for(feedImage in it){
+            mainVm.saveImages.value?.let {
+                for (feedImage in it) {
                     saveImages.add(feedImage.imageName!!)
                 }
-                detailAdapter.setSaveItems(saveImages)
+                detailAdapter.setSaveItems(saveImages, null)
             }
         })
 
         viewModel.isComplete.observe(viewLifecycleOwner, Observer {
-                pb_loading.isVisible = false
-                vp_detail.apply {
-                    post {
-                        setCurrentItem(position, false)
-                        isVisible = true
-                    }
+            pb_loading.isVisible = false
+            vp_detail.apply {
+                post {
+                    setCurrentItem(position, false)
+                    isVisible = true
                 }
+            }
         })
 
         mainVm.saveImages.observe(viewLifecycleOwner, Observer {
             val saveImages = mutableListOf<String>()
-            for(feedImage in it){
+            for (feedImage in it) {
                 saveImages.add(feedImage.imageName!!)
             }
-            detailAdapter.setSaveItems(saveImages)
+
+            detailAdapter.setSaveItems(saveImages, pos)
         })
 
         viewModel.saveComplete.observe(this, Observer {
@@ -154,11 +154,13 @@ class InfoDetailFragment(
         }
     }
 
-    override fun onClickSave(imageName: String) {
+    override fun onClickSave(imageName: String, position: Int) {
         viewModel.postSaveImage(imageName)
+        pos = position
     }
 
-    override fun onClickDelete(imageName: String) {
+    override fun onClickDelete(imageName: String, position: Int) {
         viewModel.deleteSaveImage(imageName)
+        pos = position
     }
 }

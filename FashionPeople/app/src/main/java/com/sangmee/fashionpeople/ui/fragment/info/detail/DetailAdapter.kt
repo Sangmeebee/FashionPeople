@@ -42,7 +42,7 @@ class DetailAdapter : RecyclerView.Adapter<DetailAdapter.DetailViewHolder>() {
         viewHolder.itemView.iv_save_image.setOnClickListener {
             items[viewHolder.adapterPosition].let {
                 it.imageName?.let { imageName ->
-                    onClickListener?.onClickSave(imageName)
+                    onClickListener?.onClickSave(imageName, viewHolder.adapterPosition)
                 }
             }
         }
@@ -50,7 +50,7 @@ class DetailAdapter : RecyclerView.Adapter<DetailAdapter.DetailViewHolder>() {
         viewHolder.itemView.iv_delete_image.setOnClickListener {
             items[viewHolder.adapterPosition].let {
                 it.imageName?.let { imageName ->
-                    onClickListener?.onClickDelete(imageName)
+                    onClickListener?.onClickDelete(imageName, viewHolder.adapterPosition)
                 }
             }
         }
@@ -85,18 +85,23 @@ class DetailAdapter : RecyclerView.Adapter<DetailAdapter.DetailViewHolder>() {
         notifyDataSetChanged()
     }
 
-    fun setSaveItems(list: List<String>) {
+    fun setSaveItems(list: List<String>, position: Int?) {
         saveItems.clear()
         saveItems.addAll(list)
-        notifyDataSetChanged()
+        Log.d("SangmeePosition", position.toString())
+        if (position == null) {
+            notifyDataSetChanged()
+        } else {
+            notifyItemChanged(position)
+        }
     }
 
     interface OnClickListener {
         fun onClickComment(imageName: String)
         fun onClickGrade(feedImage: FeedImage)
         fun onClickProfile(feedImage: FeedImage)
-        fun onClickSave(imageName: String)
-        fun onClickDelete(imageName: String)
+        fun onClickSave(imageName: String, position: Int)
+        fun onClickDelete(imageName: String, position: Int)
     }
 
     class DetailViewHolder(private val binding: ItemInfoDetailFeedBinding) :
