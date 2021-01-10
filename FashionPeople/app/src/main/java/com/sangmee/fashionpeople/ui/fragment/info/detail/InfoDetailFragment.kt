@@ -1,11 +1,12 @@
 package com.sangmee.fashionpeople.ui.fragment.info.detail
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -17,6 +18,7 @@ import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.observer.MainViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
+import com.sangmee.fashionpeople.ui.ZoomOutPageTransformer
 import com.sangmee.fashionpeople.ui.fragment.comment.CommentDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.grade.GradeDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.info.other.OtherFragment
@@ -68,6 +70,7 @@ class InfoDetailFragment(
         vp_detail.apply {
             adapter = detailAdapter
             orientation = ViewPager2.ORIENTATION_VERTICAL
+            setPageTransformer(ZoomOutPageTransformer())
         }
     }
 
@@ -96,13 +99,7 @@ class InfoDetailFragment(
         })
 
         viewModel.isComplete.observe(viewLifecycleOwner, Observer {
-            pb_loading.isVisible = false
-            vp_detail.apply {
-                post {
-                    setCurrentItem(position, false)
-                    isVisible = true
-                }
-            }
+            crossfade()
         })
 
         mainVm.saveImages.observe(viewLifecycleOwner, Observer {
@@ -123,6 +120,27 @@ class InfoDetailFragment(
             Toast.makeText(context, "사진을 삭제했습니다.", Toast.LENGTH_SHORT).show()
             mainVm.getMySaveImage()
         })
+    }
+
+    private fun crossfade() {
+        vp_detail.apply {
+            setCurrentItem(position, false)
+            alpha = 0f
+            visibility = View.VISIBLE
+
+            animate()
+                .alpha(1f)
+                .setDuration(500L)
+                .setListener(null)
+        }
+        pb_loading.animate()
+            .alpha(0f)
+            .setDuration(500L)
+            .setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    pb_loading?.visibility = View.GONE
+                }
+            })
     }
 
     private fun showCommentFragment(imageName: String) {

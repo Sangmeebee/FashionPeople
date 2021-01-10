@@ -1,5 +1,7 @@
 package com.sangmee.fashionpeople.ui.add
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -57,10 +59,29 @@ class AddFragment : Fragment() {
 
         vm.isComplete.observe(viewLifecycleOwner, Observer {
             if(it){
-                binding.pbLoading.isVisible = false
-                binding.clContainer.isVisible = true
+                crossfade()
             }
         })
+    }
+
+    private fun crossfade() {
+        binding.clContainer.apply {
+            alpha = 0f
+            visibility = View.VISIBLE
+
+            animate()
+                .alpha(1f)
+                .setDuration(500L)
+                .setListener(null)
+        }
+        binding.pbLoading.animate()
+            .alpha(0f)
+            .setDuration(500L)
+            .setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    binding.pbLoading.visibility = View.GONE
+                }
+            })
     }
 
     private fun setProgressView() {

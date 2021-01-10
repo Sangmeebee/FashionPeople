@@ -1,6 +1,8 @@
 package com.sangmee.fashionpeople.ui.fragment.info
 
 import android.Manifest
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
@@ -169,16 +171,14 @@ class InfoFragment : Fragment() {
         vm.isCallFeedImageComplete.observe(viewLifecycleOwner, Observer {
             if(it){
                 if(vm.isCallProfileComplete.value!!){
-                    binding.pbLoading.isVisible = false
-                    binding.clContainer.isVisible = true
+                    crossfade()
                 }
             }
         })
         vm.isCallProfileComplete.observe(viewLifecycleOwner, Observer {
             if(it){
                 if(vm.isCallFeedImageComplete.value!!){
-                    binding.pbLoading.isVisible = false
-                    binding.clContainer.isVisible = true
+                    crossfade()
                 }
             }
         })
@@ -285,6 +285,26 @@ class InfoFragment : Fragment() {
             setDisplayShowTitleEnabled(false)
         }
         setHasOptionsMenu(true)
+    }
+
+    private fun crossfade() {
+        binding.clContainer.apply {
+            alpha = 0f
+            visibility = View.VISIBLE
+
+            animate()
+                .alpha(1f)
+                .setDuration(500L)
+                .setListener(null)
+        }
+        binding.pbLoading.animate()
+            .alpha(0f)
+            .setDuration(500L)
+            .setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    binding.pbLoading.visibility = View.GONE
+                }
+            })
     }
 
     override fun onDestroy() {

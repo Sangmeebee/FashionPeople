@@ -1,5 +1,7 @@
 package com.sangmee.fashionpeople.ui.fragment.info.other
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -127,18 +129,12 @@ class OtherFragment : Fragment() {
 
         infoVm.isCallFeedImageComplete.observe(viewLifecycleOwner, Observer {
             if(it){
-                if(infoVm.isCallProfileComplete.value!!){
-                    binding.pbLoading.isVisible = false
-                    binding.clContainer.isVisible = true
-                }
+                crossfade()
             }
         })
         infoVm.isCallProfileComplete.observe(viewLifecycleOwner, Observer {
             if(it){
-                if(infoVm.isCallFeedImageComplete.value!!){
-                    binding.pbLoading.isVisible = false
-                    binding.clContainer.isVisible = true
-                }
+                crossfade()
             }
         })
     }
@@ -202,6 +198,27 @@ class OtherFragment : Fragment() {
         (activity as MainActivity).supportActionBar?.run {
             setDisplayShowTitleEnabled(false)
         }
+    }
+
+
+    private fun crossfade() {
+        binding.clContainer.apply {
+            alpha = 0f
+            visibility = View.VISIBLE
+
+            animate()
+                .alpha(1f)
+                .setDuration(500L)
+                .setListener(null)
+        }
+        binding.pbLoading.animate()
+            .alpha(0f)
+            .setDuration(500L)
+            .setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    binding.pbLoading.visibility = View.GONE
+                }
+            })
     }
 
     companion object {

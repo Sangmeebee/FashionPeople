@@ -1,5 +1,7 @@
 package com.sangmee.fashionpeople.ui.fragment.info.follow
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -113,9 +115,28 @@ class InfoFollowingFragment(private val userId: String) : Fragment() {
 
         vm.isFollowingComplete.observe(viewLifecycleOwner, Observer {
             if(it){
-                pb_loading.isVisible = false
-                rv_follow.isVisible = true
+                crossfade()
             }
         })
+    }
+
+    private fun crossfade() {
+        rv_follow.apply {
+            alpha = 0f
+            visibility = View.VISIBLE
+
+            animate()
+                .alpha(1f)
+                .setDuration(500L)
+                .setListener(null)
+        }
+        pb_loading.animate()
+            .alpha(0f)
+            .setDuration(500L)
+            .setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    pb_loading?.visibility = View.GONE
+                }
+            })
     }
 }
