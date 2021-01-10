@@ -13,12 +13,12 @@ import com.sangmee.fashionpeople.databinding.ItemEvaluateFeedBinding
 import kotlinx.android.synthetic.main.item_evaluate_feed.view.*
 
 
-class EvaluateFeedAdapter(private val myId: String, private val feedIsSaved: (String, Boolean) -> Unit) :
+class EvaluateFeedAdapter(private val myId: String) :
     RecyclerView.Adapter<EvaluateFeedViewHolder>() {
 
     private val items = mutableListOf<FeedImage>()
     var onClickListener: OnClickListener? = null
-    private val isSaved = mutableMapOf<String, Boolean>()
+    private val isSaved = mutableListOf<String>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EvaluateFeedViewHolder {
         val binding = DataBindingUtil.inflate<ItemEvaluateFeedBinding>(
@@ -54,16 +54,14 @@ class EvaluateFeedAdapter(private val myId: String, private val feedIsSaved: (St
         }
 
         viewHolder.itemView.iv_save_image.setOnClickListener {
-            items[viewHolder.adapterPosition].let{
-                onClickListener?.onClickSave(it.imageName!!)
-                feedIsSaved(it.imageName!!, true)
+            items[viewHolder.adapterPosition].let {
+                onClickListener?.onClickSave(it.imageName!!, viewHolder.adapterPosition)
             }
         }
 
         viewHolder.itemView.iv_delete_image.setOnClickListener {
-            items[viewHolder.adapterPosition].let{
-                onClickListener?.onClickDelete(it.imageName!!)
-                feedIsSaved(it.imageName!!, false)
+            items[viewHolder.adapterPosition].let {
+                onClickListener?.onClickDelete(it.imageName!!, viewHolder.adapterPosition)
             }
         }
 
@@ -72,9 +70,7 @@ class EvaluateFeedAdapter(private val myId: String, private val feedIsSaved: (St
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onBindViewHolder(holder: EvaluateFeedViewHolder, position: Int) {
-        isSaved[items[position].imageName]?.let{
-            holder.bind(items[position], it)
-        }
+        holder.bind(items[position], isSaved)
     }
 
     override fun getItemCount(): Int = items.size
@@ -86,10 +82,14 @@ class EvaluateFeedAdapter(private val myId: String, private val feedIsSaved: (St
         notifyDataSetChanged()
     }
 
-    fun setSavedButtonType(isSave: Map<String, Boolean>) {
+    fun setSavedButtonType(isSave: List<String>, position: Int?) {
         isSaved.clear()
-        isSaved.putAll(isSave)
-        notifyDataSetChanged()
+        isSaved.addAll(isSave)
+        if(position == null){
+            notifyDataSetChanged()
+        } else {
+            notifyItemChanged(position)
+        }
     }
 
     fun updateItem(feedImage: FeedImage) {
@@ -108,8 +108,9 @@ class EvaluateFeedAdapter(private val myId: String, private val feedIsSaved: (St
             fromUser: Boolean,
             feedImage: FeedImage
         )
-        fun onClickSave(imageName: String)
-        fun onClickDelete(imageName: String)
+
+        fun onClickSave(imageName: String, position: Int)
+        fun onClickDelete(imageName: String, position: Int)
         fun onClickComment(imageName: String)
         fun onClickGrade(feedImage: FeedImage)
         fun onClickProfile(feedImage: FeedImage)
