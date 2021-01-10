@@ -1,9 +1,12 @@
 package com.sangmee.fashionpeople.ui.fragment.info.detail
 
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -13,10 +16,10 @@ import com.sangmee.fashionpeople.databinding.ItemInfoDetailFeedBinding
 import kotlinx.android.synthetic.main.item_info_detail_feed.view.*
 
 
-class DetailAdapter(private val myId: String) :
-    RecyclerView.Adapter<DetailAdapter.DetailViewHolder>() {
+class DetailAdapter : RecyclerView.Adapter<DetailAdapter.DetailViewHolder>() {
 
     private val items = mutableListOf<FeedImage>()
+    private val saveItems = mutableListOf<String>()
     var onClickListener: OnClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailViewHolder {
@@ -26,15 +29,32 @@ class DetailAdapter(private val myId: String) :
             parent,
             false
         )
-        val viewHolder = DetailViewHolder(binding, myId)
+        val viewHolder = DetailViewHolder(binding)
 
-        viewHolder.itemView.cl_comment.setOnClickListener {
+        viewHolder.itemView.tv_comment.setOnClickListener {
             items[viewHolder.adapterPosition].let {
                 it.imageName?.let { imageName ->
                     onClickListener?.onClickComment(imageName)
                 }
             }
         }
+
+        viewHolder.itemView.iv_save_image.setOnClickListener {
+            items[viewHolder.adapterPosition].let {
+                it.imageName?.let { imageName ->
+                    onClickListener?.onClickSave(imageName)
+                }
+            }
+        }
+
+        viewHolder.itemView.iv_delete_image.setOnClickListener {
+            items[viewHolder.adapterPosition].let {
+                it.imageName?.let { imageName ->
+                    onClickListener?.onClickDelete(imageName)
+                }
+            }
+        }
+
         viewHolder.itemView.ll_rating_evaluate_average.setOnClickListener {
             items[viewHolder.adapterPosition].let {
                 onClickListener?.onClickGrade(it)
@@ -52,7 +72,8 @@ class DetailAdapter(private val myId: String) :
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onBindViewHolder(holder: DetailViewHolder, position: Int) {
-        holder.bind(items[position])
+            holder.bind(items[position], saveItems)
+
     }
 
     override fun getItemCount(): Int = items.size
@@ -64,20 +85,30 @@ class DetailAdapter(private val myId: String) :
         notifyDataSetChanged()
     }
 
+    fun setSaveItems(list: List<String>) {
+        saveItems.clear()
+        saveItems.addAll(list)
+        notifyDataSetChanged()
+    }
 
     interface OnClickListener {
         fun onClickComment(imageName: String)
         fun onClickGrade(feedImage: FeedImage)
         fun onClickProfile(feedImage: FeedImage)
+        fun onClickSave(imageName: String)
+        fun onClickDelete(imageName: String)
     }
 
-    class DetailViewHolder(private val binding: ItemInfoDetailFeedBinding, private val myId: String) :
+    class DetailViewHolder(private val binding: ItemInfoDetailFeedBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-        fun bind(feedImage: FeedImage) {
+        fun bind(feedImage: FeedImage, saveItems : List<String>) {
             binding.feedImage = feedImage
+            binding.isSaved = feedImage.imageName in saveItems
             binding.executePendingBindings()
+
+
             with(itemView) {
                 Glide.with(context)
                     .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${feedImage.user?.id}/feed/${feedImage.imageName}")

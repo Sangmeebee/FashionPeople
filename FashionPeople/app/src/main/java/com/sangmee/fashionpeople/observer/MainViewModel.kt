@@ -1,11 +1,12 @@
 package com.sangmee.fashionpeople.observer
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.sangmee.fashionpeople.data.dataSource.remote.FUserRemoteDataSourceImpl
-import com.sangmee.fashionpeople.data.repository.FUserRepository
-import com.sangmee.fashionpeople.data.repository.FUserRepositoryImpl
+import com.sangmee.fashionpeople.data.GlobalApplication
+import com.sangmee.fashionpeople.data.dataSource.remote.SaveImageRemoteDataSourceImpl
+import com.sangmee.fashionpeople.data.model.FeedImage
+import com.sangmee.fashionpeople.data.repository.SaveImageRepository
+import com.sangmee.fashionpeople.data.repository.SaveImageRepositoryImpl
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
@@ -14,29 +15,26 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 class MainViewModel : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
 
-    private val fUserRepository: FUserRepository by lazy {
-        FUserRepositoryImpl(FUserRemoteDataSourceImpl())
+    private val saveImageRepository: SaveImageRepository by lazy {
+        SaveImageRepositoryImpl(SaveImageRemoteDataSourceImpl())
     }
 
-    val evaluateNow = MutableLiveData(false)
+    private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
+    val userId = GlobalApplication.prefs.getString("${loginType}_custom_id", "empty")
 
+    val saveImages = MutableLiveData<List<FeedImage>>()
 
-
-
-    fun callProfile(userId: String) {
-        //프로필 세팅
-        fUserRepository.getFUser(userId)
+    fun getMySaveImage() {
+        saveImageRepository.getSaveImages(userId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                evaluateNow.value = it.evaluateNow
-            }, { t ->
-                Log.e("CALL_PROFILE_ERROR", t.message.toString())
+                saveImages.value = it
+            }, {
             }).addTo(compositeDisposable)
-
     }
 
-    fun unBindViewModel(){
+    fun unBindViewModel() {
         compositeDisposable.clear()
     }
 }

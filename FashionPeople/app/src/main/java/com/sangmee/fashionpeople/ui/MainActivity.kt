@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -16,6 +17,7 @@ import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.data.dataSource.remote.FUserRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.repository.FUserRepository
 import com.sangmee.fashionpeople.data.repository.FUserRepositoryImpl
+import com.sangmee.fashionpeople.observer.MainViewModel
 import com.sangmee.fashionpeople.ui.add.AddFragment
 import com.sangmee.fashionpeople.ui.add.TagActivity
 import com.sangmee.fashionpeople.ui.fragment.AlarmFragment
@@ -36,12 +38,15 @@ class MainActivity : AppCompatActivity() {
     private val fUserRepository: FUserRepository by lazy {
         FUserRepositoryImpl(FUserRemoteDataSourceImpl())
     }
+    private val mainVm by viewModels<MainViewModel>()
     private val compositeDisposable = CompositeDisposable()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        mainVm.getMySaveImage()
 
         navigationView.post { navigationView.selectedItemId = R.id.homeItem }
         navigationView.setOnNavigationItemSelectedListener {
@@ -180,6 +185,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         compositeDisposable.clear()
+        mainVm.unBindViewModel()
         super.onDestroy()
     }
 

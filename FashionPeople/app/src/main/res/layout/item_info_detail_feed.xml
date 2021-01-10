@@ -5,6 +5,12 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <variable
+            name="isSaved"
+            type="Boolean" />
+
         <variable
             name="feedImage"
             type="com.sangmee.fashionpeople.data.model.FeedImage" />
@@ -114,20 +120,39 @@
                 android:textColor="@color/colorBlack"
                 android:textSize="13sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/iv_save_image"
+                app:layout_constraintEnd_toStartOf="@id/fl_save_btn"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <ImageView
-                android:id="@+id/iv_save_image"
+            <FrameLayout
+                android:id="@+id/fl_save_btn"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/bg_save_image"
-                android:padding="8dp"
-                android:src="@drawable/ic_photo_saved_black"
-                app:civ_border_width="1dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_delete_image"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bg_delete_image"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_photo_delete"
+                    android:visibility="@{isSaved ? View.VISIBLE : View.GONE}"
+                    app:civ_border_width="1dp" />
+
+                <ImageView
+                    android:id="@+id/iv_save_image"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/bg_save_image"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_photo_saved_black"
+                    android:visibility="@{isSaved ? View.GONE : View.VISIBLE}"
+                    app:civ_border_width="1dp" />
+            </FrameLayout>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
