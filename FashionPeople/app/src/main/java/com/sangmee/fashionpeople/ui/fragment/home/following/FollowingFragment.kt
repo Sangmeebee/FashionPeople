@@ -1,11 +1,14 @@
 package com.sangmee.fashionpeople.ui.fragment.home.following
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RatingBar
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -15,8 +18,9 @@ import androidx.viewpager2.widget.ViewPager2
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.databinding.FragmentFollowingBinding
-import com.sangmee.fashionpeople.observer.HomeViewModel
+import com.sangmee.fashionpeople.observer.MainViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
+import com.sangmee.fashionpeople.ui.ZoomOutPageTransformer
 import com.sangmee.fashionpeople.ui.fragment.comment.CommentDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.grade.GradeDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.info.other.OtherFragment
@@ -25,8 +29,9 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
 
     private lateinit var binding: FragmentFollowingBinding
     private lateinit var followingFeedAdapter: FollowingFeedAdapter
-    private val vm: HomeViewModel by activityViewModels()
-
+    private val vm: HomeFollowingViewModel by activityViewModels()
+    private val mainVm by activityViewModels<MainViewModel>()
+    private var pos: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,22 +51,12 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
     }
 
     private fun initViewPager() {
-        followingFeedAdapter = FollowingFeedAdapter(vm.userId) { key, isSaved ->
-            val eMap = vm.evaluateFeedImagesIsSaved.value
-            val fMap = vm.evaluateFeedImagesIsSaved.value
-            eMap?.let {
-                it[key] = isSaved
-            }
-            fMap?.let {
-                it[key] = isSaved
-            }
-            vm.evaluateFeedImagesIsSaved.value = eMap
-            vm.followingFeedImagesIsSaved.value = fMap
-        }
+        followingFeedAdapter = FollowingFeedAdapter(vm.userId)
         followingFeedAdapter.onClickListener = this@FollowingFragment
         binding.vpFollowing.apply {
             adapter = followingFeedAdapter
             orientation = ViewPager2.ORIENTATION_VERTICAL
+            setPageTransformer(ZoomOutPageTransformer())
         }
     }
 
@@ -71,31 +66,18 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
                 binding.vpFollowing.visibility = View.VISIBLE
                 binding.tvEmptyResult.visibility = View.GONE
                 followingFeedAdapter.setFeedImages(it)
+                //저장 버튼 리사이클러뷰 세팅
+                val saveImages = mutableListOf<String>()
+                mainVm.saveImages.value?.let { feedImages ->
+                    for (feedImage in feedImages) {
+                        saveImages.add(feedImage.imageName!!)
+                    }
+                    followingFeedAdapter.setSavedButtonType(saveImages, null)
+                }
             } else {
                 binding.vpFollowing.visibility = View.GONE
                 binding.tvEmptyResult.visibility = View.VISIBLE
             }
-        })
-
-        vm.savedFeedImages.observe(viewLifecycleOwner, Observer { saveImages ->
-            vm.followingFeedImages.value?.let { feedImages ->
-                val map = mutableMapOf<String, Boolean>()
-                for (feedImage in feedImages) {
-                    var isExist = false
-                    for (saveImage in saveImages) {
-                        if (feedImage.imageName == saveImage.imageName) {
-                            isExist = true
-                        }
-                    }
-                    map[feedImage.imageName!!] = isExist
-                }
-                vm.followingFeedImagesIsSaved.value = map
-            }
-        })
-
-        vm.followingFeedImagesIsSaved.observe(viewLifecycleOwner, Observer {
-            vm.followingLoadingComplete.value = true
-            followingFeedAdapter.setSavedButtonType(it)
         })
 
         vm.updateFeedImage.observe(viewLifecycleOwner, Observer {
@@ -107,11 +89,49 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
 
         vm.followingLoadingComplete.observe(viewLifecycleOwner, Observer {
 
-            if (it) {
-                binding.pbLoading.isVisible = false
-                binding.vpFollowing.isVisible = true
-            }
+            Log.d("Sangmeebee", "followingLoadingComplete")
+            crossfade()
         })
+
+
+        vm.saveComplete.observe(this, Observer {
+            Toast.makeText(context, "사진을 저장했습니다.", Toast.LENGTH_SHORT).show()
+            mainVm.getMySaveImage()
+        })
+
+        vm.deleteComplete.observe(this, Observer {
+            Toast.makeText(context, "사진을 삭제했습니다.", Toast.LENGTH_SHORT).show()
+            mainVm.getMySaveImage()
+        })
+
+        mainVm.saveImages.observe(viewLifecycleOwner, Observer {
+            val saveImages = mutableListOf<String>()
+            for (feedImage in it) {
+                saveImages.add(feedImage.imageName!!)
+            }
+
+            followingFeedAdapter.setSavedButtonType(saveImages, pos)
+        })
+    }
+
+    private fun crossfade() {
+        binding.clContainer.apply {
+            alpha = 0f
+            visibility = View.VISIBLE
+
+            animate()
+                .alpha(1f)
+                .setDuration(500L)
+                .setListener(null)
+        }
+        binding.pbLoading.animate()
+            .alpha(0f)
+            .setDuration(500L)
+            .setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    binding.pbLoading.visibility = View.GONE
+                }
+            })
     }
 
     private fun showCommentFragment(imageName: String) {
@@ -147,12 +167,14 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
         showGradeFragment(feedImage)
     }
 
-    override fun onClickSave(imageName: String) {
+    override fun onClickSave(imageName: String, position: Int) {
         vm.postSaveImage(imageName)
+        pos = position
     }
 
-    override fun onClickDelete(imageName: String) {
+    override fun onClickDelete(imageName: String, position: Int) {
         vm.deleteSaveImage(imageName)
+        pos = position
     }
 
     override fun onClickProfile(feedImage: FeedImage) {

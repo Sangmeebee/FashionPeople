@@ -6,19 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.tabs.TabLayoutMediator
+import com.google.android.material.tabs.TabLayout
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.databinding.FragmentHomeBinding
+import com.sangmee.fashionpeople.ui.fragment.home.evaluate.EvaluateFragment
+import com.sangmee.fashionpeople.ui.fragment.home.following.FollowingFragment
+import kotlinx.android.synthetic.main.fragment_home.*
 
 
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var homeFragmentStateAdapter: HomeFragmentStateAdapter
 
-    private val tabNameList = arrayListOf("평가", "팔로잉")
-
+    private val evaluateFragment by lazy { EvaluateFragment() }
+    private val followingFragment by lazy { FollowingFragment() }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,23 +30,34 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUpViewPager()
+        setTabLayout()
     }
 
-    private fun setUpViewPager() {
-        homeFragmentStateAdapter = HomeFragmentStateAdapter(requireActivity())
-        binding.vpHome.apply {
-            adapter = homeFragmentStateAdapter
-            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    binding.tlHome.setScrollPosition(position, 0F, false)
+    private fun setTabLayout() {
+        val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.fl_home, evaluateFragment).commit()
+        tl_home.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                val position = tab!!.position
+                var selected: Fragment? = null
+                selected = when (position) {
+                    0 -> evaluateFragment
+                    else -> followingFragment
                 }
-            })
-        }
+                val fragment = requireActivity().supportFragmentManager.findFragmentById(R.id.fl_home)
+                if(fragment != null){
+                    fragmentTransaction.remove(fragment)
+                }
+                requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fl_home, selected).commit()
 
-        TabLayoutMediator(binding.tlHome, binding.vpHome) { tab, position ->
-            tab.text = tabNameList[position]
-        }.attach()
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+        })
     }
 }
 

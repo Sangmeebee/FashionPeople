@@ -22,6 +22,8 @@ import com.sangmee.fashionpeople.ui.add.AddFragment
 import com.sangmee.fashionpeople.ui.add.TagActivity
 import com.sangmee.fashionpeople.ui.fragment.AlarmFragment
 import com.sangmee.fashionpeople.ui.fragment.home.HomeFragment
+import com.sangmee.fashionpeople.ui.fragment.home.evaluate.HomeEvaluateViewModel
+import com.sangmee.fashionpeople.ui.fragment.home.following.HomeFollowingViewModel
 import com.sangmee.fashionpeople.ui.fragment.info.InfoFragment
 import com.sangmee.fashionpeople.ui.fragment.rank.RankFragment
 import com.theartofdev.edmodo.cropper.CropImage
@@ -39,6 +41,8 @@ class MainActivity : AppCompatActivity() {
         FUserRepositoryImpl(FUserRemoteDataSourceImpl())
     }
     private val mainVm by viewModels<MainViewModel>()
+    private val homeFollowingVm by viewModels<HomeFollowingViewModel>()
+    private val homeEvaluateVm by viewModels<HomeEvaluateViewModel>()
     private val compositeDisposable = CompositeDisposable()
 
 
@@ -88,12 +92,14 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.alarmItem -> {
                     if (currentFragment != "alarmItem") {
+
                         replaceFragment(AlarmFragment())
                         currentFragment = "alarmItem"
                     }
                 }
                 R.id.infoItem -> {
                     if (currentFragment != "infoItem") {
+
                         replaceFragment(InfoFragment())
                         currentFragment = "infoItem"
                     }
@@ -181,6 +187,11 @@ class MainActivity : AppCompatActivity() {
                 100
             )
         }
+    }
+
+    private fun unbindDisposable(){
+        homeEvaluateVm.clearDisposable()
+        homeFollowingVm.clearDisposable()
     }
 
     override fun onDestroy() {
