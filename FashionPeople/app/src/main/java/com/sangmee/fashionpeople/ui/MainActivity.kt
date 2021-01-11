@@ -20,12 +20,12 @@ import com.sangmee.fashionpeople.data.repository.FUserRepositoryImpl
 import com.sangmee.fashionpeople.observer.MainViewModel
 import com.sangmee.fashionpeople.ui.add.AddFragment
 import com.sangmee.fashionpeople.ui.add.TagActivity
-import com.sangmee.fashionpeople.ui.fragment.AlarmFragment
 import com.sangmee.fashionpeople.ui.fragment.home.HomeFragment
 import com.sangmee.fashionpeople.ui.fragment.home.evaluate.HomeEvaluateViewModel
 import com.sangmee.fashionpeople.ui.fragment.home.following.HomeFollowingViewModel
 import com.sangmee.fashionpeople.ui.fragment.info.InfoFragment
 import com.sangmee.fashionpeople.ui.fragment.rank.RankFragment
+import com.sangmee.fashionpeople.ui.fragment.search.SearchFragment
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -90,11 +90,11 @@ class MainActivity : AppCompatActivity() {
                 }
 
 
-                R.id.alarmItem -> {
-                    if (currentFragment != "alarmItem") {
+                R.id.searchItem -> {
+                    if (currentFragment != "searchItem") {
 
-                        replaceFragment(AlarmFragment())
-                        currentFragment = "alarmItem"
+                        replaceFragment(SearchFragment())
+                        currentFragment = "searchItem"
                     }
                 }
                 R.id.infoItem -> {

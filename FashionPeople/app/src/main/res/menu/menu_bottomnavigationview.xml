@@ -16,7 +16,7 @@
             android:icon="@drawable/add"
             android:title="추가" />
         <item
-            android:id="@+id/alarmItem"
+            android:id="@+id/searchItem"
             android:icon="@drawable/search"
             android:title="찾기" />
         <item
