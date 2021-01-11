@@ -33,14 +33,14 @@ class FollowViewModel : ViewModel() {
     //팔로잉의 팔로잉 여부
     val isFollowingsFollowing = MutableLiveData<MutableMap<String, Boolean>>()
     val callActivity = SingleLiveEvent<String>()
-    val isFollowerComplete = MutableLiveData(false)
-    val isFollowingComplete = MutableLiveData(false)
+    val isFollowerComplete = SingleLiveEvent<Any>()
+    val isFollowingComplete = SingleLiveEvent<Any>()
 
     fun callFollower(userId: String) {
         followRepository.getFollower(userId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doAfterTerminate { isFollowerComplete.value = true }
+            .doAfterTerminate { isFollowerComplete.call() }
             .subscribe({ followers.value = it }, { t -> Log.e("error", t.message.toString()) })
             .addTo(compositeDisposable)
 
@@ -50,7 +50,7 @@ class FollowViewModel : ViewModel() {
         followRepository.getFollowing(userId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doAfterTerminate { isFollowingComplete.value = true }
+            .doAfterTerminate { isFollowingComplete.call() }
             .subscribe({ followings.value = it }, { t -> Log.e("error", t.message.toString()) })
             .addTo(compositeDisposable)
     }

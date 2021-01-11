@@ -48,7 +48,6 @@ class InfoViewModel : ViewModel() {
     val profileReviseBtnEvent = SingleLiveEvent<Unit>()
     val behaviorSubject = BehaviorSubject.create<Unit>()
     var isCallProfileComplete = MutableLiveData(false)
-    var isCallFeedImageComplete = MutableLiveData(false)
 
     fun callProfile(userId: String) {
         //프로필 세팅

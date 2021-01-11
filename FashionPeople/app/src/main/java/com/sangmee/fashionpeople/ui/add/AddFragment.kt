@@ -1,11 +1,9 @@
 package com.sangmee.fashionpeople.ui.add
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -46,7 +44,7 @@ class AddFragment : Fragment() {
         observerCallback()
     }
 
-    private fun observerCallback(){
+    private fun observerCallback() {
         vm.evaluatedFeedImage.observe(viewLifecycleOwner, Observer {
             binding.feedImage = it
             it.evaluations?.let { evals ->
@@ -56,11 +54,20 @@ class AddFragment : Fragment() {
         })
 
         vm.isComplete.observe(viewLifecycleOwner, Observer {
-            if(it){
-                binding.pbLoading.isVisible = false
-                binding.clContainer.isVisible = true
-            }
+            crossfade()
         })
+    }
+
+    private fun crossfade() {
+        binding.clContainer.apply {
+            alpha = 0f
+            visibility = View.VISIBLE
+
+            animate()
+                .alpha(1f)
+                .setDuration(500L)
+                .setListener(null)
+        }
     }
 
     private fun setProgressView() {
@@ -92,7 +99,7 @@ class AddFragment : Fragment() {
                     }
                 }
             }
-            binding.progress1.progress = ((progressValue1 *100) / total).toFloat() + 5
+            binding.progress1.progress = ((progressValue1 * 100) / total).toFloat() + 5
             binding.progress1.labelText = "${progressValue1}명"
             binding.progress2.progress = ((progressValue2 * 100) / total).toFloat() + 5
             binding.progress2.labelText = "${progressValue2}명"

@@ -6,6 +6,7 @@ import com.sangmee.fashionpeople.data.dataSource.remote.FeedImageRemoteDataSourc
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.data.repository.FeedImageRepository
 import com.sangmee.fashionpeople.data.repository.FeedImageRepositoryImpl
+import com.sangmee.fashionpeople.util.SingleLiveEvent
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
@@ -20,14 +21,14 @@ class FeedImageViewModel : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
 
     val feedImages = MutableLiveData<List<FeedImage>>()
-    val isComplete = MutableLiveData<Boolean>()
+    val isComplete = SingleLiveEvent<Any>()
 
     fun callFeedImages(userId: String) {
         feedImageRepository.getFeedImages(
             userId
         ).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnTerminate { isComplete.value = true }
+            .doOnTerminate { isComplete.call() }
             .subscribe({
                 feedImages.value = it
             }, {

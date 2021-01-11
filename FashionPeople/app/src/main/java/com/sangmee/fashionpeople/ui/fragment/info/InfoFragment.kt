@@ -1,6 +1,8 @@
 package com.sangmee.fashionpeople.ui.fragment.info
 
 import android.Manifest
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
@@ -14,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -90,7 +91,10 @@ class InfoFragment : Fragment() {
             R.id.menu_setting -> {
                 val intent = Intent(context, SettingActivity::class.java)
                 startActivityForResult(intent, LOGOUT_CODE)
-                requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                requireActivity().overridePendingTransition(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left
+                )
             }
         }
         return super.onOptionsItemSelected(item)
@@ -125,7 +129,10 @@ class InfoFragment : Fragment() {
             vm.userName.value = data?.getStringExtra("nick_name")
             vm.gender.value = data?.getStringExtra("gender")
             vm.introduce.value = data?.getStringExtra("introduce")
-            Log.d("Sangmeebee", "${vm.userName.value.toString()}, ${vm.gender.value.toString()}, ${vm.introduce.value.toString()}")
+            Log.d(
+                "Sangmeebee",
+                "${vm.userName.value.toString()}, ${vm.gender.value.toString()}, ${vm.introduce.value.toString()}"
+            )
         }
     }
 
@@ -146,7 +153,10 @@ class InfoFragment : Fragment() {
                 intent.putExtra("introduce", it)
             }
             startActivityForResult(intent, REVISE_PROFILE)
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            requireActivity().overridePendingTransition(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            )
         })
 
         vm.callActivity.observe(viewLifecycleOwner, Observer {
@@ -166,22 +176,10 @@ class InfoFragment : Fragment() {
             .subscribe { saveImageToServer(file) }
             .addTo(compositeDisposable)
 
-        vm.isCallFeedImageComplete.observe(viewLifecycleOwner, Observer {
-            if(it){
-                if(vm.isCallProfileComplete.value!!){
-                    binding.pbLoading.isVisible = false
-                    binding.clContainer.isVisible = true
-                }
-            }
-        })
         vm.isCallProfileComplete.observe(viewLifecycleOwner, Observer {
-            if(it){
-                if(vm.isCallFeedImageComplete.value!!){
-                    binding.pbLoading.isVisible = false
-                    binding.clContainer.isVisible = true
-                }
-            }
+                crossfade()
         })
+
     }
 
     private fun saveImageToServer(file: File?) {
@@ -263,9 +261,7 @@ class InfoFragment : Fragment() {
     }
 
     private fun setTabLayout() {
-        viewPager.adapter = ViewPagerAdapter(this, customId) {
-            vm.isCallFeedImageComplete.value = it
-        }
+        viewPager.adapter = ViewPagerAdapter(this, customId)
 
         TabLayoutMediator(tl_container, viewPager) { tab, position ->
             when (position) {
@@ -277,6 +273,19 @@ class InfoFragment : Fragment() {
                 }
             }
         }.attach()
+    }
+
+
+    private fun crossfade() {
+        binding.clContainer.apply {
+            alpha = 0f
+            visibility = View.VISIBLE
+
+            animate()
+                .alpha(1f)
+                .setDuration(800L)
+                .setListener(null)
+        }
     }
 
     private fun setToolbar(toolbar: Toolbar) {

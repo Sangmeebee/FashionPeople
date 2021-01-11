@@ -2,22 +2,18 @@ package com.sangmee.fashionpeople.ui.fragment.info.image_content
 
 import android.graphics.Point
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.databinding.FragmentFeedImageBinding
 import com.sangmee.fashionpeople.observer.FeedImageViewModel
-import com.sangmee.fashionpeople.observer.InfoViewModel
 
 class FeedImageFragment : Fragment() {
 
@@ -37,8 +33,6 @@ class FeedImageFragment : Fragment() {
             FeedImageAdapter(it)
         }
     }
-
-    private lateinit var isComplete : (Boolean) -> Unit
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,9 +76,7 @@ class FeedImageFragment : Fragment() {
         })
 
         vm.isComplete.observe(viewLifecycleOwner, Observer {
-            if(it) {
-                isComplete(true)
-            }
+            crossfade()
         })
     }
 
@@ -113,6 +105,19 @@ class FeedImageFragment : Fragment() {
         return height
     }
 
+    private fun crossfade() {
+        binding.rvUserImage.apply {
+            alpha = 0f
+            visibility = View.VISIBLE
+
+            animate()
+                .alpha(1f)
+                .setDuration(500L)
+                .setListener(null)
+        }
+    }
+
+
     override fun onDestroy() {
         vm.unBindDisposable()
         super.onDestroy()
@@ -120,12 +125,11 @@ class FeedImageFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(userId: String, isComplete : (Boolean) -> Unit) =
+        fun newInstance(userId: String) =
             FeedImageFragment().apply {
                 arguments = Bundle().apply {
                     putString("custom_id", userId)
                 }
-                this.isComplete = isComplete
             }
     }
 }

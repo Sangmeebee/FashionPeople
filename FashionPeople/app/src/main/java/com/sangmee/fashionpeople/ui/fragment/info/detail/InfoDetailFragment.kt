@@ -96,11 +96,10 @@ class InfoDetailFragment(
         })
 
         viewModel.isComplete.observe(viewLifecycleOwner, Observer {
-            pb_loading.isVisible = false
             vp_detail.apply {
                 post {
                     setCurrentItem(position, false)
-                    isVisible = true
+                    crossfade()
                 }
             }
         })
@@ -162,5 +161,18 @@ class InfoDetailFragment(
     override fun onClickDelete(imageName: String, position: Int) {
         viewModel.deleteSaveImage(imageName)
         pos = position
+    }
+
+
+    private fun crossfade() {
+        vp_detail.apply {
+            alpha = 0f
+            visibility = View.VISIBLE
+
+            animate()
+                .alpha(1f)
+                .setDuration(500L)
+                .setListener(null)
+        }
     }
 }

@@ -73,10 +73,7 @@ class SavedImageFragment : Fragment() {
         })
 
         vm.isComplete.observe(viewLifecycleOwner, Observer {
-            if (it) {
-                binding.pbLoading.isVisible = false
-                binding.rvUserImage.isVisible = true
-            }
+                crossfade()
         })
     }
 
@@ -104,6 +101,19 @@ class SavedImageFragment : Fragment() {
         }
         return height
     }
+
+    private fun crossfade() {
+        binding.rvUserImage.apply {
+            alpha = 0f
+            visibility = View.VISIBLE
+
+            animate()
+                .alpha(1f)
+                .setDuration(500L)
+                .setListener(null)
+        }
+    }
+
 
     override fun onDestroy() {
         vm.unBindDisposable()

@@ -6,7 +6,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -112,10 +111,20 @@ class InfoFollowingFragment(private val userId: String) : Fragment() {
         })
 
         vm.isFollowingComplete.observe(viewLifecycleOwner, Observer {
-            if(it){
-                pb_loading.isVisible = false
-                rv_follow.isVisible = true
-            }
+
+            crossfade()
         })
+    }
+
+    private fun crossfade() {
+        rv_follow?.apply {
+            alpha = 0f
+            visibility = View.VISIBLE
+
+            animate()
+                .alpha(1f)
+                .setDuration(500L)
+                .setListener(null)
+        }
     }
 }

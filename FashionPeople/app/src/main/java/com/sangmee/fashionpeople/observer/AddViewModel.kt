@@ -8,6 +8,7 @@ import com.sangmee.fashionpeople.data.dataSource.remote.FeedImageRemoteDataSourc
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.data.repository.FeedImageRepository
 import com.sangmee.fashionpeople.data.repository.FeedImageRepositoryImpl
+import com.sangmee.fashionpeople.util.SingleLiveEvent
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 
@@ -17,7 +18,7 @@ class AddViewModel : ViewModel() {
     }
     private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
     val customId = GlobalApplication.prefs.getString("${loginType}_custom_id", "empty")
-    val isComplete = MutableLiveData(false)
+    val isComplete = SingleLiveEvent<Any>()
 
     val evaluatedFeedImage = MutableLiveData<FeedImage>()
 
@@ -25,7 +26,7 @@ class AddViewModel : ViewModel() {
         feedImageRepository.getEvaluatedFeedImage(customId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doAfterTerminate { isComplete.value = true }
+            .doAfterTerminate { isComplete.call() }
             .subscribe(
                 { evaluatedFeedImage.value = it },
                 { t -> Log.e("CALL_EVALUATED_ERROR", t.message.toString()) })

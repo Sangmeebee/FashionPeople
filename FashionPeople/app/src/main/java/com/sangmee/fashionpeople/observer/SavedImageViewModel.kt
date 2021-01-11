@@ -6,6 +6,7 @@ import com.sangmee.fashionpeople.data.dataSource.remote.SaveImageRemoteDataSourc
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.data.repository.SaveImageRepository
 import com.sangmee.fashionpeople.data.repository.SaveImageRepositoryImpl
+import com.sangmee.fashionpeople.util.SingleLiveEvent
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
@@ -21,13 +22,13 @@ class SavedImageViewModel : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
 
     val savedImages = MutableLiveData<List<FeedImage>>()
-    val isComplete = MutableLiveData<Boolean>(false)
+    val isComplete = SingleLiveEvent<Any>()
 
     fun callSavedImages(userId: String) {
         saveImageRepository.getSaveImages(userId)
         .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnTerminate { isComplete.value = true }
+            .doOnTerminate { isComplete.call() }
             .subscribe({
                 savedImages.value = it
             }, {

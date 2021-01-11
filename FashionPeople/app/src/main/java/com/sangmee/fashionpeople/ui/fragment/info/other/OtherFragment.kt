@@ -1,12 +1,13 @@
 package com.sangmee.fashionpeople.ui.fragment.info.other
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -76,9 +77,7 @@ class OtherFragment : Fragment() {
     }
 
     private fun setTabLayout() {
-        viewPager.adapter = ViewPagerAdapter(this, customId!!) {
-            infoVm.isCallFeedImageComplete.value = it
-        }
+        viewPager.adapter = ViewPagerAdapter(this, customId!!)
 
         TabLayoutMediator(tl_container, viewPager) { tab, position ->
             when (position) {
@@ -125,21 +124,8 @@ class OtherFragment : Fragment() {
             )
         })
 
-        infoVm.isCallFeedImageComplete.observe(viewLifecycleOwner, Observer {
-            if(it){
-                if(infoVm.isCallProfileComplete.value!!){
-                    binding.pbLoading.isVisible = false
-                    binding.clContainer.isVisible = true
-                }
-            }
-        })
         infoVm.isCallProfileComplete.observe(viewLifecycleOwner, Observer {
-            if(it){
-                if(infoVm.isCallFeedImageComplete.value!!){
-                    binding.pbLoading.isVisible = false
-                    binding.clContainer.isVisible = true
-                }
-            }
+            crossfade()
         })
     }
 
@@ -173,6 +159,18 @@ class OtherFragment : Fragment() {
             infoVm.userName.value = data?.getStringExtra("nick_name")
             infoVm.gender.value = data?.getStringExtra("gender")
             infoVm.introduce.value = data?.getStringExtra("introduce")
+        }
+    }
+
+    private fun crossfade() {
+        binding.clContainer.apply {
+            alpha = 0f
+            visibility = View.VISIBLE
+
+            animate()
+                .alpha(1f)
+                .setDuration(800L)
+                .setListener(null)
         }
     }
 
