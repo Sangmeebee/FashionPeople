@@ -34,7 +34,7 @@ class CategoryAdapter(private val onListItemSelectedInterface: OnListItemSelecte
 
     override fun getItemCount() = titleList.size
 
-    fun setTitleList(titleList: ArrayList<String>) {
+    fun setTitleList(titleList: List<String>) {
         with(this.titleList) {
             clear()
             addAll(titleList)

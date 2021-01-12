@@ -4,32 +4,40 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
-import com.sangmee.fashionpeople.data.service.retrofit.RetrofitClient
-import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.data.dataSource.remote.S3RemoteDataSource
 import com.sangmee.fashionpeople.data.dataSource.remote.S3RemoteDataSourceImpl
+import com.sangmee.fashionpeople.data.model.FeedImage
 import kotlinx.android.synthetic.main.activity_tag.*
 import org.jetbrains.anko.textColor
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
-@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class TagActivity : AppCompatActivity() {
 
     private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
-    private val customId by lazy { GlobalApplication.prefs.getString("${loginType}_custom_id", "empty") }
+    private val customId by lazy {
+        GlobalApplication.prefs.getString(
+            "${loginType}_custom_id",
+            "empty"
+        )
+    }
     private val s3RemoteDataSource: S3RemoteDataSource by lazy {
         S3RemoteDataSourceImpl(
             applicationContext,
             customId
         )
+    }
+
+    private val vm by viewModels<TagViewModel>()
+
+    override fun onResume() {
+        super.onResume()
+        initViewModel()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,10 +71,8 @@ class TagActivity : AppCompatActivity() {
         }
 
 
-
-
         btn_complete.setOnClickListener {
-            //서버에 저장
+            //서버에 사진 저장
             val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
             val imageFileName = "JPEG_${customId}_${timeStamp}.jpg"
             val style = GlobalApplication.prefs.getString("style", "")
@@ -74,34 +80,72 @@ class TagActivity : AppCompatActivity() {
             val pants = GlobalApplication.prefs.getString("pants", "")
             val shoes = GlobalApplication.prefs.getString("shoes", "")
             val feedImage =
-                FeedImage(imageFileName, null, style, top, pants, shoes, null, true, null, 0.0F, null, null)
+                FeedImage(
+                    imageFileName,
+                    null,
+                    style,
+                    top,
+                    pants,
+                    shoes,
+                    null,
+                    true,
+                    null,
+                    0.0F,
+                    null,
+                    null
+                )
 
-            RetrofitClient.getFeedImageService().postFeedImage(customId, feedImage)
-                .enqueue(object : Callback<FeedImage> {
-                    override fun onResponse(call: Call<FeedImage>, response: Response<FeedImage>) {
-                        showMessage()
-                    }
+            vm.postFeedImage(customId, feedImage)
 
-                    override fun onFailure(call: Call<FeedImage>, t: Throwable) {
-                    }
-                })
+            //서버에 브랜드, 스타일 저장
+            if (style != "") {
+                vm.putStyle(style)
+            }
+
+            val brandSet = mutableSetOf<String>()
+            if (top != "") {
+                brandSet.add(top)
+            }
+            if (pants != "") {
+                brandSet.add(pants)
+            }
+            if (shoes != "") {
+                brandSet.add(shoes)
+            }
+
+            if (brandSet.isNotEmpty()) {
+                for (brand in brandSet) {
+                    vm.putBrand(brand)
+                }
+            }
+
 
             //S3에 저장
             s3RemoteDataSource.uploadWithTransferUtility(imageFileName, battleImageFile, "feed")
-
-            GlobalApplication.prefs.setString("battleImage", imageFileName)
-            GlobalApplication.prefs.remove("resultUri")
-            GlobalApplication.prefs.remove("style")
-            GlobalApplication.prefs.remove("top")
-            GlobalApplication.prefs.remove("pants")
-            GlobalApplication.prefs.remove("shoes")
-            finish()
         }
 
     }
 
-    private fun showMessage() {
-        Toast.makeText(this, "사진 등록 완료", Toast.LENGTH_SHORT).show()
+    private fun initViewModel() {
+        vm.isComplete.observe(this, androidx.lifecycle.Observer {
+            Toast.makeText(applicationContext, "사진 등록 완료", Toast.LENGTH_SHORT).show()
+            finishActivity()
+        })
+
+        vm.isError.observe(this, androidx.lifecycle.Observer {
+            Toast.makeText(applicationContext, "사진 등록 실패", Toast.LENGTH_SHORT).show()
+            finishActivity()
+        })
+    }
+
+
+    private fun finishActivity() {
+        GlobalApplication.prefs.remove("resultUri")
+        GlobalApplication.prefs.remove("style")
+        GlobalApplication.prefs.remove("top")
+        GlobalApplication.prefs.remove("pants")
+        GlobalApplication.prefs.remove("shoes")
+        finish()
     }
 
     private fun redirectCategoryActivity(subject: String) {
@@ -140,6 +184,11 @@ class TagActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onPause() {
+        vm.unbindViewModel()
+        super.onPause()
     }
 
     companion object {

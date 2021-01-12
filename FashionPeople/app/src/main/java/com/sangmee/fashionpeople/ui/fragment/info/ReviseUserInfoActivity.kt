@@ -2,7 +2,6 @@ package com.sangmee.fashionpeople.ui.fragment.info
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
@@ -51,7 +50,10 @@ class ReviseUserInfoActivity : AppCompatActivity() {
         binding.isChecked = gender == "남"
         binding.gender = "남자"
         if (!introduce.isNullOrEmpty()) {
-            binding.etIntroduce.text = Editable.Factory.getInstance().newEditable(introduce)
+            binding.etIntroduce.apply {
+                setText(introduce)
+                setSelection(this.text.length)
+            }
         }
         binding.activity = this
 
