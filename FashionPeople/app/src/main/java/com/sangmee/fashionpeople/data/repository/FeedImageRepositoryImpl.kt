@@ -31,7 +31,7 @@ class FeedImageRepositoryImpl(
         return feedImageRemoteDataSource.getFeedImages(id)
     }
 
-    override fun postFeedImage(id: String, feedImage: FeedImage): Call<FeedImage> {
+    override fun postFeedImage(id: String, feedImage: FeedImage): Completable {
         return feedImageRemoteDataSource.postFeedImage(id, feedImage)
     }
 

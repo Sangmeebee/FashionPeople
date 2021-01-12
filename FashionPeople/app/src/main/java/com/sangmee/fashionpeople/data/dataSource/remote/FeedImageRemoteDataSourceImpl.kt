@@ -28,7 +28,7 @@ class FeedImageRemoteDataSourceImpl : FeedImageRemoteDataSource {
         return RetrofitClient.getFeedImageService().getOtherImages(id)
     }
 
-    override fun postFeedImage(id: String, feedImage: FeedImage): Call<FeedImage> {
+    override fun postFeedImage(id: String, feedImage: FeedImage): Completable {
         return RetrofitClient.getFeedImageService().postFeedImage(id, feedImage)
     }
 
