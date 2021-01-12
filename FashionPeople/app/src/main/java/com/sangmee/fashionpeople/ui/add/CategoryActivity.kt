@@ -20,6 +20,7 @@ class CategoryActivity : AppCompatActivity(), OnListItemSelectedInterface {
 
     //assets 폴더에서 브랜드 파일 읽기용 프로퍼티
     private var categoryList = arrayListOf<String>()
+    private var postNumList = arrayListOf<Int>()
     private val categoryAdapter = CategoryAdapter(this)
 
     private val subject by lazy {
@@ -56,7 +57,7 @@ class CategoryActivity : AppCompatActivity(), OnListItemSelectedInterface {
     }
 
     private fun initView(){
-        categoryAdapter.setTitleList(categoryList)
+        categoryAdapter.setTitleList(categoryList, postNumList)
 
         //리사이클러뷰 세팅
         binding.rvBrand.apply {
@@ -72,18 +73,22 @@ class CategoryActivity : AppCompatActivity(), OnListItemSelectedInterface {
     private fun initViewModel() {
         vm.brandList.observe(this, androidx.lifecycle.Observer {
             val brandList = ArrayList<String>()
+            val numList = ArrayList<Int>()
             for (brand in it) {
                 brandList.add(brand.brandName)
+                numList.add(brand.postNum)
             }
-            categoryAdapter.setTitleList(brandList)
+            categoryAdapter.setTitleList(brandList, numList)
         })
 
         vm.styleList.observe(this, androidx.lifecycle.Observer {
             val styleList = ArrayList<String>()
+            val numList = ArrayList<Int>()
             for (style in it) {
                 styleList.add(style.styleName)
+                numList.add(style.postNum)
             }
-            categoryAdapter.setTitleList(styleList)
+            categoryAdapter.setTitleList(styleList, numList)
         })
 
         vm.loadingSubject
@@ -98,7 +103,7 @@ class CategoryActivity : AppCompatActivity(), OnListItemSelectedInterface {
     private fun initEditTextListener() {
 
         binding.etBrand.textChanges()
-            .debounce(800, TimeUnit.MILLISECONDS)
+            .debounce(600, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 if (!it.isNullOrEmpty()) {
@@ -110,7 +115,7 @@ class CategoryActivity : AppCompatActivity(), OnListItemSelectedInterface {
                     }
                 } else {
                     binding.isFill = false
-                    categoryAdapter.setTitleList(categoryList)
+                    categoryAdapter.setTitleList(categoryList, postNumList)
                 }
             }.addTo(compositeDisposable)
     }

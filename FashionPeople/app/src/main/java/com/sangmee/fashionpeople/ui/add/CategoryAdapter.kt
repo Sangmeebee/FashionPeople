@@ -11,6 +11,7 @@ class CategoryAdapter(private val onListItemSelectedInterface: OnListItemSelecte
     RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
     private val titleList = arrayListOf<String>()
+    private val numList = arrayListOf<Int>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(
@@ -29,24 +30,30 @@ class CategoryAdapter(private val onListItemSelectedInterface: OnListItemSelecte
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
 
-        holder.bind(titleList[position])
+        holder.bind(titleList[position], numList[position])
     }
 
     override fun getItemCount() = titleList.size
 
-    fun setTitleList(titleList: List<String>) {
+    fun setTitleList(titleList: List<String>, numList: List<Int>) {
         with(this.titleList) {
             clear()
             addAll(titleList)
+        }
+        with(this.numList) {
+            clear()
+            addAll(numList)
         }
         notifyDataSetChanged()
     }
 
     class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val brandName = itemView.findViewById<TextView>(R.id.tv_brand_name)
+        private val postNum = itemView.findViewById<TextView>(R.id.tv_post_num)
 
-        fun bind(title: String) {
+        fun bind(title: String, num: Int) {
             brandName.text = title
+            postNum.text = "게시물 ${num}개"
         }
 
     }
