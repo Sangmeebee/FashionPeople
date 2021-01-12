@@ -1,6 +1,7 @@
 package com.sangmee.fashionpeople.ui.fragment.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,8 +19,6 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
 
-    private val evaluateFragment by lazy { EvaluateFragment() }
-    private val followingFragment by lazy { FollowingFragment() }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,6 +33,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun setTabLayout() {
+        val evaluateFragment = EvaluateFragment()
+        val followingFragment = FollowingFragment()
+
         val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.fl_home, evaluateFragment).commit()
         tl_home.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -43,10 +45,6 @@ class HomeFragment : Fragment() {
                 selected = when (position) {
                     0 -> evaluateFragment
                     else -> followingFragment
-                }
-                val fragment = requireActivity().supportFragmentManager.findFragmentById(R.id.fl_home)
-                if(fragment != null){
-                    fragmentTransaction.remove(fragment)
                 }
                 requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fl_home, selected).commit()
 

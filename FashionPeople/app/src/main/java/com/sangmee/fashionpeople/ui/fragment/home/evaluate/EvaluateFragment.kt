@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import com.sangmee.fashionpeople.R
@@ -26,7 +27,7 @@ import com.sangmee.fashionpeople.ui.fragment.info.other.OtherFragment
 class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
 
     private lateinit var binding: FragmentEvaluateBinding
-    private val vm: HomeEvaluateViewModel by activityViewModels()
+    private val vm: HomeEvaluateViewModel by viewModels()
     private val mainVm by activityViewModels<MainViewModel>()
     private lateinit var evaluateFeedAdapter: EvaluateFeedAdapter
     private var pos: Int? = null

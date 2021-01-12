@@ -13,6 +13,7 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import com.sangmee.fashionpeople.R
@@ -28,7 +29,7 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
 
     private lateinit var binding: FragmentFollowingBinding
     private lateinit var followingFeedAdapter: FollowingFeedAdapter
-    private val vm: HomeFollowingViewModel by activityViewModels()
+    private val vm: HomeFollowingViewModel by viewModels()
     private val mainVm by activityViewModels<MainViewModel>()
     private var pos: Int? = null
 
