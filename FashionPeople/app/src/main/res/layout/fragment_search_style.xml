@@ -6,20 +6,17 @@
     android:orientation="vertical">
 
     <EditText
-        android:id="@+id/et_styleName"
+        android:id="@+id/et_style_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:drawableStart="@drawable/et_search"
         android:drawablePadding="10dp"
-        android:hint="스타일 검색..."
+        android:hint="브랜드 검색..."
         android:inputType="text"
         android:paddingBottom="20dp"
         android:textSize="15sp"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </EditText>
-
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_style"
@@ -28,6 +25,5 @@
         android:orientation="vertical"
         android:visibility="invisible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@id/et_styleName" />
-
+        app:layout_constraintTop_toBottomOf="@id/et_style_name" />
 </androidx.constraintlayout.widget.ConstraintLayout>

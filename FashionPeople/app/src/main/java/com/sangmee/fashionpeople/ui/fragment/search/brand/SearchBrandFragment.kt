@@ -12,7 +12,7 @@ import androidx.lifecycle.Observer
 import com.jakewharton.rxbinding4.widget.textChanges
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.ui.MainActivity
-import com.sangmee.fashionpeople.ui.fragment.search.SearchContentFragment
+import com.sangmee.fashionpeople.ui.fragment.search.brand.result.ResultSearchBrandFragment
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
@@ -38,7 +38,7 @@ class SearchBrandFragment : Fragment(), OnBrandItemSelectedInterface {
         super.onViewCreated(view, savedInstanceState)
         Log.d("Sangmeebee", "brand viewCreated")
         setViewModel()
-        initEditTextListener()
+        initView()
         setRecyclerView()
     }
 
@@ -70,7 +70,7 @@ class SearchBrandFragment : Fragment(), OnBrandItemSelectedInterface {
         }
     }
 
-    private fun initEditTextListener() {
+    private fun initView() {
 
         et_brand_name.textChanges()
             .debounce(500L, TimeUnit.MILLISECONDS)
@@ -115,7 +115,7 @@ class SearchBrandFragment : Fragment(), OnBrandItemSelectedInterface {
 
     override fun onItemSelected(query: String) {
         (activity as MainActivity).replaceFragmentUseBackStack(
-            SearchContentFragment.newInstance(query)
+            ResultSearchBrandFragment.newInstance(query)
         )
     }
 

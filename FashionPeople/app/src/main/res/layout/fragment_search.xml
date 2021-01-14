@@ -47,7 +47,7 @@
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tl_container"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginHorizontal="20dp"
                 android:background="@android:color/white"

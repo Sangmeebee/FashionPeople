@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="query"
+            type="String" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.fragment.search.brand.SearchStyleContentFragment">
+
+        <TextView
+            android:id="@+id/tv_query"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{query}"
+            android:paddingVertical="30dp"
+            android:gravity="center"
+            tools:text="나이키"
+            android:textColor="@color/colorBlack"
+            android:textSize="20sp"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <View
+            android:id="@+id/v_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorGray"
+            app:layout_constraintTop_toBottomOf="@+id/tv_query"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_search_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/v_line"
+            app:spanCount="3"
+            tools:listitem="@layout/item_feed_image" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
