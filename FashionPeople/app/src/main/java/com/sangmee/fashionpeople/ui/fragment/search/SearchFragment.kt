@@ -34,10 +34,13 @@ class SearchFragment : Fragment() {
         TabLayoutMediator(tl_container, viewPager) { tab, position ->
             when (position) {
                 0 -> {
+                    tab.text = "스타일"
+                }
+                1 -> {
                     tab.text = "브랜드"
                 }
                 else -> {
-                    tab.text = "친구"
+                    tab.text = "계정"
                 }
             }
         }.attach()
