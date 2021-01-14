@@ -6,6 +6,7 @@ import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface FeedImageRemoteDataSource {
@@ -25,5 +26,13 @@ interface FeedImageRemoteDataSource {
     fun getFollowingFeedImages(@Path("userId") id: String): Single<List<FeedImage>>
 
     fun getEvaluatedFeedImage(@Path("id") id: String): Single<FeedImage>
+
+    fun getSearchScoreStyleImages(@Path("query") query: String): Single<List<FeedImage>>
+
+    fun getSearchRecentStyleImages(@Path("query") query: String): Single<List<FeedImage>>
+
+    fun getSearchScoreBrandImages(@Path("query") query: String): Single<List<FeedImage>>
+
+    fun getSearchRecentBrandImages(@Path("query") query: String): Single<List<FeedImage>>
 }
 

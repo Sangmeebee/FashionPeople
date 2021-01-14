@@ -33,4 +33,16 @@ interface FeedImageService {
     @GET("feedImage/following/{userId}")
     fun getFollowingFeedImages(@Path("userId") id: String): Single<List<FeedImage>>
 
+    @GET("feedImage/search/style/score/{query}")
+    fun getSearchScoreStyleImages(@Path("query") query: String): Single<List<FeedImage>>
+
+    @GET("feedImage/search/style/recent/{query}")
+    fun getSearchRecentStyleImages(@Path("query") query: String): Single<List<FeedImage>>
+
+    @GET("feedImage/search/brand/score/{query}")
+    fun getSearchScoreBrandImages(@Path("query") query: String): Single<List<FeedImage>>
+
+    @GET("feedImage/search/brand/recent/{query}")
+    fun getSearchRecentBrandImages(@Path("query") query: String): Single<List<FeedImage>>
+
 }

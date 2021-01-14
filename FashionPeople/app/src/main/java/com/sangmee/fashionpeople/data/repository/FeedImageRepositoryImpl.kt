@@ -42,4 +42,20 @@ class FeedImageRepositoryImpl(
     override fun getEvaluatedFeedImage(id: String): Single<FeedImage> {
         return feedImageRemoteDataSource.getEvaluatedFeedImage(id)
     }
+
+    override fun getSearchScoreStyleImages(query: String): Single<List<FeedImage>> {
+        return feedImageRemoteDataSource.getSearchScoreStyleImages(query)
+    }
+
+    override fun getSearchRecentStyleImages(query: String): Single<List<FeedImage>> {
+        return feedImageRemoteDataSource.getSearchRecentStyleImages(query)
+    }
+
+    override fun getSearchScoreBrandImages(query: String): Single<List<FeedImage>> {
+        return feedImageRemoteDataSource.getSearchScoreBrandImages(query)
+    }
+
+    override fun getSearchRecentBrandImages(query: String): Single<List<FeedImage>> {
+        return feedImageRemoteDataSource.getSearchRecentBrandImages(query)
+    }
 }

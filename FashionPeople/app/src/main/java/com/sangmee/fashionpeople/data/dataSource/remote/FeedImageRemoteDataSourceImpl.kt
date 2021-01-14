@@ -43,4 +43,20 @@ class FeedImageRemoteDataSourceImpl : FeedImageRemoteDataSource {
     override fun getEvaluatedFeedImage(id: String): Single<FeedImage> {
         return RetrofitClient.getFeedImageService().getEvaluatedFeedImage(id)
     }
+
+    override fun getSearchScoreStyleImages(query: String): Single<List<FeedImage>> {
+        return RetrofitClient.getFeedImageService().getSearchScoreStyleImages(query)
+    }
+
+    override fun getSearchRecentStyleImages(query: String): Single<List<FeedImage>> {
+        return RetrofitClient.getFeedImageService().getSearchRecentStyleImages(query)
+    }
+
+    override fun getSearchScoreBrandImages(query: String): Single<List<FeedImage>> {
+        return RetrofitClient.getFeedImageService().getSearchScoreBrandImages(query)
+    }
+
+    override fun getSearchRecentBrandImages(query: String): Single<List<FeedImage>> {
+        return RetrofitClient.getFeedImageService().getSearchRecentBrandImages(query)
+    }
 }
