@@ -36,6 +36,7 @@ class HomeEvaluateViewModel : ViewModel() {
     val evaluateLoadingComplete = SingleLiveEvent<Any>()
 
     val saveComplete = SingleLiveEvent<Any>()
+    val errorComplete = SingleLiveEvent<Any>()
     val deleteComplete = SingleLiveEvent<Any>()
 
     fun getOtherImages() {
@@ -74,6 +75,8 @@ class HomeEvaluateViewModel : ViewModel() {
             .subscribe({
                 getFeedImage(imageName)
             }, {
+                getFeedImage(imageName)
+                errorComplete.call()
             }).addTo(compositeDisposable)
     }
 

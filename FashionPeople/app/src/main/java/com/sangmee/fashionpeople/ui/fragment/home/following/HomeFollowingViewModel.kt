@@ -38,6 +38,7 @@ class HomeFollowingViewModel : ViewModel() {
     val followingLoadingComplete = SingleLiveEvent<Any>()
 
     val saveComplete = SingleLiveEvent<Any>()
+    val errorComplete = SingleLiveEvent<Any>()
     val deleteComplete = SingleLiveEvent<Any>()
 
     fun getFollowingImages() {
@@ -75,6 +76,8 @@ class HomeFollowingViewModel : ViewModel() {
             .subscribe({
                 getFeedImage(imageName)
             }, {
+                getFeedImage(imageName)
+                errorComplete.call()
             }).addTo(compositeDisposable)
     }
 

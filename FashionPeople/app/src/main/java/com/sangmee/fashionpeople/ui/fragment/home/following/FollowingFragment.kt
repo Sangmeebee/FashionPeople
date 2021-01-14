@@ -103,6 +103,10 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
             mainVm.getMySaveImage()
         })
 
+        vm.errorComplete.observe(this, Observer {
+            Toast.makeText(context, "이미 평가 완료된 사진", Toast.LENGTH_SHORT).show()
+        })
+
         mainVm.saveImages.observe(viewLifecycleOwner, Observer {
             val saveImages = mutableListOf<String>()
             for (feedImage in it) {
