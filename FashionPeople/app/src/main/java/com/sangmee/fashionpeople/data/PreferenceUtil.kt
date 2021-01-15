@@ -20,8 +20,8 @@ class PreferenceUtil(context: Context) {
         prefs.edit().remove(key).apply()
     }
 
-    fun saveRecentSearchQuery(query: String) {
-        val list = readRecentSearchQuery()
+    fun saveRecentSearchQuery(key: String, query: String) {
+        val list = readRecentSearchQuery(key)
         if(query in list){
             list.remove(query)
         }
@@ -30,19 +30,19 @@ class PreferenceUtil(context: Context) {
             list.removeAt(0)
         }
         val jsonArray = JSONArray(list)
-        prefs.edit().putString("SearchList", jsonArray.toString()).apply()
+        prefs.edit().putString(key, jsonArray.toString()).apply()
     }
 
 
-    fun deleteRecentSearchQuery(query: String) {
-        val list = readRecentSearchQuery()
+    fun deleteRecentSearchQuery(key: String, query: String) {
+        val list = readRecentSearchQuery(key)
         list.remove(query)
         val jsonArray = JSONArray(list)
-        prefs.edit().putString("SearchList", jsonArray.toString()).apply()
+        prefs.edit().putString(key, jsonArray.toString()).apply()
     }
 
-    fun readRecentSearchQuery(): ArrayList<String> {
-        val json = prefs.getString("SearchList", null)
+    fun readRecentSearchQuery(key: String): ArrayList<String> {
+        val json = prefs.getString(key, null)
         val dataList = arrayListOf<String>()
 
         json?.let {
@@ -55,11 +55,11 @@ class PreferenceUtil(context: Context) {
         return dataList
     }
 
-    fun clearRecentSearchQuery() {
-        val list = readRecentSearchQuery()
+    fun clearRecentSearchQuery(key: String) {
+        val list = readRecentSearchQuery(key)
         list.clear()
         val jsonArray = JSONArray(list)
-        prefs.edit().putString("SearchList", jsonArray.toString()).apply()
+        prefs.edit().putString(key, jsonArray.toString()).apply()
     }
 }
 

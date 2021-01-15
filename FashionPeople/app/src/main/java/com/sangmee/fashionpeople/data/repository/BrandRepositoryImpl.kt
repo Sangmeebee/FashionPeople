@@ -28,19 +28,19 @@ class BrandRepositoryImpl(
         return brandRemoteDataSource.putBrand(brand)
     }
 
-    override fun saveRecentSearchQuery(query: String) {
-        searchLocalDataSource.saveRecentSearchQuery(query)
+    override fun saveRecentSearchQuery(key: String, query: String) {
+        searchLocalDataSource.saveRecentSearchQuery(key, query)
     }
 
-    override fun readRecentSearchQuery(): ArrayList<String> {
-        return searchLocalDataSource.readRecentSearchQuery()
+    override fun readRecentSearchQuery(key: String): ArrayList<String> {
+        return searchLocalDataSource.readRecentSearchQuery(key)
     }
 
-    override fun deleteRecentSearchQuery(query: String) {
-        searchLocalDataSource.deleteRecentSearchQuery(query)
+    override fun deleteRecentSearchQuery(key: String, query: String) {
+        searchLocalDataSource.deleteRecentSearchQuery(key, query)
     }
 
-    override fun clearRecentSearchQuery() {
-        searchLocalDataSource.clearRecentSearchQuery()
+    override fun clearRecentSearchQuery(key: String) {
+        searchLocalDataSource.clearRecentSearchQuery(key)
     }
 }

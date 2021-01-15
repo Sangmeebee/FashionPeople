@@ -16,11 +16,11 @@ interface BrandRepository {
 
     fun putBrand(@Path("brand") brand: String): Completable
 
-    fun saveRecentSearchQuery(query: String)
+    fun saveRecentSearchQuery(key: String, query: String)
 
-    fun readRecentSearchQuery(): ArrayList<String>
+    fun readRecentSearchQuery(key: String): ArrayList<String>
 
-    fun deleteRecentSearchQuery(query: String)
+    fun deleteRecentSearchQuery(key: String, query: String)
 
-    fun clearRecentSearchQuery()
+    fun clearRecentSearchQuery(key: String)
 }

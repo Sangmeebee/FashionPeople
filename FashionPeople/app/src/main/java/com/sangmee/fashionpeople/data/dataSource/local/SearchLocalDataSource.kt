@@ -2,8 +2,8 @@ package com.sangmee.fashionpeople.data.dataSource.local
 
 interface SearchLocalDataSource {
 
-    fun saveRecentSearchQuery(query: String)
-    fun readRecentSearchQuery(): ArrayList<String>
-    fun deleteRecentSearchQuery(query: String)
-    fun clearRecentSearchQuery()
+    fun saveRecentSearchQuery(key: String, query: String)
+    fun readRecentSearchQuery(key: String): ArrayList<String>
+    fun deleteRecentSearchQuery(key: String, query: String)
+    fun clearRecentSearchQuery(key: String)
 }
