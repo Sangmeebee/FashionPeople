@@ -54,9 +54,28 @@ class SearchFragment : Fragment() {
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 when (position) {
-                    0 -> binding.hint = "스타일 검색..."
-                    1 -> binding.hint = "브랜드 검색..."
-                    2 -> binding.hint = "계정 검색..."
+                    0 -> {
+                        binding.hint = "스타일 검색..."
+                        if(binding.etName.text.isNotEmpty()){
+                            styleVm.callStyle(binding.etName.text.toString())
+                        } else {
+                            styleVm.isEmpty.call()
+                        }
+                    }
+                    1 -> {
+                        binding.hint = "브랜드 검색..."
+                        if(binding.etName.text.isNotEmpty()){
+                            brandVm.callBrand(binding.etName.text.toString())
+                        } else {
+                            brandVm.isEmpty.call()
+                        }
+                    }
+                    2 -> {
+                        binding.hint = "계정 검색..."
+                        if(binding.etName.text.isNotEmpty()){
+
+                        }
+                    }
                 }
             }
         })
