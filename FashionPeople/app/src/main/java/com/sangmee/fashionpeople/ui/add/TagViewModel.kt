@@ -2,6 +2,7 @@ package com.sangmee.fashionpeople.ui.add
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.sangmee.fashionpeople.data.dataSource.local.SearchLocalDataSourceImpl
 import com.sangmee.fashionpeople.data.dataSource.remote.BrandRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.dataSource.remote.FeedImageRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.FeedImage
@@ -15,7 +16,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 class TagViewModel : ViewModel() {
 
-    private val brandRepository = BrandRepositoryImpl(BrandRemoteDataSourceImpl())
+    private val brandRepository = BrandRepositoryImpl(BrandRemoteDataSourceImpl(), SearchLocalDataSourceImpl())
     private val feedImageRepository = FeedImageRepositoryImpl(FeedImageRemoteDataSourceImpl())
 
     private val compositeDisposable = CompositeDisposable()

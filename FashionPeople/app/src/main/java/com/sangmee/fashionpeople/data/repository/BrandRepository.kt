@@ -15,4 +15,12 @@ interface BrandRepository {
     fun putStyle(@Path("style") style: String): Completable
 
     fun putBrand(@Path("brand") brand: String): Completable
+
+    fun saveRecentSearchQuery(query: String)
+
+    fun readRecentSearchQuery(): ArrayList<String>
+
+    fun deleteRecentSearchQuery(query: String)
+
+    fun clearRecentSearchQuery()
 }

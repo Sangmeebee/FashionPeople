@@ -3,6 +3,7 @@ package com.sangmee.fashionpeople.ui.add
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.sangmee.fashionpeople.data.dataSource.local.SearchLocalDataSourceImpl
 import com.sangmee.fashionpeople.data.dataSource.remote.BrandRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.Brand
 import com.sangmee.fashionpeople.data.model.Style
@@ -15,7 +16,7 @@ import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 class CategoryViewModel : ViewModel() {
 
-    private val brandRepository = BrandRepositoryImpl(BrandRemoteDataSourceImpl())
+    private val brandRepository = BrandRepositoryImpl(BrandRemoteDataSourceImpl(), SearchLocalDataSourceImpl())
     private val compositeDisposable = CompositeDisposable()
 
     val brandList = MutableLiveData<List<Brand>>()
