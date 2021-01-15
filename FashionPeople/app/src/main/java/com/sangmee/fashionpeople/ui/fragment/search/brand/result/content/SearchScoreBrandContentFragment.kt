@@ -9,12 +9,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.sangmee.fashionpeople.R
+import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.databinding.FragmentSearchScoreBrandContentBinding
+import com.sangmee.fashionpeople.ui.MainActivity
+import com.sangmee.fashionpeople.ui.fragment.search.detail.SearchDetailFragment
 
 
 private const val ARG_PARAM1 = "param1"
 
-class SearchScoreBrandContentFragment : Fragment() {
+class SearchScoreBrandContentFragment : Fragment(), SearchScoreBrandContentAdapter.OnClickListener {
 
     private var query: String? = null
     private lateinit var binding: FragmentSearchScoreBrandContentBinding
@@ -78,6 +81,18 @@ class SearchScoreBrandContentFragment : Fragment() {
         binding.rvSearchImage.apply {
             setHasFixedSize(true)
             adapter = searchBrandContentAdapter
+            searchBrandContentAdapter.onClickListener = this@SearchScoreBrandContentFragment
+        }
+    }
+
+    override fun onClickImage(feedImages: List<FeedImage>, position: Int) {
+        vm.scoreBrandImages.value?.let {
+            (activity as MainActivity).replaceFragmentUseBackStack(
+                SearchDetailFragment(
+                    feedImages,
+                    position
+                )
+            )
         }
     }
 

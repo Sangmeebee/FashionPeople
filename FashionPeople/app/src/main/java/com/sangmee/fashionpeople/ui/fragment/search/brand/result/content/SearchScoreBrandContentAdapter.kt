@@ -12,6 +12,7 @@ import com.sangmee.fashionpeople.data.model.FeedImage
 class SearchScoreBrandContentAdapter :
     RecyclerView.Adapter<SearchScoreBrandContentAdapter.SearchBrandContentViewHolder>() {
     private val feedImageList = mutableListOf<FeedImage>()
+    var onClickListener: OnClickListener? = null
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -20,7 +21,9 @@ class SearchScoreBrandContentAdapter :
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.item_feed_image, parent, false)
         val viewHolder = SearchBrandContentViewHolder(view)
-        viewHolder.itemView.setOnClickListener { }
+        viewHolder.itemView.setOnClickListener {
+            onClickListener?.onClickImage(feedImageList, viewHolder.adapterPosition)
+        }
 
         return viewHolder
 
@@ -36,6 +39,10 @@ class SearchScoreBrandContentAdapter :
         feedImageList.clear()
         feedImageList.addAll(list)
         notifyDataSetChanged()
+    }
+
+    interface OnClickListener {
+        fun onClickImage(feedImages: List<FeedImage>, position: Int)
     }
 
     inner class SearchBrandContentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
