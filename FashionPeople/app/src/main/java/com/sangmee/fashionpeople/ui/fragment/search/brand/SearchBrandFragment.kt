@@ -7,24 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import com.jakewharton.rxbinding4.widget.textChanges
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.search.brand.result.ResultSearchBrandFragment
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.kotlin.addTo
 import kotlinx.android.synthetic.main.fragment_search_brand.*
-import java.util.concurrent.TimeUnit
 
 class SearchBrandFragment : Fragment(), OnBrandItemSelectedInterface {
 
     private val searchBrandAdapter by lazy { SearchBrandAdapter(this) }
-    private var brandList = arrayListOf<String>()
-    private var postNumList = arrayListOf<Int>()
-    private val vm by viewModels<SearchBrandViewModel>()
+    private val recentSearchBrandAdapter by lazy { RecentSearchBrandAdapter(this) }
+    private val vm by activityViewModels<SearchBrandViewModel>()
     private val compositeDisposable = CompositeDisposable()
 
     override fun onCreateView(
@@ -37,6 +32,7 @@ class SearchBrandFragment : Fragment(), OnBrandItemSelectedInterface {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("Sangmeebee", "brand viewCreated")
+        vm.callRecentList()
         setViewModel()
         initView()
         setRecyclerView()
@@ -55,9 +51,26 @@ class SearchBrandFragment : Fragment(), OnBrandItemSelectedInterface {
             searchBrandAdapter.setBrandList(brandList, numList)
         })
 
+        vm.recentList.observe(viewLifecycleOwner, Observer {
+            recentSearchBrandAdapter.setBrandList(it)
+        })
 
         vm.isComplete.observe(viewLifecycleOwner, Observer {
-            crossfade()
+            rv_brand.visibility = View.VISIBLE
+            ll_recent_container.visibility = View.INVISIBLE
+        })
+
+        vm.isEmpty.observe(viewLifecycleOwner, Observer {
+            ll_recent_container.apply {
+                vm.recentList.value?.let { recentList ->
+                    if (recentList.isNotEmpty()) {
+                        visibility = View.VISIBLE
+                        alpha = 1f
+                    }
+                }
+            }
+            recentSearchBrandAdapter.setBrandList(vm.recentList.value!!)
+            rv_brand.visibility = View.INVISIBLE
         })
     }
 
@@ -68,31 +81,27 @@ class SearchBrandFragment : Fragment(), OnBrandItemSelectedInterface {
             minimumHeight = height
             adapter = searchBrandAdapter
         }
+
+        rv_recent_search.apply {
+            setHasFixedSize(true)
+            adapter = recentSearchBrandAdapter
+        }
     }
 
     private fun initView() {
 
-        et_brand_name.textChanges()
-            .debounce(500L, TimeUnit.MILLISECONDS)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                if (!it.isNullOrEmpty()) {
-                    vm.callBrand(it.toString())
-                } else {
-                    searchBrandAdapter.setBrandList(brandList, postNumList)
+        btn_clear.setOnClickListener {
+            vm.clearRecentList()
+            vm.callRecentList()
+        }
+
+        ll_recent_container.apply {
+            vm.recentList.value?.let { recentList ->
+                if (recentList.isNotEmpty()) {
+                    visibility = View.VISIBLE
+                    alpha = 1f
                 }
-            }.addTo(compositeDisposable)
-    }
-
-    private fun crossfade() {
-        rv_brand?.apply {
-            alpha = 0f
-            visibility = View.VISIBLE
-
-            animate()
-                .alpha(1f)
-                .setDuration(500L)
-                .setListener(null)
+            }
         }
     }
 
@@ -117,6 +126,12 @@ class SearchBrandFragment : Fragment(), OnBrandItemSelectedInterface {
         (activity as MainActivity).replaceFragmentUseBackStack(
             ResultSearchBrandFragment.newInstance(query)
         )
+        vm.postRecentList(query)
+    }
+
+    override fun onClickCancelBtn(query: String) {
+        vm.deleteRecentList(query)
+        vm.callRecentList()
     }
 
     override fun onDestroy() {

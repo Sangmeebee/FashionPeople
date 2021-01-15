@@ -7,25 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import com.jakewharton.rxbinding4.widget.textChanges
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.ui.MainActivity
-import com.sangmee.fashionpeople.ui.fragment.search.brand.result.ResultSearchBrandFragment
 import com.sangmee.fashionpeople.ui.fragment.search.style.result.ResultSearchStyleFragment
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.kotlin.addTo
 import kotlinx.android.synthetic.main.fragment_search_style.*
-import java.util.concurrent.TimeUnit
 
 class SearchStyleFragment : Fragment(), OnStyleItemSelectedInterface {
 
     private val searchStyleAdapter by lazy { SearchStyleAdapter(this) }
-    private var styleList = arrayListOf<String>()
-    private var postNumList = arrayListOf<Int>()
-    private val vm by viewModels<SearchStyleViewModel>()
+    private val recentSearchStyleAdapter by lazy { RecentSearchStyleAdapter(this) }
+    private val vm by activityViewModels<SearchStyleViewModel>()
     private val compositeDisposable = CompositeDisposable()
 
     override fun onCreateView(
@@ -38,6 +32,7 @@ class SearchStyleFragment : Fragment(), OnStyleItemSelectedInterface {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("Sangmeebee", "style viewCreated")
+        vm.callRecentList()
         setRecyclerView()
         initView()
         setViewModel()
@@ -56,23 +51,27 @@ class SearchStyleFragment : Fragment(), OnStyleItemSelectedInterface {
             searchStyleAdapter.setStyleList(styleList, numList)
         })
 
-        vm.isComplete.observe(viewLifecycleOwner, Observer {
-            crossfade()
+        vm.recentList.observe(viewLifecycleOwner, Observer {
+            recentSearchStyleAdapter.setStyleList(it)
         })
-    }
 
-    private fun initView() {
+        vm.isComplete.observe(viewLifecycleOwner, Observer {
+            rv_style.visibility = View.VISIBLE
+            ll_recent_container.visibility = View.INVISIBLE
+        })
 
-        et_style_name.textChanges()
-            .debounce(500L, TimeUnit.MILLISECONDS)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                if (!it.isNullOrEmpty()) {
-                    vm.callBrand(it.toString())
-                } else {
-                    searchStyleAdapter.setStyleList(styleList, postNumList)
+        vm.isEmpty.observe(viewLifecycleOwner, Observer {
+            ll_recent_container.apply {
+                vm.recentList.value?.let { recentList ->
+                    if (recentList.isNotEmpty()) {
+                        visibility = View.VISIBLE
+                        alpha = 1f
+                    }
                 }
-            }.addTo(compositeDisposable)
+            }
+            recentSearchStyleAdapter.setStyleList(vm.recentList.value!!)
+            rv_style.visibility = View.INVISIBLE
+        })
     }
 
     private fun setRecyclerView() {
@@ -82,17 +81,27 @@ class SearchStyleFragment : Fragment(), OnStyleItemSelectedInterface {
             minimumHeight = height
             adapter = searchStyleAdapter
         }
+
+        rv_recent_search.apply {
+            setHasFixedSize(true)
+            adapter = recentSearchStyleAdapter
+        }
     }
 
-    private fun crossfade() {
-        rv_style?.apply {
-            alpha = 0f
-            visibility = View.VISIBLE
+    private fun initView() {
 
-            animate()
-                .alpha(1f)
-                .setDuration(500L)
-                .setListener(null)
+        btn_clear.setOnClickListener {
+            vm.clearRecentList()
+            vm.callRecentList()
+        }
+
+        ll_recent_container.apply {
+            vm.recentList.value?.let { recentList ->
+                if (recentList.isNotEmpty()) {
+                    visibility = View.VISIBLE
+                    alpha = 1f
+                }
+            }
         }
     }
 
@@ -117,6 +126,12 @@ class SearchStyleFragment : Fragment(), OnStyleItemSelectedInterface {
         (activity as MainActivity).replaceFragmentUseBackStack(
             ResultSearchStyleFragment.newInstance(query)
         )
+        vm.postRecentList(query)
+    }
+
+    override fun onClickCancelBtn(query: String) {
+        vm.deleteRecentList(query)
+        vm.callRecentList()
     }
 
     override fun onDestroy() {

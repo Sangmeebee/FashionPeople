@@ -1,59 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
+        <variable
+            name="hint"
+            type="String" />
     </data>
 
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/cl_container"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorWhite">
+        android:orientation="vertical">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/ab_container"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb_profile"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorWhite">
+
+            <EditText
+                android:id="@+id/et_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_round_delete"
+                android:layout_marginEnd="20dp"
+                android:drawableStart="@drawable/et_search"
+                android:drawablePadding="10dp"
+                android:hint="@{hint}"
+                android:inputType="text"
+                android:padding="10dp"
+                android:textSize="15sp">
+
+                <requestFocus />
+            </EditText>
+        </androidx.appcompat.widget.Toolbar>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorWhite"
-            app:elevation="0dp"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll">
-
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/tb_profile"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="@color/colorWhite">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:gravity="center"
-                        android:text="검색"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-                </androidx.appcompat.widget.Toolbar>
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tl_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginHorizontal="20dp"
-                android:background="@android:color/white"
-                app:tabIndicatorHeight="2dp"
-                app:tabMode="fixed" />
-        </com.google.android.material.appbar.AppBarLayout>
+            android:layout_gravity="bottom"
+            android:layout_marginHorizontal="20dp"
+            android:background="@android:color/white"
+            app:tabIndicatorHeight="2dp"
+            app:tabMode="fixed" />
 
 
         <androidx.viewpager2.widget.ViewPager2
@@ -63,6 +57,5 @@
             android:layout_marginHorizontal="20dp"
             android:background="@android:color/white"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
+    </LinearLayout>
 </layout>

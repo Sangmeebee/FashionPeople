@@ -5,18 +5,46 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/et_style_name"
+    <LinearLayout
+        android:id="@+id/ll_recent_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:drawableStart="@drawable/et_search"
-        android:drawablePadding="10dp"
-        android:hint="브랜드 검색..."
-        android:inputType="text"
-        android:paddingBottom="20dp"
-        android:textSize="15sp"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="30dp"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="최근검색"
+            android:textColor="@color/colorBlack"
+            android:textSize="15sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorGray" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_recent_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        <Button
+            android:id="@+id/btn_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="end"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/bg_round_delete"
+            android:stateListAnimator="@null"
+            android:text="전체삭제" />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_style"
@@ -25,5 +53,6 @@
         android:orientation="vertical"
         android:visibility="invisible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@id/et_style_name" />
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

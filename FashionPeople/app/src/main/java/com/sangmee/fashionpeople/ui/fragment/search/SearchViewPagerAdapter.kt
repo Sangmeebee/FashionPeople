@@ -5,8 +5,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.sangmee.fashionpeople.ui.fragment.search.brand.SearchBrandFragment
 import com.sangmee.fashionpeople.ui.fragment.search.style.SearchStyleFragment
 
-class SearchViewPagerAdapter(fragment: Fragment) :
-    FragmentStateAdapter(fragment) {
+class SearchViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
     private val searchStyleFragment = SearchStyleFragment()
     private val searchBrandFragment = SearchBrandFragment()
@@ -17,7 +16,8 @@ class SearchViewPagerAdapter(fragment: Fragment) :
         return when (position) {
             0 -> searchStyleFragment
             1 -> searchBrandFragment
-            else -> SearchBrandFragment()
+            else -> SearchStyleFragment()
+
         }
     }
 }
