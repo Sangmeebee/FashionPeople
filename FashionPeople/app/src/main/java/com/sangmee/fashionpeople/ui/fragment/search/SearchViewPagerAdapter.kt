@@ -8,16 +8,16 @@ import com.sangmee.fashionpeople.ui.fragment.search.style.SearchStyleFragment
 
 class SearchViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
-    private val searchStyleFragment = SearchStyleFragment()
     private val searchBrandFragment = SearchBrandFragment()
+    private val searchStyleFragment = SearchStyleFragment()
     private val searchAccountFragment = SearchAccountFragment()
     override fun getItemCount() = 3
 
     override fun createFragment(position: Int): Fragment {
 
         return when (position) {
-            0 -> searchStyleFragment
-            1 -> searchBrandFragment
+            0 -> searchBrandFragment
+            1 -> searchStyleFragment
             else -> searchAccountFragment
 
         }

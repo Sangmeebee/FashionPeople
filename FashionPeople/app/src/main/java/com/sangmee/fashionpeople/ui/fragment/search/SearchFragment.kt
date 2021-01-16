@@ -64,14 +64,14 @@ class SearchFragment : Fragment() {
             .subscribe {
                 if (it.isNotEmpty()) {
                     when (binding.viewPager.currentItem) {
-                        0 -> styleVm.callStyle(it.toString())
-                        1 -> brandVm.callBrand(it.toString())
+                        0 -> brandVm.callBrand(it.toString())
+                        1 -> styleVm.callStyle(it.toString())
                         2 -> accountVm.callSearchUser(it.toString())
                     }
                 } else {
                     when (binding.viewPager.currentItem) {
-                        0 -> styleVm.isEmpty.call()
-                        1 -> brandVm.isEmpty.call()
+                        0 -> brandVm.isEmpty.call()
+                        1 -> styleVm.isEmpty.call()
                         2 -> accountVm.isEmpty.call()
                     }
                 }
@@ -84,19 +84,19 @@ class SearchFragment : Fragment() {
             override fun onPageSelected(position: Int) {
                 when (position) {
                     0 -> {
-                        binding.hint = "스타일 검색..."
-                        if (binding.etName.text.isNotEmpty()) {
-                            styleVm.callStyle(binding.etName.text.toString())
-                        } else {
-                            styleVm.isEmpty.call()
-                        }
-                    }
-                    1 -> {
                         binding.hint = "브랜드 검색..."
                         if (binding.etName.text.isNotEmpty()) {
                             brandVm.callBrand(binding.etName.text.toString())
                         } else {
                             brandVm.isEmpty.call()
+                        }
+                    }
+                    1 -> {
+                        binding.hint = "스타일 검색..."
+                        if (binding.etName.text.isNotEmpty()) {
+                            styleVm.callStyle(binding.etName.text.toString())
+                        } else {
+                            styleVm.isEmpty.call()
                         }
                     }
                     2 -> {
@@ -118,10 +118,10 @@ class SearchFragment : Fragment() {
         TabLayoutMediator(tl_container, viewPager) { tab, position ->
             when (position) {
                 0 -> {
-                    tab.text = "스타일"
+                    tab.text = "브랜드"
                 }
                 1 -> {
-                    tab.text = "브랜드"
+                    tab.text = "스타일"
                 }
                 2 -> {
                     tab.text = "계정"
