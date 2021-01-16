@@ -3,6 +3,7 @@ package com.sangmee.fashionpeople.data.repository
 import com.sangmee.fashionpeople.data.dataSource.local.SearchLocalDataSource
 import com.sangmee.fashionpeople.data.dataSource.remote.BrandRemoteDataSource
 import com.sangmee.fashionpeople.data.model.Brand
+import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.data.model.Style
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
@@ -42,5 +43,21 @@ class BrandRepositoryImpl(
 
     override fun clearRecentSearchQuery(key: String) {
         searchLocalDataSource.clearRecentSearchQuery(key)
+    }
+
+    override fun saveRecentSearchUser(key: String, user: FUser) {
+        searchLocalDataSource.saveRecentSearchUser(key, user)
+    }
+
+    override fun readRecentSearchUser(key: String): ArrayList<FUser> {
+        return searchLocalDataSource.readRecentSearchUser(key)
+    }
+
+    override fun deleteRecentSearchUser(key: String, user: FUser) {
+        searchLocalDataSource.deleteRecentSearchUser(key, user)
+    }
+
+    override fun clearRecentSearchUser(key: String) {
+        searchLocalDataSource.clearRecentSearchUser(key)
     }
 }

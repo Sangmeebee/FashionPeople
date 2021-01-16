@@ -14,6 +14,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.jakewharton.rxbinding4.widget.textChanges
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.databinding.FragmentSearchBinding
+import com.sangmee.fashionpeople.ui.fragment.search.account.SearchAccountViewModel
 import com.sangmee.fashionpeople.ui.fragment.search.brand.SearchBrandViewModel
 import com.sangmee.fashionpeople.ui.fragment.search.style.SearchStyleViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -31,6 +32,7 @@ class SearchFragment : Fragment() {
     private val compositeDisposable = CompositeDisposable()
     private val brandVm by activityViewModels<SearchBrandViewModel>()
     private val styleVm by activityViewModels<SearchStyleViewModel>()
+    private val accountVm by activityViewModels<SearchAccountViewModel>()
 
     override fun onResume() {
         super.onResume()
@@ -64,11 +66,13 @@ class SearchFragment : Fragment() {
                     when (binding.viewPager.currentItem) {
                         0 -> styleVm.callStyle(it.toString())
                         1 -> brandVm.callBrand(it.toString())
+                        2 -> accountVm.callSearchUser(it.toString())
                     }
                 } else {
                     when (binding.viewPager.currentItem) {
                         0 -> styleVm.isEmpty.call()
                         1 -> brandVm.isEmpty.call()
+                        2 -> accountVm.isEmpty.call()
                     }
                 }
             }.addTo(compositeDisposable)
@@ -98,7 +102,9 @@ class SearchFragment : Fragment() {
                     2 -> {
                         binding.hint = "계정 검색..."
                         if (binding.etName.text.isNotEmpty()) {
-
+                            accountVm.callSearchUser(binding.etName.text.toString())
+                        } else {
+                            accountVm.isEmpty.call()
                         }
                     }
                 }
