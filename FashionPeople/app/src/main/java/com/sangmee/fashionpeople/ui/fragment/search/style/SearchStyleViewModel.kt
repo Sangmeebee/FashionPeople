@@ -3,6 +3,7 @@ package com.sangmee.fashionpeople.ui.fragment.search.style
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.data.dataSource.local.SearchLocalDataSourceImpl
 import com.sangmee.fashionpeople.data.dataSource.remote.BrandRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.Style
@@ -18,6 +19,9 @@ class SearchStyleViewModel : ViewModel() {
 
     private val brandRepository = BrandRepositoryImpl(BrandRemoteDataSourceImpl(), SearchLocalDataSourceImpl())
     private val compositeDisposable = CompositeDisposable()
+
+    private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
+    val customId = GlobalApplication.prefs.getString("${loginType}_custom_id", "empty")
 
     val styleList = MutableLiveData<List<Style>>()
     val recentList = MutableLiveData<List<String>>()
@@ -35,19 +39,19 @@ class SearchStyleViewModel : ViewModel() {
 
 
     fun callRecentList() {
-        recentList.value = brandRepository.readRecentSearchQuery("styleList")
+        recentList.value = brandRepository.readRecentSearchQuery("${customId}_styleList")
     }
 
     fun postRecentList(query: String) {
-        brandRepository.saveRecentSearchQuery("styleList", query)
+        brandRepository.saveRecentSearchQuery("${customId}_styleList", query)
     }
 
     fun deleteRecentList(query: String) {
-        brandRepository.deleteRecentSearchQuery("styleList", query)
+        brandRepository.deleteRecentSearchQuery("${customId}_styleList", query)
     }
 
     fun clearRecentList(){
-        brandRepository.clearRecentSearchQuery("styleList")
+        brandRepository.clearRecentSearchQuery("${customId}_styleList")
     }
 
     fun unbindViewModel() {
