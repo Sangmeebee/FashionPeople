@@ -58,6 +58,7 @@ class LoginActivity : AppCompatActivity() {
     private fun redirectUserInfoActivity(exist: Boolean) {
         val intent =
             if (exist) {
+                GlobalApplication.prefs.setString("kakao_custom_id", customId)
                 Intent(this, MainActivity::class.java)
             } else {
                 Intent(this, UserInfoActivity::class.java).putExtra("custom_id", customId)
