@@ -13,6 +13,10 @@ interface FUserRepository {
 
     fun getFUser(@Path("id") id: String): Single<FUser>
 
+    fun getIsEigenvalue(@Path("nickName") nickName: String): Single<Boolean>
+
+    fun getSearchUser(@Path("nickName") nickName: String): Single<List<FUser>>
+
     fun addUser(
         user: FUser,
         success: () -> Unit,

@@ -15,6 +15,12 @@ interface FUserService {
     @GET("users/{id}")
     fun getFUser(@Path("id") id: String): Single<FUser>
 
+    @GET("users/isEigenvalue/{nickName}")
+    fun getIsEigenvalue(@Path("nickName") nickName: String): Single<Boolean>
+
+    @GET("users/search/{nickName}")
+    fun getSearchUser(@Path("nickName") nickName: String): Single<List<FUser>>
+
     @POST("users")
     fun addUser(@Body body: FUser): Call<FUser>
 

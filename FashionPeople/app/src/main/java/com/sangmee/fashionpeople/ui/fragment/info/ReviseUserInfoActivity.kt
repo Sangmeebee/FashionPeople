@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import com.jakewharton.rxbinding4.widget.textChanges
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
@@ -31,8 +33,13 @@ class ReviseUserInfoActivity : AppCompatActivity() {
     private var introduce: String? = null
     private var profileImageName: String? = null
 
-    private val vm by lazy { ReviseInfoViewModel() }
+    private val vm by viewModels<ReviseInfoViewModel>()
     private val compositeDisposable = CompositeDisposable()
+
+    override fun onResume() {
+        super.onResume()
+        checkFillInTheBlanks()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,8 +63,6 @@ class ReviseUserInfoActivity : AppCompatActivity() {
             }
         }
         binding.activity = this
-
-        checkFillInTheBlanks()
 
         binding.rgGender.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
@@ -90,19 +95,17 @@ class ReviseUserInfoActivity : AppCompatActivity() {
 
     private fun checkFillInTheBlanks() {
         binding.etNickname.textChanges()
-            .debounce(500, TimeUnit.MILLISECONDS)
+            .debounce(300, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 if (it.isNullOrEmpty()) {
                     binding.btnComplete.background =
                         ContextCompat.getDrawable(this, R.drawable.bg_round_disable)
                     binding.tvAlert.visibility = View.VISIBLE
+                    binding.alert = "닉네임을 입력해주세요"
                     binding.btnComplete.isEnabled = false
                 } else {
-                    binding.btnComplete.background =
-                        ContextCompat.getDrawable(this, R.drawable.bg_round)
-                    binding.tvAlert.visibility = View.INVISIBLE
-                    binding.btnComplete.isEnabled = true
+                    vm.checkIsEigenvalue(it.toString())
                 }
             }
     }
@@ -125,6 +128,22 @@ class ReviseUserInfoActivity : AppCompatActivity() {
     }
 
     private fun bindViewModel() {
+
+        vm.isExist.observe(this, Observer {
+            if (it && binding.etNickname.text.toString() != nickName) {
+                binding.btnComplete.background =
+                    ContextCompat.getDrawable(this, R.drawable.bg_round_disable)
+                binding.tvAlert.visibility = View.VISIBLE
+                binding.alert = "이미 존재하는 닉네임 입니다."
+                binding.btnComplete.isEnabled = false
+            } else {
+                binding.btnComplete.background =
+                    ContextCompat.getDrawable(this, R.drawable.bg_round)
+                binding.tvAlert.visibility = View.INVISIBLE
+                binding.btnComplete.isEnabled = true
+            }
+        })
+
         vm.loadingSubject
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {

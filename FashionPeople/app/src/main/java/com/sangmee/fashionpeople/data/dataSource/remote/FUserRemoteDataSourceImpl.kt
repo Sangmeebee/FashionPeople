@@ -56,4 +56,12 @@ class FUserRemoteDataSourceImpl : FUserRemoteDataSource {
     override fun deleteUser(id: String): Completable {
         return RetrofitClient.getFUserService().deleteUser(id)
     }
+
+    override fun getIsEigenvalue(nickName: String): Single<Boolean> {
+        return RetrofitClient.getFUserService().getIsEigenvalue(nickName)
+    }
+
+    override fun getSearchUser(nickName: String): Single<List<FUser>> {
+        return RetrofitClient.getFUserService().getSearchUser(nickName)
+    }
 }

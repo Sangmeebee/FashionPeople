@@ -39,12 +39,15 @@ class LastSignInFragment : Fragment() {
     }
     private val compositeDisposable = CompositeDisposable()
 
+    override fun onResume() {
+        super.onResume()
+        checkFillInTheBlanks()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        //화면 세팅
-        (activity as EmailSignInActivity).window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         //updateUI(currentUser)
         return inflater.inflate(R.layout.last_sign_in_fragment, container, false)?.apply {
             binding = DataBindingUtil.bind(this)!!
@@ -86,22 +89,38 @@ class LastSignInFragment : Fragment() {
             fragmentManager.popBackStack()
         })
 
+        vm.isExist.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                binding.btnComplete.background =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.bg_round_disable)
+                binding.tvAlert.visibility = View.VISIBLE
+                binding.alert = "이미 존재하는 닉네임 입니다."
+                binding.btnComplete.isEnabled = false
+            } else {
+                binding.btnComplete.background =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.bg_round)
+                binding.tvAlert.visibility = View.INVISIBLE
+                binding.btnComplete.isEnabled = true
+            }
+        })
+    }
+
+
+    private fun checkFillInTheBlanks() {
         binding.etNickname.textChanges()
-            .debounce(500, TimeUnit.MILLISECONDS)
+            .debounce(300, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 if (it.isNullOrEmpty()) {
                     binding.btnComplete.background =
                         ContextCompat.getDrawable(requireContext(), R.drawable.bg_round_disable)
                     binding.tvAlert.visibility = View.VISIBLE
+                    binding.alert = "닉네임을 입력해주세요"
                     binding.btnComplete.isEnabled = false
                 } else {
-                    binding.btnComplete.background =
-                        ContextCompat.getDrawable(requireContext(), R.drawable.bg_round)
-                    binding.tvAlert.visibility = View.INVISIBLE
-                    binding.btnComplete.isEnabled = true
+                    vm.checkIsEigenvalue(it.toString())
                 }
-            }.addTo(compositeDisposable)
+            }
     }
 
     //회원정보 저장(retrofit2)
@@ -137,8 +156,9 @@ class LastSignInFragment : Fragment() {
         }
     }
 
-    override fun onDestroy() {
+    override fun onPause() {
         compositeDisposable.clear()
-        super.onDestroy()
+        vm.unbindViewModel()
+        super.onPause()
     }
 }

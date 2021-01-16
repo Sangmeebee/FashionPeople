@@ -109,7 +109,7 @@ class LoginActivity : AppCompatActivity() {
                     Log.d("sangmin", "연결 성공")
                     custom_id = result!!.id.toString()
                     customId = custom_id
-                    GlobalApplication.prefs.setString("kakao_custom_id", customId)
+
                     Log.i("sangmin", "아이디 : ${custom_id}")
                     Log.i("Log", "이메일 : ${result.kakaoAccount.email}")
                     Log.i("Log", "성별 : ${result.kakaoAccount.gender}")
