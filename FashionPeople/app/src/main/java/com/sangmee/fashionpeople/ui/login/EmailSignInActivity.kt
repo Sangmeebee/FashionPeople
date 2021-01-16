@@ -1,6 +1,7 @@
 package com.sangmee.fashionpeople.ui.login
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -32,11 +33,10 @@ class EmailSignInActivity : AppCompatActivity() {
             finish()
         } else {
             if(index==3){
-                if(vm.isOk.value!!){
-                    FirebaseAuth.getInstance().currentUser?.delete()
-                }
+                Toast.makeText(this, "안전한 회원가입을 위해, 이 화면에서는 뒤로가기 버튼을 누를 수 없습니다", Toast.LENGTH_SHORT).show()
+            } else{
+                supportFragmentManager.popBackStack()
             }
-            supportFragmentManager.popBackStack()
         }
     }
 }

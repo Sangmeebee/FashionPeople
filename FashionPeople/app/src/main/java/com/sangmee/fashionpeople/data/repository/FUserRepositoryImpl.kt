@@ -27,4 +27,12 @@ class FUserRepositoryImpl(
     override fun deleteUser(id: String): Completable {
         return FUserRemoteDataSource.deleteUser(id)
     }
+
+    override fun getIsEigenvalue(nickName: String): Single<Boolean> {
+        return FUserRemoteDataSource.getIsEigenvalue(nickName)
+    }
+
+    override fun getSearchUser(nickName: String): Single<List<FUser>> {
+        return FUserRemoteDataSource.getSearchUser(nickName)
+    }
 }

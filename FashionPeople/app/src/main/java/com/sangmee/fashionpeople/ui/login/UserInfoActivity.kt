@@ -2,14 +2,16 @@ package com.sangmee.fashionpeople.ui.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import com.jakewharton.rxbinding4.widget.textChanges
 import com.sangmee.fashionpeople.R
+import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.data.dataSource.remote.FUserRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.data.repository.FUserRepository
@@ -27,10 +29,16 @@ class UserInfoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityUserInfoBinding
     private lateinit var customId: String
     private var gender = "남"
+    private val vm by viewModels<UserInfoVIewModel>()
     private val fUserRepository: FUserRepository by lazy {
         FUserRepositoryImpl(FUserRemoteDataSourceImpl())
     }
     private val compositeDisposable = CompositeDisposable()
+
+    override fun onResume() {
+        super.onResume()
+        checkFillInTheBlanks()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,8 +47,6 @@ class UserInfoActivity : AppCompatActivity() {
         binding.customId = customId
         binding.gender = "남자"
         binding.activity = this
-
-        checkFillInTheBlanks()
 
         binding.rgGender.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
@@ -56,6 +62,8 @@ class UserInfoActivity : AppCompatActivity() {
                 }
             }
         }
+
+        initViewModel()
     }
 
     //회원정보 저장(retrofit2)
@@ -77,34 +85,55 @@ class UserInfoActivity : AppCompatActivity() {
                 listOf()
             ), {
                 val intent = Intent(this, MainActivity::class.java)
+                GlobalApplication.prefs.setString("kakao_custom_id", customId)
                 intent.flags =
                     Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
-            }, { Log.e("sangmin_error", it) }
+            }, { errorMsg() }
         )
+    }
+
+    private fun errorMsg() {
+        Toast.makeText(this, "다시 시도해주세요", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun initViewModel() {
+        vm.isExist.observe(this, Observer {
+            if (it) {
+                binding.btnComplete.background =
+                    ContextCompat.getDrawable(this, R.drawable.bg_round_disable)
+                binding.tvAlert.visibility = View.VISIBLE
+                binding.alert = "이미 존재하는 닉네임 입니다."
+                binding.btnComplete.isEnabled = false
+            } else {
+                binding.btnComplete.background =
+                    ContextCompat.getDrawable(this, R.drawable.bg_round)
+                binding.tvAlert.visibility = View.INVISIBLE
+                binding.btnComplete.isEnabled = true
+            }
+        })
     }
 
     private fun checkFillInTheBlanks() {
         binding.etNickname.textChanges()
-            .debounce(500, TimeUnit.MILLISECONDS)
+            .debounce(300, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 if (it.isNullOrEmpty()) {
                     binding.btnComplete.background =
                         ContextCompat.getDrawable(this, R.drawable.bg_round_disable)
                     binding.tvAlert.visibility = View.VISIBLE
+                    binding.alert = "닉네임을 입력해주세요"
                     binding.btnComplete.isEnabled = false
                 } else {
-                    binding.btnComplete.background =
-                        ContextCompat.getDrawable(this, R.drawable.bg_round)
-                    binding.tvAlert.visibility = View.INVISIBLE
-                    binding.btnComplete.isEnabled = true
+                    vm.checkIsEigenvalue(it.toString())
                 }
             }
     }
 
-    override fun onDestroy() {
+    override fun onPause() {
         compositeDisposable.clear()
-        super.onDestroy()
+        vm.unbindViewModel()
+        super.onPause()
     }
 }
