@@ -32,6 +32,11 @@ class SearchFragment : Fragment() {
     private val brandVm by activityViewModels<SearchBrandViewModel>()
     private val styleVm by activityViewModels<SearchStyleViewModel>()
 
+    override fun onResume() {
+        super.onResume()
+        initCallBack()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,36 +54,7 @@ class SearchFragment : Fragment() {
         initView()
     }
 
-    private fun initView() {
-
-        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                when (position) {
-                    0 -> {
-                        binding.hint = "스타일 검색..."
-                        if(binding.etName.text.isNotEmpty()){
-                            styleVm.callStyle(binding.etName.text.toString())
-                        } else {
-                            styleVm.isEmpty.call()
-                        }
-                    }
-                    1 -> {
-                        binding.hint = "브랜드 검색..."
-                        if(binding.etName.text.isNotEmpty()){
-                            brandVm.callBrand(binding.etName.text.toString())
-                        } else {
-                            brandVm.isEmpty.call()
-                        }
-                    }
-                    2 -> {
-                        binding.hint = "계정 검색..."
-                        if(binding.etName.text.isNotEmpty()){
-
-                        }
-                    }
-                }
-            }
-        })
+    private fun initCallBack() {
 
         binding.etName.textChanges()
             .debounce(500L, TimeUnit.MILLISECONDS)
@@ -96,6 +72,38 @@ class SearchFragment : Fragment() {
                     }
                 }
             }.addTo(compositeDisposable)
+    }
+
+    private fun initView() {
+
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                when (position) {
+                    0 -> {
+                        binding.hint = "스타일 검색..."
+                        if (binding.etName.text.isNotEmpty()) {
+                            styleVm.callStyle(binding.etName.text.toString())
+                        } else {
+                            styleVm.isEmpty.call()
+                        }
+                    }
+                    1 -> {
+                        binding.hint = "브랜드 검색..."
+                        if (binding.etName.text.isNotEmpty()) {
+                            brandVm.callBrand(binding.etName.text.toString())
+                        } else {
+                            brandVm.isEmpty.call()
+                        }
+                    }
+                    2 -> {
+                        binding.hint = "계정 검색..."
+                        if (binding.etName.text.isNotEmpty()) {
+
+                        }
+                    }
+                }
+            }
+        })
     }
 
     private fun setTabLayout() {

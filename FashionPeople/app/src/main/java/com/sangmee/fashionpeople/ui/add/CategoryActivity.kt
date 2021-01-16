@@ -1,7 +1,6 @@
 package com.sangmee.fashionpeople.ui.add
 
 import android.os.Bundle
-import android.text.Editable
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -13,7 +12,6 @@ import com.sangmee.fashionpeople.databinding.ActivityCategoryBinding
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
-import kotlinx.android.synthetic.main.activity_category.*
 import java.util.concurrent.TimeUnit
 
 class CategoryActivity : AppCompatActivity(), OnListItemSelectedInterface {
@@ -33,8 +31,9 @@ class CategoryActivity : AppCompatActivity(), OnListItemSelectedInterface {
     private lateinit var binding: ActivityCategoryBinding
 
     override fun onResume() {
-        initViewModel()
         super.onResume()
+        initViewModel()
+        initEditTextListener()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,20 +42,32 @@ class CategoryActivity : AppCompatActivity(), OnListItemSelectedInterface {
         binding.activity = this
         binding.lifecycleOwner = this
         var sub: String? = null
+        var hintSub: String? = null
         when (this.subject) {
-            "style" -> sub = "스타일"
-            "top" -> sub = "상의"
-            "pants" -> sub = "하의"
-            "shoes" -> sub = "신발"
+            "style" -> {
+                sub = "스타일"
+                binding.hint = "스타일 입력"
+            }
+            "top" -> {
+                sub = "상의"
+                binding.hint = "상의 브랜드명 입력"
+            }
+            "pants" -> {
+                sub = "하의"
+                binding.hint = "하의 브랜드명 입력"
+            }
+            "shoes" -> {
+                sub = "신발"
+                binding.hint = "신발 브랜드명 입력"
+            }
         }
         binding.subject = "$sub 선택"
 
         initView()
-        initEditTextListener()
 
     }
 
-    private fun initView(){
+    private fun initView() {
         categoryAdapter.setTitleList(categoryList, postNumList)
 
         //리사이클러뷰 세팅
@@ -120,7 +131,7 @@ class CategoryActivity : AppCompatActivity(), OnListItemSelectedInterface {
             }.addTo(compositeDisposable)
     }
 
-    fun clickCompleteBtn(){
+    fun clickCompleteBtn() {
         val title = binding.etBrand.text.toString()
         GlobalApplication.prefs.setString(subject, title)
         val intent = intent
@@ -130,10 +141,11 @@ class CategoryActivity : AppCompatActivity(), OnListItemSelectedInterface {
     }
 
     override fun onItemSelected(title: String) {
-        binding.etBrand.apply {
-            setText(title)
-            setSelection(this.text.length)
-        }
+        GlobalApplication.prefs.setString(subject, title)
+        val intent = intent
+        intent.putExtra("subject", subject)
+        setResult(RESULT_OK, intent)
+        finish()
     }
 
     override fun onPause() {

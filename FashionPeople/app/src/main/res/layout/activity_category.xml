@@ -16,6 +16,10 @@
         <variable
             name="isFill"
             type="Boolean" />
+
+        <variable
+            name="hint"
+            type="String" />
     </data>
 
     <LinearLayout
@@ -64,7 +68,7 @@
                 android:layout_weight="7"
                 android:drawableStart="@drawable/et_search"
                 android:drawablePadding="10dp"
-                android:hint="브랜드명 입력..."
+                android:hint="@{hint}"
                 android:inputType="text"
                 android:paddingBottom="20dp"
                 android:textSize="15sp">
