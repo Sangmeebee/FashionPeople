@@ -23,4 +23,12 @@ class BrandRemoteDataSourceImpl : BrandRemoteDataSource {
     override fun putBrand(brand: String): Completable {
         return RetrofitClient.getBrandService().putBrand(brand)
     }
+
+    override fun getPopularStyle(): Single<List<Style>> {
+        return RetrofitClient.getBrandService().getPopularStyle()
+    }
+
+    override fun getPopularBrand(): Single<List<Brand>> {
+        return RetrofitClient.getBrandService().getPopularBrand()
+    }
 }

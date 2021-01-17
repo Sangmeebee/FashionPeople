@@ -8,7 +8,7 @@
     <LinearLayout
         android:id="@+id/ll_recent_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginTop="30dp"
         android:orientation="vertical"
         android:visibility="invisible"
@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="최근검색"
+            android:text="추천 스타일"
             android:textColor="@color/colorBlack"
             android:textSize="15sp" />
 
@@ -30,26 +30,15 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_recent_search"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-        <Button
-            android:id="@+id/btn_clear"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_gravity="end"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="15dp"
-            android:background="@drawable/bg_round_delete"
-            android:stateListAnimator="@null"
-            android:text="전체삭제" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_style"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:visibility="invisible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

@@ -4,6 +4,7 @@ import com.sangmee.fashionpeople.data.model.Brand
 import com.sangmee.fashionpeople.data.model.Style
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
+import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface BrandRemoteDataSource {
@@ -15,4 +16,8 @@ interface BrandRemoteDataSource {
     fun putStyle(@Path("style") style: String): Completable
 
     fun putBrand(@Path("brand") brand: String): Completable
+
+    fun getPopularStyle(): Single<List<Style>>
+
+    fun getPopularBrand(): Single<List<Brand>>
 }

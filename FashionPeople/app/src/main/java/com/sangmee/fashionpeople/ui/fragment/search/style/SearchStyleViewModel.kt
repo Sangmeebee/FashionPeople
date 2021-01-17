@@ -13,11 +13,11 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.schedulers.Schedulers
-import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 class SearchStyleViewModel : ViewModel() {
 
-    private val brandRepository = BrandRepositoryImpl(BrandRemoteDataSourceImpl(), SearchLocalDataSourceImpl())
+    private val brandRepository =
+        BrandRepositoryImpl(BrandRemoteDataSourceImpl(), SearchLocalDataSourceImpl())
     private val compositeDisposable = CompositeDisposable()
 
     private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
@@ -25,6 +25,7 @@ class SearchStyleViewModel : ViewModel() {
 
     val styleList = MutableLiveData<List<Style>>()
     val recentList = MutableLiveData<List<String>>()
+    val popularList = MutableLiveData<List<Style>>()
     val isComplete = SingleLiveEvent<Any>()
     val isEmpty = SingleLiveEvent<Any>()
 
@@ -37,6 +38,13 @@ class SearchStyleViewModel : ViewModel() {
             .addTo(compositeDisposable)
     }
 
+    fun callPopularList() {
+        brandRepository.getPopularStyle()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ popularList.value = it }, { Log.e("Sangmeebee", it.message.toString()) })
+            .addTo(compositeDisposable)
+    }
 
     fun callRecentList() {
         recentList.value = brandRepository.readRecentSearchQuery("${customId}_styleList")
@@ -50,7 +58,7 @@ class SearchStyleViewModel : ViewModel() {
         brandRepository.deleteRecentSearchQuery("${customId}_styleList", query)
     }
 
-    fun clearRecentList(){
+    fun clearRecentList() {
         brandRepository.clearRecentSearchQuery("${customId}_styleList")
     }
 

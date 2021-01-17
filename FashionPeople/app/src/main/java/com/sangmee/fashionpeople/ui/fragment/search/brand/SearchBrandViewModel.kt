@@ -25,6 +25,7 @@ class SearchBrandViewModel : ViewModel() {
 
     val brandList = MutableLiveData<List<Brand>>()
     val recentList = MutableLiveData<List<String>>()
+    val popularList = MutableLiveData<List<Brand>>()
     val isComplete = SingleLiveEvent<Any>()
     val isEmpty = SingleLiveEvent<Any>()
 
@@ -34,6 +35,14 @@ class SearchBrandViewModel : ViewModel() {
             .observeOn(AndroidSchedulers.mainThread())
             .doAfterTerminate { isComplete.call() }
             .subscribe({ brandList.value = it }, { Log.e("Sangmeebee", it.message.toString()) })
+            .addTo(compositeDisposable)
+    }
+
+    fun callPopularList() {
+        brandRepository.getPopularBrand()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ popularList.value = it }, { Log.e("Sangmeebee", it.message.toString()) })
             .addTo(compositeDisposable)
     }
 

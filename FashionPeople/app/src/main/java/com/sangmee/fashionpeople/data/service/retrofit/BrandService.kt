@@ -16,6 +16,12 @@ interface BrandService {
     @GET("feedImage/brand/{brand}")
     fun getBrand(@Path("brand") brand: String): Single<List<Brand>>
 
+    @GET("feedImage/popularStyle")
+    fun getPopularStyle(): Single<List<Style>>
+
+    @GET("feedImage/popularBrand")
+    fun getPopularBrand(): Single<List<Brand>>
+
     @PUT("feedImage/style/{style}")
     fun putStyle(@Path("style") style: String): Completable
 

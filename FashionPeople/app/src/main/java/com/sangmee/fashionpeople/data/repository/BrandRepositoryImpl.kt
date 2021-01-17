@@ -29,6 +29,14 @@ class BrandRepositoryImpl(
         return brandRemoteDataSource.putBrand(brand)
     }
 
+    override fun getPopularStyle(): Single<List<Style>> {
+        return brandRemoteDataSource.getPopularStyle()
+    }
+
+    override fun getPopularBrand(): Single<List<Brand>> {
+        return brandRemoteDataSource.getPopularBrand()
+    }
+
     override fun saveRecentSearchQuery(key: String, query: String) {
         searchLocalDataSource.saveRecentSearchQuery(key, query)
     }

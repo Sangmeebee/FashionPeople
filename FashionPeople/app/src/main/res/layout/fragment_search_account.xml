@@ -8,7 +8,7 @@
     <LinearLayout
         android:id="@+id/ll_recent_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_marginTop="30dp"
         android:visibility="invisible"
@@ -49,7 +49,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_account"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:visibility="invisible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

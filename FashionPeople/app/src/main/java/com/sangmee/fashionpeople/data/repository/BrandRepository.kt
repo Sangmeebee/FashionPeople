@@ -17,6 +17,10 @@ interface BrandRepository {
 
     fun putBrand(@Path("brand") brand: String): Completable
 
+    fun getPopularStyle(): Single<List<Style>>
+
+    fun getPopularBrand(): Single<List<Brand>>
+
     fun saveRecentSearchQuery(key: String, query: String)
 
     fun readRecentSearchQuery(key: String): ArrayList<String>
@@ -26,7 +30,10 @@ interface BrandRepository {
     fun clearRecentSearchQuery(key: String)
 
     fun saveRecentSearchUser(key: String, user: FUser)
+
     fun readRecentSearchUser(key: String): ArrayList<FUser>
+
     fun deleteRecentSearchUser(key: String, user: FUser)
+
     fun clearRecentSearchUser(key: String)
 }

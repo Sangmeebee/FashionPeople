@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.ui.MainActivity
+import com.sangmee.fashionpeople.ui.fragment.search.SearchViewModel
 import com.sangmee.fashionpeople.ui.fragment.search.style.result.ResultSearchStyleFragment
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_search_style.*
@@ -18,9 +19,15 @@ import kotlinx.android.synthetic.main.fragment_search_style.*
 class SearchStyleFragment : Fragment(), OnStyleItemSelectedInterface {
 
     private val searchStyleAdapter by lazy { SearchStyleAdapter(this) }
-    private val recentSearchStyleAdapter by lazy { RecentSearchStyleAdapter(this) }
+    private val popularSearchStyleAdapter by lazy { SearchStyleAdapter(this) }
     private val vm by activityViewModels<SearchStyleViewModel>()
+    private val searchVm by activityViewModels<SearchViewModel>()
     private val compositeDisposable = CompositeDisposable()
+
+    override fun onResume() {
+        super.onResume()
+        vm.callPopularList()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,8 +38,6 @@ class SearchStyleFragment : Fragment(), OnStyleItemSelectedInterface {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("Sangmeebee", "style viewCreated")
-        vm.callRecentList()
         setRecyclerView()
         initView()
         setViewModel()
@@ -40,19 +45,11 @@ class SearchStyleFragment : Fragment(), OnStyleItemSelectedInterface {
 
     private fun setViewModel() {
         vm.styleList.observe(viewLifecycleOwner, Observer {
-            Log.d("Sangmeebee", "style stylelist")
-
-            val styleList = ArrayList<String>()
-            val numList = ArrayList<Int>()
-            for (style in it) {
-                styleList.add(style.styleName)
-                numList.add(style.postNum)
-            }
-            searchStyleAdapter.setStyleList(styleList, numList)
+            searchStyleAdapter.setStyleList(it)
         })
 
-        vm.recentList.observe(viewLifecycleOwner, Observer {
-            recentSearchStyleAdapter.setStyleList(it)
+        vm.popularList.observe(viewLifecycleOwner, Observer {
+            popularSearchStyleAdapter.setStyleList(it)
         })
 
         vm.isComplete.observe(viewLifecycleOwner, Observer {
@@ -62,81 +59,44 @@ class SearchStyleFragment : Fragment(), OnStyleItemSelectedInterface {
 
         vm.isEmpty.observe(viewLifecycleOwner, Observer {
             ll_recent_container.apply {
-                vm.recentList.value?.let { recentList ->
-                    if (recentList.isNotEmpty()) {
-                        visibility = View.VISIBLE
-                        alpha = 1f
-                    }
-                }
+                visibility = View.VISIBLE
+                alpha = 1f
             }
-            recentSearchStyleAdapter.setStyleList(vm.recentList.value!!)
             rv_style.visibility = View.INVISIBLE
         })
     }
 
     private fun setRecyclerView() {
-        val height = getDisplayHeight()
         rv_style.apply {
             setHasFixedSize(true)
-            minimumHeight = height
             adapter = searchStyleAdapter
         }
 
         rv_recent_search.apply {
             setHasFixedSize(true)
-            adapter = recentSearchStyleAdapter
+            adapter = popularSearchStyleAdapter
         }
     }
 
     private fun initView() {
-
-        btn_clear.setOnClickListener {
-            vm.clearRecentList()
-            vm.callRecentList()
-        }
-
-        ll_recent_container.apply {
-            vm.recentList.value?.let { recentList ->
-                if (recentList.isNotEmpty()) {
+        searchVm.etText.value?.let {
+            if(it == "")
+                ll_recent_container.apply {
                     visibility = View.VISIBLE
                     alpha = 1f
                 }
-            }
         }
-    }
-
-    private fun getDisplayHeight(): Int {
-        val display = requireActivity().windowManager.defaultDisplay
-        val size = Point()
-        display.getSize(size)
-        var height = size.y
-        val resourceId = resources.getIdentifier(
-            "design_bottom_navigation_height",
-            "dimen",
-            requireContext().packageName
-        )
-        if (resourceId > 0) {
-            val navigationBarHeight = resources.getDimensionPixelSize(resourceId)
-            height -= navigationBarHeight
-        }
-        return height
     }
 
     override fun onItemSelected(query: String) {
         (activity as MainActivity).replaceFragmentUseBackStack(
             ResultSearchStyleFragment.newInstance(query)
         )
-        vm.postRecentList(query)
     }
 
-    override fun onClickCancelBtn(query: String) {
-        vm.deleteRecentList(query)
-        vm.callRecentList()
-    }
-
-    override fun onDestroy() {
+    override fun onPause() {
         compositeDisposable.clear()
         vm.unbindViewModel()
-        super.onDestroy()
+        super.onPause()
     }
 }

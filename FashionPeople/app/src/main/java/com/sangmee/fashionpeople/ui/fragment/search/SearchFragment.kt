@@ -1,11 +1,9 @@
 package com.sangmee.fashionpeople.ui.fragment.search
 
-import android.app.Service
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -20,9 +18,7 @@ import com.sangmee.fashionpeople.ui.fragment.search.style.SearchStyleViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
-import kotlinx.android.synthetic.main.fragment_info.tl_container
-import kotlinx.android.synthetic.main.fragment_info.viewPager
-import kotlinx.android.synthetic.main.fragment_search.*
+import kotlinx.android.synthetic.main.fragment_info.*
 import java.util.concurrent.TimeUnit
 
 
@@ -30,6 +26,7 @@ class SearchFragment : Fragment() {
 
     private lateinit var binding: FragmentSearchBinding
     private val compositeDisposable = CompositeDisposable()
+    private val vm by activityViewModels<SearchViewModel>()
     private val brandVm by activityViewModels<SearchBrandViewModel>()
     private val styleVm by activityViewModels<SearchStyleViewModel>()
     private val accountVm by activityViewModels<SearchAccountViewModel>()
@@ -61,6 +58,7 @@ class SearchFragment : Fragment() {
             .debounce(500L, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
+                vm.etText.value = it.toString()
                 if (it.isNotEmpty()) {
                     when (binding.viewPager.currentItem) {
                         0 -> brandVm.callBrand(it.toString())
