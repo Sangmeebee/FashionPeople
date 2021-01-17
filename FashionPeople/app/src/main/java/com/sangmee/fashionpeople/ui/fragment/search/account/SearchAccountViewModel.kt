@@ -41,6 +41,14 @@ class SearchAccountViewModel : ViewModel() {
             .addTo(compositeDisposable)
     }
 
+    fun callUser(id: String) {
+        fUserRepository.getFUser(id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ postRecentList(it) }, { Log.e("Sangmeebee", it.message.toString()) })
+            .addTo(compositeDisposable)
+    }
+
     fun callRecentList() {
         recentList.value = brandRepository.readRecentSearchUser("${customId}_accountList")
     }

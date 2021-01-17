@@ -12,6 +12,7 @@ import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.info.other.OtherFragment
+import com.sangmee.fashionpeople.ui.fragment.search.SearchViewModel
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_search_account.*
 
@@ -20,6 +21,7 @@ class SearchAccountFragment : Fragment(), OnAccountItemSelectedInterface {
     private val searchAccountAdapter by lazy { SearchAccountAdapter(this) }
     private val recentSearchAccountAdapter by lazy { RecentSearchAccountAdapter(this) }
     private val vm by activityViewModels<SearchAccountViewModel>()
+    private val searchVm by activityViewModels<SearchViewModel>()
     private val compositeDisposable = CompositeDisposable()
 
     override fun onCreateView(
@@ -86,13 +88,16 @@ class SearchAccountFragment : Fragment(), OnAccountItemSelectedInterface {
             vm.callRecentList()
         }
 
-        ll_recent_container.apply {
-            vm.recentList.value?.let { recentList ->
-                if (recentList.isNotEmpty()) {
-                    visibility = View.VISIBLE
-                    alpha = 1f
+        searchVm.etText.value?.let {
+            if (it == "")
+                ll_recent_container.apply {
+                    vm.recentList.value?.let { recentList ->
+                        if (recentList.isNotEmpty()) {
+                            visibility = View.VISIBLE
+                            alpha = 1f
+                        }
+                    }
                 }
-            }
         }
     }
 
@@ -114,10 +119,12 @@ class SearchAccountFragment : Fragment(), OnAccountItemSelectedInterface {
     }
 
     override fun onItemSelected(user: FUser) {
-        (activity as MainActivity).replaceFragmentUseBackStack(
-            OtherFragment.newInstance(user.id!!)
-        )
-        vm.postRecentList(user)
+        user.id?.let {
+            (activity as MainActivity).replaceFragmentUseBackStack(
+                OtherFragment.newInstance(it)
+            )
+            vm.callUser(it)
+        }
     }
 
     override fun onClickCancelBtn(user: FUser) {
