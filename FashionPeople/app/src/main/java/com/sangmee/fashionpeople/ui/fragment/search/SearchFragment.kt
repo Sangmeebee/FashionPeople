@@ -51,7 +51,6 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        showKeyBoard(et_name)
         setTabLayout()
         initView()
     }
@@ -133,14 +132,5 @@ class SearchFragment : Fragment() {
     override fun onPause() {
         compositeDisposable.clear()
         super.onPause()
-    }
-
-    private fun showKeyBoard(view: View) {
-        view.requestFocus()
-        val imm =
-            requireContext().getSystemService(Service.INPUT_METHOD_SERVICE) as InputMethodManager
-        view.postDelayed({
-            imm.showSoftInput(view, 0)
-        }, 30)
     }
 }
