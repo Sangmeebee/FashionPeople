@@ -72,16 +72,21 @@
 
                         <TextView
                             android:id="@+id/tv_name"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
-                            android:gravity="center"
+                            android:layout_marginEnd="20dp"
+                            android:ellipsize="end"
+                            android:maxLength="8"
+                            android:singleLine="true"
                             android:text="@{otherVm.userName}"
                             android:textColor="@color/colorBlack"
                             android:textSize="20sp"
                             android:textStyle="bold"
                             app:layout_constraintBottom_toBottomOf="@id/iv_profile"
-                            app:layout_constraintLeft_toRightOf="@id/iv_profile" />
+                            app:layout_constraintLeft_toRightOf="@id/iv_profile"
+                            app:layout_constraintRight_toLeftOf="@id/ll_follower" />
+
 
                         <TextView
                             android:id="@+id/tv_info"

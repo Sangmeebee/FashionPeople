@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -106,7 +107,7 @@ class OtherFragment : Fragment() {
         })
 
         infoVm.profileReviseBtnEvent.observe(this, Observer {
-            if(isMe){
+            if (isMe) {
                 val intent = Intent(context, ReviseUserInfoActivity::class.java)
                 intent.putExtra("nick_name", infoVm.userName.value.toString())
                 intent.putExtra("gender", infoVm.gender.value.toString())
@@ -126,6 +127,10 @@ class OtherFragment : Fragment() {
 
         infoVm.isCallProfileComplete.observe(viewLifecycleOwner, Observer {
             crossfade()
+        })
+
+        infoVm.introduce.observe(viewLifecycleOwner, Observer {
+            binding.tvIntroduce.isVisible = !it.isNullOrEmpty()
         })
     }
 
@@ -159,6 +164,7 @@ class OtherFragment : Fragment() {
             infoVm.userName.value = data?.getStringExtra("nick_name")
             infoVm.gender.value = data?.getStringExtra("gender")
             infoVm.introduce.value = data?.getStringExtra("introduce")
+            binding.tvIntroduce.isVisible = !infoVm.introduce.value.isNullOrEmpty()
         }
     }
 

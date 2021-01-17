@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -129,6 +130,7 @@ class InfoFragment : Fragment() {
             vm.userName.value = data?.getStringExtra("nick_name")
             vm.gender.value = data?.getStringExtra("gender")
             vm.introduce.value = data?.getStringExtra("introduce")
+            binding.tvIntroduce.isVisible = !vm.introduce.value.isNullOrEmpty()
             Log.d(
                 "Sangmeebee",
                 "${vm.userName.value.toString()}, ${vm.gender.value.toString()}, ${vm.introduce.value.toString()}"
@@ -157,6 +159,10 @@ class InfoFragment : Fragment() {
                 R.anim.slide_in_right,
                 R.anim.slide_out_left
             )
+        })
+
+        vm.introduce.observe(viewLifecycleOwner, Observer {
+            binding.tvIntroduce.isVisible = !it.isNullOrEmpty()
         })
 
         vm.callActivity.observe(viewLifecycleOwner, Observer {
