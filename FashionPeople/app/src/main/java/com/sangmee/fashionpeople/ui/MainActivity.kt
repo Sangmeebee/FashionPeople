@@ -117,7 +117,7 @@ class MainActivity : AppCompatActivity() {
             try {
                 val uri: Uri = data.data!!
                 CropImage.activity(uri)
-                    .setAspectRatio(9, 16)
+                    .setAspectRatio(3, 4)
                     .setGuidelines(CropImageView.Guidelines.ON)
                     .start(this)
             } catch (e: Exception) {
