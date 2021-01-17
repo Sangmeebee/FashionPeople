@@ -42,12 +42,12 @@ fun setVisibleComments(recyclerView: RecyclerView, comments: List<Comment>?) {
 fun ImageView.setLoadUrl(customId: String?, imageName: String?) {
     customId?.let { id ->
         if (imageName.isNullOrEmpty()) {
-            setImageResource(R.drawable.user)
+            setImageResource(R.drawable.ic_user)
         } else {
             Glide.with(context!!)
                 .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${id}/profile/${imageName}")
                 .apply(RequestOptions().circleCrop())
-                .error(R.drawable.user).into(this)
+                .error(R.drawable.ic_user).into(this)
         }
     }
 }
@@ -58,7 +58,7 @@ fun ImageView.setFeedUrl(customId: String?, imageName: String?) {
         imageName?.let { imageName ->
             Glide.with(context!!)
                 .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${id}/feed/${imageName}")
-                .error(R.drawable.user).into(this)
+                .error(R.drawable.ic_user).into(this)
         }
     }
 }

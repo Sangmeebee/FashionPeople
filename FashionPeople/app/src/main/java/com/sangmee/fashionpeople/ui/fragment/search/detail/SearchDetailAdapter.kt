@@ -120,12 +120,12 @@ class SearchDetailAdapter : RecyclerView.Adapter<SearchDetailAdapter.DetailViewH
                     .into(binding.ivItemEvaluateFeed)
 
                 if (feedImage.user?.profileImage.isNullOrEmpty()) {
-                    binding.ivProfileEvaluateFeed.setImageDrawable(context.getDrawable(R.drawable.ic_person_black))
+                    binding.ivProfileEvaluateFeed.setImageDrawable(context.getDrawable(R.drawable.ic_user))
                 } else {
                     Glide.with(context)
                         .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${feedImage.user?.id}/profile/${feedImage.user?.profileImage}")
-                        .error(context.getDrawable(R.drawable.ic_person_black))
-                        .placeholder(context.getDrawable(R.drawable.ic_person_black))
+                        .error(context.getDrawable(R.drawable.ic_user))
+                        .placeholder(context.getDrawable(R.drawable.ic_user))
                         .into(binding.ivProfileEvaluateFeed)
                 }
             }

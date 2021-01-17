@@ -31,7 +31,7 @@
             android:layout_height="70dp"
             android:background="@android:color/transparent"
             android:onClick="@{() -> activity.finish()}"
-            android:src="@drawable/arrow_back_yellow"
+            android:src="@drawable/arrow_back"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

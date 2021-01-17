@@ -38,7 +38,7 @@
                 android:layout_height="30dp"
                 app:civ_border_color="@color/colorBlack"
                 app:civ_border_width="2dp"
-                toolsNs:src="@drawable/ic_person_black" />
+                toolsNs:src="@drawable/ic_user" />
 
             <TextView
                 android:id="@+id/tv_user_name_home_feed"
@@ -137,7 +137,7 @@
                     android:layout_height="50dp"
                     android:background="@drawable/bg_delete_image"
                     android:padding="8dp"
-                    android:src="@drawable/ic_photo_delete"
+                    android:src="@drawable/ic_photo_saved_gray"
                     android:visibility="@{isSaved ? View.VISIBLE : View.GONE}"
                     app:civ_border_width="1dp" />
 

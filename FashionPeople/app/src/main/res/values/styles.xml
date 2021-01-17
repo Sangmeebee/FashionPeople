@@ -11,7 +11,7 @@
     </style>
 
     <style name="TabLayoutStyle" parent="Widget.Design.TabLayout">
-        <item name="tabIndicatorColor">@color/colorDarkYellow</item> <!--글씨 밑에 indicator 색상 변경-->
+        <item name="tabIndicatorColor">@color/colorPrimaryDark</item> <!--글씨 밑에 indicator 색상 변경-->
         <item name="tabIndicatorHeight">4dp</item> <!--indicator 두께-->
         <!--<item name="tabIndicatorFullWidth">false</item>--> <!--indicator 꽉차지않게-->
         <item name="tabTextAppearance">@style/HomeTabTextAppearance</item> <!-- 여기서 한번에 바꾸어 줘도 된다.-->

@@ -5,7 +5,7 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/homeItem"
-            android:icon="@drawable/war"
+            android:icon="@drawable/star"
             android:title="전쟁" />
         <item
             android:id="@+id/rankItem"

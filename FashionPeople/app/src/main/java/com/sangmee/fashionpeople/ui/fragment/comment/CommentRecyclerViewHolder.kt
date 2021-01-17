@@ -20,12 +20,12 @@ class CommentRecyclerViewHolder(
         with(binding) {
             comment = item
             if(item.user?.profileImage.isNullOrEmpty()){
-                binding.ivProfileImage.setImageDrawable(binding.root.context.getDrawable(R.drawable.ic_person_black))
+                binding.ivProfileImage.setImageDrawable(binding.root.context.getDrawable(R.drawable.ic_user))
             } else {
                 Glide.with(itemView.context)
                     .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${item.user?.id}/profile/${item.user?.profileImage}")
-                    .error(itemView.context.getDrawable(R.drawable.ic_person_black))
-                    .placeholder(itemView.context.getDrawable(R.drawable.ic_person_black))
+                    .error(itemView.context.getDrawable(R.drawable.ic_user))
+                    .placeholder(itemView.context.getDrawable(R.drawable.ic_user))
                     .into(binding.ivProfileImage)
                 executePendingBindings()
             }

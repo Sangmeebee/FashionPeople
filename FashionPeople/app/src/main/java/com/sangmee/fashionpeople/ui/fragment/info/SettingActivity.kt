@@ -110,7 +110,7 @@ class SettingActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.run {
             setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(R.drawable.arrow_back_yellow)
+            setHomeAsUpIndicator(R.drawable.arrow_back)
             setDisplayShowTitleEnabled(false)
         }
     }
