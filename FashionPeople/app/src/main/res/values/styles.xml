@@ -56,6 +56,19 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="InfoTagTitleTextStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
+    <style name="InfoTagContentTextStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_marginBottom">15dp</item>
+        <item name="android:textSize">11sp</item>
+    </style>
+
     <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="android:background">@color/darkGray2</item>
         <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
