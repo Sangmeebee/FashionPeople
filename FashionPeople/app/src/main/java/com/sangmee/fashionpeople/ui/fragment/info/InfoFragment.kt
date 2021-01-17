@@ -269,7 +269,7 @@ class InfoFragment : Fragment() {
                     tab.setIcon(R.drawable.photo_library_selector)
                 }
                 else -> {
-                    tab.setIcon(R.drawable.photo_saved_selector)
+                    tab.setIcon(R.drawable.scrap_selector)
                 }
             }
         }.attach()

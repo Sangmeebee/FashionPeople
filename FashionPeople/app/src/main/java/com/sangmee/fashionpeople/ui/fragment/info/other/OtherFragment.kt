@@ -1,7 +1,5 @@
 package com.sangmee.fashionpeople.ui.fragment.info.other
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -85,7 +83,7 @@ class OtherFragment : Fragment() {
                     tab.setIcon(R.drawable.photo_library_selector)
                 }
                 else -> {
-                    tab.setIcon(R.drawable.photo_saved_selector)
+                    tab.setIcon(R.drawable.scrap_selector)
                 }
             }
         }.attach()
@@ -108,20 +106,22 @@ class OtherFragment : Fragment() {
         })
 
         infoVm.profileReviseBtnEvent.observe(this, Observer {
-            val intent = Intent(context, ReviseUserInfoActivity::class.java)
-            intent.putExtra("nick_name", infoVm.userName.value.toString())
-            intent.putExtra("gender", infoVm.gender.value.toString())
-            infoVm.profileImgName.value?.let {
-                intent.putExtra("profile_image_name", it)
+            if(isMe){
+                val intent = Intent(context, ReviseUserInfoActivity::class.java)
+                intent.putExtra("nick_name", infoVm.userName.value.toString())
+                intent.putExtra("gender", infoVm.gender.value.toString())
+                infoVm.profileImgName.value?.let {
+                    intent.putExtra("profile_image_name", it)
+                }
+                infoVm.introduce.value?.let {
+                    intent.putExtra("introduce", it)
+                }
+                startActivityForResult(intent, REVISE_PROFILE)
+                requireActivity().overridePendingTransition(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left
+                )
             }
-            infoVm.introduce.value?.let {
-                intent.putExtra("introduce", it)
-            }
-            startActivityForResult(intent, REVISE_PROFILE)
-            requireActivity().overridePendingTransition(
-                R.anim.slide_in_right,
-                R.anim.slide_out_left
-            )
         })
 
         infoVm.isCallProfileComplete.observe(viewLifecycleOwner, Observer {
