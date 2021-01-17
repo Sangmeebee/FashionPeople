@@ -1,6 +1,7 @@
 package com.sangmee.fashionpeople.data.dataSource.local
 
 import com.sangmee.fashionpeople.data.GlobalApplication
+import com.sangmee.fashionpeople.data.model.FUser
 
 class SearchLocalDataSourceImpl : SearchLocalDataSource {
 
@@ -23,5 +24,26 @@ class SearchLocalDataSourceImpl : SearchLocalDataSource {
 
     override fun clearRecentSearchQuery(key: String) {
         GlobalApplication.prefs.clearRecentSearchQuery(key)
+    }
+
+    override fun saveRecentSearchUser(key: String, user: FUser) {
+        GlobalApplication.prefs.saveRecentSearchUser(key, user)
+    }
+
+    override fun readRecentSearchUser(key: String): ArrayList<FUser> {
+        val temp = arrayListOf<FUser>()
+        val dataList = GlobalApplication.prefs.readRecentSearchUser(key)
+        for (i in dataList.size - 1 downTo 0) {
+            temp.add(dataList[i])
+        }
+        return temp
+    }
+
+    override fun deleteRecentSearchUser(key: String, user: FUser) {
+        GlobalApplication.prefs.deleteRecentSearchUser(key, user)
+    }
+
+    override fun clearRecentSearchUser(key: String) {
+        GlobalApplication.prefs.clearRecentSearchUser(key)
     }
 }

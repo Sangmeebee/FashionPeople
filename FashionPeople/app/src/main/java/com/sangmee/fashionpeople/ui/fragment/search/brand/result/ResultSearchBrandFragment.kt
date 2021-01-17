@@ -47,7 +47,7 @@ class ResultSearchBrandFragment : Fragment() {
         val searchScoreBrandContentFragment = SearchScoreBrandContentFragment.newInstance(query!!)
         val searchRecentBrandContentFragment = SearchRecentBrandContentFragment.newInstance(query!!)
 
-        val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
+        val fragmentTransaction = childFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.fl_container, searchScoreBrandContentFragment).commit()
         tl_sort.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
@@ -57,7 +57,7 @@ class ResultSearchBrandFragment : Fragment() {
                     0 -> searchScoreBrandContentFragment
                     else -> searchRecentBrandContentFragment
                 }
-                requireActivity().supportFragmentManager.beginTransaction()
+                childFragmentManager.beginTransaction()
                     .replace(R.id.fl_container, selected).commit()
 
             }
