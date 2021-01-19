@@ -30,6 +30,8 @@ class ReviseUserInfoActivity : AppCompatActivity() {
     val customId by lazy { GlobalApplication.prefs.getString("${loginType}_custom_id", "") }
     private lateinit var nickName: String
     private lateinit var gender: String
+    private var height: Int? = null
+    private var weight: Int? = null
     private var introduce: String? = null
     private var profileImageName: String? = null
 
@@ -46,6 +48,8 @@ class ReviseUserInfoActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_revise_user_info)
         nickName = intent.getStringExtra("nick_name")!!
         gender = intent.getStringExtra("gender")!!
+        height = intent.getIntExtra("height", 0)
+        weight = intent.getIntExtra("weight", 0)
         intent.getStringExtra("profile_image_name")?.let {
             profileImageName = it
         }
@@ -56,6 +60,12 @@ class ReviseUserInfoActivity : AppCompatActivity() {
         binding.nickName = nickName
         binding.isChecked = gender == "남"
         binding.gender = "남자"
+        if(height!= 0){
+            binding.etHeight.setText(height.toString())
+        }
+        if(weight!= 0){
+            binding.etWeight.setText(weight.toString())
+        }
         if (!introduce.isNullOrEmpty()) {
             binding.etIntroduce.apply {
                 setText(introduce)
@@ -88,8 +98,29 @@ class ReviseUserInfoActivity : AppCompatActivity() {
         val name = binding.etNickname.text.toString()
         //소개 글
         binding.etIntroduce.text?.let { introduce = it.toString() }
+        height = if (binding.etHeight.text.isNullOrEmpty()) {
+            0
+        } else {
+            binding.etHeight.text.toString().toInt()
+        }
+        weight = if (binding.etWeight.text.isNullOrEmpty()) {
+            0
+        } else {
+            binding.etWeight.text.toString().toInt()
+        }
 
-        val fUser = FUser(customId, name, introduce, gender, profileImageName, null, null, null)
+        val fUser = FUser(
+            customId,
+            name,
+            introduce,
+            gender,
+            height,
+            weight,
+            profileImageName,
+            null,
+            null,
+            null
+        )
         vm.updateProfile(customId, fUser)
     }
 
@@ -114,10 +145,22 @@ class ReviseUserInfoActivity : AppCompatActivity() {
         val name = binding.etNickname.text.toString()
         //소개 글
         binding.etIntroduce.text?.let { introduce = it.toString() }
+        height = if(binding.etHeight.text.isNullOrEmpty()){
+            0
+        } else {
+            binding.etHeight.text.toString().toInt()
+        }
+        weight = if(binding.etWeight.text.isNullOrEmpty()){
+            0
+        } else {
+            binding.etWeight.text.toString().toInt()
+        }
         val intent = Intent()
         intent.putExtra("nick_name", name)
         intent.putExtra("gender", gender)
         intent.putExtra("introduce", introduce)
+        intent.putExtra("height", height as Int)
+        intent.putExtra("weight", weight as Int)
         Toast.makeText(
             applicationContext,
             "회원정보를 수정했습니다.",

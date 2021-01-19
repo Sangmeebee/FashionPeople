@@ -72,6 +72,16 @@ class UserInfoActivity : AppCompatActivity() {
         val name = et_nickname.text.toString()
         //소개 글
         val introduce = et_introduce.text.toString()
+        var height = 0
+        val heightStr = et_height.text.toString()
+        if (!heightStr.isNullOrEmpty()) {
+            height = heightStr.toInt()
+        }
+        var weight = 0
+        val weightStr = et_weight.text.toString()
+        if (!weightStr.isNullOrEmpty()) {
+            weight = weightStr.toInt()
+        }
 
         fUserRepository.addUser(
             FUser(
@@ -79,6 +89,8 @@ class UserInfoActivity : AppCompatActivity() {
                 name,
                 introduce,
                 gender,
+                height,
+                weight,
                 null,
                 false,
                 listOf(),

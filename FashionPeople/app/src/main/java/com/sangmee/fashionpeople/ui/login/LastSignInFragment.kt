@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -24,8 +23,9 @@ import com.sangmee.fashionpeople.databinding.LastSignInFragmentBinding
 import com.sangmee.fashionpeople.observer.LoginViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.kotlin.addTo
-import kotlinx.android.synthetic.main.activity_user_info.*
+import kotlinx.android.synthetic.main.activity_user_info.et_introduce
+import kotlinx.android.synthetic.main.activity_user_info.et_nickname
+import kotlinx.android.synthetic.main.last_sign_in_fragment.*
 import java.util.concurrent.TimeUnit
 
 
@@ -65,12 +65,22 @@ class LastSignInFragment : Fragment() {
                 R.id.rb_man -> {
                     gender = "남"
                     binding.gender = "남자"
-                    binding.tvGender.setTextColor(ContextCompat.getColor(requireContext(), R.color.blue))
+                    binding.tvGender.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.blue
+                        )
+                    )
                 }
                 R.id.rb_woman -> {
                     gender = "여"
                     binding.gender = "여자"
-                    binding.tvGender.setTextColor(ContextCompat.getColor(requireContext(), R.color.pink))
+                    binding.tvGender.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.pink
+                        )
+                    )
                 }
             }
         }
@@ -137,13 +147,24 @@ class LastSignInFragment : Fragment() {
                 val name = et_nickname.text.toString()
                 //소개 글
                 val introduce = et_introduce.text.toString()
-
+                var height = 0
+                val heightStr = et_height.text.toString()
+                if (!heightStr.isNullOrEmpty()) {
+                    height = heightStr.toInt()
+                }
+                var weight = 0
+                val weightStr = et_weight.text.toString()
+                if (!weightStr.isNullOrEmpty()) {
+                    weight = weightStr.toInt()
+                }
                 fUserRepository.addUser(
                     FUser(
                         vm.customId.value.toString(),
                         name,
                         introduce,
                         gender,
+                        height,
+                        weight,
                         null,
                         false,
                         listOf(),

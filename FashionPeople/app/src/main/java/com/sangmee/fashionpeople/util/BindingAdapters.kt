@@ -15,6 +15,7 @@ import androidx.appcompat.widget.AppCompatRatingBar
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -262,4 +263,25 @@ fun linkToDetail(constraintLayout: ConstraintLayout, rankImage: RankImage?, cust
 @BindingAdapter("setHTMLText")
 fun TextView.setHtmlText(stringId: Int) {
     this.text = Html.fromHtml(String.format(this.context.getString(stringId)))
+}
+
+@BindingAdapter("setHeightText")
+fun TextView.setHeightText(height: Int) {
+    if(height != 0){
+        this.isVisible = true
+        this.text = "${height}cm"
+    } else {
+        this.isVisible = false
+    }
+}
+
+
+@BindingAdapter("setWeightText")
+fun TextView.setWeightText(weight: Int) {
+    if(weight != 0){
+        this.isVisible = true
+        this.text = "${weight}kg"
+    } else {
+        this.isVisible = false
+    }
 }

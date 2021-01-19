@@ -103,9 +103,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:hint="20글자 이하"
+                        android:hint="8글자 이하"
                         android:inputType="text"
-                        android:maxLength="20"
+                        android:maxLength="8"
                         android:text="@{nickName}"
                         android:textSize="16sp" />
 
@@ -162,6 +162,39 @@
                             android:text="여" />
                     </RadioGroup>
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:text="키, 몸무게 :"
+                        android:textColor="@android:color/black" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="2"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/et_height"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginBottom="45dp"
+                            android:hint="키(cm)"
+                            android:inputType="number"
+                            android:textSize="16sp" />
+
+                        <EditText
+                            android:id="@+id/et_weight"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginBottom="45dp"
+                            android:hint="몸무게(kg)"
+                            android:inputType="number"
+                            android:textSize="16sp" />
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="match_parent"
@@ -175,13 +208,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="40dp"
-                        android:hint="너무 길게 적으면 잘려요~ (5줄 제한)"
+                        android:hint="너무 길게 적으면 잘려요~ (3줄 제한)"
                         android:inputType="textMultiLine"
                         android:textSize="16sp" />
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="20dp"/>
+                        android:layout_height="20dp" />
 
                 </LinearLayout>
 

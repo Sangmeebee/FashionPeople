@@ -38,6 +38,8 @@ class InfoViewModel : ViewModel() {
     val profileImgName = MutableLiveData<String>()
     val userName = MutableLiveData<String>()
     val gender = MutableLiveData<String>()
+    val height = MutableLiveData<Int>()
+    val weight = MutableLiveData<Int>()
     val introduce = MutableLiveData<String?>()
     val followerNum = MutableLiveData(0)
     val followingNum = MutableLiveData(0)
@@ -60,6 +62,8 @@ class InfoViewModel : ViewModel() {
                 introduce.value = it.introduce
                 userName.value = it.name
                 gender.value = it.gender
+                height.value = it.height
+                weight.value = it.weight
                 followerNum.value = it.followers?.size
                 followingNum.value = it.followings?.size
             }, { t ->

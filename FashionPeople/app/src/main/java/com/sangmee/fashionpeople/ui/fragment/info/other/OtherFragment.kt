@@ -134,6 +134,8 @@ class OtherFragment : Fragment() {
                 val intent = Intent(context, ReviseUserInfoActivity::class.java)
                 intent.putExtra("nick_name", infoVm.userName.value.toString())
                 intent.putExtra("gender", infoVm.gender.value.toString())
+                intent.putExtra("height", infoVm.height.value)
+                intent.putExtra("weight", infoVm.weight.value)
                 infoVm.profileImgName.value?.let {
                     intent.putExtra("profile_image_name", it)
                 }
@@ -198,6 +200,8 @@ class OtherFragment : Fragment() {
             infoVm.userName.value = data?.getStringExtra("nick_name")
             infoVm.gender.value = data?.getStringExtra("gender")
             infoVm.introduce.value = data?.getStringExtra("introduce")
+            infoVm.height.value = data?.getIntExtra("height", 0)
+            infoVm.weight.value = data?.getIntExtra("weight", 0)
             binding.tvIntroduce.isVisible = !infoVm.introduce.value.isNullOrEmpty()
         }
 
@@ -242,6 +246,8 @@ class OtherFragment : Fragment() {
             infoVm.userName.value,
             infoVm.introduce.value,
             infoVm.gender.value,
+            infoVm.height.value,
+            infoVm.weight.value,
             profileImage,
             null,
             null,

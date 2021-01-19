@@ -90,23 +90,47 @@
 
 
                         <TextView
-                            android:id="@+id/tv_info"
+                            android:id="@+id/tv_gender"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:gravity="center"
                             android:onClick="@{() -> otherVm.clickProfileReviseBtn()}"
                             android:text="@{otherVm.gender}"
-                            android:textColor="@color/colorBlack"
-                            android:textSize="14sp"
+                            android:textSize="13sp"
                             app:layout_constraintLeft_toLeftOf="@id/iv_profile"
                             app:layout_constraintTop_toBottomOf="@id/iv_profile" />
+
+
+                        <TextView
+                            android:id="@+id/tv_height"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="10dp"
+                            android:onClick="@{() -> otherVm.clickProfileReviseBtn()}"
+                            android:textSize="13sp"
+                            app:layout_constraintLeft_toRightOf="@id/tv_gender"
+                            app:layout_constraintTop_toBottomOf="@id/iv_profile"
+                            bind:setHeightText="@{otherVm.height}" />
+
+
+                        <TextView
+                            android:id="@+id/tv_weight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="10dp"
+                            android:onClick="@{() -> otherVm.clickProfileReviseBtn()}"
+                            android:textSize="13sp"
+                            app:layout_constraintLeft_toRightOf="@id/tv_height"
+                            app:layout_constraintTop_toBottomOf="@id/iv_profile"
+                            bind:setWeightText="@{otherVm.weight}" />
 
                         <TextView
                             android:id="@+id/tv_introduce"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="15dp"
                             android:layout_marginEnd="20dp"
                             android:maxLines="3"
                             android:onClick="@{() -> otherVm.clickProfileReviseBtn()}"
@@ -114,8 +138,8 @@
                             android:textColor="@color/colorBlack"
                             android:textSize="14sp"
                             app:layout_constraintLeft_toLeftOf="@id/iv_profile"
-                            app:layout_constraintRight_toLeftOf="@id/cl_follow"
-                            app:layout_constraintTop_toBottomOf="@id/tv_info" />
+                            app:layout_constraintRight_toLeftOf="@id/ll_follower"
+                            app:layout_constraintTop_toBottomOf="@id/tv_gender" />
 
                         <LinearLayout
                             android:id="@+id/ll_follower"

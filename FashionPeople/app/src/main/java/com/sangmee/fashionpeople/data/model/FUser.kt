@@ -14,6 +14,10 @@ data class FUser(
     val introduce: String?,
     @SerializedName("gender")
     val gender: String?,
+    @SerializedName("height")
+    val height: Int?,
+    @SerializedName("weight")
+    val weight: Int?,
     @SerializedName("profileImage")
     var profileImage: String?,
     @SerializedName("evaluateNow")

@@ -128,6 +128,9 @@ class InfoFragment : Fragment() {
             vm.userName.value = data?.getStringExtra("nick_name")
             vm.gender.value = data?.getStringExtra("gender")
             vm.introduce.value = data?.getStringExtra("introduce")
+            vm.height.value = data?.getIntExtra("height", 0)
+            Log.d("Sangmeebee", vm.height.value.toString())
+            vm.weight.value = data?.getIntExtra("weight", 0)
             binding.tvIntroduce.isVisible = !vm.introduce.value.isNullOrEmpty()
         }
     }
@@ -142,6 +145,8 @@ class InfoFragment : Fragment() {
             val intent = Intent(context, ReviseUserInfoActivity::class.java)
             intent.putExtra("nick_name", vm.userName.value.toString())
             intent.putExtra("gender", vm.gender.value.toString())
+            intent.putExtra("height", vm.height.value)
+            intent.putExtra("weight", vm.weight.value)
             vm.profileImgName.value?.let {
                 intent.putExtra("profile_image_name", it)
             }
@@ -184,7 +189,6 @@ class InfoFragment : Fragment() {
 
     private fun saveImageToServer(file: File?) {
         //프로필 사진 s3에 저장
-        Log.d("Sangmeebee", "Hi")
         val profileImage = file?.name
         profileImage?.let {
             s3RemoteDataSource.uploadWithTransferUtility(it, file, "profile")
@@ -194,6 +198,8 @@ class InfoFragment : Fragment() {
             vm.userName.value,
             vm.introduce.value,
             vm.gender.value,
+            vm.height.value,
+            vm.weight.value,
             profileImage,
             null,
             null,

@@ -157,6 +157,39 @@
                         android:text="여" />
                 </RadioGroup>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="키, 몸무게 :"
+                    android:textColor="@android:color/black" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="2"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/et_height"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginBottom="45dp"
+                        android:hint="키(cm)"
+                        android:inputType="number"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/et_weight"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginBottom="45dp"
+                        android:hint="몸무게(kg)"
+                        android:inputType="number"
+                        android:textSize="16sp" />
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="match_parent"
