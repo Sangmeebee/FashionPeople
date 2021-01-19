@@ -1,8 +1,6 @@
 package com.sangmee.fashionpeople.ui.fragment.info
 
 import android.Manifest
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
@@ -131,10 +129,6 @@ class InfoFragment : Fragment() {
             vm.gender.value = data?.getStringExtra("gender")
             vm.introduce.value = data?.getStringExtra("introduce")
             binding.tvIntroduce.isVisible = !vm.introduce.value.isNullOrEmpty()
-            Log.d(
-                "Sangmeebee",
-                "${vm.userName.value.toString()}, ${vm.gender.value.toString()}, ${vm.introduce.value.toString()}"
-            )
         }
     }
 
@@ -183,7 +177,7 @@ class InfoFragment : Fragment() {
             .addTo(compositeDisposable)
 
         vm.isCallProfileComplete.observe(viewLifecycleOwner, Observer {
-                crossfade()
+            crossfade()
         })
 
     }

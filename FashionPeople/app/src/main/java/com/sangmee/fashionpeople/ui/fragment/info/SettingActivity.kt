@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -34,7 +35,7 @@ class SettingActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingBinding
     private lateinit var customId: String
     private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
-    private val vm by lazy { InfoViewModel() }
+    private val vm by viewModels<InfoViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,8 +45,6 @@ class SettingActivity : AppCompatActivity() {
         customId = GlobalApplication.prefs.getString("${loginType}_custom_id", "empty")
 
         initView()
-
-
     }
 
     private fun initView() {
@@ -210,8 +209,8 @@ class SettingActivity : AppCompatActivity() {
 
 
     companion object {
-        const val DEVELOPER_EMAIL1 = "slflfl12@naver.com"
-        const val DEVELOPER_EMAIL2 = "apfhdznzl@gmail.com"
+        const val DEVELOPER_EMAIL1 = "apfhdznzl@gmail.com"
+        const val DEVELOPER_EMAIL2 = "slflfl12@naver.com"
     }
 
 }
