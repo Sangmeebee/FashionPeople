@@ -1,11 +1,19 @@
 package com.sangmee.fashionpeople.ui.fragment.info.other
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.database.Cursor
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -13,15 +21,21 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sangmee.fashionpeople.R
+import com.sangmee.fashionpeople.data.dataSource.remote.S3RemoteDataSource
+import com.sangmee.fashionpeople.data.dataSource.remote.S3RemoteDataSourceImpl
+import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.databinding.FragmentOtherBinding
 import com.sangmee.fashionpeople.observer.InfoViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
-import com.sangmee.fashionpeople.ui.fragment.info.ReviseUserInfoActivity
 import com.sangmee.fashionpeople.ui.fragment.info.SettingActivity
 import com.sangmee.fashionpeople.ui.fragment.info.follow.FollowFragment
 import com.sangmee.fashionpeople.ui.fragment.info.image_content.ViewPagerAdapter
 import com.sangmee.fashionpeople.ui.login.LoginActivity
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.kotlin.addTo
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_info.*
+import java.io.File
 
 
 private const val CUSTOM_ID = "param1"
@@ -34,6 +48,14 @@ class OtherFragment : Fragment() {
 
     lateinit var binding: FragmentOtherBinding
     private val infoVm: InfoViewModel by viewModels()
+    private lateinit var file: File
+    private val s3RemoteDataSource: S3RemoteDataSource by lazy {
+        S3RemoteDataSourceImpl(
+            binding.root.context,
+            customId!!
+        )
+    }
+    private val compositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,22 +128,9 @@ class OtherFragment : Fragment() {
             )
         })
 
-        infoVm.profileReviseBtnEvent.observe(this, Observer {
+        infoVm.galleryBtnEvent.observe(this, Observer {
             if (isMe) {
-                val intent = Intent(context, ReviseUserInfoActivity::class.java)
-                intent.putExtra("nick_name", infoVm.userName.value.toString())
-                intent.putExtra("gender", infoVm.gender.value.toString())
-                infoVm.profileImgName.value?.let {
-                    intent.putExtra("profile_image_name", it)
-                }
-                infoVm.introduce.value?.let {
-                    intent.putExtra("introduce", it)
-                }
-                startActivityForResult(intent, REVISE_PROFILE)
-                requireActivity().overridePendingTransition(
-                    R.anim.slide_in_right,
-                    R.anim.slide_out_left
-                )
+                selectProfileImage()
             }
         })
 
@@ -132,6 +141,11 @@ class OtherFragment : Fragment() {
         infoVm.introduce.observe(viewLifecycleOwner, Observer {
             binding.tvIntroduce.isVisible = !it.isNullOrEmpty()
         })
+
+        infoVm.behaviorSubject
+            .observeOn(Schedulers.io())
+            .subscribe { saveImageToServer(file) }
+            .addTo(compositeDisposable)
     }
 
     private fun btnForFollowing() {
@@ -160,11 +174,20 @@ class OtherFragment : Fragment() {
             startActivity(intent)
         }
 
-        if (requestCode == REVISE_PROFILE && resultCode == AppCompatActivity.RESULT_OK) {
-            infoVm.userName.value = data?.getStringExtra("nick_name")
-            infoVm.gender.value = data?.getStringExtra("gender")
-            infoVm.introduce.value = data?.getStringExtra("introduce")
-            binding.tvIntroduce.isVisible = !infoVm.introduce.value.isNullOrEmpty()
+        if (requestCode == CHOOSE_PROFILEIMG) {
+            if (resultCode == AppCompatActivity.RESULT_OK) {
+                try {
+                    val uri: Uri = data!!.data!!
+                    val imagePath = getRealPathFromUri(uri)
+                    file = File(imagePath)
+                    infoVm.behaviorSubject.onNext(Unit)
+                    binding.ivProfile.setImageURI(uri)
+                } catch (e: Exception) {
+                    Toast.makeText(context, e.message.toString(), Toast.LENGTH_LONG).show();
+                }
+            } else if (resultCode == AppCompatActivity.RESULT_CANCELED) {
+                Toast.makeText(context, "사진 선택 취소", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -177,6 +200,85 @@ class OtherFragment : Fragment() {
                 .alpha(1f)
                 .setDuration(800L)
                 .setListener(null)
+        }
+    }
+
+    private fun saveImageToServer(file: File?) {
+        //프로필 사진 s3에 저장
+        Log.d("Sangmeebee", "Hi")
+        val profileImage = file?.name
+        profileImage?.let {
+            s3RemoteDataSource.uploadWithTransferUtility(it, file, "profile")
+        }
+        val fUser = FUser(
+            customId,
+            infoVm.userName.value,
+            infoVm.introduce.value,
+            infoVm.gender.value,
+            profileImage,
+            null,
+            null,
+            null
+        )
+        infoVm.updateProfile(customId!!, fUser)
+
+    }
+
+    //이미지Uri -- > 절대경로로 바꿔서 리턴시켜주는 메소드
+    private fun getRealPathFromUri(uri: Uri): String {
+        val proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
+        val c: Cursor =
+            (activity as MainActivity).contentResolver.query(uri, proj, null, null, null)!!
+        val index = c.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        c.moveToFirst()
+
+        return c.getString(index)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String?>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            100 -> if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(context, "외부 메모리 읽기/쓰기 사용 가능", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "외부 메모리 읽기/쓰기 제한", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+
+    private fun selectProfileImage() {
+        //외부 쓰기 퍼미션이 있다면
+        if (ContextCompat.checkSelfPermission(
+                binding.root.context,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
+                binding.root.context,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            try {
+                //갤러리 앱 실행
+                val intent = Intent(Intent.ACTION_PICK)
+                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
+                startActivityForResult(intent, CHOOSE_PROFILEIMG)
+
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+            }
+        } else {
+            ActivityCompat.requestPermissions(
+                activity as MainActivity,
+                arrayOf(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ),
+                100
+            )
         }
     }
 
@@ -209,8 +311,9 @@ class OtherFragment : Fragment() {
     }
 
     companion object {
-        private const val LOGOUT_CODE = 270
-        private const val REVISE_PROFILE = 280
+        private const val CHOOSE_PROFILEIMG = 200
+        private const val LOGOUT_CODE = 210
+
 
         @JvmStatic
         fun newInstance(customId: String) =

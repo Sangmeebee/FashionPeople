@@ -54,7 +54,7 @@
                             android:id="@+id/iv_profile"
                             android:layout_width="55dp"
                             android:layout_height="55dp"
-                            android:onClick="@{()->vm.clickProfileReviseBtn()}"
+                            android:onClick="@{()->vm.clickGalleryBtn()}"
                             android:src="@drawable/ic_user"
                             app:civ_border_color="@color/lightgray"
                             app:civ_border_width="2dp"
