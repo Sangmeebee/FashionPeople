@@ -202,7 +202,6 @@ class InfoFragment : Fragment() {
             vm.weight.value,
             profileImage,
             null,
-            null,
             null
         )
         vm.updateProfile(customId, fUser)

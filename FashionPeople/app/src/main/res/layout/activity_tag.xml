@@ -3,25 +3,21 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorSubUnSelectColor">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#F4F4F4"
-        app:layout_constraintDimensionRatio="9:16"
+        android:background="@color/colorWhite"
+        app:layout_constraintDimensionRatio="H,3:4"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/iv_select_image"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/iv_plus_height"
-            android:scaleType="centerCrop"
-            android:src="@drawable/plus"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -173,7 +169,7 @@
                 android:id="@+id/btn_complete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorYellow"
+                android:background="@color/colorPrimary"
                 android:text="등록 완료"
                 android:textColor="@color/colorWhite"
                 android:textSize="12sp" />

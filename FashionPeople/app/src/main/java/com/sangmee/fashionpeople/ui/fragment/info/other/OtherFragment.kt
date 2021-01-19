@@ -250,7 +250,6 @@ class OtherFragment : Fragment() {
             infoVm.weight.value,
             profileImage,
             null,
-            null,
             null
         )
         infoVm.updateProfile(customId!!, fUser)

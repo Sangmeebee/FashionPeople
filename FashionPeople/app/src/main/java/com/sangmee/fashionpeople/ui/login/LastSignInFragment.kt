@@ -166,7 +166,6 @@ class LastSignInFragment : Fragment() {
                         height,
                         weight,
                         null,
-                        false,
                         listOf(),
                         listOf()
                     ), {

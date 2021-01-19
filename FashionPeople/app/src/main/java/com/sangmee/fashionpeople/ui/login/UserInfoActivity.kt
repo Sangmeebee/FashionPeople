@@ -92,7 +92,6 @@ class UserInfoActivity : AppCompatActivity() {
                 height,
                 weight,
                 null,
-                false,
                 listOf(),
                 listOf()
             ), {

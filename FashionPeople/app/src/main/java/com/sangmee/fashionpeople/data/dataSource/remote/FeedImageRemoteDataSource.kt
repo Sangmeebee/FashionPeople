@@ -24,9 +24,7 @@ interface FeedImageRemoteDataSource {
     fun postFeedImage(@Path("id") id: String, @Body feedImage: FeedImage): Completable
 
     fun getFollowingFeedImages(@Path("userId") id: String): Single<List<FeedImage>>
-
-    fun getEvaluatedFeedImage(@Path("id") id: String): Single<FeedImage>
-
+    
     fun getSearchScoreStyleImages(@Path("query") query: String): Single<List<FeedImage>>
 
     fun getSearchRecentStyleImages(@Path("query") query: String): Single<List<FeedImage>>

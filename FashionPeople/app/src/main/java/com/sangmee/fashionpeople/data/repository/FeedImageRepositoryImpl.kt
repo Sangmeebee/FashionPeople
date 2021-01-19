@@ -39,10 +39,6 @@ class FeedImageRepositoryImpl(
         return feedImageRemoteDataSource.getFollowingFeedImages(id)
     }
 
-    override fun getEvaluatedFeedImage(id: String): Single<FeedImage> {
-        return feedImageRemoteDataSource.getEvaluatedFeedImage(id)
-    }
-
     override fun getSearchScoreStyleImages(query: String): Single<List<FeedImage>> {
         return feedImageRemoteDataSource.getSearchScoreStyleImages(query)
     }

@@ -14,11 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
-import com.sangmee.fashionpeople.data.dataSource.remote.FUserRemoteDataSourceImpl
-import com.sangmee.fashionpeople.data.repository.FUserRepository
-import com.sangmee.fashionpeople.data.repository.FUserRepositoryImpl
 import com.sangmee.fashionpeople.observer.MainViewModel
-import com.sangmee.fashionpeople.ui.add.AddFragment
 import com.sangmee.fashionpeople.ui.add.TagActivity
 import com.sangmee.fashionpeople.ui.fragment.home.HomeFragment
 import com.sangmee.fashionpeople.ui.fragment.home.evaluate.HomeEvaluateViewModel
@@ -28,23 +24,15 @@ import com.sangmee.fashionpeople.ui.fragment.rank.RankFragment
 import com.sangmee.fashionpeople.ui.fragment.search.SearchFragment
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.kotlin.addTo
-import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
-    private val fUserRepository: FUserRepository by lazy {
-        FUserRepositoryImpl(FUserRemoteDataSourceImpl())
-    }
     private val mainVm by viewModels<MainViewModel>()
     private val homeFollowingVm by viewModels<HomeFollowingViewModel>()
     private val homeEvaluateVm by viewModels<HomeEvaluateViewModel>()
     private val compositeDisposable = CompositeDisposable()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,25 +56,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 R.id.addItem -> {
-                    fUserRepository.getFUser(
-                        GlobalApplication.prefs.getString("${loginType}_custom_id", "")
-                    )
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({ user ->
-                            user.evaluateNow?.let { evaluateNow ->
-                                if (evaluateNow) {
-                                    if (currentFragment != "addItem") {
-                                        replaceFragment(AddFragment())
-                                        currentFragment = "addItem"
-                                    }
-                                } else {
-                                    addPhoto()
-                                }
-                            }
-                        } , { t ->
-                            Log.e("CALL_PROFILE_ERROR", t.message.toString())
-                        }).addTo(compositeDisposable)
+                    addPhoto()
                 }
 
 
@@ -189,7 +159,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun unbindDisposable(){
+    private fun unbindDisposable() {
         homeEvaluateVm.clearDisposable()
         homeFollowingVm.clearDisposable()
     }

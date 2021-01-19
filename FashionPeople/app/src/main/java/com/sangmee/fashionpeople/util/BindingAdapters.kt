@@ -7,6 +7,7 @@ import android.text.Html
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -20,7 +21,10 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.flexbox.*
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.Comment
 import com.sangmee.fashionpeople.data.model.FeedImage
@@ -267,7 +271,7 @@ fun TextView.setHtmlText(stringId: Int) {
 
 @BindingAdapter("setHeightText")
 fun TextView.setHeightText(height: Int) {
-    if(height != 0){
+    if (height != 0) {
         this.isVisible = true
         this.text = "${height}cm"
     } else {
@@ -275,13 +279,24 @@ fun TextView.setHeightText(height: Int) {
     }
 }
 
-
 @BindingAdapter("setWeightText")
 fun TextView.setWeightText(weight: Int) {
-    if(weight != 0){
+    if (weight != 0) {
         this.isVisible = true
         this.text = "${weight}kg"
     } else {
         this.isVisible = false
+    }
+}
+
+@BindingAdapter("setResultScoreText", "isEvaluateNow")
+fun TextView.setResultScoreText(resultScore: String, isEvaluateNow: Boolean) {
+    if (isEvaluateNow) {
+        this.setTextSize(TypedValue.COMPLEX_UNIT_SP,20F)
+        this.text = "평가중"
+    } else {
+        this.text = resultScore
+        this.setTextSize(TypedValue.COMPLEX_UNIT_SP,27F)
+
     }
 }

@@ -60,10 +60,10 @@ class ReviseUserInfoActivity : AppCompatActivity() {
         binding.nickName = nickName
         binding.isChecked = gender == "남"
         binding.gender = "남자"
-        if(height!= 0){
+        if (height != 0) {
             binding.etHeight.setText(height.toString())
         }
-        if(weight!= 0){
+        if (weight != 0) {
             binding.etWeight.setText(weight.toString())
         }
         if (!introduce.isNullOrEmpty()) {
@@ -118,7 +118,6 @@ class ReviseUserInfoActivity : AppCompatActivity() {
             weight,
             profileImageName,
             null,
-            null,
             null
         )
         vm.updateProfile(customId, fUser)
@@ -145,12 +144,12 @@ class ReviseUserInfoActivity : AppCompatActivity() {
         val name = binding.etNickname.text.toString()
         //소개 글
         binding.etIntroduce.text?.let { introduce = it.toString() }
-        height = if(binding.etHeight.text.isNullOrEmpty()){
+        height = if (binding.etHeight.text.isNullOrEmpty()) {
             0
         } else {
             binding.etHeight.text.toString().toInt()
         }
-        weight = if(binding.etWeight.text.isNullOrEmpty()){
+        weight = if (binding.etWeight.text.isNullOrEmpty()) {
             0
         } else {
             binding.etWeight.text.toString().toInt()

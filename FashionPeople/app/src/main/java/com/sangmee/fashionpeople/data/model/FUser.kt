@@ -20,8 +20,6 @@ data class FUser(
     val weight: Int?,
     @SerializedName("profileImage")
     var profileImage: String?,
-    @SerializedName("evaluateNow")
-    val evaluateNow: Boolean?,
     @SerializedName("followers")
     val followers: List<Follower>?,
     @SerializedName("followings")
