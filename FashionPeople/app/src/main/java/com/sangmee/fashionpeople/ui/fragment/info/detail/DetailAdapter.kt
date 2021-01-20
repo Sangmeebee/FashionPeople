@@ -3,10 +3,8 @@ package com.sangmee.fashionpeople.ui.fragment.info.detail
 import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -61,6 +59,12 @@ class DetailAdapter : RecyclerView.Adapter<DetailAdapter.DetailViewHolder>() {
             }
         }
 
+        viewHolder.itemView.ll_tag.setOnClickListener {
+            items[viewHolder.adapterPosition].let {
+                onClickListener?.onClickTag(it)
+            }
+        }
+
         viewHolder.itemView.civ_profile.setOnClickListener {
             items[viewHolder.adapterPosition].let {
                 onClickListener?.onClickProfile(it)
@@ -72,7 +76,7 @@ class DetailAdapter : RecyclerView.Adapter<DetailAdapter.DetailViewHolder>() {
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onBindViewHolder(holder: DetailViewHolder, position: Int) {
-            holder.bind(items[position], saveItems)
+        holder.bind(items[position], saveItems)
 
     }
 
@@ -102,13 +106,14 @@ class DetailAdapter : RecyclerView.Adapter<DetailAdapter.DetailViewHolder>() {
         fun onClickProfile(feedImage: FeedImage)
         fun onClickSave(imageName: String, position: Int)
         fun onClickDelete(imageName: String, position: Int)
+        fun onClickTag(feedImage: FeedImage)
     }
 
     class DetailViewHolder(private val binding: ItemInfoDetailFeedBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-        fun bind(feedImage: FeedImage, saveItems : List<String>) {
+        fun bind(feedImage: FeedImage, saveItems: List<String>) {
             binding.feedImage = feedImage
             binding.isSaved = feedImage.imageName in saveItems
             binding.executePendingBindings()

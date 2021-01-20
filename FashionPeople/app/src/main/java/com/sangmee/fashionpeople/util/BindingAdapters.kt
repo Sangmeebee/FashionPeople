@@ -277,10 +277,7 @@ fun TextView.setResultScoreText(resultScore: String, isEvaluateNow: Boolean) {
 @BindingAdapter("setTag")
 fun TextView.setTag(tag: String) {
     if (tag == "") {
-        this.text = "..."
-        val layoutParams = this.layoutParams as ViewGroup.MarginLayoutParams
-        layoutParams.bottomMargin = 5
-        this.layoutParams = layoutParams
+        this.text = "선택안함"
     } else {
         this.text = tag
     }
