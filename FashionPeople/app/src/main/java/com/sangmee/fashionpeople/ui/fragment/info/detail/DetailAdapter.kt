@@ -31,7 +31,7 @@ class DetailAdapter : RecyclerView.Adapter<DetailAdapter.DetailViewHolder>() {
         )
         val viewHolder = DetailViewHolder(binding)
 
-        viewHolder.itemView.tv_comment.setOnClickListener {
+        viewHolder.itemView.iv_comment.setOnClickListener {
             items[viewHolder.adapterPosition].let {
                 it.imageName?.let { imageName ->
                     onClickListener?.onClickComment(imageName)
@@ -61,7 +61,7 @@ class DetailAdapter : RecyclerView.Adapter<DetailAdapter.DetailViewHolder>() {
             }
         }
 
-        viewHolder.itemView.ll_container.setOnClickListener {
+        viewHolder.itemView.civ_profile.setOnClickListener {
             items[viewHolder.adapterPosition].let {
                 onClickListener?.onClickProfile(it)
             }
@@ -120,13 +120,13 @@ class DetailAdapter : RecyclerView.Adapter<DetailAdapter.DetailViewHolder>() {
                     .into(binding.ivItemEvaluateFeed)
 
                 if (feedImage.user?.profileImage.isNullOrEmpty()) {
-                    binding.ivProfileEvaluateFeed.setImageDrawable(context.getDrawable(R.drawable.ic_user))
+                    binding.civProfile.setImageDrawable(context.getDrawable(R.drawable.ic_profile_home))
                 } else {
                     Glide.with(context)
                         .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${feedImage.user?.id}/profile/${feedImage.user?.profileImage}")
-                        .error(context.getDrawable(R.drawable.ic_user))
-                        .placeholder(context.getDrawable(R.drawable.ic_user))
-                        .into(binding.ivProfileEvaluateFeed)
+                        .error(context.getDrawable(R.drawable.ic_profile_home))
+                        .placeholder(context.getDrawable(R.drawable.ic_profile_home))
+                        .into(binding.civProfile)
                 }
             }
         }

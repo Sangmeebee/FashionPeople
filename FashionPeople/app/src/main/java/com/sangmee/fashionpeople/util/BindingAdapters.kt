@@ -9,6 +9,7 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.TypedValue
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -292,11 +293,23 @@ fun TextView.setWeightText(weight: Int) {
 @BindingAdapter("setResultScoreText", "isEvaluateNow")
 fun TextView.setResultScoreText(resultScore: String, isEvaluateNow: Boolean) {
     if (isEvaluateNow) {
-        this.setTextSize(TypedValue.COMPLEX_UNIT_SP,20F)
+        this.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)
         this.text = "평가중"
     } else {
         this.text = resultScore
-        this.setTextSize(TypedValue.COMPLEX_UNIT_SP,27F)
+        this.setTextSize(TypedValue.COMPLEX_UNIT_SP, 27F)
 
+    }
+}
+
+@BindingAdapter("setTag")
+fun TextView.setTag(tag: String) {
+    if (tag == "") {
+        this.text = "..."
+        val layoutParams = this.layoutParams as ViewGroup.MarginLayoutParams
+        layoutParams.bottomMargin = 5
+        this.layoutParams = layoutParams
+    } else {
+        this.text = tag
     }
 }

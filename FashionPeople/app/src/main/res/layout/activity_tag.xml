@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/colorWhite"
-        app:layout_constraintDimensionRatio="H,3:4"
+        app:layout_constraintDimensionRatio="H,9:16"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView

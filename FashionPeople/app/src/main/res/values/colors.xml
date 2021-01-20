@@ -5,6 +5,7 @@
     <color name="colorAccent">#F9A5A1</color>
     <color name="colorSubColor">#F4EAD5</color>
     <color name="colorSubUnSelectColor">#FAF5EC</color>
+    <color name="colorSubColorText">#C6E5D9</color>
     <color name="lightgray">#DEDFDF</color>
     <color name="darkgray">#8E8F8F</color>
     <color name="darkGray2">#282828</color>
