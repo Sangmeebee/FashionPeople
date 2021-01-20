@@ -153,34 +153,6 @@ fun setSpannableRating(appCompatTextView: AppCompatTextView, feedImage: FeedImag
 
 }
 
-@BindingAdapter("setEvaluatedText")
-fun setEvaluatedText(appCompatTextView: AppCompatTextView, feedImage: FeedImage?) {
-
-    var average = 0f
-    feedImage?.let { feedImage ->
-        feedImage.evaluations?.let {
-            average = getRatingFromEvaluations(it)
-        }
-    }
-    val target = "${average}점"
-
-    val text = "평가중... 현재 $target 입니다."
-    val spannableString = SpannableString(text)
-    val targetStartIndex = text.indexOf(target)
-    val targetEndIndex = targetStartIndex + target.length
-
-    spannableString.setSpan(
-        ForegroundColorSpan(appCompatTextView.resources.getColor(R.color.colorPrimary)),
-        targetStartIndex,
-        targetEndIndex,
-        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-    )
-
-    appCompatTextView.text = spannableString
-
-
-}
-
 @BindingAdapter("setRatingText")
 fun setRatingText(appCompatTextView: AppCompatTextView, feedImage: FeedImage?) {
     var average = 0f
@@ -312,4 +284,25 @@ fun TextView.setTag(tag: String) {
     } else {
         this.text = tag
     }
+}
+
+@BindingAdapter("setIsEvaluated")
+fun TextView.setIsEvaluated(isEvaluated: Boolean) {
+    if (isEvaluated) {
+        this.text = "평가중"
+    } else {
+        this.text = "평가완료"
+    }
+}
+
+@BindingAdapter("setScore")
+fun TextView.setScore(feedImage: FeedImage?) {
+    var average = 0f
+    feedImage?.let { image ->
+        image.evaluations?.let {
+            average = getRatingFromEvaluations(it)
+        }
+    }
+    val text = String.format("%.1f", average)
+    this.text = text
 }

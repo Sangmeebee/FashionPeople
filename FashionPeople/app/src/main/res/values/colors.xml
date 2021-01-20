@@ -6,6 +6,7 @@
     <color name="colorSubColor">#F4EAD5</color>
     <color name="colorSubUnSelectColor">#FAF5EC</color>
     <color name="colorSubColorText">#C6E5D9</color>
+    <color name="colorIsEvaluatedText">#C6A49A</color>
     <color name="lightgray">#DEDFDF</color>
     <color name="darkgray">#8E8F8F</color>
     <color name="darkGray2">#282828</color>
