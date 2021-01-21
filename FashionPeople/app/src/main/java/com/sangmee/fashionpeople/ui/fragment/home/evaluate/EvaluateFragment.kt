@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RatingBar
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -23,11 +22,13 @@ import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.comment.CommentDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.grade.GradeDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.info.other.OtherFragment
+import com.sangmee.fashionpeople.ui.fragment.tag.TagDialogFragment
+import com.willy.ratingbar.BaseRatingBar
 
 class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
 
     private lateinit var binding: FragmentEvaluateBinding
-    private val vm: HomeEvaluateViewModel by viewModels()
+    private val vm by activityViewModels<HomeEvaluateViewModel>()
     private val mainVm by activityViewModels<MainViewModel>()
     private lateinit var evaluateFeedAdapter: EvaluateFeedAdapter
     private var pos: Int? = null
@@ -50,7 +51,7 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
     }
 
     private fun initViewPager() {
-        evaluateFeedAdapter = EvaluateFeedAdapter(vm.userId)
+        evaluateFeedAdapter = EvaluateFeedAdapter()
         evaluateFeedAdapter.onClickListener = this@EvaluateFragment
         binding.vpEvaluate.apply {
             adapter = evaluateFeedAdapter
@@ -71,7 +72,7 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
                     for (feedImage in feedImages) {
                         saveImages.add(feedImage.imageName!!)
                     }
-                    evaluateFeedAdapter.setSavedButtonType(saveImages, null)
+                    evaluateFeedAdapter.setSaveItems(saveImages, null)
                 }
             } else {
                 binding.vpEvaluate.visibility = View.GONE
@@ -80,14 +81,13 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
         })
 
         vm.updateFeedImage.observe(viewLifecycleOwner, Observer {
+            Log.d("SangmeebeeEvaluate", it.toString())
             it?.let {
-                Log.d("Sangmeebee", "evaluate_${it}")
                 evaluateFeedAdapter.updateItem(it)
             }
         })
 
         vm.evaluateLoadingComplete.observe(viewLifecycleOwner, Observer {
-            Log.d("Sangmeebee", "evaluateLoadingComplete")
             crossfade()
         })
 
@@ -111,7 +111,7 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
                 saveImages.add(feedImage.imageName!!)
             }
 
-            evaluateFeedAdapter.setSavedButtonType(saveImages, pos)
+            evaluateFeedAdapter.setSaveItems(saveImages, pos)
         })
     }
 
@@ -145,19 +145,14 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
             .show(childFragmentManager, GradeDialogFragment.TAG)
     }
 
-    override fun onDestroy() {
-        vm.clearDisposable()
-        super.onDestroy()
+    private fun showTagFragment(feedImage: FeedImage) {
+        TagDialogFragment.newInstance(feedImage)
+            .show(childFragmentManager, TagDialogFragment.TAG)
     }
 
-    override fun onClickRatingBar(
-        ratingBar: RatingBar?,
-        rating: Float,
-        fromUser: Boolean,
-        feedImage: FeedImage
-    ) {
-        ratingBar?.rating = rating
-        feedImage.imageName?.let { vm.ratingClick(it, rating) }
+    override fun onPause() {
+        vm.clearDisposable()
+        super.onPause()
     }
 
     override fun onClickComment(imageName: String) {
@@ -182,5 +177,18 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
         feedImage.user?.id?.let { OtherFragment.newInstance(it) }?.let {
             (activity as MainActivity).replaceFragmentUseBackStack(it)
         }
+    }
+
+    override fun onClickRatingBar(
+        ratingBar: BaseRatingBar?,
+        rating: Float,
+        fromUser: Boolean,
+        feedImage: FeedImage
+    ) {
+        feedImage.imageName?.let { vm.ratingClick(it, rating) }
+    }
+
+    override fun onClickTag(feedImage: FeedImage) {
+        showTagFragment(feedImage)
     }
 }

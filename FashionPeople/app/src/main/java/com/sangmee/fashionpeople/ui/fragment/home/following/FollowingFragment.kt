@@ -7,13 +7,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RatingBar
-import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import com.sangmee.fashionpeople.R
@@ -23,13 +19,16 @@ import com.sangmee.fashionpeople.observer.MainViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.comment.CommentDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.grade.GradeDialogFragment
+import com.sangmee.fashionpeople.ui.fragment.home.evaluate.HomeEvaluateViewModel
 import com.sangmee.fashionpeople.ui.fragment.info.other.OtherFragment
+import com.sangmee.fashionpeople.ui.fragment.tag.TagDialogFragment
+import com.willy.ratingbar.BaseRatingBar
 
 class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
 
     private lateinit var binding: FragmentFollowingBinding
     private lateinit var followingFeedAdapter: FollowingFeedAdapter
-    private val vm: HomeFollowingViewModel by viewModels()
+    private val vm by activityViewModels<HomeEvaluateViewModel>()
     private val mainVm by activityViewModels<MainViewModel>()
     private var pos: Int? = null
 
@@ -51,7 +50,7 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
     }
 
     private fun initViewPager() {
-        followingFeedAdapter = FollowingFeedAdapter(vm.userId)
+        followingFeedAdapter = FollowingFeedAdapter()
         followingFeedAdapter.onClickListener = this@FollowingFragment
         binding.vpFollowing.apply {
             adapter = followingFeedAdapter
@@ -71,7 +70,7 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
                     for (feedImage in feedImages) {
                         saveImages.add(feedImage.imageName!!)
                     }
-                    followingFeedAdapter.setSavedButtonType(saveImages, null)
+                    followingFeedAdapter.setSaveItems(saveImages, null)
                 }
             } else {
                 binding.vpFollowing.visibility = View.GONE
@@ -80,31 +79,14 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
         })
 
         vm.updateFeedImage.observe(viewLifecycleOwner, Observer {
+            Log.d("SangmeebeeFollowing", it.toString())
             it?.let {
-                Log.d("Sangmeebee", "following_${it}")
                 followingFeedAdapter.updateItem(it)
             }
         })
 
         vm.followingLoadingComplete.observe(viewLifecycleOwner, Observer {
-
-            Log.d("Sangmeebee", "followingLoadingComplete")
             crossfade()
-        })
-
-
-        vm.saveComplete.observe(this, Observer {
-            Toast.makeText(context, "사진을 저장했습니다.", Toast.LENGTH_SHORT).show()
-            mainVm.getMySaveImage()
-        })
-
-        vm.deleteComplete.observe(this, Observer {
-            Toast.makeText(context, "사진을 삭제했습니다.", Toast.LENGTH_SHORT).show()
-            mainVm.getMySaveImage()
-        })
-
-        vm.errorComplete.observe(this, Observer {
-            Toast.makeText(context, "이미 평가 완료된 사진", Toast.LENGTH_SHORT).show()
         })
 
         mainVm.saveImages.observe(viewLifecycleOwner, Observer {
@@ -113,7 +95,7 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
                 saveImages.add(feedImage.imageName!!)
             }
 
-            followingFeedAdapter.setSavedButtonType(saveImages, pos)
+            followingFeedAdapter.setSaveItems(saveImages, pos)
         })
     }
 
@@ -147,19 +129,14 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
             .show(childFragmentManager, GradeDialogFragment.TAG)
     }
 
-    override fun onDestroy() {
-        vm.clearDisposable()
-        super.onDestroy()
+    private fun showTagFragment(feedImage: FeedImage) {
+        TagDialogFragment.newInstance(feedImage)
+            .show(childFragmentManager, TagDialogFragment.TAG)
     }
 
-    override fun onClickRatingBar(
-        ratingBar: RatingBar?,
-        rating: Float,
-        fromUser: Boolean,
-        feedImage: FeedImage
-    ) {
-        ratingBar?.rating = rating
-        feedImage.imageName?.let { vm.ratingClick(it, rating) }
+    override fun onPause() {
+        vm.clearDisposable()
+        super.onPause()
     }
 
     override fun onClickComment(imageName: String) {
@@ -186,5 +163,16 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
         }
     }
 
+    override fun onClickRatingBar(
+        ratingBar: BaseRatingBar?,
+        rating: Float,
+        fromUser: Boolean,
+        feedImage: FeedImage
+    ) {
+        feedImage.imageName?.let { vm.ratingClick(it, rating) }
+    }
 
+    override fun onClickTag(feedImage: FeedImage) {
+        showTagFragment(feedImage)
+    }
 }

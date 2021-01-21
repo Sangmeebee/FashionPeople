@@ -3,22 +3,24 @@ package com.sangmee.fashionpeople.ui.fragment.home.evaluate
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.RatingBar
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.sangmee.fashionpeople.R
+import com.sangmee.fashionpeople.data.GlobalApplication
+import com.sangmee.fashionpeople.data.model.Evaluation
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.databinding.ItemEvaluateFeedBinding
+import com.willy.ratingbar.BaseRatingBar
 import kotlinx.android.synthetic.main.item_evaluate_feed.view.*
 
-
-class EvaluateFeedAdapter(private val myId: String) :
-    RecyclerView.Adapter<EvaluateFeedViewHolder>() {
+class EvaluateFeedAdapter :
+    RecyclerView.Adapter<EvaluateFeedAdapter.EvaluateFeedViewHolder>() {
 
     private val items = mutableListOf<FeedImage>()
+    private val saveItems = mutableListOf<String>()
     var onClickListener: OnClickListener? = null
-    private val isSaved = mutableListOf<String>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EvaluateFeedViewHolder {
         val binding = DataBindingUtil.inflate<ItemEvaluateFeedBinding>(
@@ -27,41 +29,55 @@ class EvaluateFeedAdapter(private val myId: String) :
             parent,
             false
         )
-        val viewHolder = EvaluateFeedViewHolder(binding, myId)
+        val viewHolder = EvaluateFeedViewHolder(binding)
 
-        viewHolder.itemView.rb_evaluate_feed.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
-            items[viewHolder.adapterPosition].let {
-                onClickListener?.onClickRatingBar(ratingBar, rating, fromUser, it)
-            }
-        }
-        viewHolder.itemView.tv_comment.setOnClickListener {
+        viewHolder.itemView.iv_comment.setOnClickListener {
             items[viewHolder.adapterPosition].let {
                 it.imageName?.let { imageName ->
                     onClickListener?.onClickComment(imageName)
                 }
             }
         }
+
+        viewHolder.itemView.iv_save_image.setOnClickListener {
+            items[viewHolder.adapterPosition].let {
+                it.imageName?.let { imageName ->
+                    onClickListener?.onClickSave(imageName, viewHolder.adapterPosition)
+                }
+            }
+        }
+
+        viewHolder.itemView.iv_delete_image.setOnClickListener {
+            items[viewHolder.adapterPosition].let {
+                it.imageName?.let { imageName ->
+                    onClickListener?.onClickDelete(imageName, viewHolder.adapterPosition)
+                }
+            }
+        }
+
         viewHolder.itemView.ll_rating_evaluate_average.setOnClickListener {
             items[viewHolder.adapterPosition].let {
                 onClickListener?.onClickGrade(it)
             }
         }
 
-        viewHolder.itemView.ll_container.setOnClickListener {
+        viewHolder.itemView.civ_profile.setOnClickListener {
             items[viewHolder.adapterPosition].let {
                 onClickListener?.onClickProfile(it)
             }
         }
 
-        viewHolder.itemView.iv_save_image.setOnClickListener {
+
+        viewHolder.itemView.ll_tag.setOnClickListener {
             items[viewHolder.adapterPosition].let {
-                onClickListener?.onClickSave(it.imageName!!, viewHolder.adapterPosition)
+                onClickListener?.onClickTag(it)
             }
         }
 
-        viewHolder.itemView.iv_delete_image.setOnClickListener {
+
+        viewHolder.itemView.simpleRatingBar.setOnRatingChangeListener { ratingBar, rating, fromUser ->
             items[viewHolder.adapterPosition].let {
-                onClickListener?.onClickDelete(it.imageName!!, viewHolder.adapterPosition)
+                onClickListener?.onClickRatingBar(ratingBar, rating, fromUser, it)
             }
         }
 
@@ -70,7 +86,7 @@ class EvaluateFeedAdapter(private val myId: String) :
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onBindViewHolder(holder: EvaluateFeedViewHolder, position: Int) {
-        holder.bind(items[position], isSaved)
+        holder.bind(items[position], saveItems)
     }
 
     override fun getItemCount(): Int = items.size
@@ -82,10 +98,10 @@ class EvaluateFeedAdapter(private val myId: String) :
         notifyDataSetChanged()
     }
 
-    fun setSavedButtonType(isSave: List<String>, position: Int?) {
-        isSaved.clear()
-        isSaved.addAll(isSave)
-        if(position == null){
+    fun setSaveItems(list: List<String>, position: Int?) {
+        saveItems.clear()
+        saveItems.addAll(list)
+        if (position == null) {
             notifyDataSetChanged()
         } else {
             notifyItemChanged(position)
@@ -103,18 +119,67 @@ class EvaluateFeedAdapter(private val myId: String) :
 
     interface OnClickListener {
         fun onClickRatingBar(
-            ratingBar: RatingBar?,
+            ratingBar: BaseRatingBar?,
             rating: Float,
             fromUser: Boolean,
             feedImage: FeedImage
         )
 
-        fun onClickSave(imageName: String, position: Int)
-        fun onClickDelete(imageName: String, position: Int)
         fun onClickComment(imageName: String)
         fun onClickGrade(feedImage: FeedImage)
         fun onClickProfile(feedImage: FeedImage)
+        fun onClickSave(imageName: String, position: Int)
+        fun onClickDelete(imageName: String, position: Int)
+        fun onClickTag(feedImage: FeedImage)
     }
 
+    class EvaluateFeedViewHolder(private val binding: ItemEvaluateFeedBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
+        val customId = GlobalApplication.prefs.getString("${loginType}_custom_id", "empty")
+
+        @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+        fun bind(feedImage: FeedImage, saveItems: List<String>) {
+            binding.feedImage = feedImage
+            binding.isSaved = feedImage.imageName in saveItems
+
+            if (feedImage.evaluateNow) {
+                val evaluations = arrayListOf<Evaluation>()
+                feedImage.evaluations?.let {
+                    evaluations.addAll(it)
+                }
+                var isEvaluating = true
+                for (evaluation in evaluations) {
+                    if (evaluation.evaluationPersonId!! == customId) {
+                        isEvaluating = false
+                    }
+                }
+                binding.isEvaluating = isEvaluating
+            } else {
+                binding.isEvaluating = false
+            }
+
+
+            binding.executePendingBindings()
+
+
+            with(itemView) {
+                Glide.with(context)
+                    .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${feedImage.user?.id}/feed/${feedImage.imageName}")
+                    .into(binding.ivItemEvaluateFeed)
+
+                if (feedImage.user?.profileImage.isNullOrEmpty()) {
+                    binding.civProfile.setImageDrawable(context.getDrawable(R.drawable.ic_profile_home))
+                } else {
+                    Glide.with(context)
+                        .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${feedImage.user?.id}/profile/${feedImage.user?.profileImage}")
+                        .error(context.getDrawable(R.drawable.ic_profile_home))
+                        .placeholder(context.getDrawable(R.drawable.ic_profile_home))
+                        .into(binding.civProfile)
+                }
+            }
+        }
+    }
 
 }

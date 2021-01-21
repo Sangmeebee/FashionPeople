@@ -17,6 +17,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.rxjava3.subjects.AsyncSubject
 
 class HomeEvaluateViewModel : ViewModel() {
 
@@ -31,13 +32,23 @@ class HomeEvaluateViewModel : ViewModel() {
     val evaluateFeedImages: LiveData<List<FeedImage>>
         get() = _evaluateFeedImages
 
-    val updateFeedImage = SingleLiveEvent<FeedImage>()
+    private val _followingFeedImages = MutableLiveData<List<FeedImage>>()
+    val followingFeedImages: LiveData<List<FeedImage>>
+        get() = _followingFeedImages
+
+    private val _updateFeedImage = MutableLiveData<FeedImage>()
+    val updateFeedImage: LiveData<FeedImage>
+        get() = _updateFeedImage
 
     val evaluateLoadingComplete = SingleLiveEvent<Any>()
+    val followingLoadingComplete = SingleLiveEvent<Any>()
 
     val saveComplete = SingleLiveEvent<Any>()
     val errorComplete = SingleLiveEvent<Any>()
     val deleteComplete = SingleLiveEvent<Any>()
+
+    val asyncSubject = AsyncSubject.create<Unit>()
+
 
     fun getOtherImages() {
         feedImageRepository.getOtherImages(userId)
@@ -48,6 +59,16 @@ class HomeEvaluateViewModel : ViewModel() {
                 _evaluateFeedImages.value = it
             }, {
             }).addTo(compositeDisposable)
+    }
+
+    fun getFollowingImages() {
+        feedImageRepository.getFollowingFeedImages(userId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doAfterTerminate { followingLoadingComplete.call() }
+            .subscribe({
+                _followingFeedImages.value = it
+            }, { Log.d("Sangmeebee", "evaluate_${it.message}") }).addTo(compositeDisposable)
     }
 
     fun postSaveImage(imageName: String) {
@@ -85,7 +106,7 @@ class HomeEvaluateViewModel : ViewModel() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                updateFeedImage.value = it
+                _updateFeedImage.value = it
             }, {
             }).addTo(compositeDisposable)
     }
@@ -93,6 +114,5 @@ class HomeEvaluateViewModel : ViewModel() {
 
     fun clearDisposable() {
         compositeDisposable.clear()
-        Log.d("Sangmeebee", "clearDisposable")
     }
 }

@@ -39,8 +39,6 @@ class InfoDetailFragment(
         }).get(DetailViewModel::class.java)
     }
     private val mainVm by activityViewModels<MainViewModel>()
-    private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
-    val userId = GlobalApplication.prefs.getString("${loginType}_custom_id", "empty")
     private var pos: Int? = null
 
     private lateinit var detailAdapter: DetailAdapter

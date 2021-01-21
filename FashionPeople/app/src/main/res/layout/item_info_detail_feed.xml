@@ -245,6 +245,7 @@
             app:srb_drawableFilled="@drawable/pink_star"
             app:srb_isIndicator="false"
             app:srb_numStars="5"
+            app:srb_scrollable="false"
             app:srb_starHeight="45dp"
             app:srb_starPadding="15dp"
             app:srb_starWidth="45dp"

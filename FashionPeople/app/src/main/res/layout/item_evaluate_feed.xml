@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:toolsNs="http://schemas.android.com/tools">
 
     <data>
@@ -8,87 +9,97 @@
         <import type="android.view.View" />
 
         <variable
+            name="isSaved"
+            type="Boolean" />
+
+        <variable
             name="feedImage"
             type="com.sangmee.fashionpeople.data.model.FeedImage" />
 
         <variable
-            name="canEvaluate"
+            name="isEvaluating"
             type="Boolean" />
 
-        <variable
-            name="isSaved"
-            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        toolsNs:background="@color/colorWhite">
+        android:background="@color/colorWhite">
 
-        <LinearLayout
-            android:id="@+id/ll_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="@+id/rv_tags_home_feed"
-            app:layout_constraintTop_toTopOf="parent">
-
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/iv_profile_evaluate_feed"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                app:civ_border_color="@color/colorBlack"
-                app:civ_border_width="2dp"
-                toolsNs:src="@drawable/ic_user" />
-
-            <TextView
-                android:id="@+id/tv_user_name_home_feed"
-                style="@style/HomeFeedTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="12dp"
-                android:ellipsize="end"
-                android:text="@{feedImage.user.name}"
-                toolsNs:text="000" />
-
-        </LinearLayout>
 
         <ImageView
             android:id="@+id/iv_item_evaluate_feed"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:layout_constraintTop_toBottomOf="@+id/ll_container" />
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="H,4:3"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_tags_home_feed"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
-            android:scrollbars="vertical"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_item_evaluate_feed"
-            app:setFeedImageTags="@{feedImage}" />
 
-        <LinearLayout
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civ_profile"
+            android:layout_width="47dp"
+            android:layout_height="47dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="30dp"
+            app:civ_border_color="@color/colorGray"
+            app:civ_border_width="2dp"
+            app:layout_constraintBottom_toTopOf="@id/iv_comment"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_comment"
+            android:layout_width="47dp"
+            android:layout_height="47dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="30dp"
+            android:src="@drawable/ic_comment_home"
+            app:layout_constraintBottom_toTopOf="@id/fl_save_btn"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <FrameLayout
+            android:id="@+id/fl_save_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="30dp"
+            app:layout_constraintBottom_toTopOf="@id/simpleRatingBar"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_delete_image"
+                android:layout_width="47dp"
+                android:layout_height="47dp"
+                android:src="@drawable/ic_scrap_delete_home"
+                android:visibility="@{isSaved ? View.VISIBLE : View.GONE}"
+                app:civ_border_width="3dp" />
+
+            <ImageView
+                android:id="@+id/iv_save_image"
+                android:layout_width="47dp"
+                android:layout_height="47dp"
+                android:src="@drawable/ic_scrap_home"
+                android:visibility="@{isSaved ? View.GONE : View.VISIBLE}"
+                app:civ_border_width="1dp" />
+        </FrameLayout>
+
+
+        <FrameLayout
             android:id="@+id/ll_rating_evaluate_average"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="30dp"
             android:orientation="horizontal"
-            android:visibility="@{canEvaluate ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toTopOf="@id/cl_comment"
-            app:layout_constraintStart_toStartOf="@id/rv_tags_home_feed">
+            android:visibility="@{isEvaluating ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toTopOf="@id/ll_tag"
+            app:layout_constraintStart_toStartOf="parent">
 
             <ImageView
                 android:id="@+id/iv_star"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="4dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:src="@drawable/ic_star_yellow_24" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -96,77 +107,150 @@
                 style="@style/DetailScoreTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
+                android:layout_gravity="center"
                 android:gravity="center"
                 app:setRatingText="@{feedImage}"
                 toolsNs:text="4.0" />
 
-        </LinearLayout>
+        </FrameLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_comment"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/ll_tag"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginBottom="20dp"
-            android:orientation="horizontal"
-            android:visibility="@{canEvaluate ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="18dp"
+            android:layout_marginBottom="30dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/simpleRatingBar"
             app:layout_constraintStart_toStartOf="parent">
 
             <TextView
-                android:id="@+id/tv_comment"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginEnd="100dp"
-                android:background="@drawable/background_comment"
-                android:gravity="center"
-                android:text="댓글로 폭풍 칭찬해주세요~!"
-                android:textColor="@color/colorBlack"
-                android:textSize="13sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/iv_save_image"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:text="스타일"
+                android:textColor="@color/colorSubColorText"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/iv_save_image"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/bg_save_image"
-                android:padding="8dp"
-                android:src="@drawable/ic_photo_saved_black"
-                android:visibility="@{isSaved ? View.GONE : View.VISIBLE}"
-                app:civ_border_width="1dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp">
 
-            <ImageView
-                android:id="@+id/iv_delete_image"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/bg_delete_image"
-                android:padding="8dp"
-                android:src="@drawable/ic_photo_saved_gray"
-                android:visibility="@{isSaved ? View.VISIBLE : View.GONE}"
-                app:civ_border_width="1dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_line" />
 
-        <androidx.appcompat.widget.AppCompatRatingBar
-            android:id="@+id/rb_evaluate_feed"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    bind:setTag="@{feedImage.style}" />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:text="브랜드"
+                android:textColor="@color/colorSubColorText"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_line" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        bind:setTag="@{feedImage.top}" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_line" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        bind:setTag="@{feedImage.pants}" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_line" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        bind:setTag="@{feedImage.shoes}" />
+                </FrameLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <com.willy.ratingbar.ScaleRatingBar
+            android:id="@+id/simpleRatingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:isIndicator="false"
-            android:numStars="5"
-            android:stepSize="1"
-            android:theme="@style/RatingBarStyle"
-            android:visibility="@{canEvaluate ? View.VISIBLE : View.GONE}"
+            android:layout_marginBottom="10dp"
+            android:visibility="@{isEvaluating ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:srb_clearRatingEnabled="true"
+            app:srb_clickable="true"
+            app:srb_drawableEmpty="@drawable/star"
+            app:srb_drawableFilled="@drawable/pink_star"
+            app:srb_isIndicator="false"
+            app:srb_numStars="5"
+            app:srb_minimumStars="0"
+            app:srb_scrollable="false"
+            app:srb_starHeight="45dp"
+            app:srb_starPadding="15dp"
+            app:srb_starWidth="45dp"
+            app:srb_stepSize="1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
