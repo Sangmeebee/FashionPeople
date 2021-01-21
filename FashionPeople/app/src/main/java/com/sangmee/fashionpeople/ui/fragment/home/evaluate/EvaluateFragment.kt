@@ -55,6 +55,7 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
         evaluateFeedAdapter.onClickListener = this@EvaluateFragment
         binding.vpEvaluate.apply {
             adapter = evaluateFeedAdapter
+            offscreenPageLimit = 50
             orientation = ViewPager2.ORIENTATION_VERTICAL
         }
     }

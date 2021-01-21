@@ -54,6 +54,7 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
         followingFeedAdapter.onClickListener = this@FollowingFragment
         binding.vpFollowing.apply {
             adapter = followingFeedAdapter
+            offscreenPageLimit = 50
             orientation = ViewPager2.ORIENTATION_VERTICAL
         }
     }
