@@ -6,11 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.databinding.FragmentResultSearchStyleBinding
-import com.sangmee.fashionpeople.ui.fragment.search.style.result.content.SearchRecentStyleContentFragment
-import com.sangmee.fashionpeople.ui.fragment.search.style.result.content.SearchScoreStyleContentFragment
 import kotlinx.android.synthetic.main.fragment_result_search_style.*
 
 private const val ARG_PARAM1 = "param1"
@@ -44,30 +42,18 @@ class ResultSearchStyleFragment : Fragment() {
     }
 
     private fun setTabLayout() {
-        val searchScoreStyleContentFragment = SearchScoreStyleContentFragment.newInstance(query!!)
-        val searchRecentStyleContentFragment = SearchRecentStyleContentFragment.newInstance(query!!)
+        viewPager.adapter = ResultSearchStyleViewPagerAdapter(this, query)
 
-        val fragmentTransaction = childFragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.fl_container, searchScoreStyleContentFragment).commit()
-        tl_sort.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                val position = tab!!.position
-                var selected: Fragment? = null
-                selected = when (position) {
-                    0 -> searchScoreStyleContentFragment
-                    else -> searchRecentStyleContentFragment
+        TabLayoutMediator(tl_sort, viewPager) { tab, position ->
+            when (position) {
+                0 -> {
+                    tab.text = "인기순"
                 }
-                childFragmentManager.beginTransaction()
-                    .replace(R.id.fl_container, selected).commit()
-
+                1 -> {
+                    tab.text = "최신순"
+                }
             }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-            }
-        })
+        }.attach()
     }
 
     companion object {

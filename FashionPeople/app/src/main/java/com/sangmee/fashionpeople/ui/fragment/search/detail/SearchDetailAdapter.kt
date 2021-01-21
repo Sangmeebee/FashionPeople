@@ -67,6 +67,13 @@ class SearchDetailAdapter : RecyclerView.Adapter<SearchDetailAdapter.DetailViewH
             }
         }
 
+
+        viewHolder.itemView.ll_tag.setOnClickListener {
+            items[viewHolder.adapterPosition].let {
+                onClickListener?.onClickTag(it)
+            }
+        }
+
         return viewHolder
     }
 
@@ -102,6 +109,7 @@ class SearchDetailAdapter : RecyclerView.Adapter<SearchDetailAdapter.DetailViewH
         fun onClickProfile(feedImage: FeedImage)
         fun onClickSave(imageName: String, position: Int)
         fun onClickDelete(imageName: String, position: Int)
+        fun onClickTag(feedImage: FeedImage)
     }
 
     class DetailViewHolder(private val binding: ItemInfoDetailFeedBinding) :

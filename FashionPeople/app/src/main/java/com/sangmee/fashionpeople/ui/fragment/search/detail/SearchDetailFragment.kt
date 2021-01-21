@@ -18,6 +18,7 @@ import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.comment.CommentDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.grade.GradeDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.info.other.OtherFragment
+import com.sangmee.fashionpeople.ui.fragment.tag.TagDialogFragment
 import kotlinx.android.synthetic.main.fragment_info_detail.*
 
 class SearchDetailFragment(private val feedImages: List<FeedImage>, private val position: Int) :
@@ -100,6 +101,11 @@ class SearchDetailFragment(private val feedImages: List<FeedImage>, private val 
             .show(childFragmentManager, GradeDialogFragment.TAG)
     }
 
+    private fun showTagFragment(feedImage: FeedImage) {
+        TagDialogFragment.newInstance(feedImage)
+            .show(childFragmentManager, TagDialogFragment.TAG)
+    }
+
     override fun onDestroy() {
         viewModel.clearDisposable()
         super.onDestroy()
@@ -129,6 +135,9 @@ class SearchDetailFragment(private val feedImages: List<FeedImage>, private val 
         pos = position
     }
 
+    override fun onClickTag(feedImage: FeedImage) {
+        showTagFragment(feedImage)
+    }
 
     private fun crossfade() {
         vp_detail.apply {
