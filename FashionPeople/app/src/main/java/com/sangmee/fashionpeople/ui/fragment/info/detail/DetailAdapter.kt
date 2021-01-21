@@ -9,8 +9,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sangmee.fashionpeople.R
+import com.sangmee.fashionpeople.data.GlobalApplication
+import com.sangmee.fashionpeople.data.model.Evaluation
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.databinding.ItemInfoDetailFeedBinding
+import com.willy.ratingbar.BaseRatingBar
 import kotlinx.android.synthetic.main.item_info_detail_feed.view.*
 
 
@@ -71,6 +74,12 @@ class DetailAdapter : RecyclerView.Adapter<DetailAdapter.DetailViewHolder>() {
             }
         }
 
+        viewHolder.itemView.simpleRatingBar.setOnRatingChangeListener { ratingBar, rating, fromUser ->
+            items[viewHolder.adapterPosition].let {
+                onClickListener?.onClickRatingBar(ratingBar, rating, fromUser, it)
+            }
+        }
+
         return viewHolder
     }
 
@@ -100,7 +109,22 @@ class DetailAdapter : RecyclerView.Adapter<DetailAdapter.DetailViewHolder>() {
         }
     }
 
+    fun updateItem(feedImage: FeedImage){
+        for (index in items.indices) {
+            if (items[index].imageName == feedImage.imageName) {
+                items[index] = feedImage
+                notifyItemChanged(index)
+            }
+        }
+    }
+
     interface OnClickListener {
+        fun onClickRatingBar(
+            ratingBar: BaseRatingBar?,
+            rating: Float,
+            fromUser: Boolean,
+            feedImage: FeedImage
+        )
         fun onClickComment(imageName: String)
         fun onClickGrade(feedImage: FeedImage)
         fun onClickProfile(feedImage: FeedImage)
@@ -112,9 +136,32 @@ class DetailAdapter : RecyclerView.Adapter<DetailAdapter.DetailViewHolder>() {
     class DetailViewHolder(private val binding: ItemInfoDetailFeedBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
+        val customId = GlobalApplication.prefs.getString("${loginType}_custom_id", "empty")
+
         @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
         fun bind(feedImage: FeedImage, saveItems: List<String>) {
             binding.feedImage = feedImage
+
+            if(feedImage.user?.id == customId){
+                binding.isEvaluating = false
+            } else {
+                if(feedImage.evaluateNow) {
+                    val evaluations = arrayListOf<Evaluation>()
+                    feedImage.evaluations?.let {
+                        evaluations.addAll(it)
+                    }
+                    var isEvaluating = true
+                    for (evaluation in evaluations){
+                        if(evaluation.evaluationPersonId!! == customId){
+                            isEvaluating = false
+                        }
+                    }
+                    binding.isEvaluating = isEvaluating
+                } else {
+                    binding.isEvaluating = false
+                }
+            }
             binding.isSaved = feedImage.imageName in saveItems
             binding.executePendingBindings()
 

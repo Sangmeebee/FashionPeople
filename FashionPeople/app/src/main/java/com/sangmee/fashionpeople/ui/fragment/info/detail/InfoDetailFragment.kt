@@ -21,6 +21,7 @@ import com.sangmee.fashionpeople.ui.fragment.comment.CommentDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.grade.GradeDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.info.other.OtherFragment
 import com.sangmee.fashionpeople.ui.fragment.tag.TagDialogFragment
+import com.willy.ratingbar.BaseRatingBar
 import kotlinx.android.synthetic.main.fragment_info_detail.*
 
 class InfoDetailFragment(
@@ -123,6 +124,10 @@ class InfoDetailFragment(
             Toast.makeText(context, "사진을 삭제했습니다.", Toast.LENGTH_SHORT).show()
             mainVm.getMySaveImage()
         })
+
+        viewModel.updateFeedImage.observe(this, Observer {
+            detailAdapter.updateItem(it)
+        })
     }
 
     private fun showCommentFragment(imageName: String) {
@@ -171,6 +176,15 @@ class InfoDetailFragment(
 
     override fun onClickTag(feedImage: FeedImage) {
         showTagFragment(feedImage)
+    }
+
+    override fun onClickRatingBar(
+        ratingBar: BaseRatingBar?,
+        rating: Float,
+        fromUser: Boolean,
+        feedImage: FeedImage
+    ) {
+        feedImage.imageName?.let { viewModel.ratingClick(it, rating) }
     }
 
     private fun crossfade() {

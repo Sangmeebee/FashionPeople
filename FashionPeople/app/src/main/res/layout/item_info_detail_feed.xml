@@ -16,6 +16,10 @@
             name="feedImage"
             type="com.sangmee.fashionpeople.data.model.FeedImage" />
 
+        <variable
+            name="isEvaluating"
+            type="Boolean" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -60,8 +64,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="50dp"
-            app:layout_constraintBottom_toBottomOf="@id/iv_item_evaluate_feed"
+            android:layout_marginBottom="30dp"
+            app:layout_constraintBottom_toTopOf="@id/simpleRatingBar"
             app:layout_constraintEnd_toEndOf="parent">
 
             <ImageView
@@ -88,6 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"
             android:orientation="horizontal"
+            android:visibility="@{isEvaluating ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toTopOf="@id/ll_tag"
             app:layout_constraintStart_toStartOf="parent">
 
@@ -114,9 +119,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="18dp"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="30dp"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="@id/iv_item_evaluate_feed"
+            app:layout_constraintBottom_toTopOf="@id/simpleRatingBar"
             app:layout_constraintStart_toStartOf="parent">
 
             <TextView
@@ -225,6 +230,25 @@
             </LinearLayout>
         </LinearLayout>
 
+        <com.willy.ratingbar.ScaleRatingBar
+            android:id="@+id/simpleRatingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:visibility="@{isEvaluating ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srb_clearRatingEnabled="true"
+            app:srb_clickable="true"
+            app:srb_drawableEmpty="@drawable/star"
+            app:srb_drawableFilled="@drawable/pink_star"
+            app:srb_isIndicator="false"
+            app:srb_numStars="5"
+            app:srb_starHeight="45dp"
+            app:srb_starPadding="15dp"
+            app:srb_starWidth="45dp"
+            app:srb_stepSize="1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

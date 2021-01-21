@@ -36,7 +36,7 @@ class HomeFragment : Fragment() {
         val followingFragment = FollowingFragment()
 
         val fragmentTransaction = childFragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.fl_home, evaluateFragment).commit()
+        fragmentTransaction.add(R.id.fl_home, evaluateFragment).commit()
         tl_home.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 val position = tab!!.position
@@ -45,7 +45,10 @@ class HomeFragment : Fragment() {
                     0 -> evaluateFragment
                     else -> followingFragment
                 }
-                childFragmentManager.beginTransaction().replace(R.id.fl_home, selected).commit()
+                childFragmentManager.beginTransaction().apply {
+                    replace(R.id.fl_home, selected).commit()
+                    addToBackStack(null)
+                }
 
             }
 

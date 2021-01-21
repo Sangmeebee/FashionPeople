@@ -23,7 +23,7 @@ data class FeedImage(
     @SerializedName("rank")
     val rank: Int?,
     @SerializedName("evaluateNow")
-    val evaluateNow: Boolean?,
+    val evaluateNow: Boolean,
     @SerializedName("evaluations")
     val evaluations: List<Evaluation>?,
     @SerializedName("resultRating")
