@@ -41,6 +41,7 @@ class ReviseUserInfoActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         checkFillInTheBlanks()
+        bindViewModel()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,8 +89,6 @@ class ReviseUserInfoActivity : AppCompatActivity() {
                 }
             }
         }
-
-        bindViewModel()
     }
 
     //회원정보 저장(retrofit2)

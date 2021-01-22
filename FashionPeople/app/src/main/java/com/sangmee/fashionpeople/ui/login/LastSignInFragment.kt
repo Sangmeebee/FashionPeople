@@ -42,6 +42,7 @@ class LastSignInFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         checkFillInTheBlanks()
+        observerCallback()
     }
 
     override fun onCreateView(
@@ -59,7 +60,6 @@ class LastSignInFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observerCallback()
         binding.rgGender.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
                 R.id.rb_man -> {
