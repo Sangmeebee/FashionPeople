@@ -9,14 +9,11 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.TypedValue
 import android.view.View
-import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatRatingBar
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
@@ -30,7 +27,6 @@ import com.google.android.flexbox.JustifyContent
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.Comment
 import com.sangmee.fashionpeople.data.model.FeedImage
-import com.sangmee.fashionpeople.data.model.RankImage
 import com.sangmee.fashionpeople.ui.fragment.home.TagRecyclerViewAdapter
 import com.skydoves.progressview.ProgressView
 
@@ -216,6 +212,8 @@ fun setTvBackGround(textView: TextView, rank: Int) {
         ContextCompat.getDrawable(textView.context, R.drawable.bg_ranking_text) as GradientDrawable
 
     if (rank == 0) {
+        drawable.setColor(textView.context.getColor(R.color.colorPrimaryDark))
+    } else if (rank == 1 || rank == 2) {
         drawable.setColor(textView.context.getColor(R.color.colorPrimary))
     } else {
         drawable.setColor(textView.context.getColor(R.color.colorBlack))
@@ -223,6 +221,7 @@ fun setTvBackGround(textView: TextView, rank: Int) {
     textView.background = drawable
     textView.text = "${rank + 1}위"
 }
+
 
 @BindingAdapter("setHTMLText")
 fun TextView.setHtmlText(stringId: Int) {

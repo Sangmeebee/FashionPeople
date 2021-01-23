@@ -41,7 +41,7 @@ class WomanRankAdapter : RecyclerView.Adapter<WomanRankAdapter.WomanRankViewHold
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(customDate: CustomDate) {
-            binding.tvDate.text = "#${customDate.date}"
+            binding.tvDate.text = "${customDate.date}"
             val rankRecyclerAdapter = RankRecyclerAdapter()
             rankRecyclerAdapter.setRankImages(customDate.rankImages)
 

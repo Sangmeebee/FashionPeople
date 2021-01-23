@@ -21,7 +21,7 @@
 
         <ImageView
             android:id="@+id/iv_rank"
-            android:layout_width="150dp"
+            android:layout_width="180dp"
             android:layout_height="0dp"
             android:layout_marginStart="5dp"
             android:scaleType="centerCrop"
@@ -32,13 +32,14 @@
 
         <TextView
             android:id="@+id/tv_rank"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:gravity="center"
             android:textColor="@color/colorWhite"
-            android:textSize="10sp"
+            android:textSize="13sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/iv_rank"
             app:layout_constraintTop_toTopOf="@id/iv_rank"
             app:setTvBackGround="@{rank}" />
