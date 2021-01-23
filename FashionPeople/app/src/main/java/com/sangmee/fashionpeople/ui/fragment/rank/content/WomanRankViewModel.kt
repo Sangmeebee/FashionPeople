@@ -1,10 +1,13 @@
-package com.sangmee.fashionpeople.ui.fragment.rank
+package com.sangmee.fashionpeople.ui.fragment.rank.content
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.sangmee.fashionpeople.data.dataSource.remote.RankImageRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.CustomDate
 import com.sangmee.fashionpeople.data.repository.RankImageRepository
+import com.sangmee.fashionpeople.data.repository.RankImageRepositoryImpl
+import com.sangmee.fashionpeople.util.SingleLiveEvent
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
@@ -12,25 +15,24 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.*
 import kotlin.collections.ArrayList
 
-class RankViewModel(
-    private val rankImageRepository: RankImageRepository
-) : ViewModel() {
+class WomanRankViewModel : ViewModel() {
 
+    private val rankImageRepository = RankImageRepositoryImpl(RankImageRemoteDataSourceImpl())
 
     private val compositeDisposable = CompositeDisposable()
 
     val dates = MutableLiveData<List<CustomDate>>()
-
+    val isComplete = SingleLiveEvent<Any>()
 
     init {
         getRankImages()
     }
 
     private fun getRankImages() {
-        Log.d("seunghwan", "rankviewmodel")
-        rankImageRepository.getRankImages()
+        rankImageRepository.getWomanRankImages()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doAfterTerminate { isComplete.call() }
             .subscribe({ map ->
                 val arrayList = ArrayList<CustomDate>()
                 for (key in map.keys) {
@@ -41,7 +43,7 @@ class RankViewModel(
                 })
                 dates.value = arrayList.toList()
             }, {
-                Log.d("seunghwan", it.toString())
+                Log.e("Sangmeebee", it.message.toString())
             }).addTo(compositeDisposable)
     }
 

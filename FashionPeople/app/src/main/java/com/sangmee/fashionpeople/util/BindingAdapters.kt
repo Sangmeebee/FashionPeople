@@ -10,6 +10,7 @@ import android.text.style.ForegroundColorSpan
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -221,20 +222,6 @@ fun setTvBackGround(textView: TextView, rank: Int) {
     }
     textView.background = drawable
     textView.text = "${rank + 1}위"
-}
-
-@BindingAdapter("linkToDetail", "setCustomIdForLink")
-fun linkToDetail(constraintLayout: ConstraintLayout, rankImage: RankImage?, customId: String?) {
-    rankImage?.feedImage?.let { feedImage ->
-        customId?.let { customId ->
-            constraintLayout.setOnClickListener {
-//                val intent = Intent(it.context, FeedImageDetailActivity::class.java)
-//                intent.putExtra("custom_id", customId)
-//                intent.putExtra(FeedImageDetailActivity.KEY_FEED_IMAGE, feedImage)
-//                it.context.startActivity(intent)
-            }
-        }
-    }
 }
 
 @BindingAdapter("setHTMLText")

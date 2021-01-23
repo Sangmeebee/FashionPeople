@@ -5,5 +5,6 @@ import io.reactivex.rxjava3.core.Single
 
 interface RankImageRepository {
 
-    fun getRankImages(): Single<Map<String, List<RankImage>>>
+    fun getManRankImages(): Single<Map<String, List<RankImage>>>
+    fun getWomanRankImages(): Single<Map<String, List<RankImage>>>
 }

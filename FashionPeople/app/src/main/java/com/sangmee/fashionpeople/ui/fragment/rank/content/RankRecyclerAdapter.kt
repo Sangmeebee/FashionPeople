@@ -1,14 +1,15 @@
-package com.sangmee.fashionpeople.ui.fragment.rank
+package com.sangmee.fashionpeople.ui.fragment.rank.content
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.RankImage
 import com.sangmee.fashionpeople.databinding.ItemRankContentBinding
 
-class RankRecyclerAdapter : RecyclerView.Adapter<RankContentViewHolder>() {
+class RankRecyclerAdapter : RecyclerView.Adapter<RankRecyclerAdapter.RankContentViewHolder>() {
 
     private val items = mutableListOf<RankImage>()
 
@@ -18,11 +19,6 @@ class RankRecyclerAdapter : RecyclerView.Adapter<RankContentViewHolder>() {
             R.layout.item_rank_content,
             parent,
             false
-        )
-
-        binding.root.layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
         )
 
         return RankContentViewHolder(binding)
@@ -38,5 +34,19 @@ class RankRecyclerAdapter : RecyclerView.Adapter<RankContentViewHolder>() {
         items.clear()
         items.addAll(list)
         notifyDataSetChanged()
+    }
+
+
+    class RankContentViewHolder(
+        val binding: ItemRankContentBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(item: RankImage, rank: Int) {
+            binding.rank = rank
+            binding.rankImage = item
+            Glide.with(itemView.context)
+                .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${item.feedImage?.user?.id}/feed/${item.feedImage?.imageName}")
+                .into(binding.ivRank)
+        }
     }
 }

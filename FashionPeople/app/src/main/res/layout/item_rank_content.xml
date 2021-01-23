@@ -15,33 +15,30 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:linkToDetail="@{rankImage}"
-        app:setCustomIdForLink="@{rankImage.feedImage.user.id}"
-        android:orientation="vertical">
-
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
 
         <ImageView
             android:id="@+id/iv_rank"
-            android:layout_width="match_parent"
-            android:layout_height="320dp"
-            android:src="@color/colorBlack"
-            android:scaleType="fitXY"
+            android:layout_width="150dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="5dp"
+            android:scaleType="centerCrop"
+            android:src="@color/colorWhite"
+            app:layout_constraintDimensionRatio="H, 3:4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_rank"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="8dp"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
             android:gravity="center"
             android:textColor="@color/colorWhite"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
+            android:textSize="10sp"
             app:layout_constraintStart_toStartOf="@id/iv_rank"
             app:layout_constraintTop_toTopOf="@id/iv_rank"
             app:setTvBackGround="@{rank}" />

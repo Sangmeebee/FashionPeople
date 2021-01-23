@@ -8,7 +8,11 @@ class RankImageRepositoryImpl(
     private val rankImageRemoteDataSource: RankImageRemoteDataSource
 ): RankImageRepository {
 
-    override fun getRankImages(): Single<Map<String, List<RankImage>>> {
-        return rankImageRemoteDataSource.getRankImages()
+    override fun getManRankImages(): Single<Map<String, List<RankImage>>> {
+        return rankImageRemoteDataSource.getManRankImages()
+    }
+
+    override fun getWomanRankImages(): Single<Map<String, List<RankImage>>> {
+        return rankImageRemoteDataSource.getWomanRankImages()
     }
 }

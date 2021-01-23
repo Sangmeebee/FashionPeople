@@ -47,10 +47,10 @@ class ResultSearchBrandFragment : Fragment() {
         TabLayoutMediator(tl_sort, viewPager) { tab, position ->
             when (position) {
                 0 -> {
-                    tab.text = "인기순"
+                    tab.setIcon(R.drawable.tab_popular_selector)
                 }
-                1 -> {
-                    tab.text = "최신순"
+                else -> {
+                    tab.setIcon(R.drawable.tab_recent_selector)
                 }
             }
         }.attach()
