@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayout
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.databinding.FragmentRankBinding
+import com.sangmee.fashionpeople.observer.MainViewModel
 import com.sangmee.fashionpeople.ui.fragment.rank.content.ManRankFragment
 import com.sangmee.fashionpeople.ui.fragment.rank.content.WomanRankFragment
 
@@ -19,6 +21,7 @@ class RankFragment : Fragment() {
     private lateinit var manager: FragmentManager
     private val manRankFragment by lazy { ManRankFragment() }
     private val womanRankFragment by lazy { WomanRankFragment() }
+    private val mainVm: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,7 +35,16 @@ class RankFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         manager = childFragmentManager
-        manager.beginTransaction().replace(R.id.fl_rank, manRankFragment).commit()
+        val gender = mainVm.user.value?.gender.toString()
+        if(gender == "남"){
+            manager.beginTransaction().replace(R.id.fl_rank, manRankFragment).commit()
+            binding.tlContainer.getTabAt(0)?.select()
+        }
+        else {
+            manager.beginTransaction().replace(R.id.fl_rank, womanRankFragment).commit()
+            binding.tlContainer.getTabAt(1)?.select()
+        }
+
         setTabLayout()
     }
 

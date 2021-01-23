@@ -32,11 +32,15 @@ class MainActivity : AppCompatActivity() {
     private val homeEvaluateVm by viewModels<HomeEvaluateViewModel>()
     private val compositeDisposable = CompositeDisposable()
 
+    override fun onResume() {
+        super.onResume()
+        mainVm.getMySaveImage()
+        mainVm.getUser()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        mainVm.getMySaveImage()
 
         navigationView.post { navigationView.selectedItemId = R.id.homeItem }
         navigationView.setOnNavigationItemSelectedListener {
@@ -161,10 +165,10 @@ class MainActivity : AppCompatActivity() {
         homeEvaluateVm.clearDisposable()
     }
 
-    override fun onDestroy() {
+    override fun onPause() {
         compositeDisposable.clear()
         mainVm.unBindViewModel()
-        super.onDestroy()
+        super.onPause()
     }
 
     companion object {

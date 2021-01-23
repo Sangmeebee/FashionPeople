@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.google.android.material.tabs.TabLayoutMediator
@@ -27,6 +28,7 @@ import com.sangmee.fashionpeople.data.dataSource.remote.S3RemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.databinding.FragmentInfoBinding
 import com.sangmee.fashionpeople.observer.InfoViewModel
+import com.sangmee.fashionpeople.observer.MainViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.info.follow.FollowFragment
 import com.sangmee.fashionpeople.ui.fragment.info.image_content.ViewPagerAdapter
@@ -43,6 +45,7 @@ class InfoFragment : Fragment() {
     val customId by lazy { GlobalApplication.prefs.getString("${loginType}_custom_id", "") }
     lateinit var binding: FragmentInfoBinding
     private val vm: InfoViewModel by viewModels()
+    private val mainVm: MainViewModel by activityViewModels()
     private val s3RemoteDataSource: S3RemoteDataSource by lazy {
         S3RemoteDataSourceImpl(
             binding.root.context,
@@ -132,6 +135,7 @@ class InfoFragment : Fragment() {
             Log.d("Sangmeebee", vm.height.value.toString())
             vm.weight.value = data?.getIntExtra("weight", 0)
             binding.tvIntroduce.isVisible = !vm.introduce.value.isNullOrEmpty()
+            mainVm.getUser()
         }
     }
 
