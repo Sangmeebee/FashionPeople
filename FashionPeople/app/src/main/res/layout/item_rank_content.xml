@@ -12,12 +12,19 @@
             name="rankImage"
             type="com.sangmee.fashionpeople.data.model.RankImage" />
 
+        <variable
+            name="position"
+            type="Integer" />
+
+        <variable
+            name="adapter"
+            type="com.sangmee.fashionpeople.ui.fragment.rank.content.RankRecyclerAdapter" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-
 
         <ImageView
             android:id="@+id/iv_rank"

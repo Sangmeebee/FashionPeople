@@ -3,6 +3,7 @@ package com.sangmee.fashionpeople.ui.fragment.rank.content
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +12,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.sangmee.fashionpeople.R
+import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.databinding.FragmentManRankBinding
+import com.sangmee.fashionpeople.ui.MainActivity
+import com.sangmee.fashionpeople.ui.fragment.search.detail.SearchDetailFragment
 
 class ManRankFragment : Fragment() {
 
     private lateinit var binding: FragmentManRankBinding
-    private val manRankAdapter by lazy { ManRankAdapter() }
+    private val manRankAdapter by lazy { ManRankAdapter(::showDetail) }
     private val vm by viewModels<ManRankViewModel>()
 
     override fun onCreateView(
@@ -31,6 +35,7 @@ class ManRankFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        vm.getRankImages()
         initViewModel()
         setRecyclerView()
     }
@@ -71,6 +76,13 @@ class ManRankFragment : Fragment() {
                     binding.pbLoading.visibility = View.GONE
                 }
             })
+    }
+
+    private fun showDetail(feedImages: List<FeedImage>, position: Int) {
+        Log.d("Sangmeebee", "showDetail")
+        (activity as MainActivity).replaceFragmentUseBackStack(
+            SearchDetailFragment(feedImages, position)
+        )
     }
 
     override fun onDestroy() {

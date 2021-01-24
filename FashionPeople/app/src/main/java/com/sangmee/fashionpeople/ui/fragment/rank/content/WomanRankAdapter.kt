@@ -6,9 +6,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.CustomDate
+import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.databinding.ItemDateBinding
 
-class WomanRankAdapter : RecyclerView.Adapter<WomanRankAdapter.WomanRankViewHolder>() {
+class WomanRankAdapter(private val callDetailFragment: (List<FeedImage>, Int) -> Unit) :
+    RecyclerView.Adapter<WomanRankAdapter.WomanRankViewHolder>() {
     private val items = mutableListOf<CustomDate>()
 
     override fun onCreateViewHolder(
@@ -22,7 +24,7 @@ class WomanRankAdapter : RecyclerView.Adapter<WomanRankAdapter.WomanRankViewHold
             false
         )
 
-        return WomanRankViewHolder(binding)
+        return WomanRankViewHolder(binding, callDetailFragment)
     }
 
     override fun onBindViewHolder(holder: WomanRankViewHolder, position: Int) {
@@ -37,12 +39,15 @@ class WomanRankAdapter : RecyclerView.Adapter<WomanRankAdapter.WomanRankViewHold
         notifyDataSetChanged()
     }
 
-    class WomanRankViewHolder(private val binding: ItemDateBinding) :
+    class WomanRankViewHolder(
+        private val binding: ItemDateBinding,
+        private val callDetailFragment: (List<FeedImage>, Int) -> Unit
+    ) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(customDate: CustomDate) {
             binding.tvDate.text = "${customDate.date}"
-            val rankRecyclerAdapter = RankRecyclerAdapter()
+            val rankRecyclerAdapter = RankRecyclerAdapter(callDetailFragment)
             rankRecyclerAdapter.setRankImages(customDate.rankImages)
 
             binding.rvRanking.apply {

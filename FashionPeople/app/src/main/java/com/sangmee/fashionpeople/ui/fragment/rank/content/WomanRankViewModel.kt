@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sangmee.fashionpeople.data.dataSource.remote.RankImageRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.CustomDate
-import com.sangmee.fashionpeople.data.repository.RankImageRepository
 import com.sangmee.fashionpeople.data.repository.RankImageRepositoryImpl
 import com.sangmee.fashionpeople.util.SingleLiveEvent
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -24,11 +23,7 @@ class WomanRankViewModel : ViewModel() {
     val dates = MutableLiveData<List<CustomDate>>()
     val isComplete = SingleLiveEvent<Any>()
 
-    init {
-        getRankImages()
-    }
-
-    private fun getRankImages() {
+    fun getRankImages() {
         rankImageRepository.getWomanRankImages()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

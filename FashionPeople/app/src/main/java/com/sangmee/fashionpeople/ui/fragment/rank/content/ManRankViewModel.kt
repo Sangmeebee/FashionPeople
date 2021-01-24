@@ -23,11 +23,7 @@ class ManRankViewModel : ViewModel() {
     val dates = MutableLiveData<List<CustomDate>>()
     val isComplete = SingleLiveEvent<Any>()
 
-    init {
-        getRankImages()
-    }
-
-    private fun getRankImages() {
+    fun getRankImages() {
         rankImageRepository.getManRankImages()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
