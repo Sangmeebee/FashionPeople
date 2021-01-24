@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayout
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.databinding.FragmentHomeBinding
@@ -22,6 +22,13 @@ class HomeFragment : Fragment() {
     private lateinit var manager: FragmentManager
     private lateinit var evaluateFragment: EvaluateFragment
     private lateinit var followingFragment: FollowingFragment
+    private val vm by activityViewModels<HomeViewModel>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        evaluateFragment = EvaluateFragment()
+        followingFragment = FollowingFragment()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,11 +41,23 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         manager = childFragmentManager
-        evaluateFragment = EvaluateFragment()
-        followingFragment = FollowingFragment()
-
-        manager.beginTransaction().replace(R.id.fl_home, evaluateFragment).commit()
-
+        vm.homePage.value?.let {
+            if (it == 0) {
+                vm.evaluatedIsAdded.value?.let { isAdded ->
+                    if (!isAdded) {
+                        manager.beginTransaction().add(R.id.fl_home, evaluateFragment).commit()
+                    }
+                }
+                binding.tlHome.getTabAt(0)?.select()
+            } else {
+                vm.followingIsAdded.value?.let { isAdded ->
+                    if (!isAdded) {
+                        manager.beginTransaction().add(R.id.fl_home, followingFragment).commit()
+                    }
+                }
+                binding.tlHome.getTabAt(1)?.select()
+            }
+        }
         setTabLayout()
     }
 
@@ -48,18 +67,26 @@ class HomeFragment : Fragment() {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab!!.position) {
                     0 -> {
-                        if(!evaluateFragment.isAdded){
-                            manager.beginTransaction().add(R.id.fl_home, evaluateFragment).commit()
+                        vm.evaluatedIsAdded.value?.let { isAdded ->
+                            if (!isAdded) {
+                                manager.beginTransaction().add(R.id.fl_home, evaluateFragment)
+                                    .commit()
+                            }
                         }
                         manager.beginTransaction().show(evaluateFragment).commit()
                         manager.beginTransaction().hide(followingFragment).commit()
+                        vm.homePage.value = 0
                     }
                     else -> {
-                        if(!followingFragment.isAdded){
-                            manager.beginTransaction().add(R.id.fl_home, followingFragment).commit()
+                        vm.followingIsAdded.value?.let { isAdded ->
+                            if (!isAdded) {
+                                manager.beginTransaction().add(R.id.fl_home, followingFragment)
+                                    .commit()
+                            }
                         }
                         manager.beginTransaction().show(followingFragment).commit()
                         manager.beginTransaction().hide(evaluateFragment).commit()
+                        vm.homePage.value = 1
                     }
                 }
             }

@@ -21,6 +21,7 @@ import com.sangmee.fashionpeople.observer.MainViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.comment.CommentDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.grade.GradeDialogFragment
+import com.sangmee.fashionpeople.ui.fragment.home.HomeViewModel
 import com.sangmee.fashionpeople.ui.fragment.info.other.OtherFragment
 import com.sangmee.fashionpeople.ui.fragment.tag.TagDialogFragment
 import com.willy.ratingbar.BaseRatingBar
@@ -29,9 +30,16 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
 
     private lateinit var binding: FragmentEvaluateBinding
     private val vm by activityViewModels<HomeEvaluateViewModel>()
+    private val homeVm by activityViewModels<HomeViewModel>()
     private val mainVm by activityViewModels<MainViewModel>()
     private lateinit var evaluateFeedAdapter: EvaluateFeedAdapter
     private var pos: Int? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        vm.getOtherImages()
+        evaluateFeedAdapter = EvaluateFeedAdapter()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,13 +53,12 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        vm.getOtherImages()
         initViewPager()
+        initIsExist()
         initObserve()
     }
 
     private fun initViewPager() {
-        evaluateFeedAdapter = EvaluateFeedAdapter()
         evaluateFeedAdapter.onClickListener = this@EvaluateFragment
         binding.vpEvaluate.apply {
             adapter = evaluateFeedAdapter
@@ -89,6 +96,7 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
         })
 
         vm.evaluateLoadingComplete.observe(viewLifecycleOwner, Observer {
+            homeVm.evaluatedIsAdded.value = true
             crossfade()
         })
 
@@ -114,6 +122,15 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
 
             evaluateFeedAdapter.setSaveItems(saveImages, pos)
         })
+    }
+
+    private fun initIsExist() {
+        homeVm.evaluatedIsAdded.value?.let {
+            if(it){
+                binding.clContainer.visibility = View.VISIBLE
+                binding.pbLoading.visibility = View.GONE
+            }
+        }
     }
 
     private fun crossfade() {

@@ -17,7 +17,7 @@ import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.observer.MainViewModel
 import com.sangmee.fashionpeople.ui.add.TagActivity
 import com.sangmee.fashionpeople.ui.fragment.home.HomeFragment
-import com.sangmee.fashionpeople.ui.fragment.home.evaluate.HomeEvaluateViewModel
+import com.sangmee.fashionpeople.ui.fragment.home.HomeViewModel
 import com.sangmee.fashionpeople.ui.fragment.info.InfoFragment
 import com.sangmee.fashionpeople.ui.fragment.rank.RankFragment
 import com.sangmee.fashionpeople.ui.fragment.search.SearchFragment
@@ -29,7 +29,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     private val mainVm by viewModels<MainViewModel>()
-    private val homeEvaluateVm by viewModels<HomeEvaluateViewModel>()
+    private val homeVm by viewModels<HomeViewModel>()
     private val compositeDisposable = CompositeDisposable()
 
     override fun onResume() {
@@ -47,6 +47,8 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.homeItem -> {
                     if (currentFragment != "homeItem") {
+                        homeVm.evaluatedIsAdded.value = false
+                        homeVm.followingIsAdded.value = false
                         replaceFragment(HomeFragment())
                         currentFragment = "homeItem"
                     }
@@ -123,8 +125,9 @@ class MainActivity : AppCompatActivity() {
     //fragment 교체(백스택 사용)
     fun replaceFragmentUseBackStack(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.frameLayout, fragment)
         transaction.addToBackStack(null)
-        transaction.replace(R.id.frameLayout, fragment).commit()
+        transaction.commit()
     }
 
     //갤러리에서 사진 등록
@@ -159,10 +162,6 @@ class MainActivity : AppCompatActivity() {
                 100
             )
         }
-    }
-
-    private fun unbindDisposable() {
-        homeEvaluateVm.clearDisposable()
     }
 
     override fun onPause() {

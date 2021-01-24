@@ -19,6 +19,7 @@ import com.sangmee.fashionpeople.observer.MainViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.comment.CommentDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.grade.GradeDialogFragment
+import com.sangmee.fashionpeople.ui.fragment.home.HomeViewModel
 import com.sangmee.fashionpeople.ui.fragment.home.evaluate.HomeEvaluateViewModel
 import com.sangmee.fashionpeople.ui.fragment.info.other.OtherFragment
 import com.sangmee.fashionpeople.ui.fragment.tag.TagDialogFragment
@@ -29,8 +30,15 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
     private lateinit var binding: FragmentFollowingBinding
     private lateinit var followingFeedAdapter: FollowingFeedAdapter
     private val vm by activityViewModels<HomeEvaluateViewModel>()
+    private val homeVm by activityViewModels<HomeViewModel>()
     private val mainVm by activityViewModels<MainViewModel>()
     private var pos: Int? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        vm.getFollowingImages()
+        followingFeedAdapter = FollowingFeedAdapter()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,13 +52,12 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        vm.getFollowingImages()
         initViewPager()
+        initIsExist()
         initObserve()
     }
 
     private fun initViewPager() {
-        followingFeedAdapter = FollowingFeedAdapter()
         followingFeedAdapter.onClickListener = this@FollowingFragment
         binding.vpFollowing.apply {
             adapter = followingFeedAdapter
@@ -87,6 +94,7 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
         })
 
         vm.followingLoadingComplete.observe(viewLifecycleOwner, Observer {
+            homeVm.followingIsAdded.value = true
             crossfade()
         })
 
@@ -98,6 +106,15 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
 
             followingFeedAdapter.setSaveItems(saveImages, pos)
         })
+    }
+
+    private fun initIsExist() {
+        homeVm.followingIsAdded.value?.let {
+            if(it){
+                binding.clContainer.visibility = View.VISIBLE
+                binding.pbLoading.visibility = View.GONE
+            }
+        }
     }
 
     private fun crossfade() {
