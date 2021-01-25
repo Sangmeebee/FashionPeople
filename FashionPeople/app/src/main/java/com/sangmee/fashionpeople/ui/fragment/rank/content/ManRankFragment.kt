@@ -7,21 +7,30 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.databinding.FragmentManRankBinding
 import com.sangmee.fashionpeople.ui.MainActivity
+import com.sangmee.fashionpeople.ui.fragment.rank.RankViewModel
 import com.sangmee.fashionpeople.ui.fragment.search.detail.SearchDetailFragment
 
 class ManRankFragment : Fragment() {
 
     private lateinit var binding: FragmentManRankBinding
-    private val manRankAdapter by lazy { ManRankAdapter(::showDetail) }
-    private val vm by viewModels<ManRankViewModel>()
+    private lateinit var manRankAdapter: ManRankAdapter
+    private val vm by activityViewModels<ManRankViewModel>()
+    private val rankVm by activityViewModels<RankViewModel>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        manRankAdapter = ManRankAdapter(::showDetail)
+        vm.getRankImages()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,9 +44,9 @@ class ManRankFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        vm.getRankImages()
         initViewModel()
         setRecyclerView()
+        initView()
     }
 
     private fun initViewModel() {
@@ -46,10 +55,19 @@ class ManRankFragment : Fragment() {
         })
 
         vm.isComplete.observe(viewLifecycleOwner, Observer {
+            rankVm.manIsAdded.value = true
             crossfade()
         })
     }
 
+    private fun initView() {
+        rankVm.manIsAdded.value?.let {
+            if (it) {
+                binding.rvManRank.isVisible = true
+                binding.pbLoading.isVisible = false
+            }
+        }
+    }
 
     private fun setRecyclerView() {
         binding.rvManRank.apply {

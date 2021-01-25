@@ -1,6 +1,7 @@
 package com.sangmee.fashionpeople.ui.fragment.search.detail
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.data.dataSource.remote.FeedImageRemoteDataSourceImpl
@@ -32,6 +33,9 @@ class SearchDetailViewModel : ViewModel() {
     val saveComplete = SingleLiveEvent<Any>()
     val deleteComplete = SingleLiveEvent<Any>()
     val updateFeedImage = SingleLiveEvent<FeedImage>()
+
+    val isAdded = MutableLiveData(false)
+    val currentIndex = MutableLiveData<Int?>()
 
 
     fun postSaveImage(imageName: String) {

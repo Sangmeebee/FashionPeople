@@ -1,6 +1,7 @@
 package com.sangmee.fashionpeople.ui.fragment.search.detail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +34,12 @@ class SearchDetailFragment(private val feedImages: List<FeedImage>, private val 
 
     private lateinit var detailAdapter: SearchDetailAdapter
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.isAdded.value = false
+        detailAdapter = SearchDetailAdapter()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -48,17 +55,32 @@ class SearchDetailFragment(private val feedImages: List<FeedImage>, private val 
     }
 
     private fun initViewPager() {
-        detailAdapter = SearchDetailAdapter()
         detailAdapter.onClickListener = this@SearchDetailFragment
+        Log.d("Sangmeebee", viewModel.currentIndex.value.toString())
         vp_detail.apply {
             adapter = detailAdapter
             orientation = ViewPager2.ORIENTATION_VERTICAL
             post {
-                setCurrentItem(position, false)
+                viewModel.isAdded.value?.let {
+                    if (!it) {
+                        setCurrentItem(position, false)
+                        viewModel.isAdded.value = true
+                    } else{
+                        setCurrentItem(viewModel.currentIndex.value!!, false)
+                    }
+
+                }
                 crossfade()
             }
         }
+
+        vp_detail.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                viewModel.currentIndex.value = position
+            }
+        })
     }
+
 
     private fun initObserve() {
 

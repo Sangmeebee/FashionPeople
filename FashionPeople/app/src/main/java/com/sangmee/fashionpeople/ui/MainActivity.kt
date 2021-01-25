@@ -17,7 +17,6 @@ import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.observer.MainViewModel
 import com.sangmee.fashionpeople.ui.add.TagActivity
 import com.sangmee.fashionpeople.ui.fragment.home.HomeFragment
-import com.sangmee.fashionpeople.ui.fragment.home.HomeViewModel
 import com.sangmee.fashionpeople.ui.fragment.info.InfoFragment
 import com.sangmee.fashionpeople.ui.fragment.rank.RankFragment
 import com.sangmee.fashionpeople.ui.fragment.search.SearchFragment
@@ -29,7 +28,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     private val mainVm by viewModels<MainViewModel>()
-    private val homeVm by viewModels<HomeViewModel>()
     private val compositeDisposable = CompositeDisposable()
 
     override fun onResume() {
@@ -47,8 +45,6 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.homeItem -> {
                     if (currentFragment != "homeItem") {
-                        homeVm.evaluatedIsAdded.value = false
-                        homeVm.followingIsAdded.value = false
                         replaceFragment(HomeFragment())
                         currentFragment = "homeItem"
                     }
