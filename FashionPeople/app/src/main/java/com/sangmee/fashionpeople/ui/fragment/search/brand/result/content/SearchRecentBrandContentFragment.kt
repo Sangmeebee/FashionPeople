@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -23,13 +24,16 @@ class SearchRecentBrandContentFragment : Fragment(),
     private var query: String? = null
     private lateinit var binding: FragmentSearchRecentBrandContentBinding
     private val vm by viewModels<SearchRecentBrandContentViewModel>()
-    private val searchRecentBrandContentAdapter by lazy { SearchRecentBrandContentAdapter() }
+    private lateinit var searchRecentBrandContentAdapter: SearchRecentBrandContentAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             query = it.getString(ARG_PARAM1)
         }
+        query?.let { vm.callRecentBrandImages(it) }
+        searchRecentBrandContentAdapter = SearchRecentBrandContentAdapter()
+        vm.isAdded.value = false
     }
 
     override fun onCreateView(
@@ -52,12 +56,17 @@ class SearchRecentBrandContentFragment : Fragment(),
     }
 
     private fun initView() {
-        query?.let { vm.callRecentBrandImages(it) }
+        vm.isAdded.value?.let {
+            if (it) {
+                binding.rvSearchImage.isVisible = true
+            }
+        }
     }
 
     private fun initViewModel() {
         vm.isComplete.observe(viewLifecycleOwner, Observer {
             crossfade()
+            vm.isAdded.value = true
         })
         vm.recentBrandImages.observe(viewLifecycleOwner, Observer {
             searchRecentBrandContentAdapter.setFeedImages(it)

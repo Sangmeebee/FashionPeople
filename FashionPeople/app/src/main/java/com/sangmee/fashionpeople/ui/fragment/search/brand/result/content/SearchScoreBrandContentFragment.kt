@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -22,13 +23,16 @@ class SearchScoreBrandContentFragment : Fragment(), SearchScoreBrandContentAdapt
     private var query: String? = null
     private lateinit var binding: FragmentSearchScoreBrandContentBinding
     private val vm by viewModels<SearchScoreBrandContentViewModel>()
-    private val searchBrandContentAdapter by lazy { SearchScoreBrandContentAdapter() }
+    private lateinit var searchBrandContentAdapter: SearchScoreBrandContentAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             query = it.getString(ARG_PARAM1)
         }
+        query?.let { vm.callScoreBrandImages(it) }
+        searchBrandContentAdapter = SearchScoreBrandContentAdapter()
+        vm.isAdded.value = false
     }
 
     override fun onCreateView(
@@ -51,12 +55,17 @@ class SearchScoreBrandContentFragment : Fragment(), SearchScoreBrandContentAdapt
     }
 
     private fun initView() {
-        query?.let { vm.callScoreBrandImages(it) }
+        vm.isAdded.value?.let {
+            if(it) {
+                binding.rvSearchImage.isVisible = true
+            }
+        }
     }
 
     private fun initViewModel() {
         vm.isComplete.observe(viewLifecycleOwner, Observer {
             crossfade()
+            vm.isAdded.value = true
         })
 
         vm.scoreBrandImages.observe(viewLifecycleOwner, Observer {

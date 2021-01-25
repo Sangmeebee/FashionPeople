@@ -20,6 +20,7 @@ class SearchRecentStyleContentViewModel : ViewModel() {
 
     val recentStyleImages = MutableLiveData<List<FeedImage>>()
     val isComplete = SingleLiveEvent<Any>()
+    val isAdded = MutableLiveData(false)
 
     fun callRecentStyleImages(query: String) {
         feedImageRepository.getSearchRecentStyleImages(query)

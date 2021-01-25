@@ -20,6 +20,7 @@ class SearchScoreStyleContentViewModel : ViewModel() {
 
     val scoreStyleImages = MutableLiveData<List<FeedImage>>()
     val isComplete = SingleLiveEvent<Any>()
+    val isAdded = MutableLiveData(false)
 
     fun callScoreStyleImages(query: String) {
         feedImageRepository.getSearchScoreStyleImages(query)
