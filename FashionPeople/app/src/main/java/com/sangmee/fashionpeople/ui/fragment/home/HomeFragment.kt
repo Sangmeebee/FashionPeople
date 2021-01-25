@@ -26,6 +26,7 @@ class HomeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        vm.homePage.value = 0
         vm.evaluatedIsAdded.value = false
         vm.followingIsAdded.value = false
         evaluateFragment = EvaluateFragment()
