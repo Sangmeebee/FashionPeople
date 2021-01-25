@@ -27,7 +27,6 @@ import com.google.android.flexbox.JustifyContent
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.Comment
 import com.sangmee.fashionpeople.data.model.FeedImage
-import com.sangmee.fashionpeople.ui.fragment.home.TagRecyclerViewAdapter
 import com.skydoves.progressview.ProgressView
 
 @BindingAdapter("setVisibleComments")
@@ -55,17 +54,6 @@ fun ImageView.setLoadUrl(customId: String?, imageName: String?) {
     }
 }
 
-@BindingAdapter("setFeedCustomId", "setFeedImageName")
-fun ImageView.setFeedUrl(customId: String?, imageName: String?) {
-    customId?.let { id ->
-        imageName?.let { imageName ->
-            Glide.with(context!!)
-                .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${id}/feed/${imageName}")
-                .error(R.drawable.ic_user).into(this)
-        }
-    }
-}
-
 @BindingAdapter("setVisibleEmptyView")
 fun setVisibleEmptyView(textView: TextView, comments: List<Comment>?) {
     comments?.let {
@@ -85,69 +73,6 @@ fun setCommentTitle(textView: TextView, comments: List<Comment>?) {
         textView.text =
             textView.context.getString(R.string.comment_title, comments.size)
     }
-}
-
-@BindingAdapter("setFeedImageTags")
-fun setFeedImageTags(recyclerView: RecyclerView, feedImage: FeedImage?) {
-    val tagAdapter = TagRecyclerViewAdapter()
-    feedImage?.let { feedImage ->
-        if (feedImage.style != null && !feedImage.style.equals("")) {
-            tagAdapter.addTag(feedImage.style)
-        }
-        if (feedImage.top != null && !feedImage.top.equals("")) {
-            tagAdapter.addTag(feedImage.top)
-        }
-        if (feedImage.pants != null && !feedImage.pants.equals("")) {
-            tagAdapter.addTag(feedImage.pants)
-        }
-        if (feedImage.shoes != null && !feedImage.shoes.equals("")) {
-            tagAdapter.addTag(feedImage.shoes)
-        }
-        tagAdapter.notifyDataSetChanged()
-    }
-    val layoutManager = FlexboxLayoutManager(recyclerView.context).apply {
-        flexWrap = FlexWrap.WRAP
-        flexDirection = FlexDirection.ROW
-        justifyContent = JustifyContent.FLEX_START
-    }
-
-    recyclerView.adapter = tagAdapter
-    recyclerView.layoutManager = layoutManager
-}
-
-@BindingAdapter("createTag")
-fun createTag(appCompatTextView: AppCompatTextView, text: String?) {
-    text?.let {
-        appCompatTextView.text = "#${text}"
-    }
-}
-
-@BindingAdapter("setSpannableRating")
-fun setSpannableRating(appCompatTextView: AppCompatTextView, feedImage: FeedImage?) {
-
-    var average = 0f
-    feedImage?.let { feedImage ->
-        feedImage.evaluations?.let {
-            average = getRatingFromEvaluations(it)
-        }
-    }
-    val target = String.format("%.1f점", average)
-
-    val text = "${feedImage?.user?.name}님의 패션 점수는 $target 입니다."
-    val spannableString = SpannableString(text)
-    val targetStartIndex = text.indexOf(target)
-    val targetEndIndex = targetStartIndex + target.length
-
-    spannableString.setSpan(
-        ForegroundColorSpan(appCompatTextView.resources.getColor(R.color.colorPrimary)),
-        targetStartIndex,
-        targetEndIndex,
-        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-    )
-
-    appCompatTextView.text = spannableString
-
-
 }
 
 @BindingAdapter("setRatingText")
