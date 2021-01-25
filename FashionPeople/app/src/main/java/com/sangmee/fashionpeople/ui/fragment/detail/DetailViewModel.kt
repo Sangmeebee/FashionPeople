@@ -1,7 +1,6 @@
-package com.sangmee.fashionpeople.ui.fragment.info.detail
+package com.sangmee.fashionpeople.ui.fragment.detail
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sangmee.fashionpeople.data.GlobalApplication
@@ -9,7 +8,6 @@ import com.sangmee.fashionpeople.data.dataSource.remote.FeedImageRemoteDataSourc
 import com.sangmee.fashionpeople.data.dataSource.remote.SaveImageRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.Evaluation
 import com.sangmee.fashionpeople.data.model.FeedImage
-import com.sangmee.fashionpeople.data.repository.FeedImageRepository
 import com.sangmee.fashionpeople.data.repository.FeedImageRepositoryImpl
 import com.sangmee.fashionpeople.data.repository.SaveImageRepository
 import com.sangmee.fashionpeople.data.repository.SaveImageRepositoryImpl
@@ -20,58 +18,25 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-class DetailViewModel(private val customId: String) : ViewModel() {
-
-    private val feedImageRepository: FeedImageRepository by lazy {
-        FeedImageRepositoryImpl(FeedImageRemoteDataSourceImpl())
-    }
-
-    private val saveImageRepository: SaveImageRepository by lazy {
-        SaveImageRepositoryImpl(SaveImageRemoteDataSourceImpl())
-    }
+class DetailViewModel : ViewModel() {
 
     private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
     val userId = GlobalApplication.prefs.getString("${loginType}_custom_id", "empty")
 
+    private val saveImageRepository: SaveImageRepository by lazy {
+        SaveImageRepositoryImpl(SaveImageRemoteDataSourceImpl())
+    }
+    private val feedImageRepository = FeedImageRepositoryImpl(FeedImageRemoteDataSourceImpl())
+
     private val compositeDisposable = CompositeDisposable()
-
-    private val _feedImages = MutableLiveData<List<FeedImage>>()
-    val feedImages: LiveData<List<FeedImage>>
-        get() = _feedImages
-
-    private val _saveImages = MutableLiveData<List<FeedImage>>()
-    val saveImages: LiveData<List<FeedImage>>
-        get() = _saveImages
-
-    val isComplete = SingleLiveEvent<Any>()
 
     val saveComplete = SingleLiveEvent<Any>()
     val deleteComplete = SingleLiveEvent<Any>()
     val updateFeedImage = SingleLiveEvent<FeedImage>()
 
-    fun getImages(id: String) {
-        feedImageRepository.getFeedImages(id)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doAfterTerminate { isComplete.call() }
-            .subscribe({
-                _feedImages.value = it
-            }, {
-                Log.e("Sangmeebee", it.message.toString())
-            }).addTo(compositeDisposable)
-    }
+    val isAdded = MutableLiveData(false)
+    val currentIndex = MutableLiveData<Int?>()
 
-    fun getSaveImages(id: String) {
-        saveImageRepository.getSaveImages(id)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doAfterTerminate { isComplete.call() }
-            .subscribe({
-                _saveImages.value = it
-            }, {
-                Log.e("Sangmeebee", it.message.toString())
-            }).addTo(compositeDisposable)
-    }
 
     fun postSaveImage(imageName: String) {
         saveImageRepository.postSaveImage(userId, imageName)
@@ -90,7 +55,6 @@ class DetailViewModel(private val customId: String) : ViewModel() {
             .subscribe({ }, { Log.e("Sangmeebee", it.message.toString()) })
             .addTo(compositeDisposable)
     }
-
 
     fun ratingClick(imageName: String, rating: Float) {
         feedImageRepository.updateImageScore(imageName, Evaluation(userId, rating))
@@ -112,7 +76,6 @@ class DetailViewModel(private val customId: String) : ViewModel() {
             }, {
             }).addTo(compositeDisposable)
     }
-
 
     fun clearDisposable() {
         compositeDisposable.clear()

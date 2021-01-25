@@ -16,8 +16,8 @@ import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.databinding.FragmentManRankBinding
 import com.sangmee.fashionpeople.ui.MainActivity
+import com.sangmee.fashionpeople.ui.fragment.detail.DetailFragment
 import com.sangmee.fashionpeople.ui.fragment.rank.RankViewModel
-import com.sangmee.fashionpeople.ui.fragment.search.detail.SearchDetailFragment
 
 class ManRankFragment : Fragment() {
 
@@ -99,7 +99,7 @@ class ManRankFragment : Fragment() {
     private fun showDetail(feedImages: List<FeedImage>, position: Int) {
         Log.d("Sangmeebee", "showDetail")
         (activity as MainActivity).replaceFragmentUseBackStack(
-            SearchDetailFragment(feedImages, position)
+            DetailFragment(feedImages, position)
         )
     }
 

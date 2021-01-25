@@ -1,4 +1,4 @@
-package com.sangmee.fashionpeople.ui.fragment.search.detail
+package com.sangmee.fashionpeople.ui.fragment.detail
 
 import android.os.Build
 import android.util.Log
@@ -17,7 +17,7 @@ import com.willy.ratingbar.BaseRatingBar
 import kotlinx.android.synthetic.main.item_info_detail_feed.view.*
 
 
-class SearchDetailAdapter : RecyclerView.Adapter<SearchDetailAdapter.DetailViewHolder>() {
+class DetailAdapter : RecyclerView.Adapter<DetailAdapter.DetailViewHolder>() {
 
     private val items = mutableListOf<FeedImage>()
     private val saveItems = mutableListOf<String>()
@@ -100,7 +100,7 @@ class SearchDetailAdapter : RecyclerView.Adapter<SearchDetailAdapter.DetailViewH
         notifyDataSetChanged()
     }
 
-    fun updateItem(feedImage: FeedImage){
+    fun updateItem(feedImage: FeedImage) {
         for (index in items.indices) {
             if (items[index].imageName == feedImage.imageName) {
                 items[index] = feedImage

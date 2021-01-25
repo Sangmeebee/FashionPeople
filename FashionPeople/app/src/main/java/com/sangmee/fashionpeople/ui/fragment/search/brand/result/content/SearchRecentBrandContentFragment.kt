@@ -12,7 +12,7 @@ import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.databinding.FragmentSearchRecentBrandContentBinding
 import com.sangmee.fashionpeople.ui.MainActivity
-import com.sangmee.fashionpeople.ui.fragment.search.detail.SearchDetailFragment
+import com.sangmee.fashionpeople.ui.fragment.detail.DetailFragment
 
 
 private const val ARG_PARAM1 = "param1"
@@ -88,7 +88,7 @@ class SearchRecentBrandContentFragment : Fragment(),
     override fun onClickImage(feedImages: List<FeedImage>, position: Int) {
         vm.recentBrandImages.value?.let {
             (activity as MainActivity).replaceFragmentUseBackStack(
-                SearchDetailFragment(
+                DetailFragment(
                     feedImages,
                     position
                 )

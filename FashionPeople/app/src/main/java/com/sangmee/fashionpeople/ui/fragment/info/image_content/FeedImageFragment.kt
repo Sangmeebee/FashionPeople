@@ -28,11 +28,7 @@ class FeedImageFragment : Fragment() {
     }
 
     private var isEmpty = false
-    private val feedImageAdapter by lazy {
-        userId?.let {
-            FeedImageAdapter(it)
-        }
-    }
+    private val feedImageAdapter by lazy { FeedImageAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

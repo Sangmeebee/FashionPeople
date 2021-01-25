@@ -1,16 +1,15 @@
-package com.sangmee.fashionpeople.ui.fragment.info.detail
+package com.sangmee.fashionpeople.ui.fragment.detail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
@@ -22,87 +21,78 @@ import com.sangmee.fashionpeople.ui.fragment.grade.GradeDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.info.other.OtherFragment
 import com.sangmee.fashionpeople.ui.fragment.tag.TagDialogFragment
 import com.willy.ratingbar.BaseRatingBar
-import kotlinx.android.synthetic.main.fragment_info_detail.*
+import kotlinx.android.synthetic.main.fragment_search_detail.*
 
-class InfoDetailFragment(
-    private val customId: String,
-    private val position: Int,
-    private val mode: Int
-) : Fragment(),
-    DetailAdapter.OnClickListener {
+class DetailFragment(private val feedImages: List<FeedImage>, private val position: Int) :
+    Fragment(), DetailAdapter.OnClickListener {
 
-    private val viewModel: DetailViewModel by lazy {
-        ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return DetailViewModel(customId) as T
-            }
-        }).get(DetailViewModel::class.java)
-    }
+    private val viewModel: DetailViewModel by viewModels()
     private val mainVm by activityViewModels<MainViewModel>()
+    private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
+    val userId = GlobalApplication.prefs.getString("${loginType}_custom_id", "empty")
     private var pos: Int? = null
 
     private lateinit var detailAdapter: DetailAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.isAdded.value = false
+        detailAdapter = DetailAdapter()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_info_detail, container, false)
+        return inflater.inflate(R.layout.fragment_search_detail, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (mode == 0) {
-            viewModel.getImages(customId)
-        } else {
-            viewModel.getSaveImages(customId)
-        }
         initViewPager()
         initObserve()
     }
 
     private fun initViewPager() {
-        detailAdapter = DetailAdapter()
-        detailAdapter.onClickListener = this@InfoDetailFragment
+        detailAdapter.onClickListener = this@DetailFragment
+        Log.d("Sangmeebee", viewModel.currentIndex.value.toString())
         vp_detail.apply {
             adapter = detailAdapter
             orientation = ViewPager2.ORIENTATION_VERTICAL
+            post {
+                viewModel.isAdded.value?.let {
+                    if (!it) {
+                        setCurrentItem(position, false)
+                        viewModel.isAdded.value = true
+                    } else{
+                        setCurrentItem(viewModel.currentIndex.value!!, false)
+                    }
+
+                }
+                crossfade()
+            }
         }
+
+        vp_detail.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                viewModel.currentIndex.value = position
+            }
+        })
     }
+
 
     private fun initObserve() {
 
-        viewModel.feedImages.observe(viewLifecycleOwner, Observer {
-            detailAdapter.setFeedImages(it)
-            val saveImages = mutableListOf<String>()
-            mainVm.saveImages.value?.let {
-                for (feedImage in it) {
-                    saveImages.add(feedImage.imageName!!)
-                }
-                detailAdapter.setSaveItems(saveImages, null)
+        detailAdapter.setFeedImages(feedImages)
+        val saveImages = mutableListOf<String>()
+        mainVm.saveImages.value?.let {
+            for (feedImage in it) {
+                saveImages.add(feedImage.imageName!!)
             }
-        })
+            detailAdapter.setSaveItems(saveImages, null)
+        }
 
-        viewModel.saveImages.observe(viewLifecycleOwner, Observer {
-            detailAdapter.setFeedImages(it)
-            val saveImages = mutableListOf<String>()
-            mainVm.saveImages.value?.let {
-                for (feedImage in it) {
-                    saveImages.add(feedImage.imageName!!)
-                }
-                detailAdapter.setSaveItems(saveImages, null)
-            }
-        })
-
-        viewModel.isComplete.observe(viewLifecycleOwner, Observer {
-            vp_detail.apply {
-                post {
-                    setCurrentItem(position, false)
-                    crossfade()
-                }
-            }
-        })
 
         mainVm.saveImages.observe(viewLifecycleOwner, Observer {
             val saveImages = mutableListOf<String>()

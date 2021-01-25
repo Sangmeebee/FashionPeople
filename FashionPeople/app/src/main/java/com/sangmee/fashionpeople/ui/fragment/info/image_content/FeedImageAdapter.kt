@@ -10,13 +10,10 @@ import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.databinding.ItemFeedImageExBinding
 import com.sangmee.fashionpeople.ui.MainActivity
-import com.sangmee.fashionpeople.ui.fragment.info.detail.InfoDetailFragment
+import com.sangmee.fashionpeople.ui.fragment.detail.DetailFragment
 import com.sangmee.fashionpeople.util.getRatingFromEvaluations
-import java.lang.Math.round
 
-class FeedImageAdapter(
-    private val customId: String
-) : RecyclerView.Adapter<FeedImageAdapter.FeedImageViewHolder>() {
+class FeedImageAdapter : RecyclerView.Adapter<FeedImageAdapter.FeedImageViewHolder>() {
     private val feedImageList = mutableListOf<FeedImage>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedImageViewHolder {
@@ -31,11 +28,7 @@ class FeedImageAdapter(
         viewHolder.itemView.setOnClickListener {
 
             (parent.context as MainActivity).replaceFragmentUseBackStack(
-                InfoDetailFragment(
-                    customId,
-                    viewHolder.adapterPosition,
-                    0
-                )
+                DetailFragment(feedImageList, viewHolder.adapterPosition)
             )
         }
 
@@ -65,9 +58,9 @@ class FeedImageAdapter(
             binding.isSelectedPants = !feedImage.pants.isNullOrEmpty()
             binding.isSelectedShoes = !feedImage.shoes.isNullOrEmpty()
             var average = 0f
-                feedImage.evaluations?.let {
-                    average = getRatingFromEvaluations(it)
-                }
+            feedImage.evaluations?.let {
+                average = getRatingFromEvaluations(it)
+            }
             val resultScore = String.format("%.1f", average)
             binding.resultScore = resultScore
 
@@ -75,7 +68,7 @@ class FeedImageAdapter(
 
             with(itemView) {
                 Glide.with(context)
-                    .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/$customId/feed/${feedImage.imageName}")
+                    .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${feedImage.user?.id}/feed/${feedImage.imageName}")
                     .into(ivFeedImage)
             }
         }

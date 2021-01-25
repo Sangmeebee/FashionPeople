@@ -6,7 +6,6 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -29,7 +28,7 @@ class SavedImageFragment : Fragment() {
     }
 
     private var isEmpty = false
-    private val saveImageAdapter by lazy { SaveImageAdapter(userId!!) }
+    private val saveImageAdapter by lazy { SaveImageAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +72,7 @@ class SavedImageFragment : Fragment() {
         })
 
         vm.isComplete.observe(viewLifecycleOwner, Observer {
-                crossfade()
+            crossfade()
         })
     }
 

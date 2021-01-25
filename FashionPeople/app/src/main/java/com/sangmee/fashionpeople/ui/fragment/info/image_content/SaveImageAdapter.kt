@@ -10,12 +10,10 @@ import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.databinding.ItemFeedImageExBinding
 import com.sangmee.fashionpeople.ui.MainActivity
-import com.sangmee.fashionpeople.ui.fragment.info.detail.InfoDetailFragment
+import com.sangmee.fashionpeople.ui.fragment.detail.DetailFragment
 import com.sangmee.fashionpeople.util.getRatingFromEvaluations
 
-class SaveImageAdapter(
-    private val customId: String
-) : RecyclerView.Adapter<SaveImageAdapter.SaveImageViewHolder>() {
+class SaveImageAdapter : RecyclerView.Adapter<SaveImageAdapter.SaveImageViewHolder>() {
     private val saveImageList = mutableListOf<FeedImage>()
 
     override fun onCreateViewHolder(
@@ -33,11 +31,7 @@ class SaveImageAdapter(
         viewHolder.itemView.setOnClickListener {
 
             (parent.context as MainActivity).replaceFragmentUseBackStack(
-                InfoDetailFragment(
-                    customId,
-                    viewHolder.adapterPosition,
-                    1
-                )
+                DetailFragment(saveImageList, viewHolder.adapterPosition)
             )
         }
 
