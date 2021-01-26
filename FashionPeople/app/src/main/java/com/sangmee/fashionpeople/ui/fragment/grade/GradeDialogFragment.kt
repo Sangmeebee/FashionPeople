@@ -1,15 +1,19 @@
 package com.sangmee.fashionpeople.ui.fragment.grade
 
+import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.Evaluation
@@ -21,6 +25,19 @@ class GradeDialogFragment : BottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentGradeBinding
     private lateinit var evaluationList: List<Evaluation>
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val bottomSheetDialog = BottomSheetDialog(requireContext(), theme)
+        bottomSheetDialog.setOnShowListener { dialog ->
+            val bottomSheet =
+                (dialog as BottomSheetDialog).findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)!!
+            BottomSheetBehavior.from(bottomSheet).skipCollapsed = true
+            BottomSheetBehavior.from(bottomSheet).isHideable = true
+
+        }
+
+        return bottomSheetDialog
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

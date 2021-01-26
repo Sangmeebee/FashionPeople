@@ -1,5 +1,6 @@
 package com.sangmee.fashionpeople.ui.fragment.comment
 
+import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
@@ -17,6 +18,8 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
@@ -61,6 +64,18 @@ class CommentDialogFragment : BottomSheetDialogFragment(), CommentRecyclerAdapte
         }
     }
 
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState)
+        if (dialog is BottomSheetDialog) {
+            dialog.behavior.skipCollapsed = true
+            dialog.behavior.state = STATE_EXPANDED
+            dialog.behavior.skipCollapsed = true
+            dialog.behavior.isHideable = true
+
+        }
+        return dialog
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -96,9 +111,14 @@ class CommentDialogFragment : BottomSheetDialogFragment(), CommentRecyclerAdapte
             binding.ivSend.setOnClickListener {
                 binding.etCommentInput.text?.let {
                     if (it.isEmpty()) {
-                        Toast.makeText(requireContext(), "메시지를 입력하세요", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "메시지를 입력하세요", Toast.LENGTH_SHORT)
+                            .show()
                     } else {
-                        viewModel.updateFeedImageComment(myId, imageName, Comment(it.toString()))
+                        viewModel.updateFeedImageComment(
+                            myId,
+                            imageName,
+                            Comment(it.toString())
+                        )
                     }
                 }
             }
@@ -110,7 +130,12 @@ class CommentDialogFragment : BottomSheetDialogFragment(), CommentRecyclerAdapte
 
             }
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
             }
 
             @RequiresApi(Build.VERSION_CODES.LOLLIPOP)

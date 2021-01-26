@@ -10,65 +10,65 @@
             type="com.sangmee.fashionpeople.ui.fragment.comment.CommentViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <LinearLayout
+        android:id="@+id/ll_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <View
-                android:layout_width="30dp"
-                android:layout_height="2dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="#C1C1C1" />
-
-
-            <TextView
-                android:id="@+id/tv_comment_title"
-                style="@style/CommentTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginVertical="7dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:setCommentTitle="@{vm.comments}" />
-
-            <View
+            <LinearLayout
+                android:id="@+id/ll_temp"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="@color/colorGray"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                android:layout_height="60dp"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="30dp"
+                    android:layout_height="2dp"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="8dp"
+                    android:background="#C1C1C1" />
+
+
+                <TextView
+                    android:id="@+id/tv_comment_title"
+                    style="@style/CommentTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="7dp"
+                    app:setCommentTitle="@{vm.comments}" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:background="@color/colorGray" />
+            </LinearLayout>
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_comment"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="339dp"
                 android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:setVisibleComments="@{vm.comments}"
                 toolNs:listitem="@layout/item_comment" />
+        </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_empty_result"
-                style="@style/CommentTextStyle"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/no_comment"
-                android:visibility="gone"
-                app:setVisibleEmptyView="@{vm.comments}" />
-
+        <LinearLayout
+            android:id="@+id/ll_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="vertical">
 
             <View
                 android:layout_width="match_parent"
@@ -78,12 +78,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/et_comment_input"
-                    android:layout_width="wrap_content"
-                    android:layout_height="60dp"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="10dp"
                     android:layout_weight="1"
                     android:hint="@string/request_comment"
                     android:textColor="@color/colorBlack"
@@ -92,14 +94,13 @@
 
                 <ImageView
                     android:id="@+id/iv_send"
-                    android:layout_width="40dp"
+                    android:layout_width="30dp"
                     android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
                     android:src="@drawable/ic_send_gray_24" />
-
             </LinearLayout>
         </LinearLayout>
 
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </LinearLayout>
 
 </layout>

@@ -126,12 +126,12 @@
 
     <style name="RoundCornerBottomSheetStyle" parent="Theme.Design.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/ModalStyle</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 
     <style name="ModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/bg_round_top</item>
-        <item name="theme">@style/AppTheme</item>
-        <item name="behavior_peekHeight">500dp</item>
+        <item name="behavior_peekHeight">450dp</item>
     </style>
 
     <style name="EditTextStyle" parent="Widget.AppCompat.EditText">

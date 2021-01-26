@@ -89,7 +89,6 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
         })
 
         vm.updateFeedImage.observe(viewLifecycleOwner, Observer {
-            Log.d("SangmeebeeEvaluate", it.toString())
             it?.let {
                 evaluateFeedAdapter.updateItem(it)
             }
