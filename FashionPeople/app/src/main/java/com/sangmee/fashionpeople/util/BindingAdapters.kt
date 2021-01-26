@@ -4,9 +4,6 @@ import android.annotation.SuppressLint
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.text.Html
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
 import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
@@ -20,10 +17,6 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexWrap
-import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.flexbox.JustifyContent
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.Comment
 import com.sangmee.fashionpeople.data.model.FeedImage
@@ -77,15 +70,21 @@ fun setCommentTitle(textView: TextView, comments: List<Comment>?) {
 
 @BindingAdapter("setRatingText")
 fun setRatingText(appCompatTextView: AppCompatTextView, feedImage: FeedImage?) {
-    var average = 0f
-    feedImage?.let { feedImage ->
-        feedImage.evaluations?.let {
-            average = getRatingFromEvaluations(it)
+    feedImage?.let {
+        if (it.evaluateNow) {
+            appCompatTextView.text = "평가중"
+            appCompatTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16F)
+
+        } else {
+            var average = 0f
+            it.evaluations?.let { evaluations ->
+                average = getRatingFromEvaluations(evaluations)
+            }
+            val text = String.format("%.1f", average)
+
+            appCompatTextView.text = text
         }
     }
-    val text = String.format("%.1f", average)
-
-    appCompatTextView.text = text
 }
 
 @BindingAdapter("setGradeRating")

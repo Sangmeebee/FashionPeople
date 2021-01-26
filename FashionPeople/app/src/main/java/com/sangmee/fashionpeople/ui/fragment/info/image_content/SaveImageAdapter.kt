@@ -26,7 +26,7 @@ class SaveImageAdapter : RecyclerView.Adapter<SaveImageAdapter.SaveImageViewHold
             parent,
             false
         )
-        binding.noSelectStr = "..."
+        binding.noSelectStr = "선택안함"
         val viewHolder = SaveImageViewHolder(binding)
         viewHolder.itemView.setOnClickListener {
 

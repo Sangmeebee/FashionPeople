@@ -24,7 +24,7 @@ class FeedImageAdapter(private val onClick: OnClickListener, private val customI
             parent,
             false
         )
-        binding.noSelectStr = "..."
+        binding.noSelectStr = "선택안함"
         val viewHolder = FeedImageViewHolder(binding)
         viewHolder.itemView.setOnClickListener {
 
