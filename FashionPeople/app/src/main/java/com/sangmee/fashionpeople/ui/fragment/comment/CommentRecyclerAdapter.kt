@@ -1,7 +1,6 @@
 package com.sangmee.fashionpeople.ui.fragment.comment
 
 import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
@@ -31,7 +30,6 @@ class CommentRecyclerAdapter(
 
         viewHolder.itemView.cl_container.setOnLongClickListener {
             items[viewHolder.adapterPosition].let {
-                Log.d("Sangmeebee", it.toString())
                 if (it.user?.id == customId || it.feedImage?.user?.id == customId) {
                     it.id?.let { id ->
                         onClickListener.longClick(id)

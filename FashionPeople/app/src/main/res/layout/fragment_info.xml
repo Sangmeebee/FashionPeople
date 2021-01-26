@@ -124,7 +124,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
                             android:layout_marginEnd="20dp"
-                            android:maxLines="3"
                             android:onClick="@{() -> vm.clickProfileReviseBtn()}"
                             android:text="@{vm.introduce}"
                             android:textColor="@color/colorBlack"

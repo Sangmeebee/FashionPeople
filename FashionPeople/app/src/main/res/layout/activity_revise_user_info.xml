@@ -208,7 +208,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="40dp"
-                        android:hint="너무 길게 적으면 잘려요~ (3줄 제한)"
                         android:inputType="textMultiLine"
                         android:textSize="16sp" />
 
