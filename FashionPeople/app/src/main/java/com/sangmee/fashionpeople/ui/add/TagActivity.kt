@@ -80,20 +80,7 @@ class TagActivity : AppCompatActivity() {
             val pants = GlobalApplication.prefs.getString("pants", "")
             val shoes = GlobalApplication.prefs.getString("shoes", "")
             val feedImage =
-                FeedImage(
-                    imageFileName,
-                    null,
-                    style,
-                    top,
-                    pants,
-                    shoes,
-                    null,
-                    true,
-                    null,
-                    0.0F,
-                    null,
-                    null
-                )
+                FeedImage(imageFileName, style, top, pants, shoes, true, 0.0F)
 
             vm.postFeedImage(customId, feedImage)
 

@@ -4,7 +4,6 @@ package com.sangmee.fashionpeople.data.model
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
-import java.time.LocalDateTime
 
 @Parcelize
 data class FeedImage(
@@ -26,10 +25,36 @@ data class FeedImage(
     val evaluateNow: Boolean,
     @SerializedName("evaluations")
     val evaluations: List<Evaluation>?,
+    @SerializedName("comments")
+    val comments: List<Comment>?,
     @SerializedName("resultRating")
     val resultRating: Float?,
     @SerializedName("resultTimeStamp")
     val resultTimeStamp: String?,
     @SerializedName("user")
     val user: FUser?
-) : Parcelable
+) : Parcelable {
+    constructor(
+        imageName: String?,
+        style: String?,
+        top: String?,
+        pants: String?,
+        shoes: String?,
+        evaluateNow: Boolean,
+        resultRating: Float?
+    ) : this(
+        imageName,
+        null,
+        style,
+        top,
+        pants,
+        shoes,
+        null,
+        evaluateNow,
+        null,
+        null,
+        resultRating,
+        null,
+        null
+    )
+}

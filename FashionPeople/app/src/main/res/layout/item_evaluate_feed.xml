@@ -51,13 +51,28 @@
 
         <ImageView
             android:id="@+id/iv_comment"
-            android:layout_width="47dp"
+            android:layout_width="43dp"
             android:layout_height="47dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="20dp"
             android:layout_marginBottom="30dp"
             android:src="@drawable/ic_comment_home"
             app:layout_constraintBottom_toTopOf="@id/fl_save_btn"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_comment_num"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/bg_oval_primary_dark"
+            android:gravity="center"
+            android:text="@{String.valueOf(feedImage.comments.size())}"
+            android:textColor="@color/colorWhite"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/iv_comment"
+            app:layout_constraintStart_toStartOf="@id/iv_comment" />
 
         <FrameLayout
             android:id="@+id/fl_save_btn"
