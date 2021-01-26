@@ -21,4 +21,6 @@ interface CommentService {
         @Body comment: Comment
     ): Completable
 
+    @DELETE("feedImage/comment/{id}")
+    fun deleteImageComment(@Path("id") id: Int): Completable
 }

@@ -6,12 +6,12 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
@@ -27,13 +27,18 @@ import com.sangmee.fashionpeople.data.repository.CommentRepositoryImpl
 import com.sangmee.fashionpeople.data.repository.FeedImageRepositoryImpl
 import com.sangmee.fashionpeople.databinding.FragmentCommentBinding
 
-class CommentDialogFragment : BottomSheetDialogFragment() {
+private const val IMAGE_NAME = "image_name"
+
+class CommentDialogFragment : BottomSheetDialogFragment(), CommentRecyclerAdapter.OnClickListener {
 
     private lateinit var binding: FragmentCommentBinding
     private lateinit var myId: String
+    private var imageName: String? = null
+    private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
+    val customId = GlobalApplication.prefs.getString("${loginType}_custom_id", "empty")
 
     private val commentRecyclerView: CommentRecyclerAdapter by lazy {
-        CommentRecyclerAdapter()
+        CommentRecyclerAdapter(this, customId)
     }
 
     private val viewModel: CommentViewModel by lazy {
@@ -47,6 +52,12 @@ class CommentDialogFragment : BottomSheetDialogFragment() {
         }).get(CommentViewModel::class.java)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            imageName = it.getString(IMAGE_NAME)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,8 +70,7 @@ class CommentDialogFragment : BottomSheetDialogFragment() {
         dialog?.let {
             it.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
-        val loginType = GlobalApplication.prefs.getString("login_type", "empty")
-        myId = GlobalApplication.prefs.getString("${loginType}_custom_id", "")
+        myId = customId
         return binding.root
     }
 
@@ -72,26 +82,26 @@ class CommentDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun initRecyclerView() {
-        binding.rvComment.adapter = commentRecyclerView
+        binding.rvComment.apply {
+            adapter = commentRecyclerView
+            setHasFixedSize(true)
+        }
     }
 
     private fun initView() {
-        arguments?.getString(IMAGE_NAME)?.let { imageName ->
+        imageName?.let { imageName ->
             viewModel.imageNameSubject.onNext(imageName)
             binding.ivSend.setOnClickListener {
                 binding.etCommentInput.text?.let {
                     if (it.isEmpty()) {
                         Toast.makeText(requireContext(), "메시지를 입력하세요", Toast.LENGTH_SHORT).show()
                     } else {
-                        viewModel.updateFeedImageComment(
-                            myId,
-                            imageName,
-                            Comment(it.toString(), myId)
-                        )
+                        viewModel.updateFeedImageComment(myId, imageName, Comment(it.toString()))
                     }
                 }
             }
         }
+
 
         binding.etCommentInput.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -112,7 +122,6 @@ class CommentDialogFragment : BottomSheetDialogFragment() {
                 }
             }
         })
-
     }
 
 
@@ -125,6 +134,24 @@ class CommentDialogFragment : BottomSheetDialogFragment() {
         viewModel.submitEvent.observe(viewLifecycleOwner, Observer {
             binding.etCommentInput.setText("")
         })
+
+        viewModel.deleteComplete.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(context, "댓글을 삭제했습니다.", Toast.LENGTH_SHORT).show()
+        })
+    }
+
+    private fun callDialog(id: Int) {
+        AlertDialog.Builder(requireContext()).setMessage(R.string.ask_remove_comment_text)
+            .setPositiveButton("예") { dialog, which ->
+                viewModel.deleteComment(id, imageName!!)
+            }
+            .setNegativeButton("아니오") { dialog, which ->
+
+            }.create().show()
+    }
+
+    override fun longClick(id: Int) {
+        callDialog(id)
     }
 
     override fun onDestroy() {
@@ -134,8 +161,6 @@ class CommentDialogFragment : BottomSheetDialogFragment() {
 
     companion object {
         val TAG = this::class.java.simpleName
-
-        private const val IMAGE_NAME = "image_name"
 
         fun newInstance(imageName: String) = CommentDialogFragment().apply {
             arguments = Bundle().apply {

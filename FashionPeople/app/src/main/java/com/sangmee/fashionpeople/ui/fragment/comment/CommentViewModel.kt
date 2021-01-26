@@ -36,18 +36,18 @@ class CommentViewModel(
     val submitEvent: LiveData<Unit>
         get() = _submitEvent
 
+    val deleteComplete = SingleLiveEvent<Any>()
+
     init {
         imageNameSubject
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 getImageComments(it)
-                getFeedImage(it)
+                Log.d("Sangmeebee", it.toString())
             }, {
 
             }).addTo(compositeDisposable)
-
-
     }
 
 
@@ -60,6 +60,17 @@ class CommentViewModel(
             }, {
                 Log.d("seunghwan", it.toString())
             }).addTo(compositeDisposable)
+    }
+
+    fun deleteComment(id: Int, imageName: String) {
+        commentRepository.deleteImageComment(id)
+            .andThen(commentRepository.getImageComments(imageName))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                deleteComplete.call()
+                _comments.value = it
+            }, { Log.e("Sangmeebee", it.message.toString()) })
     }
 
     private fun getFeedImage(imageName: String) {
@@ -75,7 +86,6 @@ class CommentViewModel(
 
     fun updateFeedImageComment(userId: String, imageName: String, comment: Comment) {
         commentRepository.updateImageComment(userId, imageName, comment)
-            .subscribeOn(Schedulers.io())
             .andThen(commentRepository.getImageComments(imageName))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

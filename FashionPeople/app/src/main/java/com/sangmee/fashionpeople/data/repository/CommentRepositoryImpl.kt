@@ -21,5 +21,7 @@ class CommentRepositoryImpl(
         return commentRemoteDataSource.updateImageComment(userId, imageName, comment)
     }
 
-
+    override fun deleteImageComment(id: Int): Completable {
+        return commentRemoteDataSource.deleteImageComment(id)
+    }
 }

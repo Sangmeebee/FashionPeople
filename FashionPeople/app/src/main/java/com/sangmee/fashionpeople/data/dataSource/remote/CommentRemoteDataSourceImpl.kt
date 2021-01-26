@@ -18,4 +18,7 @@ class CommentRemoteDataSourceImpl : CommentRemoteDataSource {
         return RetrofitClient.getCommentService().updateImageComment(userId, imageName, comment)
     }
 
+    override fun deleteImageComment(id: Int): Completable {
+        return RetrofitClient.getCommentService().deleteImageComment(id)
+    }
 }

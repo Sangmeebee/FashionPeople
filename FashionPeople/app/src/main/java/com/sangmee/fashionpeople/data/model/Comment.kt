@@ -4,18 +4,21 @@ package com.sangmee.fashionpeople.data.model
 import com.google.gson.annotations.SerializedName
 
 data class Comment(
+    @SerializedName("id")
+    val id: Int?,
     @SerializedName("content")
     val content: String?,
-    @SerializedName("commentPersonId")
-    val commentPersonId: String?,
-    @SerializedName("current_date_time")
+    @SerializedName("currentDateTime")
     val currentDateTime: String?,
+    @SerializedName("image")
+    val feedImage: FeedImage?,
     @SerializedName("user")
     val user: FUser?
 ) {
-    constructor(content: String?, commentPersonId: String?) : this(
+    constructor(content: String?) : this(
+        null,
         content,
-        commentPersonId,
+        null,
         null,
         null
     )

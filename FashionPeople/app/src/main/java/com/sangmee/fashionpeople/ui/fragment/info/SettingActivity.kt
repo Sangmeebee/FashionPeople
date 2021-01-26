@@ -51,7 +51,7 @@ class SettingActivity : AppCompatActivity() {
 
         binding.tvWithdrawal.setOnClickListener {
             AlertDialog.Builder(this).setMessage(R.string.ask_withdrawal_text)
-                .setPositiveButton("네") { dialog, which ->
+                .setPositiveButton("예") { dialog, which ->
                     if (loginType == "kakao") {
                         withdrawalAtKakao()
                     }
@@ -76,7 +76,7 @@ class SettingActivity : AppCompatActivity() {
 
         binding.tvLogout.setOnClickListener {
             AlertDialog.Builder(this).setMessage(R.string.ask_logout_text)
-                .setPositiveButton("네") { dialog, which ->
+                .setPositiveButton("예") { dialog, which ->
                     if (loginType == "kakao") {
                         UserManagement.getInstance()
                             .requestLogout(object : LogoutResponseCallback() {
