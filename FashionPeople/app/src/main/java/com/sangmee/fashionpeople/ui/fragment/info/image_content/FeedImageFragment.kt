@@ -6,16 +6,19 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.sangmee.fashionpeople.R
+import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.databinding.FragmentFeedImageBinding
 import com.sangmee.fashionpeople.observer.FeedImageViewModel
 
-class FeedImageFragment : Fragment() {
+class FeedImageFragment : Fragment(), FeedImageAdapter.OnClickListener {
 
     private var userId: String? = null
     private lateinit var binding: FragmentFeedImageBinding
@@ -26,9 +29,11 @@ class FeedImageFragment : Fragment() {
             }
         }).get(FeedImageViewModel::class.java)
     }
+    private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
+    val customId = GlobalApplication.prefs.getString("${loginType}_custom_id", "empty")
 
     private var isEmpty = false
-    private val feedImageAdapter by lazy { FeedImageAdapter() }
+    private val feedImageAdapter by lazy { FeedImageAdapter(this, customId) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +79,10 @@ class FeedImageFragment : Fragment() {
         vm.isComplete.observe(viewLifecycleOwner, Observer {
             crossfade()
         })
+
+        vm.deleteComplete.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(context, "사진을 삭제했습니다.", Toast.LENGTH_SHORT).show()
+        })
     }
 
     private fun getDisplayHeight(): Int {
@@ -113,6 +122,19 @@ class FeedImageFragment : Fragment() {
         }
     }
 
+    private fun callDialog(imageName: String) {
+        AlertDialog.Builder(requireContext()).setMessage(R.string.ask_remove_image_text)
+            .setPositiveButton("예") { dialog, which ->
+                vm.deleteFeedImage(imageName, userId!!)
+            }
+            .setNegativeButton("아니오") { dialog, which ->
+
+            }.create().show()
+    }
+
+    override fun onLongClick(imageName: String) {
+        callDialog(imageName)
+    }
 
     override fun onDestroy() {
         vm.unBindDisposable()

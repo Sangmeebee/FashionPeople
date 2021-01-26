@@ -5,7 +5,6 @@ import com.sangmee.fashionpeople.data.model.Evaluation
 import com.sangmee.fashionpeople.data.model.FeedImage
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
-import retrofit2.Call
 
 class FeedImageRepositoryImpl(
     private val feedImageRemoteDataSource: FeedImageRemoteDataSource
@@ -53,5 +52,9 @@ class FeedImageRepositoryImpl(
 
     override fun getSearchRecentBrandImages(query: String): Single<List<FeedImage>> {
         return feedImageRemoteDataSource.getSearchRecentBrandImages(query)
+    }
+
+    override fun deleteFeedImage(imageName: String): Completable {
+        return feedImageRemoteDataSource.deleteFeedImage(imageName)
     }
 }

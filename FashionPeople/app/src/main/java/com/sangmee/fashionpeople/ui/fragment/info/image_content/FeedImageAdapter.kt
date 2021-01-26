@@ -13,7 +13,8 @@ import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.detail.DetailFragment
 import com.sangmee.fashionpeople.util.getRatingFromEvaluations
 
-class FeedImageAdapter : RecyclerView.Adapter<FeedImageAdapter.FeedImageViewHolder>() {
+class FeedImageAdapter(private val onClick: OnClickListener, private val customId: String) :
+    RecyclerView.Adapter<FeedImageAdapter.FeedImageViewHolder>() {
     private val feedImageList = mutableListOf<FeedImage>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedImageViewHolder {
@@ -32,6 +33,17 @@ class FeedImageAdapter : RecyclerView.Adapter<FeedImageAdapter.FeedImageViewHold
             )
         }
 
+        viewHolder.itemView.setOnLongClickListener {
+            feedImageList[viewHolder.adapterPosition].let {
+                if (it.user?.id == customId){
+                    it.imageName?.let { imageName ->
+                        onClick.onLongClick(imageName)
+                    }
+                }
+            }
+            false
+        }
+
         return viewHolder
 
     }
@@ -46,6 +58,10 @@ class FeedImageAdapter : RecyclerView.Adapter<FeedImageAdapter.FeedImageViewHold
         feedImageList.clear()
         feedImageList.addAll(list)
         notifyDataSetChanged()
+    }
+
+    interface OnClickListener {
+        fun onLongClick(imageName: String)
     }
 
     inner class FeedImageViewHolder(private val binding: ItemFeedImageExBinding) :

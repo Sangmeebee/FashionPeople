@@ -4,7 +4,6 @@ import com.sangmee.fashionpeople.data.model.Evaluation
 import com.sangmee.fashionpeople.data.model.FeedImage
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
-import retrofit2.Call
 import retrofit2.http.*
 
 interface FeedImageService {
@@ -19,7 +18,10 @@ interface FeedImageService {
     fun getOtherImages(@Path("id") id: String): Single<List<FeedImage>>
 
     @PUT("feedImage/evaluation/{imageName}")
-    fun updateImageScore(@Path("imageName") imageName: String, @Body evaluation: Evaluation): Completable
+    fun updateImageScore(
+        @Path("imageName") imageName: String,
+        @Body evaluation: Evaluation
+    ): Completable
 
     @GET("feedImage/{id}")
     fun getFeedImages(@Path("id") id: String): Single<List<FeedImage>>
@@ -41,5 +43,8 @@ interface FeedImageService {
 
     @GET("feedImage/search/brand/recent/{query}")
     fun getSearchRecentBrandImages(@Path("query") query: String): Single<List<FeedImage>>
+
+    @DELETE("feedImage/{imageName}")
+    fun deleteFeedImage(@Path("imageName") imageName: String): Completable
 
 }

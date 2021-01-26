@@ -55,4 +55,8 @@ class FeedImageRemoteDataSourceImpl : FeedImageRemoteDataSource {
     override fun getSearchRecentBrandImages(query: String): Single<List<FeedImage>> {
         return RetrofitClient.getFeedImageService().getSearchRecentBrandImages(query)
     }
+
+    override fun deleteFeedImage(imageName: String): Completable {
+        return RetrofitClient.getFeedImageService().deleteFeedImage(imageName)
+    }
 }

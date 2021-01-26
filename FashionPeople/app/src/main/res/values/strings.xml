@@ -21,6 +21,7 @@
     <string name="ask_logout_text">로그아웃 하시겠습니까?</string>
     <string name="ask_withdrawal_text">탈퇴 하시겠습니까?</string>
     <string name="ask_remove_comment_text">댓글을 삭제 하시겠습니까?</string>
+    <string name="ask_remove_image_text">사진을 삭제 하시겠습니까?</string>
     <string name="customer_support_text">고객지원</string>
     <string name="question_suggestion_text">문의 / 의견 보내기</string>
     <string name="privacy_policy_text">개인정보 처리방침</string>

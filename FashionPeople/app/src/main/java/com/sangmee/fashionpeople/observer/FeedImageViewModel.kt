@@ -1,5 +1,6 @@
 package com.sangmee.fashionpeople.observer
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sangmee.fashionpeople.data.dataSource.remote.FeedImageRemoteDataSourceImpl
@@ -22,6 +23,8 @@ class FeedImageViewModel : ViewModel() {
 
     val feedImages = MutableLiveData<List<FeedImage>>()
     val isComplete = SingleLiveEvent<Any>()
+    val deleteComplete = SingleLiveEvent<Any>()
+
 
     fun callFeedImages(userId: String) {
         feedImageRepository.getFeedImages(
@@ -33,6 +36,17 @@ class FeedImageViewModel : ViewModel() {
                 feedImages.value = it
             }, {
             }).addTo(compositeDisposable)
+    }
+
+    fun deleteFeedImage(imageName: String, userId: String) {
+        feedImageRepository.deleteFeedImage(imageName)
+            .andThen(feedImageRepository.getFeedImages(userId))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                deleteComplete.call()
+                feedImages.value = it
+            }, { Log.e("Sangmeebee", it.message.toString()) }).addTo(compositeDisposable)
     }
 
     fun unBindDisposable() {

@@ -69,9 +69,6 @@ class CommentDialogFragment : BottomSheetDialogFragment(), CommentRecyclerAdapte
         if (dialog is BottomSheetDialog) {
             dialog.behavior.skipCollapsed = true
             dialog.behavior.state = STATE_EXPANDED
-            dialog.behavior.skipCollapsed = true
-            dialog.behavior.isHideable = true
-
         }
         return dialog
     }

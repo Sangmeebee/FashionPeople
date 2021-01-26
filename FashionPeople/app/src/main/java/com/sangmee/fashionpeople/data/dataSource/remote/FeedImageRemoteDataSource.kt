@@ -32,5 +32,8 @@ interface FeedImageRemoteDataSource {
     fun getSearchScoreBrandImages(@Path("query") query: String): Single<List<FeedImage>>
 
     fun getSearchRecentBrandImages(@Path("query") query: String): Single<List<FeedImage>>
+
+    fun deleteFeedImage(@Path("imageName") imageName: String): Completable
+
 }
 

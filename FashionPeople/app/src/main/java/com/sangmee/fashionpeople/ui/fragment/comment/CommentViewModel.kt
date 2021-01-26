@@ -71,6 +71,7 @@ class CommentViewModel(
                 deleteComplete.call()
                 _comments.value = it
             }, { Log.e("Sangmeebee", it.message.toString()) })
+            .addTo(compositeDisposable)
     }
 
     private fun getFeedImage(imageName: String) {
