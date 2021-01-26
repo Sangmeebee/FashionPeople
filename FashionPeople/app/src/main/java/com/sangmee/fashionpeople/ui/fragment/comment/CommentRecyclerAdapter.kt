@@ -34,11 +34,19 @@ class CommentRecyclerAdapter(
                 Log.d("Sangmeebee", it.toString())
                 if (it.user?.id == customId || it.feedImage?.user?.id == customId) {
                     it.id?.let { id ->
-                        onClickListener?.longClick(id)
+                        onClickListener.longClick(id)
                     }
                 }
             }
             false
+        }
+
+        viewHolder.itemView.iv_profile_image.setOnClickListener {
+            items[viewHolder.adapterPosition].let {
+                it.user?.let { user ->
+                    onClickListener.clickProfile(user.id!!)
+                }
+            }
         }
         return viewHolder
     }
@@ -58,6 +66,7 @@ class CommentRecyclerAdapter(
 
     interface OnClickListener {
         fun longClick(id: Int)
+        fun clickProfile(id: String)
     }
 
 

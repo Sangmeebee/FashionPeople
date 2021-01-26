@@ -26,6 +26,8 @@ import com.sangmee.fashionpeople.data.model.Comment
 import com.sangmee.fashionpeople.data.repository.CommentRepositoryImpl
 import com.sangmee.fashionpeople.data.repository.FeedImageRepositoryImpl
 import com.sangmee.fashionpeople.databinding.FragmentCommentBinding
+import com.sangmee.fashionpeople.ui.MainActivity
+import com.sangmee.fashionpeople.ui.fragment.info.other.OtherFragment
 
 private const val IMAGE_NAME = "image_name"
 
@@ -152,6 +154,12 @@ class CommentDialogFragment : BottomSheetDialogFragment(), CommentRecyclerAdapte
 
     override fun longClick(id: Int) {
         callDialog(id)
+    }
+
+    override fun clickProfile(id: String) {
+        OtherFragment.newInstance(id).let {
+            (activity as MainActivity).replaceFragmentUseBackStack(it)
+        }
     }
 
     override fun onDestroy() {
