@@ -6,13 +6,13 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.data.dataSource.remote.S3RemoteDataSource
 import com.sangmee.fashionpeople.data.dataSource.remote.S3RemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.FeedImage
 import kotlinx.android.synthetic.main.activity_tag.*
-import org.jetbrains.anko.textColor
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -55,19 +55,23 @@ class TagActivity : AppCompatActivity() {
         iv_select_image.setImageURI(resultUri)
 
         tv_style_name.setOnClickListener {
-            redirectCategoryActivity("style")
+            val content = tv_style_name.text.toString()
+            redirectCategoryActivity("style", content)
         }
 
         tv_top_brand_name.setOnClickListener {
-            redirectCategoryActivity("top")
+            val content = tv_top_brand_name.text.toString()
+            redirectCategoryActivity("top", content)
         }
 
         tv_pants_brand_name.setOnClickListener {
-            redirectCategoryActivity("pants")
+            val content = tv_pants_brand_name.text.toString()
+            redirectCategoryActivity("pants", content)
         }
 
         tv_shoes_brand_name.setOnClickListener {
-            redirectCategoryActivity("shoes")
+            val content = tv_shoes_brand_name.text.toString()
+            redirectCategoryActivity("shoes", content)
         }
 
 
@@ -135,9 +139,10 @@ class TagActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun redirectCategoryActivity(subject: String) {
+    private fun redirectCategoryActivity(subject: String, content: String) {
         val intent = Intent(this, CategoryActivity::class.java)
         intent.putExtra("subject", subject)
+        intent.putExtra("content", content)
         startActivityForResult(intent, CHOOSING_CATEGORY)
     }
 
@@ -147,26 +152,50 @@ class TagActivity : AppCompatActivity() {
             when (data?.getStringExtra("subject")) {
                 "style" -> {
                     tv_style_name.apply {
-                        text = GlobalApplication.prefs.getString("style", "")
-                        textColor = R.color.colorBlack
+                        val content = GlobalApplication.prefs.getString("style", "")
+                        if (content == "") {
+                            text = "선택안함"
+                            setTextColor(ContextCompat.getColor(context, R.color.brandTextColor))
+                        } else {
+                            text = content
+                            setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark))
+                        }
                     }
                 }
                 "top" -> {
                     tv_top_brand_name.apply {
-                        text = GlobalApplication.prefs.getString("top", "")
-                        textColor = R.color.colorBlack
+                        val content = GlobalApplication.prefs.getString("top", "")
+                        if (content == "") {
+                            text = "선택안함"
+                            setTextColor(ContextCompat.getColor(context, R.color.brandTextColor))
+                        } else {
+                            text = content
+                            setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark))
+                        }
                     }
                 }
                 "pants" -> {
                     tv_pants_brand_name.apply {
-                        text = GlobalApplication.prefs.getString("pants", "")
-                        textColor = R.color.colorBlack
+                        val content = GlobalApplication.prefs.getString("pants", "")
+                        if (content == "") {
+                            text = "선택안함"
+                            setTextColor(ContextCompat.getColor(context, R.color.brandTextColor))
+                        } else {
+                            text = content
+                            setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark))
+                        }
                     }
                 }
                 "shoes" -> {
                     tv_shoes_brand_name.apply {
-                        text = GlobalApplication.prefs.getString("shoes", "")
-                        textColor = R.color.colorBlack
+                        val content = GlobalApplication.prefs.getString("shoes", "")
+                        if (content == "") {
+                            text = "선택안함"
+                            setTextColor(ContextCompat.getColor(context, R.color.brandTextColor))
+                        } else {
+                            text = content
+                            setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark))
+                        }
                     }
                 }
             }

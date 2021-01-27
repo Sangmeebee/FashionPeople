@@ -14,11 +14,11 @@
             type="String" />
 
         <variable
-            name="isFill"
-            type="Boolean" />
+            name="hint"
+            type="String" />
 
         <variable
-            name="hint"
+            name="recommand"
             type="String" />
     </data>
 
@@ -81,8 +81,7 @@
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="3"
-                android:background="@{isFill ? @drawable/bg_round : @drawable/bg_round_disable}"
-                android:enabled="@{isFill}"
+                android:background="@drawable/bg_round"
                 android:onClick="@{() -> activity.clickCompleteBtn()}"
                 android:text="확인" />
 
@@ -93,17 +92,41 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ProgressBar
-                android:id="@+id/pb_loading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+            <LinearLayout
+                android:id="@+id/ll_recent_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="@{recommand}"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="17dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorGray" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_recent_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_brand"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
+                android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </FrameLayout>

@@ -60,7 +60,7 @@
                     android:layout_weight="2"
                     android:gravity="center"
                     android:paddingVertical="18dp"
-                    android:text="스타일 선택"
+                    android:text="선택안함"
                     android:textColor="@color/brandTextColor"
                     android:textSize="14dp" />
 
@@ -92,7 +92,7 @@
                     android:layout_weight="2"
                     android:gravity="center"
                     android:paddingVertical="18dp"
-                    android:text="브랜드 선택"
+                    android:text="선택안함"
                     android:textColor="@color/brandTextColor"
                     android:textSize="14dp" />
 
@@ -124,7 +124,7 @@
                     android:layout_weight="2"
                     android:gravity="center"
                     android:paddingVertical="18dp"
-                    android:text="브랜드 선택"
+                    android:text="선택안함"
                     android:textColor="@color/brandTextColor"
                     android:textSize="14dp" />
             </LinearLayout>
@@ -155,7 +155,7 @@
                     android:layout_weight="2"
                     android:gravity="center"
                     android:paddingVertical="18dp"
-                    android:text="브랜드 선택"
+                    android:text="선택안함"
                     android:textColor="@color/brandTextColor"
                     android:textSize="14dp" />
             </LinearLayout>
