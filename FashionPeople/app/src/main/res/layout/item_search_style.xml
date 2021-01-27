@@ -39,13 +39,13 @@
                 android:layout_marginBottom="5dp"
                 android:text="#태그"
                 android:textColor="@android:color/black"
-                android:textSize="15sp" />
+                android:textSize="17dp" />
 
             <TextView
                 android:id="@+id/tv_post_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
+                android:textSize="14dp"
                 tools:text="게시물 0개" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

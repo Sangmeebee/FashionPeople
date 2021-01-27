@@ -9,7 +9,7 @@
         android:id="@+id/ll_recent_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:orientation="vertical"
         android:visibility="invisible"
         app:layout_constraintTop_toTopOf="parent">
@@ -20,7 +20,7 @@
             android:padding="10dp"
             android:text="추천 스타일"
             android:textColor="@color/colorBlack"
-            android:textSize="15sp" />
+            android:textSize="17dp" />
 
         <View
             android:layout_width="match_parent"

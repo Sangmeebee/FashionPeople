@@ -73,7 +73,7 @@ fun setRatingText(appCompatTextView: AppCompatTextView, feedImage: FeedImage?) {
     feedImage?.let {
         if (it.evaluateNow) {
             appCompatTextView.text = "평가중"
-            appCompatTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16F)
+            appCompatTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18F)
 
         } else {
             var average = 0f
@@ -175,11 +175,11 @@ fun TextView.setWeightText(weight: Int) {
 @BindingAdapter("setResultScoreText", "isEvaluateNow")
 fun TextView.setResultScoreText(resultScore: String, isEvaluateNow: Boolean) {
     if (isEvaluateNow) {
-        this.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)
+        this.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22F)
         this.text = "평가중"
     } else {
         this.text = resultScore
-        this.setTextSize(TypedValue.COMPLEX_UNIT_SP, 27F)
+        this.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 29F)
 
     }
 }

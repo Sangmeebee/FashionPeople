@@ -30,7 +30,7 @@
                 android:gravity="center"
                 android:text="@{userName}"
                 android:textColor="@color/colorBlack"
-                android:textSize="18sp"
+                android:textSize="20dp"
                 android:textStyle="bold" />
         </androidx.appcompat.widget.Toolbar>
 
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/tb_follow"
             app:tabIndicatorColor="@android:color/black"
-            app:tabIndicatorHeight="3dp"
+            app:tabIndicatorHeight="2dp"
             app:tabMode="fixed"
             app:tabPaddingBottom="8dp"
             app:tabPaddingTop="15dp"

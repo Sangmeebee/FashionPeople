@@ -51,7 +51,7 @@
                     android:gravity="center"
                     android:text="스타일"
                     android:textColor="@color/colorBlack"
-                    android:textSize="12sp" />
+                    android:textSize="14dp" />
 
                 <TextView
                     android:id="@+id/tv_style_name"
@@ -62,7 +62,7 @@
                     android:paddingVertical="18dp"
                     android:text="스타일 선택"
                     android:textColor="@color/brandTextColor"
-                    android:textSize="12sp" />
+                    android:textSize="14dp" />
 
             </LinearLayout>
 
@@ -83,7 +83,7 @@
                     android:gravity="center"
                     android:text="상의"
                     android:textColor="@color/colorBlack"
-                    android:textSize="12sp" />
+                    android:textSize="14dp" />
 
                 <TextView
                     android:id="@+id/tv_top_brand_name"
@@ -94,7 +94,7 @@
                     android:paddingVertical="18dp"
                     android:text="브랜드 선택"
                     android:textColor="@color/brandTextColor"
-                    android:textSize="12sp" />
+                    android:textSize="14dp" />
 
             </LinearLayout>
 
@@ -115,7 +115,7 @@
                     android:gravity="center"
                     android:text="하의"
                     android:textColor="@color/colorBlack"
-                    android:textSize="12sp" />
+                    android:textSize="14dp" />
 
                 <TextView
                     android:id="@+id/tv_pants_brand_name"
@@ -126,7 +126,7 @@
                     android:paddingVertical="18dp"
                     android:text="브랜드 선택"
                     android:textColor="@color/brandTextColor"
-                    android:textSize="12sp" />
+                    android:textSize="14dp" />
             </LinearLayout>
 
             <View
@@ -146,7 +146,7 @@
                     android:gravity="center"
                     android:text="신발"
                     android:textColor="@color/colorBlack"
-                    android:textSize="12sp" />
+                    android:textSize="14dp" />
 
                 <TextView
                     android:id="@+id/tv_shoes_brand_name"
@@ -157,7 +157,7 @@
                     android:paddingVertical="18dp"
                     android:text="브랜드 선택"
                     android:textColor="@color/brandTextColor"
-                    android:textSize="12sp" />
+                    android:textSize="14dp" />
             </LinearLayout>
 
             <View
@@ -172,7 +172,7 @@
                 android:background="@color/colorPrimary"
                 android:text="등록 완료"
                 android:textColor="@color/colorWhite"
-                android:textSize="12sp" />
+                android:textSize="14dp" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

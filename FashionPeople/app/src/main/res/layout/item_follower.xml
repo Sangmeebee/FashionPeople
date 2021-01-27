@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{String.valueOf(follower.name)}"
                 android:textColor="@android:color/black"
-                android:textSize="12sp" />
+                android:textSize="14dp" />
 
             <LinearLayout
                 android:id="@+id/ll_is_visible"
@@ -94,7 +94,7 @@
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text="@{String.valueOf(follower.introduce)}"
-                    android:textSize="12sp" />
+                    android:textSize="14dp" />
             </LinearLayout>
         </LinearLayout>
 

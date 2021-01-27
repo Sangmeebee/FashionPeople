@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="30sp"
+        android:layout_marginTop="30dp"
         android:orientation="vertical"
         tools:context=".ui.add.CategoryActivity">
 
@@ -48,7 +48,7 @@
                 android:layout_weight="1"
                 android:text="@{subject}"
                 android:textColor="@color/colorBlack"
-                android:textSize="16sp"
+                android:textSize="18dp"
                 tools:text="브랜드 선택" />
         </LinearLayout>
 
@@ -71,7 +71,7 @@
                 android:hint="@{hint}"
                 android:inputType="text"
                 android:paddingBottom="20dp"
-                android:textSize="15sp">
+                android:textSize="17dp">
 
                 <requestFocus />
             </EditText>
@@ -114,7 +114,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="브랜드를 찾을 수 없음"
-            android:textSize="15sp"
+            android:textSize="17dp"
             android:visibility="gone" />
 
 

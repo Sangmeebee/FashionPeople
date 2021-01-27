@@ -27,7 +27,7 @@
                 android:layout_marginStart="20dp"
                 android:text="@{query}"
                 android:textColor="@color/colorBlack"
-                android:textSize="20sp"
+                android:textSize="22dp"
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="나이키" />

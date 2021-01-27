@@ -37,7 +37,7 @@
                 android:gravity="center"
                 android:text="평가할 사진이 없어요!"
                 android:textColor="@color/colorBlack"
-                android:textSize="23sp"
+                android:textSize="25dp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

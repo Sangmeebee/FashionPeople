@@ -9,8 +9,8 @@
         android:id="@+id/ll_recent_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
         android:orientation="vertical"
-        android:layout_marginTop="30dp"
         android:visibility="invisible"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -20,7 +20,7 @@
             android:padding="10dp"
             android:text="최근검색"
             android:textColor="@color/colorBlack"
-            android:textSize="15sp" />
+            android:textSize="17dp" />
 
         <View
             android:layout_width="match_parent"
@@ -36,6 +36,7 @@
 
         <Button
             android:id="@+id/btn_clear"
+            style="@style/CommonTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_gravity="end"

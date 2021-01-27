@@ -37,7 +37,7 @@
 
                 <TextView
                     android:id="@+id/tv_comment_title"
-                    style="@style/CommentTextStyle"
+                    style="@style/CommonTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -90,7 +90,7 @@
                     android:hint="@string/request_comment"
                     android:textColor="@color/colorBlack"
                     android:textColorHint="@color/darkgray"
-                    android:textSize="13sp" />
+                    android:textSize="15dp" />
 
                 <ImageView
                     android:id="@+id/iv_send"

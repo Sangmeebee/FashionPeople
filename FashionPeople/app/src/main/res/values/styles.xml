@@ -14,24 +14,24 @@
         <item name="tabIndicatorColor">@color/colorPrimaryDark</item> <!--글씨 밑에 indicator 색상 변경-->
         <item name="tabIndicatorHeight">4dp</item> <!--indicator 두께-->
         <!--<item name="tabIndicatorFullWidth">false</item>--> <!--indicator 꽉차지않게-->
-        <item name="tabTextAppearance">@style/HomeTabTextAppearance</item> <!-- 여기서 한번에 바꾸어 줘도 된다.-->
+        <item name="tabTextAppearance">@style/HomeTabTextAppearance
+        </item> <!-- 여기서 한번에 바꾸어 줘도 된다.-->
     </style>
 
     <style name="HomeTabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="tabTextColor">@color/colorBlack</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">16sp</item> <!--text의 소문자를 모두 대문자로 만듬-->
+        <item name="android:textSize">18dp</item>
     </style>
 
     <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">15dp</item>
         <item name="textAllCaps">true</item> <!--text의 소문자를 모두 대문자로 만듬-->
     </style>
 
     <style name="tab_text" parent="@android:style/TextAppearance.Widget.TabWidget">
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">15dp</item>
     </style>
-
 
 
     <style name="MyActionBarStyle" parent="Theme.MaterialComponents.Light.DarkActionBar">
@@ -46,82 +46,51 @@
 
     <style name="HomeFeedTextStyle" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">@color/colorBlack</item>
-        <item name="android:textSize">17sp</item>
+        <item name="android:textSize">19dp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="DetailScoreTextStyle" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">@color/colorWhite</item>
-        <item name="android:textSize">24sp</item>
+        <item name="android:textSize">26dp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="InfoTagTitleTextStyle" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">@color/colorBlack</item>
         <item name="android:layout_marginBottom">10dp</item>
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">17dp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
 
     <style name="InfoTagContentTextStyle" parent="Widget.AppCompat.TextView">
         <item name="android:layout_marginBottom">15dp</item>
-        <item name="android:textSize">11sp</item>
+        <item name="android:textSize">13dp</item>
     </style>
 
-    <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
-        <item name="android:background">@color/darkGray2</item>
-        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
-        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
-        <item name="materialAlertDialogBodyTextStyle">@style/BodyTextStyle</item>
-        <item name="android:foreground">?attr/selectableItemBackground</item>
-    </style>
-
-    <style name="PositiveButtonStyle" parent="@style/Widget.MaterialComponents.Button.TextButton.Dialog">
-        <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:theme">@style/SelectableItemTheme</item>
-    </style>
-
-    <style name="NegativeButtonStyle" parent="@style/Widget.MaterialComponents.Button.TextButton.Dialog">
-        <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:theme">@style/SelectableItemTheme</item>
-    </style>
 
     <style name="SelectableItemTheme" parent="ThemeOverlay.MaterialComponents">
         <item name="colorControlHighlight">@color/colorWhite</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">18dp</item>
         <item name="android:textAlignment" tools:targetApi="jelly_bean_mr1">viewStart</item>
-    </style>
-
-    <style name="CommentTextStyle">
-        <item name="android:textColor">@color/colorBlack</item>
-        <item name="android:textSize">13sp</item>
     </style>
 
     <style name="EvaluationTextStyle">
         <item name="android:textColor">@color/colorBlack</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">20dp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="TagTextStyle">
+    <style name="CommonTextStyle">
         <item name="android:textColor">@color/colorBlack</item>
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">15dp</item>
     </style>
 
     <style name="RatingTextStyle">
         <item name="android:textColor">@color/colorBlack</item>
-        <item name="android:textSize">37sp</item>
+        <item name="android:textSize">39dp</item>
         <item name="android:textStyle">bold</item>
-    </style>
-
-
-    <style name="BodyTextStyle">
-        <item name="android:textColor">@color/colorWhite</item>
-        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="RoundCornerBottomSheetStyle" parent="Theme.Design.BottomSheetDialog">
@@ -136,7 +105,7 @@
 
     <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:textColor">@color/colorBlack</item>
-        <item name="android:textSize">17sp</item>
+        <item name="android:textSize">19dp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
@@ -149,6 +118,13 @@
         <item name="android:paddingLeft">8dp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:paddingRight">8dp</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
+
+    <style name="InputEditTextTheme" parent="Widget.AppCompat.EditText">
+        <item name="android:textSize">18dp</item>
     </style>
 
     <style name="SearchEditTextTheme" parent="Widget.AppCompat.EditText">

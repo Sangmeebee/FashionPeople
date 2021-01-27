@@ -15,7 +15,7 @@
             android:layout_gravity="center"
             android:text="주간 랭킹"
             android:textColor="@color/colorBlack"
-            android:textSize="18sp"
+            android:textSize="20dp"
             android:textStyle="bold" />
 
     </androidx.appcompat.widget.Toolbar>

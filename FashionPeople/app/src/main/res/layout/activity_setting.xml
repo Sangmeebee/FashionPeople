@@ -32,7 +32,7 @@
                     android:gravity="center"
                     android:text="@string/setting_text"
                     android:textColor="@color/colorBlack"
-                    android:textSize="18sp" />
+                    android:textSize="20dp" />
             </androidx.appcompat.widget.Toolbar>
 
             <LinearLayout
@@ -52,7 +52,7 @@
                     android:paddingVertical="14dp"
                     android:text="@string/customer_support_text"
                     android:textColor="@color/colorBlack"
-                    android:textSize="13sp" />
+                    android:textSize="15dp" />
 
                 <TextView
                     android:id="@+id/tv_question_suggestion"
@@ -62,7 +62,7 @@
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="18dp"
                     android:text="@string/question_suggestion_text"
-                    android:textSize="13sp" />
+                    android:textSize="15dp" />
 
             </LinearLayout>
 
@@ -82,7 +82,7 @@
                     android:paddingVertical="14dp"
                     android:text="@string/information_use"
                     android:textColor="@color/colorBlack"
-                    android:textSize="13sp" />
+                    android:textSize="15dp" />
 
 
                 <TextView
@@ -92,7 +92,7 @@
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="18dp"
                     android:text="@string/terms_of_service_text"
-                    android:textSize="13sp" />
+                    android:textSize="15dp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -106,7 +106,7 @@
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="18dp"
                     android:text="@string/privacy_policy_text"
-                    android:textSize="13sp" />
+                    android:textSize="15dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -126,7 +126,7 @@
                     android:paddingVertical="14dp"
                     android:text="@string/system_text"
                     android:textColor="@color/colorBlack"
-                    android:textSize="13sp" />
+                    android:textSize="15dp" />
 
                 <TextView
                     android:id="@+id/tv_withdrawal"
@@ -135,7 +135,7 @@
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="18dp"
                     android:text="@string/withdrawl_text"
-                    android:textSize="13sp" />
+                    android:textSize="15dp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -149,7 +149,7 @@
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="18dp"
                     android:text="@string/logout_text"
-                    android:textSize="13sp" />
+                    android:textSize="15dp" />
 
                 <View
                     android:layout_width="match_parent"

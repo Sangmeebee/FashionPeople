@@ -42,7 +42,7 @@
             android:layout_marginBottom="300dp"
             android:text="로그인"
             android:textColor="@android:color/black"
-            android:textSize="20sp"
+            android:textSize="22dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -65,29 +65,29 @@
                 android:layout_height="wrap_content"
                 android:text="이메일"
                 android:textColor="@color/colorBlack"
-                android:textSize="12sp" />
+                android:textSize="14dp" />
 
             <EditText
                 android:id="@+id/et_email"
+                style="@style/InputEditTextTheme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:inputType="text"
-                android:textSize="16sp" />
+                android:inputType="textEmailAddress" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="비밀번호"
                 android:textColor="@color/colorBlack"
-                android:textSize="12sp" />
+                android:textSize="14dp" />
 
             <EditText
                 android:id="@+id/et_password"
-                android:inputType="textPassword"
+                style="@style/InputEditTextTheme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp" />
+                android:inputType="textPassword" />
 
         </LinearLayout>
 
@@ -99,7 +99,7 @@
             android:layout_marginStart="90dp"
             android:onClick="@{()->activity.clickSignUpBtn()}"
             android:textColor="@color/colorHintText"
-            android:textSize="12sp"
+            android:textSize="14dp"
             app:layout_constraintLeft_toLeftOf="@+id/ll_info"
             app:layout_constraintTop_toBottomOf="@+id/ll_info"
             bind:setHTMLText="@{signInId}" />
@@ -111,7 +111,7 @@
             android:layout_marginEnd="90dp"
             android:onClick="@{()->activity.clickFindInfoBtn()}"
             android:textColor="@color/colorHintText"
-            android:textSize="12sp"
+            android:textSize="14dp"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ll_info"
             bind:setHTMLText="@{findId}" />
@@ -126,7 +126,7 @@
             android:stateListAnimator="@null"
             android:text="로그인하기"
             android:textColor="@android:color/white"
-            android:textSize="12sp"
+            android:textSize="14dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />

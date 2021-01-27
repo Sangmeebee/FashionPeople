@@ -45,7 +45,7 @@
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:textColor="@color/colorWhite"
-            android:textSize="13sp"
+            android:textSize="15dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/iv_rank"
             app:layout_constraintTop_toTopOf="@id/iv_rank"

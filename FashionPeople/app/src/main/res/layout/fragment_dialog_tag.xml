@@ -28,7 +28,7 @@
 
         <TextView
             android:id="@+id/tv_tag_title"
-            style="@style/CommentTextStyle"
+            style="@style/CommonTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -54,7 +54,7 @@
                 android:gravity="center"
                 android:text="스타일"
                 android:textColor="@color/colorBlack"
-                android:textSize="12sp" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/tv_style_name"
@@ -64,7 +64,7 @@
                 android:gravity="center"
                 android:paddingVertical="18dp"
                 android:textColor="@color/brandTextColor"
-                android:textSize="12sp"
+                android:textSize="14dp"
                 bind:setTag="@{feedImage.style}" />
 
         </LinearLayout>
@@ -86,7 +86,7 @@
                 android:gravity="center"
                 android:text="상의"
                 android:textColor="@color/colorBlack"
-                android:textSize="12sp" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/tv_top_brand_name"
@@ -96,7 +96,7 @@
                 android:gravity="center"
                 android:paddingVertical="18dp"
                 android:textColor="@color/brandTextColor"
-                android:textSize="12sp"
+                android:textSize="14dp"
                 bind:setTag="@{feedImage.top}" />
 
         </LinearLayout>
@@ -118,7 +118,7 @@
                 android:gravity="center"
                 android:text="하의"
                 android:textColor="@color/colorBlack"
-                android:textSize="12sp" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/tv_pants_brand_name"
@@ -128,7 +128,7 @@
                 android:gravity="center"
                 android:paddingVertical="18dp"
                 android:textColor="@color/brandTextColor"
-                android:textSize="12sp"
+                android:textSize="14dp"
                 bind:setTag="@{feedImage.pants}" />
         </LinearLayout>
 
@@ -150,7 +150,7 @@
                 android:gravity="center"
                 android:text="신발"
                 android:textColor="@color/colorBlack"
-                android:textSize="12sp" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/tv_shoes_brand_name"
@@ -160,7 +160,7 @@
                 android:gravity="center"
                 android:paddingVertical="18dp"
                 android:textColor="@color/brandTextColor"
-                android:textSize="12sp"
+                android:textSize="14dp"
                 bind:setTag="@{feedImage.shoes}" />
         </LinearLayout>
     </LinearLayout>

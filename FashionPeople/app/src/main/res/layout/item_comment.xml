@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{comment.user.name}"
                 android:textColor="@color/colorBlack"
-                android:textSize="14sp"
+                android:textSize="16dp"
                 android:textStyle="bold"
                 tools:text="서승환" />
 
@@ -50,6 +50,7 @@
                 android:id="@+id/tv_comment_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="14dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="110dp"
                 android:text="@{comment.content}"

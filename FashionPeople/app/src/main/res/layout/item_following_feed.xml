@@ -69,7 +69,7 @@
             android:gravity="center"
             android:text="@{String.valueOf(feedImage.comments.size())}"
             android:textColor="@color/colorWhite"
-            android:textSize="10sp"
+            android:textSize="12dp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/iv_comment"
             app:layout_constraintStart_toStartOf="@id/iv_comment" />
@@ -145,7 +145,7 @@
                 android:layout_marginStart="7dp"
                 android:text="스타일"
                 android:textColor="@color/colorSubColorText"
-                android:textSize="18sp"
+                android:textSize="20dp"
                 android:textStyle="bold" />
 
             <FrameLayout
@@ -164,7 +164,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:textColor="@color/colorWhite"
-                    android:textSize="13sp"
+                    android:textSize="15dp"
                     android:textStyle="bold"
                     bind:setTag="@{feedImage.style}" />
             </FrameLayout>
@@ -175,7 +175,7 @@
                 android:layout_marginStart="7dp"
                 android:text="브랜드"
                 android:textColor="@color/colorSubColorText"
-                android:textSize="18sp"
+                android:textSize="20dp"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -198,7 +198,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:textColor="@color/colorWhite"
-                        android:textSize="13sp"
+                        android:textSize="15dp"
                         android:textStyle="bold"
                         bind:setTag="@{feedImage.top}" />
                 </FrameLayout>
@@ -218,7 +218,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:textColor="@color/colorWhite"
-                        android:textSize="13sp"
+                        android:textSize="15dp"
                         android:textStyle="bold"
                         bind:setTag="@{feedImage.pants}" />
                 </FrameLayout>
@@ -238,7 +238,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:textColor="@color/colorWhite"
-                        android:textSize="13sp"
+                        android:textSize="15dp"
                         android:textStyle="bold"
                         bind:setTag="@{feedImage.shoes}" />
                 </FrameLayout>

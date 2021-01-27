@@ -75,7 +75,7 @@
                             android:singleLine="true"
                             android:text="@{vm.userName}"
                             android:textColor="@color/colorBlack"
-                            android:textSize="20sp"
+                            android:textSize="22dp"
                             android:textStyle="bold"
                             app:layout_constraintBottom_toBottomOf="@id/iv_profile"
                             app:layout_constraintLeft_toRightOf="@id/iv_profile"
@@ -89,7 +89,7 @@
                             android:layout_marginTop="10dp"
                             android:onClick="@{() -> vm.clickProfileReviseBtn()}"
                             android:text="@{vm.gender}"
-                            android:textSize="13sp"
+                            android:textSize="14dp"
                             app:layout_constraintLeft_toLeftOf="@id/iv_profile"
                             app:layout_constraintTop_toBottomOf="@id/iv_profile" />
 
@@ -100,7 +100,7 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="10dp"
                             android:onClick="@{() -> vm.clickProfileReviseBtn()}"
-                            android:textSize="13sp"
+                            android:textSize="14dp"
                             app:layout_constraintLeft_toRightOf="@id/tv_gender"
                             app:layout_constraintTop_toBottomOf="@id/iv_profile"
                             bind:setHeightText="@{vm.height}" />
@@ -113,7 +113,7 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="10dp"
                             android:onClick="@{() -> vm.clickProfileReviseBtn()}"
-                            android:textSize="13sp"
+                            android:textSize="14dp"
                             app:layout_constraintLeft_toRightOf="@id/tv_height"
                             app:layout_constraintTop_toBottomOf="@id/iv_profile"
                             bind:setWeightText="@{vm.weight}" />
@@ -127,7 +127,7 @@
                             android:onClick="@{() -> vm.clickProfileReviseBtn()}"
                             android:text="@{vm.introduce}"
                             android:textColor="@color/colorBlack"
-                            android:textSize="14sp"
+                            android:textSize="15dp"
                             app:layout_constraintLeft_toLeftOf="@id/iv_profile"
                             app:layout_constraintRight_toLeftOf="@id/ll_follower"
                             app:layout_constraintTop_toBottomOf="@id/tv_gender" />
@@ -149,7 +149,7 @@
                                 android:layout_gravity="center"
                                 android:text="@{String.valueOf(vm.followerNum)}"
                                 android:textColor="@color/colorBlack"
-                                android:textSize="16sp"
+                                android:textSize="18dp"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -157,7 +157,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="팔로워"
                                 android:textColor="@color/colorBlack"
-                                android:textSize="13sp" />
+                                android:textSize="15dp" />
 
                         </LinearLayout>
 
@@ -178,7 +178,7 @@
                                 android:layout_gravity="center"
                                 android:text="@{String.valueOf(vm.followingNum)}"
                                 android:textColor="@color/colorBlack"
-                                android:textSize="16sp"
+                                android:textSize="18dp"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -186,7 +186,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="팔로잉"
                                 android:textColor="@color/colorBlack"
-                                android:textSize="13sp" />
+                                android:textSize="15dp" />
                         </LinearLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>

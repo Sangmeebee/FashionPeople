@@ -48,7 +48,7 @@
                 android:layout_marginTop="60dp"
                 android:text="빠르게 가입하기!"
                 android:textColor="@android:color/black"
-                android:textSize="15sp"
+                android:textSize="17dp"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -61,7 +61,7 @@
                 android:layout_marginTop="12dp"
                 android:text="4/4"
                 android:textColor="@color/colorPrimary"
-                android:textSize="14sp"
+                android:textSize="16dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_title" />
@@ -74,7 +74,7 @@
                 android:gravity="center"
                 android:text="기본 정보를 입력해주세요"
                 android:textColor="@color/colorBlack"
-                android:textSize="15sp"
+                android:textSize="17dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_page_num" />
@@ -88,21 +88,21 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_content">
 
                 <TextView
+                    style="@style/CommonTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:text="닉네임"
-                    android:textColor="@android:color/black" />
+                    android:text="닉네임" />
 
                 <EditText
                     android:id="@+id/et_nickname"
+                    style="@style/InputEditTextTheme"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:hint="20글자 이하"
+                    android:hint="8글자 이하"
                     android:inputType="text"
-                    android:maxLength="20"
-                    android:textSize="16sp" />
+                    android:maxLength="8" />
 
                 <TextView
                     android:id="@+id/tv_alert"
@@ -111,7 +111,7 @@
                     android:layout_marginBottom="20dp"
                     android:text="@{alert}"
                     android:textColor="@android:color/holo_red_dark"
-                    android:textSize="12sp"
+                    android:textSize="14dp"
                     android:visibility="invisible" />
 
                 <LinearLayout
@@ -121,17 +121,18 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        style="@style/CommonTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="성별 : "
-                        android:textColor="@android:color/black" />
+                        android:text="성별 : " />
 
                     <TextView
                         android:id="@+id/tv_gender"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@{gender}"
-                        android:textColor="@color/blue" />
+                        android:textColor="@color/blue"
+                        android:textSize="15dp" />
                 </LinearLayout>
 
                 <RadioGroup
@@ -158,57 +159,57 @@
                 </RadioGroup>
 
                 <TextView
+                    style="@style/CommonTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:text="키, 몸무게 :"
-                    android:textColor="@android:color/black" />
+                    android:text="키, 몸무게 :" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:weightSum="2"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
                     <EditText
                         android:id="@+id/et_height"
+                        style="@style/InputEditTextTheme"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_marginBottom="45dp"
+                        android:layout_weight="1"
                         android:hint="키(cm)"
-                        android:inputType="number"
-                        android:textSize="16sp" />
+                        android:inputType="number" />
 
                     <EditText
                         android:id="@+id/et_weight"
+                        style="@style/InputEditTextTheme"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_marginBottom="45dp"
+                        android:layout_weight="1"
                         android:hint="몸무게(kg)"
-                        android:inputType="number"
-                        android:textSize="16sp" />
+                        android:inputType="number" />
                 </LinearLayout>
 
                 <TextView
+                    style="@style/CommonTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:text="본인 소개"
-                    android:textColor="@android:color/black" />
+                    android:text="본인 소개" />
 
                 <EditText
                     android:id="@+id/et_introduce"
+                    style="@style/InputEditTextTheme"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="40dp"
-                    android:inputType="textMultiLine"
-                    android:textSize="16sp" />
+                    android:inputType="textMultiLine" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"/>
+                    android:layout_height="20dp" />
             </LinearLayout>
 
             <Button
@@ -221,7 +222,7 @@
                 android:stateListAnimator="@null"
                 android:text="완료"
                 android:textColor="@android:color/white"
-                android:textSize="12sp"
+                android:textSize="14dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent" />

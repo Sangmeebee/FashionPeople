@@ -27,7 +27,7 @@
                 android:layout_marginStart="50dp"
                 android:layout_marginBottom="10dp"
                 android:textColor="@color/colorIsEvaluatedText"
-                android:textSize="20sp"
+                android:textSize="22dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 bind:setIsEvaluated="@{feedImage.evaluateNow}" />
@@ -47,7 +47,7 @@
                 android:gravity="end"
                 android:text="4.0점"
                 android:textColor="@color/colorPrimaryDark"
-                android:textSize="50sp"
+                android:textSize="52dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -78,7 +78,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_rating1"
-                    style="@style/CommentTextStyle"
+                    style="@style/CommonTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
@@ -99,7 +99,7 @@
                     app:progressView_highlightWidth="1dp"
                     app:progressView_labelColorInner="@color/colorBlack"
                     app:progressView_labelColorOuter="@color/colorBlack"
-                    app:progressView_labelSize="13sp"
+                    app:progressView_labelSize="15dp"
                     app:progressView_labelSpace="10dp"
                     app:progressView_labelText="1점"
                     app:progressView_labelTypeface="bold"
@@ -126,7 +126,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_rating2"
-                    style="@style/CommentTextStyle"
+                    style="@style/CommonTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
@@ -148,7 +148,7 @@
                     app:progressView_highlightWidth="1dp"
                     app:progressView_labelColorInner="@color/colorBlack"
                     app:progressView_labelColorOuter="@color/colorBlack"
-                    app:progressView_labelSize="13sp"
+                    app:progressView_labelSize="15dp"
                     app:progressView_labelSpace="10dp"
                     app:progressView_labelText="1점"
                     app:progressView_labelTypeface="bold"
@@ -173,7 +173,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_rating3"
-                    style="@style/CommentTextStyle"
+                    style="@style/CommonTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
@@ -194,7 +194,7 @@
                     app:progressView_highlightWidth="1dp"
                     app:progressView_labelColorInner="@color/colorBlack"
                     app:progressView_labelColorOuter="@color/colorBlack"
-                    app:progressView_labelSize="13sp"
+                    app:progressView_labelSize="15dp"
                     app:progressView_labelSpace="10dp"
                     app:progressView_labelText="1점"
                     app:progressView_labelTypeface="bold"
@@ -219,7 +219,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_rating4"
-                    style="@style/CommentTextStyle"
+                    style="@style/CommonTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
@@ -240,7 +240,7 @@
                     app:progressView_highlightWidth="1dp"
                     app:progressView_labelColorInner="@color/colorBlack"
                     app:progressView_labelColorOuter="@color/colorBlack"
-                    app:progressView_labelSize="13sp"
+                    app:progressView_labelSize="15dp"
                     app:progressView_labelSpace="10dp"
                     app:progressView_labelText="1점"
                     app:progressView_labelTypeface="bold"
@@ -265,7 +265,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_rating5"
-                    style="@style/CommentTextStyle"
+                    style="@style/CommonTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
@@ -286,7 +286,7 @@
                     app:progressView_highlightWidth="1dp"
                     app:progressView_labelColorInner="@color/colorBlack"
                     app:progressView_labelColorOuter="@color/colorBlack"
-                    app:progressView_labelSize="13sp"
+                    app:progressView_labelSize="15dp"
                     app:progressView_labelSpace="10dp"
                     app:progressView_labelText="1점"
                     app:progressView_labelTypeface="bold"

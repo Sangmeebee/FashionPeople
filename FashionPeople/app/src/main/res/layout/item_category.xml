@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="12dp"
         android:textColor="@color/colorBlack"
-        android:textSize="15sp"
+        android:textSize="17dp"
         tools:text="ex" />
 
     <TextView
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:paddingBottom="12dp"
-        android:textSize="12sp"
+        android:textSize="14dp"
         tools:text="게시물" />
 
 </LinearLayout>
