@@ -70,6 +70,7 @@
                 android:drawablePadding="10dp"
                 android:hint="@{hint}"
                 android:inputType="text"
+                android:maxLength="15"
                 android:paddingBottom="20dp"
                 android:textSize="17dp">
 

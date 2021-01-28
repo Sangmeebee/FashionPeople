@@ -160,12 +160,9 @@
                     android:src="@drawable/ic_line" />
 
                 <TextView
+                    style="@style/BrandNameTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="15dp"
-                    android:textStyle="bold"
                     bind:setTag="@{feedImage.style}" />
             </FrameLayout>
 
@@ -186,7 +183,8 @@
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp">
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -194,19 +192,17 @@
                         android:src="@drawable/ic_line" />
 
                     <TextView
+                        style="@style/BrandNameTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="15dp"
-                        android:textStyle="bold"
                         bind:setTag="@{feedImage.top}" />
                 </FrameLayout>
 
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp">
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -214,12 +210,9 @@
                         android:src="@drawable/ic_line" />
 
                     <TextView
+                        style="@style/BrandNameTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="15dp"
-                        android:textStyle="bold"
                         bind:setTag="@{feedImage.pants}" />
                 </FrameLayout>
 
@@ -234,12 +227,9 @@
                         android:src="@drawable/ic_line" />
 
                     <TextView
+                        style="@style/BrandNameTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="15dp"
-                        android:textStyle="bold"
                         bind:setTag="@{feedImage.shoes}" />
                 </FrameLayout>
             </LinearLayout>

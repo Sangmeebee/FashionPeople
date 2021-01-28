@@ -103,7 +103,7 @@
 
                 <LinearLayout
                     android:id="@+id/ll_style"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
@@ -115,14 +115,14 @@
 
                     <TextView
                         style="@style/InfoTagContentTextStyle"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@{isSelectedStyle ? feedImage.style : noSelectStr}" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/ll_top"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
@@ -134,14 +134,14 @@
 
                     <TextView
                         style="@style/InfoTagContentTextStyle"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@{isSelectedTop ? feedImage.top : noSelectStr}" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/ll_pants"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
@@ -153,14 +153,14 @@
 
                     <TextView
                         style="@style/InfoTagContentTextStyle"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@{isSelectedPants ? feedImage.pants : noSelectStr}" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/ll_shoes"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
@@ -171,8 +171,10 @@
                         android:text="신발" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:singleLine="true"
                         android:text="@{isSelectedShoes ? feedImage.shoes : noSelectStr}"
                         android:textSize="13dp" />
                 </LinearLayout>
