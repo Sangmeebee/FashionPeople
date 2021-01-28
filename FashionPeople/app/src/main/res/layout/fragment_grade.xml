@@ -106,8 +106,7 @@
                     app:progressView_max="100"
                     app:progressView_padding="1dp"
                     app:progressView_progress="40"
-                    app:progressView_radius="12dp"
-                    app:setEvaluateProgress="@{feedImage}" />
+                    app:progressView_radius="12dp" />
             </LinearLayout>
 
             <LinearLayout

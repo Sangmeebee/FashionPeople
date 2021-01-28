@@ -22,17 +22,6 @@ import com.sangmee.fashionpeople.data.model.Comment
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.skydoves.progressview.ProgressView
 
-@BindingAdapter("setVisibleComments")
-fun setVisibleComments(recyclerView: RecyclerView, comments: List<Comment>?) {
-    comments?.let {
-        if (it.isNotEmpty()) {
-            recyclerView.visibility = View.VISIBLE
-        } else {
-            recyclerView.visibility = View.GONE
-        }
-    }
-}
-
 @BindingAdapter("setCustomId", "setImageName")
 fun ImageView.setLoadUrl(customId: String?, imageName: String?) {
     customId?.let { id ->
@@ -43,17 +32,6 @@ fun ImageView.setLoadUrl(customId: String?, imageName: String?) {
                 .load("https://fashionprofile-images.s3.ap-northeast-2.amazonaws.com/users/${id}/profile/${imageName}")
                 .apply(RequestOptions().circleCrop())
                 .error(R.drawable.ic_user).into(this)
-        }
-    }
-}
-
-@BindingAdapter("setVisibleEmptyView")
-fun setVisibleEmptyView(textView: TextView, comments: List<Comment>?) {
-    comments?.let {
-        if (it.isNotEmpty()) {
-            textView.visibility = View.GONE
-        } else {
-            textView.visibility = View.VISIBLE
         }
     }
 }
@@ -87,28 +65,6 @@ fun setRatingText(appCompatTextView: AppCompatTextView, feedImage: FeedImage?) {
     }
 }
 
-@BindingAdapter("setGradeRating")
-fun setGradeRating(appCompatRatingBar: AppCompatRatingBar, feedImage: FeedImage?) {
-    var average = 0f
-    feedImage?.let { feedImage ->
-        feedImage.evaluations?.let {
-            average = getRatingFromEvaluations(it)
-        }
-    }
-    appCompatRatingBar.rating = average
-}
-
-@BindingAdapter("setEvaluateProgress")
-fun setEvaluateProgress(progressView: ProgressView, feedImage: FeedImage?) {
-    var total = 0
-    feedImage?.let { image ->
-        image.evaluations?.let { list ->
-            total = list.size
-        }
-
-    }
-}
-
 @BindingAdapter("isGone")
 fun View.bindIsGone(isGone: Boolean) {
     this.visibility = if (isGone) {
@@ -118,14 +74,6 @@ fun View.bindIsGone(isGone: Boolean) {
     }
 }
 
-@BindingAdapter("isInvisible")
-fun View.bindIsInvisible(isInvisible: Boolean) {
-    this.visibility = if (isInvisible) {
-        View.INVISIBLE
-    } else {
-        View.VISIBLE
-    }
-}
 
 @SuppressLint("SetTextI18n")
 @RequiresApi(Build.VERSION_CODES.M)
@@ -190,6 +138,17 @@ fun TextView.setTag(tag: String) {
         this.text = "선택안함"
     } else {
         this.text = tag
+    }
+}
+
+@BindingAdapter("setColorTag")
+fun TextView.setColorTag(tag: String) {
+    if (tag == "") {
+        this.text = "선택안함"
+        this.setTextColor(ContextCompat.getColor(context, R.color.brandTextColor))
+    } else {
+        this.text = tag
+        this.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark))
     }
 }
 

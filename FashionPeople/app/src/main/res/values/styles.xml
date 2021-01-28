@@ -100,6 +100,11 @@
         <item name="android:textSize">15dp</item>
     </style>
 
+    <style name="SmallCommonTextStyle">
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textSize">14dp</item>
+    </style>
+
     <style name="RatingTextStyle">
         <item name="android:textColor">@color/colorBlack</item>
         <item name="android:textSize">39dp</item>
