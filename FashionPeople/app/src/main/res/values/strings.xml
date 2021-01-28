@@ -1,7 +1,6 @@
 <resources>
-    <string name="app_name">FashionPeople</string>
+    <string name="app_name">패션노트</string>
     <string name="kakao_app_key">11f277f6a9f96a369e010d8aa3bdef35</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="camera_dialog_title">촬영 선택</string>
     <string name="cancel_video_record">동영상 촬영을 취소하였습니다.</string>
