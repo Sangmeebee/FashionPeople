@@ -87,7 +87,6 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
         })
 
         mainVm.updateFeedImage.observe(viewLifecycleOwner, Observer {
-            Log.d("SangmeebeeFollowing", it.toString())
             it?.let {
                 followingFeedAdapter.updateItem(it)
             }

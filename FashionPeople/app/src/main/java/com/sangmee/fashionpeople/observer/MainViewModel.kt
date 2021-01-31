@@ -44,7 +44,7 @@ class MainViewModel : ViewModel() {
     val saveComplete = SingleLiveEvent<Any>()
     val callSaveImageComplete = SingleLiveEvent<Any>()
     val deleteComplete = SingleLiveEvent<Any>()
-    val updateFeedImage = SingleLiveEvent<FeedImage>()
+    val updateFeedImage = MutableLiveData<FeedImage>()
 
     val homeFragments = Stack<Fragment>()
     val rankFragments = Stack<Fragment>()
