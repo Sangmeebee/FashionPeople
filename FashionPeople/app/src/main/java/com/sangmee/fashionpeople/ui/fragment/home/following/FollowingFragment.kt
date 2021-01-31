@@ -86,7 +86,7 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
             }
         })
 
-        vm.updateFeedImage.observe(viewLifecycleOwner, Observer {
+        mainVm.updateFeedImage.observe(viewLifecycleOwner, Observer {
             Log.d("SangmeebeeFollowing", it.toString())
             it?.let {
                 followingFeedAdapter.updateItem(it)
@@ -166,12 +166,12 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
     }
 
     override fun onClickSave(imageName: String, position: Int) {
-        vm.postSaveImage(imageName)
+        mainVm.postSaveImage(imageName)
         pos = position
     }
 
     override fun onClickDelete(imageName: String, position: Int) {
-        vm.deleteSaveImage(imageName)
+        mainVm.deleteSaveImage(imageName)
         pos = position
     }
 
@@ -187,7 +187,7 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
         fromUser: Boolean,
         feedImage: FeedImage
     ) {
-        feedImage.imageName?.let { vm.ratingClick(it, rating) }
+        feedImage.imageName?.let { mainVm.ratingClick(it, rating) }
     }
 
     override fun onClickTag(feedImage: FeedImage) {

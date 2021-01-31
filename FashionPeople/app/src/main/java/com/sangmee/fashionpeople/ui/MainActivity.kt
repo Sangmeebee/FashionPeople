@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.data.model.stack.Stack
@@ -48,6 +49,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        initViewModel()
 
         navigationView.post { navigationView.selectedItemId = R.id.homeItem }
         navigationView.setOnNavigationItemSelectedListener {
@@ -77,6 +79,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun initViewModel() {
+        mainVm.saveComplete.observe(this, Observer {
+            Toast.makeText(this, "사진을 저장했습니다.", Toast.LENGTH_SHORT).show()
+            mainVm.getMySaveImage()
+        })
+
+        mainVm.deleteComplete.observe(this, Observer {
+            Toast.makeText(this, "사진을 삭제했습니다.", Toast.LENGTH_SHORT).show()
+            mainVm.getMySaveImage()
+        })
+    }
+
     private fun setTagList(tag: String) {
         if (mainVm.tagList.contains(tag)) {
             mainVm.tagList.remove(tag)
@@ -101,7 +115,7 @@ class MainActivity : AppCompatActivity() {
             }
         } else {
             val transaction = supportFragmentManager.beginTransaction()
-            for(i in 0 until fragments.count()){
+            for (i in 0 until fragments.count()) {
                 transaction.remove(fragments.pop())
             }
             fragments.push(fragment)
@@ -128,9 +142,14 @@ class MainActivity : AppCompatActivity() {
 
     //fragment 교체(백스택 사용)
     fun replaceFragmentUseTagBackStack(fragment: Fragment, tag: String) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.add(R.id.frameLayout, fragment)
-        transaction.commit()
+        supportFragmentManager.beginTransaction().apply {
+            add(R.id.frameLayout, fragment)
+            supportFragmentManager.fragments.forEach {
+                if (it != fragment && it.isAdded) {
+                    hide(it)
+                }
+            }
+        }.commit()
         setFragmentStack(fragment, tag)
     }
 

@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -51,12 +50,12 @@ class DetailFragment(private val feedImages: List<FeedImage>, private val positi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViewPager()
+        initView()
         initObserve()
     }
 
     private fun initViewPager() {
         detailAdapter.onClickListener = this@DetailFragment
-        Log.d("Sangmeebee", viewModel.currentIndex.value.toString())
         vp_detail.apply {
             adapter = detailAdapter
             orientation = ViewPager2.ORIENTATION_VERTICAL
@@ -65,7 +64,7 @@ class DetailFragment(private val feedImages: List<FeedImage>, private val positi
                     if (!it) {
                         setCurrentItem(position, false)
                         viewModel.isAdded.value = true
-                    } else{
+                    } else {
                         setCurrentItem(viewModel.currentIndex.value!!, false)
                     }
 
@@ -81,9 +80,7 @@ class DetailFragment(private val feedImages: List<FeedImage>, private val positi
         })
     }
 
-
-    private fun initObserve() {
-
+    private fun initView() {
         detailAdapter.setFeedImages(feedImages)
         val saveImages = mutableListOf<String>()
         mainVm.saveImages.value?.let {
@@ -92,7 +89,9 @@ class DetailFragment(private val feedImages: List<FeedImage>, private val positi
             }
             detailAdapter.setSaveItems(saveImages, null)
         }
+    }
 
+    private fun initObserve() {
 
         mainVm.saveImages.observe(viewLifecycleOwner, Observer {
             val saveImages = mutableListOf<String>()
@@ -103,17 +102,7 @@ class DetailFragment(private val feedImages: List<FeedImage>, private val positi
             detailAdapter.setSaveItems(saveImages, pos)
         })
 
-        viewModel.saveComplete.observe(this, Observer {
-            Toast.makeText(context, "사진을 저장했습니다.", Toast.LENGTH_SHORT).show()
-            mainVm.getMySaveImage()
-        })
-
-        viewModel.deleteComplete.observe(this, Observer {
-            Toast.makeText(context, "사진을 삭제했습니다.", Toast.LENGTH_SHORT).show()
-            mainVm.getMySaveImage()
-        })
-
-        viewModel.updateFeedImage.observe(this, Observer {
+        mainVm.updateFeedImage.observe(this, Observer {
             detailAdapter.updateItem(it)
         })
     }
@@ -133,11 +122,6 @@ class DetailFragment(private val feedImages: List<FeedImage>, private val positi
             .show(childFragmentManager, TagDialogFragment.TAG)
     }
 
-    override fun onDestroy() {
-        viewModel.clearDisposable()
-        super.onDestroy()
-    }
-
     override fun onClickComment(imageName: String) {
         showCommentFragment(imageName)
     }
@@ -153,12 +137,12 @@ class DetailFragment(private val feedImages: List<FeedImage>, private val positi
     }
 
     override fun onClickSave(imageName: String, position: Int) {
-        viewModel.postSaveImage(imageName)
+        mainVm.postSaveImage(imageName)
         pos = position
     }
 
     override fun onClickDelete(imageName: String, position: Int) {
-        viewModel.deleteSaveImage(imageName)
+        mainVm.deleteSaveImage(imageName)
         pos = position
     }
 
@@ -172,7 +156,7 @@ class DetailFragment(private val feedImages: List<FeedImage>, private val positi
         fromUser: Boolean,
         feedImage: FeedImage
     ) {
-        feedImage.imageName?.let { viewModel.ratingClick(it, rating) }
+        feedImage.imageName?.let { mainVm.ratingClick(it, rating) }
     }
 
     private fun crossfade() {

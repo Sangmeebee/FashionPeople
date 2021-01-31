@@ -22,7 +22,6 @@ import io.reactivex.rxjava3.subjects.AsyncSubject
 class HomeEvaluateViewModel : ViewModel() {
 
     private val feedImageRepository = FeedImageRepositoryImpl(FeedImageRemoteDataSourceImpl())
-    private val saveImageRepository = SaveImageRepositoryImpl(SaveImageRemoteDataSourceImpl())
     private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
     val userId = GlobalApplication.prefs.getString("${loginType}_custom_id", "empty")
 
@@ -36,19 +35,10 @@ class HomeEvaluateViewModel : ViewModel() {
     val followingFeedImages: LiveData<List<FeedImage>>
         get() = _followingFeedImages
 
-    private val _updateFeedImage = MutableLiveData<FeedImage>()
-    val updateFeedImage: LiveData<FeedImage>
-        get() = _updateFeedImage
-
     val evaluateLoadingComplete = SingleLiveEvent<Any>()
     val followingLoadingComplete = SingleLiveEvent<Any>()
 
-    val saveComplete = SingleLiveEvent<Any>()
     val errorComplete = SingleLiveEvent<Any>()
-    val deleteComplete = SingleLiveEvent<Any>()
-
-    val asyncSubject = AsyncSubject.create<Unit>()
-
 
     fun getOtherImages() {
         feedImageRepository.getOtherImages(userId)
@@ -69,46 +59,6 @@ class HomeEvaluateViewModel : ViewModel() {
             .subscribe({
                 _followingFeedImages.value = it
             }, { Log.d("Sangmeebee", "evaluate_${it.message}") }).addTo(compositeDisposable)
-    }
-
-    fun postSaveImage(imageName: String) {
-        saveImageRepository.postSaveImage(userId, imageName)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doAfterTerminate { saveComplete.call() }
-            .subscribe({ }, { t -> Log.d("Sangmeebee", "postComplete_${t.message}") })
-            .addTo(compositeDisposable)
-    }
-
-    fun deleteSaveImage(imageName: String) {
-        saveImageRepository.deleteSaveImage(userId, imageName)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doAfterTerminate { deleteComplete.value = true }
-            .subscribe({ }, { t -> Log.d("Sangmeebee", "deleteComplete_${t.message}") })
-            .addTo(compositeDisposable)
-    }
-
-    fun ratingClick(imageName: String, rating: Float) {
-        feedImageRepository.updateImageScore(imageName, Evaluation(userId, rating))
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                getFeedImage(imageName)
-            }, {
-                getFeedImage(imageName)
-                errorComplete.call()
-            }).addTo(compositeDisposable)
-    }
-
-    private fun getFeedImage(imageName: String) {
-        RetrofitClient.getFeedImageService().getFeedImageByName(imageName)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                _updateFeedImage.value = it
-            }, {
-            }).addTo(compositeDisposable)
     }
 
 

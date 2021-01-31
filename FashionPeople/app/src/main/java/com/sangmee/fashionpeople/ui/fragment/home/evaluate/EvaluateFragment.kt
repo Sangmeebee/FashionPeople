@@ -88,7 +88,7 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
             }
         })
 
-        vm.updateFeedImage.observe(viewLifecycleOwner, Observer {
+        mainVm.updateFeedImage.observe(viewLifecycleOwner, Observer {
             it?.let {
                 evaluateFeedAdapter.updateItem(it)
             }
@@ -97,16 +97,6 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
         vm.evaluateLoadingComplete.observe(viewLifecycleOwner, Observer {
             homeVm.evaluatedIsAdded.value = true
             crossfade()
-        })
-
-        vm.saveComplete.observe(this, Observer {
-            Toast.makeText(context, "사진을 저장했습니다.", Toast.LENGTH_SHORT).show()
-            mainVm.getMySaveImage()
-        })
-
-        vm.deleteComplete.observe(this, Observer {
-            Toast.makeText(context, "사진을 삭제했습니다.", Toast.LENGTH_SHORT).show()
-            mainVm.getMySaveImage()
         })
 
         vm.errorComplete.observe(this, Observer {
@@ -181,12 +171,12 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
     }
 
     override fun onClickSave(imageName: String, position: Int) {
-        vm.postSaveImage(imageName)
+        mainVm.postSaveImage(imageName)
         pos = position
     }
 
     override fun onClickDelete(imageName: String, position: Int) {
-        vm.deleteSaveImage(imageName)
+        mainVm.deleteSaveImage(imageName)
         pos = position
     }
 
@@ -202,7 +192,7 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
         fromUser: Boolean,
         feedImage: FeedImage
     ) {
-        feedImage.imageName?.let { vm.ratingClick(it, rating) }
+        feedImage.imageName?.let { mainVm.ratingClick(it, rating) }
     }
 
     override fun onClickTag(feedImage: FeedImage) {

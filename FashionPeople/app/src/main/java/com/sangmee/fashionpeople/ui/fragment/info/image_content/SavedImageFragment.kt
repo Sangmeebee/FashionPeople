@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.sangmee.fashionpeople.R
+import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.databinding.FragmentSavedImageBinding
 import com.sangmee.fashionpeople.observer.MainViewModel
@@ -31,6 +32,8 @@ class SavedImageFragment : Fragment(), SaveImageAdapter.OnClickListener {
             }
         }).get(SavedImageViewModel::class.java)
     }
+    private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
+    val customId = GlobalApplication.prefs.getString("${loginType}_custom_id", "empty")
 
     private val mainVm by activityViewModels<MainViewModel>()
 
@@ -58,7 +61,13 @@ class SavedImageFragment : Fragment(), SaveImageAdapter.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        userId?.let { vm.callSavedImages(it) }
+        userId?.let {
+            if (it == customId) {
+                mainVm.getMySaveImage()
+            } else {
+                vm.callSavedImages(it)
+            }
+        }
         setRecyclerView()
     }
 
@@ -73,12 +82,18 @@ class SavedImageFragment : Fragment(), SaveImageAdapter.OnClickListener {
 
     private fun viewModelCallback() {
         vm.savedImages.observe(viewLifecycleOwner, Observer {
-            isEmpty = it.isEmpty()
-            binding.isEmpty = isEmpty
-            saveImageAdapter?.setFeedImages(it)
+            saveImageAdapter.setFeedImages(it)
         })
 
         vm.isComplete.observe(viewLifecycleOwner, Observer {
+            crossfade()
+        })
+
+        mainVm.saveImages.observe(viewLifecycleOwner, Observer {
+            saveImageAdapter.setFeedImages(it)
+        })
+
+        mainVm.callSaveImageComplete.observe(viewLifecycleOwner, Observer {
             crossfade()
         })
     }
