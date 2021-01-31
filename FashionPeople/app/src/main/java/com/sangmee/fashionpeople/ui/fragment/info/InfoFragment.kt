@@ -169,14 +169,14 @@ class InfoFragment : Fragment() {
         })
 
         vm.callActivity.observe(viewLifecycleOwner, Observer {
-            (activity as MainActivity).replaceFragmentUseBackStack(
+            (activity as MainActivity).replaceFragmentUseTagBackStack(
                 FollowFragment.newInstance(
                     it,
                     customId,
                     vm.userName.value!!,
                     vm.followerNum.value!!,
                     vm.followingNum.value!!
-                )
+                ), mainVm.tagName.value!!
             )
         })
 

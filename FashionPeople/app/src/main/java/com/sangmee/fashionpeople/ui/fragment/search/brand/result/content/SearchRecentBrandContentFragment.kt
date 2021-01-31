@@ -7,11 +7,13 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.databinding.FragmentSearchRecentBrandContentBinding
+import com.sangmee.fashionpeople.observer.MainViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.detail.DetailFragment
 
@@ -24,6 +26,8 @@ class SearchRecentBrandContentFragment : Fragment(),
     private var query: String? = null
     private lateinit var binding: FragmentSearchRecentBrandContentBinding
     private val vm by viewModels<SearchRecentBrandContentViewModel>()
+    private val mainVm by activityViewModels<MainViewModel>()
+
     private lateinit var searchRecentBrandContentAdapter: SearchRecentBrandContentAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,11 +100,11 @@ class SearchRecentBrandContentFragment : Fragment(),
 
     override fun onClickImage(feedImages: List<FeedImage>, position: Int) {
         vm.recentBrandImages.value?.let {
-            (activity as MainActivity).replaceFragmentUseBackStack(
+            (activity as MainActivity).replaceFragmentUseTagBackStack(
                 DetailFragment(
                     feedImages,
                     position
-                )
+                ), mainVm.tagName.value!!
             )
         }
     }

@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.google.android.material.tabs.TabLayoutMediator
@@ -26,6 +27,7 @@ import com.sangmee.fashionpeople.data.dataSource.remote.S3RemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.databinding.FragmentOtherBinding
 import com.sangmee.fashionpeople.observer.InfoViewModel
+import com.sangmee.fashionpeople.observer.MainViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.info.ReviseUserInfoActivity
 import com.sangmee.fashionpeople.ui.fragment.info.SettingActivity
@@ -49,6 +51,7 @@ class OtherFragment : Fragment() {
 
     lateinit var binding: FragmentOtherBinding
     private val infoVm: InfoViewModel by viewModels()
+    private val mainVm by activityViewModels<MainViewModel>()
     private lateinit var file: File
     private val s3RemoteDataSource: S3RemoteDataSource by lazy {
         S3RemoteDataSourceImpl(
@@ -118,14 +121,14 @@ class OtherFragment : Fragment() {
             btnForFollowing()
         })
         infoVm.callActivity.observe(viewLifecycleOwner, Observer {
-            (activity as MainActivity).replaceFragmentUseBackStack(
+            (activity as MainActivity).replaceFragmentUseTagBackStack(
                 FollowFragment.newInstance(
                     it,
                     customId!!,
                     infoVm.userName.value!!,
                     infoVm.followerNum.value!!,
                     infoVm.followingNum.value!!
-                )
+                ), mainVm.tagName.value!!
             )
         })
 

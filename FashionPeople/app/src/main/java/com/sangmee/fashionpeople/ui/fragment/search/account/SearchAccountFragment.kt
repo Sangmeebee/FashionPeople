@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FUser
+import com.sangmee.fashionpeople.observer.MainViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.info.other.OtherFragment
 import com.sangmee.fashionpeople.ui.fragment.search.SearchViewModel
@@ -22,6 +23,7 @@ class SearchAccountFragment : Fragment(), OnAccountItemSelectedInterface {
     private val recentSearchAccountAdapter by lazy { RecentSearchAccountAdapter(this) }
     private val vm by activityViewModels<SearchAccountViewModel>()
     private val searchVm by activityViewModels<SearchViewModel>()
+    private val mainVm by activityViewModels<MainViewModel>()
     private val compositeDisposable = CompositeDisposable()
 
     override fun onCreateView(
@@ -120,8 +122,8 @@ class SearchAccountFragment : Fragment(), OnAccountItemSelectedInterface {
 
     override fun onItemSelected(user: FUser) {
         user.id?.let {
-            (activity as MainActivity).replaceFragmentUseBackStack(
-                OtherFragment.newInstance(it)
+            (activity as MainActivity).replaceFragmentUseTagBackStack(
+                OtherFragment.newInstance(it), mainVm.tagName.value!!
             )
             vm.callUser(it)
         }

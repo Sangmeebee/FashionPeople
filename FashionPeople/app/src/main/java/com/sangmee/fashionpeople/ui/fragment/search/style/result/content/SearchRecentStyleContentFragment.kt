@@ -7,11 +7,13 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.databinding.FragmentSearchRecentStyleContentBinding
+import com.sangmee.fashionpeople.observer.MainViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.detail.DetailFragment
 
@@ -24,6 +26,7 @@ class SearchRecentStyleContentFragment : Fragment(),
     private var query: String? = null
     private lateinit var binding: FragmentSearchRecentStyleContentBinding
     private val vm by viewModels<SearchRecentStyleContentViewModel>()
+    private val mainVm by activityViewModels<MainViewModel>()
     private lateinit var searchRecentStyleContentAdapter: SearchRecentStyleContentAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,11 +99,11 @@ class SearchRecentStyleContentFragment : Fragment(),
 
     override fun onClickImage(feedImages: List<FeedImage>, position: Int) {
         vm.recentStyleImages.value?.let {
-            (activity as MainActivity).replaceFragmentUseBackStack(
+            (activity as MainActivity).replaceFragmentUseTagBackStack(
                 DetailFragment(
                     feedImages,
                     position
-                )
+                ), mainVm.tagName.value!!
             )
         }
     }

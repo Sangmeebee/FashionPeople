@@ -9,11 +9,10 @@ import com.bumptech.glide.Glide
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.databinding.ItemFeedImageExBinding
-import com.sangmee.fashionpeople.ui.MainActivity
-import com.sangmee.fashionpeople.ui.fragment.detail.DetailFragment
 import com.sangmee.fashionpeople.util.getRatingFromEvaluations
 
-class SaveImageAdapter : RecyclerView.Adapter<SaveImageAdapter.SaveImageViewHolder>() {
+class SaveImageAdapter(private val onClickListener: OnClickListener) :
+    RecyclerView.Adapter<SaveImageAdapter.SaveImageViewHolder>() {
     private val saveImageList = mutableListOf<FeedImage>()
 
     override fun onCreateViewHolder(
@@ -29,10 +28,7 @@ class SaveImageAdapter : RecyclerView.Adapter<SaveImageAdapter.SaveImageViewHold
         binding.noSelectStr = "선택안함"
         val viewHolder = SaveImageViewHolder(binding)
         viewHolder.itemView.setOnClickListener {
-
-            (parent.context as MainActivity).replaceFragmentUseBackStack(
-                DetailFragment(saveImageList, viewHolder.adapterPosition)
-            )
+            onClickListener.onClickItem(saveImageList, viewHolder.adapterPosition)
         }
 
         return viewHolder
@@ -49,6 +45,10 @@ class SaveImageAdapter : RecyclerView.Adapter<SaveImageAdapter.SaveImageViewHold
         saveImageList.clear()
         saveImageList.addAll(list)
         notifyDataSetChanged()
+    }
+
+    interface OnClickListener {
+        fun onClickItem(images: List<FeedImage>, position: Int)
     }
 
     inner class SaveImageViewHolder(private val binding: ItemFeedImageExBinding) :

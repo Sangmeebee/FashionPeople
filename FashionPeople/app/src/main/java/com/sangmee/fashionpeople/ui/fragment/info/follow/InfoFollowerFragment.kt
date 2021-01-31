@@ -7,12 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.observer.FollowViewModel
 import com.sangmee.fashionpeople.observer.InfoViewModel
+import com.sangmee.fashionpeople.observer.MainViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.info.other.OtherFragment
 import kotlinx.android.synthetic.main.fragment_info_follow.*
@@ -26,6 +28,8 @@ class InfoFollowerFragment(private val userId: String) : Fragment() {
     private val vm: FollowViewModel by viewModels(
         ownerProducer = { requireParentFragment() }
     )
+    private val mainVm by activityViewModels<MainViewModel>()
+
     private val followerAdapter by lazy {
         InfoFollowerAdapter({
             vm.isFollowingsFollower.value?.let { isFollowings ->
@@ -116,7 +120,7 @@ class InfoFollowerFragment(private val userId: String) : Fragment() {
         })
 
         vm.callActivity.observe(viewLifecycleOwner, Observer {
-            (activity as MainActivity).replaceFragmentUseBackStack(OtherFragment.newInstance(it))
+            (activity as MainActivity).replaceFragmentUseTagBackStack(OtherFragment.newInstance(it), mainVm.tagName.value!!)
         })
     }
 

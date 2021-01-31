@@ -8,14 +8,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.sangmee.fashionpeople.R
+import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.databinding.FragmentSavedImageBinding
+import com.sangmee.fashionpeople.observer.MainViewModel
 import com.sangmee.fashionpeople.observer.SavedImageViewModel
+import com.sangmee.fashionpeople.ui.MainActivity
+import com.sangmee.fashionpeople.ui.fragment.detail.DetailFragment
 
-class SavedImageFragment : Fragment() {
+class SavedImageFragment : Fragment(), SaveImageAdapter.OnClickListener {
 
     private var userId: String? = null
     private lateinit var binding: FragmentSavedImageBinding
@@ -27,8 +32,10 @@ class SavedImageFragment : Fragment() {
         }).get(SavedImageViewModel::class.java)
     }
 
+    private val mainVm by activityViewModels<MainViewModel>()
+
     private var isEmpty = false
-    private val saveImageAdapter by lazy { SaveImageAdapter() }
+    private val saveImageAdapter by lazy { SaveImageAdapter(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -117,6 +124,13 @@ class SavedImageFragment : Fragment() {
     override fun onDestroy() {
         vm.unBindDisposable()
         super.onDestroy()
+    }
+
+    override fun onClickItem(images: List<FeedImage>, position: Int) {
+        (activity as MainActivity).replaceFragmentUseTagBackStack(
+            DetailFragment(images, position),
+            mainVm.tagName.value!!
+        )
     }
 
     companion object {

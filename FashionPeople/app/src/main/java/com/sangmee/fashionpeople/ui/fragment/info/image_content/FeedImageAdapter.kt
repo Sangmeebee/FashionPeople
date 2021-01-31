@@ -9,8 +9,6 @@ import com.bumptech.glide.Glide
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.databinding.ItemFeedImageExBinding
-import com.sangmee.fashionpeople.ui.MainActivity
-import com.sangmee.fashionpeople.ui.fragment.detail.DetailFragment
 import com.sangmee.fashionpeople.util.getRatingFromEvaluations
 
 class FeedImageAdapter(private val onClick: OnClickListener, private val customId: String) :
@@ -27,15 +25,12 @@ class FeedImageAdapter(private val onClick: OnClickListener, private val customI
         binding.noSelectStr = "선택안함"
         val viewHolder = FeedImageViewHolder(binding)
         viewHolder.itemView.setOnClickListener {
-
-            (parent.context as MainActivity).replaceFragmentUseBackStack(
-                DetailFragment(feedImageList, viewHolder.adapterPosition)
-            )
+            onClick.onClickItem(feedImageList, viewHolder.adapterPosition)
         }
 
         viewHolder.itemView.setOnLongClickListener {
             feedImageList[viewHolder.adapterPosition].let {
-                if (it.user?.id == customId){
+                if (it.user?.id == customId) {
                     it.imageName?.let { imageName ->
                         onClick.onLongClick(imageName)
                     }
@@ -62,6 +57,7 @@ class FeedImageAdapter(private val onClick: OnClickListener, private val customI
 
     interface OnClickListener {
         fun onLongClick(imageName: String)
+        fun onClickItem(images: List<FeedImage>, position: Int)
     }
 
     inner class FeedImageViewHolder(private val binding: ItemFeedImageExBinding) :

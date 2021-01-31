@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -29,6 +30,7 @@ import com.sangmee.fashionpeople.data.model.Comment
 import com.sangmee.fashionpeople.data.repository.CommentRepositoryImpl
 import com.sangmee.fashionpeople.data.repository.FeedImageRepositoryImpl
 import com.sangmee.fashionpeople.databinding.FragmentCommentBinding
+import com.sangmee.fashionpeople.observer.MainViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.info.other.OtherFragment
 
@@ -56,6 +58,8 @@ class CommentDialogFragment : BottomSheetDialogFragment(), CommentRecyclerAdapte
             }
         }).get(CommentViewModel::class.java)
     }
+    private val mainVm by activityViewModels<MainViewModel>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -180,7 +184,7 @@ class CommentDialogFragment : BottomSheetDialogFragment(), CommentRecyclerAdapte
 
     override fun clickProfile(id: String) {
         OtherFragment.newInstance(id).let {
-            (activity as MainActivity).replaceFragmentUseBackStack(it)
+            (activity as MainActivity).replaceFragmentUseTagBackStack(it, mainVm.tagName.value!!)
         }
     }
 

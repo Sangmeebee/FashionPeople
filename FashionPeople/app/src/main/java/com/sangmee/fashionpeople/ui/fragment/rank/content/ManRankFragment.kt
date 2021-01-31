@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.databinding.FragmentManRankBinding
+import com.sangmee.fashionpeople.observer.MainViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.detail.DetailFragment
 import com.sangmee.fashionpeople.ui.fragment.rank.RankViewModel
@@ -25,6 +26,7 @@ class ManRankFragment : Fragment() {
     private lateinit var manRankAdapter: ManRankAdapter
     private val vm by activityViewModels<ManRankViewModel>()
     private val rankVm by activityViewModels<RankViewModel>()
+    private val mainVm by activityViewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,8 +100,8 @@ class ManRankFragment : Fragment() {
 
     private fun showDetail(feedImages: List<FeedImage>, position: Int) {
         Log.d("Sangmeebee", "showDetail")
-        (activity as MainActivity).replaceFragmentUseBackStack(
-            DetailFragment(feedImages, position)
+        (activity as MainActivity).replaceFragmentUseTagBackStack(
+            DetailFragment(feedImages, position), mainVm.tagName.value!!
         )
     }
 

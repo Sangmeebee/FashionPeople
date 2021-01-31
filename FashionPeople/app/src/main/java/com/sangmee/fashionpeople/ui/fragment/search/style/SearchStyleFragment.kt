@@ -1,8 +1,6 @@
 package com.sangmee.fashionpeople.ui.fragment.search.style
 
-import android.graphics.Point
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.sangmee.fashionpeople.R
+import com.sangmee.fashionpeople.observer.MainViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.search.SearchViewModel
 import com.sangmee.fashionpeople.ui.fragment.search.style.result.ResultSearchStyleFragment
@@ -22,6 +21,7 @@ class SearchStyleFragment : Fragment(), OnStyleItemSelectedInterface {
     private val popularSearchStyleAdapter by lazy { SearchStyleAdapter(this) }
     private val vm by activityViewModels<SearchStyleViewModel>()
     private val searchVm by activityViewModels<SearchViewModel>()
+    private val mainVm by activityViewModels<MainViewModel>()
     private val compositeDisposable = CompositeDisposable()
 
     override fun onResume() {
@@ -80,7 +80,7 @@ class SearchStyleFragment : Fragment(), OnStyleItemSelectedInterface {
 
     private fun initView() {
         searchVm.etText.value?.let {
-            if(it == "")
+            if (it == "")
                 ll_recent_container.apply {
                     visibility = View.VISIBLE
                     alpha = 1f
@@ -89,8 +89,8 @@ class SearchStyleFragment : Fragment(), OnStyleItemSelectedInterface {
     }
 
     override fun onItemSelected(query: String) {
-        (activity as MainActivity).replaceFragmentUseBackStack(
-            ResultSearchStyleFragment.newInstance(query)
+        (activity as MainActivity).replaceFragmentUseTagBackStack(
+            ResultSearchStyleFragment.newInstance(query), mainVm.tagName.value!!
         )
     }
 

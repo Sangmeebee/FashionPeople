@@ -1,5 +1,6 @@
 package com.sangmee.fashionpeople.observer
 
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sangmee.fashionpeople.data.GlobalApplication
@@ -7,6 +8,8 @@ import com.sangmee.fashionpeople.data.dataSource.remote.FUserRemoteDataSourceImp
 import com.sangmee.fashionpeople.data.dataSource.remote.SaveImageRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.data.model.FeedImage
+import com.sangmee.fashionpeople.data.model.stack.Stack
+import com.sangmee.fashionpeople.data.model.stack.StackImplement
 import com.sangmee.fashionpeople.data.repository.FUserRepositoryImpl
 import com.sangmee.fashionpeople.data.repository.SaveImageRepository
 import com.sangmee.fashionpeople.data.repository.SaveImageRepositoryImpl
@@ -28,6 +31,14 @@ class MainViewModel : ViewModel() {
 
     val user = MutableLiveData<FUser>()
     val saveImages = MutableLiveData<List<FeedImage>>()
+
+    val tagName = MutableLiveData<String>()
+
+    val homeFragments = Stack<Fragment>()
+    val rankFragments = Stack<Fragment>()
+    val searchFragments = Stack<Fragment>()
+    val infoFragments = Stack<Fragment>()
+    val tagList = Stack<String>()
 
     fun getUser() {
         userRepository.getFUser(userId)

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.sangmee.fashionpeople.R
+import com.sangmee.fashionpeople.observer.MainViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.search.SearchViewModel
 import com.sangmee.fashionpeople.ui.fragment.search.brand.result.ResultSearchBrandFragment
@@ -20,6 +21,7 @@ class SearchBrandFragment : Fragment(), OnBrandItemSelectedInterface {
     private val recentSearchBrandAdapter by lazy { SearchBrandAdapter(this) }
     private val vm by activityViewModels<SearchBrandViewModel>()
     private val searchVm by activityViewModels<SearchViewModel>()
+    private val mainVm by activityViewModels<MainViewModel>()
     private val compositeDisposable = CompositeDisposable()
 
 
@@ -89,8 +91,8 @@ class SearchBrandFragment : Fragment(), OnBrandItemSelectedInterface {
     }
 
     override fun onItemSelected(query: String) {
-        (activity as MainActivity).replaceFragmentUseBackStack(
-            ResultSearchBrandFragment.newInstance(query)
+        (activity as MainActivity).replaceFragmentUseTagBackStack(
+            ResultSearchBrandFragment.newInstance(query), mainVm.tagName.value!!
         )
     }
 

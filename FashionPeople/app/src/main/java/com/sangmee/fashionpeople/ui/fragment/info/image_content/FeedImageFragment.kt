@@ -10,13 +10,18 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
+import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.databinding.FragmentFeedImageBinding
 import com.sangmee.fashionpeople.observer.FeedImageViewModel
+import com.sangmee.fashionpeople.observer.MainViewModel
+import com.sangmee.fashionpeople.ui.MainActivity
+import com.sangmee.fashionpeople.ui.fragment.detail.DetailFragment
 
 class FeedImageFragment : Fragment(), FeedImageAdapter.OnClickListener {
 
@@ -29,6 +34,9 @@ class FeedImageFragment : Fragment(), FeedImageAdapter.OnClickListener {
             }
         }).get(FeedImageViewModel::class.java)
     }
+
+    private val mainVm by activityViewModels<MainViewModel>()
+
     private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
     val customId = GlobalApplication.prefs.getString("${loginType}_custom_id", "empty")
 
@@ -134,6 +142,13 @@ class FeedImageFragment : Fragment(), FeedImageAdapter.OnClickListener {
 
     override fun onLongClick(imageName: String) {
         callDialog(imageName)
+    }
+
+    override fun onClickItem(images: List<FeedImage>, position: Int) {
+        (activity as MainActivity).replaceFragmentUseTagBackStack(
+            DetailFragment(images, position),
+            mainVm.tagName.value!!
+        )
     }
 
     override fun onDestroy() {

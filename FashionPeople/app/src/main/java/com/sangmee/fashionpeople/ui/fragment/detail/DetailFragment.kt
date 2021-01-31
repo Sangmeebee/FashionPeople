@@ -148,7 +148,7 @@ class DetailFragment(private val feedImages: List<FeedImage>, private val positi
 
     override fun onClickProfile(feedImage: FeedImage) {
         feedImage.user?.id?.let { OtherFragment.newInstance(it) }?.let {
-            (activity as MainActivity).replaceFragmentUseBackStack(it)
+            (activity as MainActivity).replaceFragmentUseTagBackStack(it, mainVm.tagName.value!!)
         }
     }
 
