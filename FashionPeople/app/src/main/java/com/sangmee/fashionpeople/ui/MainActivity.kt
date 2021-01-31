@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -217,11 +216,7 @@ class MainActivity : AppCompatActivity() {
                 if (it.second - it.first < 2000L) {
                     //앱 종료
                     moveTaskToBack(true)
-                    if (Build.VERSION.SDK_INT >= 21) {
-                        finishAndRemoveTask()
-                    } else {
-                        finish()
-                    }
+                    finish()
                     android.os.Process.killProcess(android.os.Process.myPid())
                 } else {
                     Toast.makeText(this, "앱을 종료 하려면 한번 더 눌러주세요.", Toast.LENGTH_SHORT).show()
