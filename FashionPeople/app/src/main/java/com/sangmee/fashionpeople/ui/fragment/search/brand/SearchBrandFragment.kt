@@ -94,6 +94,7 @@ class SearchBrandFragment : Fragment(), OnBrandItemSelectedInterface {
         (activity as MainActivity).replaceFragmentUseTagBackStack(
             ResultSearchBrandFragment.newInstance(query), mainVm.tagName.value!!
         )
+        searchVm.closeKeyBoard.call()
     }
 
     override fun onPause() {

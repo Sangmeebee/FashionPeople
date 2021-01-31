@@ -1,12 +1,15 @@
 package com.sangmee.fashionpeople.ui.fragment.search
 
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.jakewharton.rxbinding4.widget.textChanges
@@ -53,6 +56,11 @@ class SearchFragment : Fragment() {
     }
 
     private fun initCallBack() {
+
+        vm.closeKeyBoard.observe(viewLifecycleOwner, Observer {
+            val imm = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(binding.etName.windowToken, 0)
+        })
 
         binding.etName.textChanges()
             .debounce(500L, TimeUnit.MILLISECONDS)

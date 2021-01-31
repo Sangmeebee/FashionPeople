@@ -92,6 +92,7 @@ class SearchStyleFragment : Fragment(), OnStyleItemSelectedInterface {
         (activity as MainActivity).replaceFragmentUseTagBackStack(
             ResultSearchStyleFragment.newInstance(query), mainVm.tagName.value!!
         )
+        searchVm.closeKeyBoard.call()
     }
 
     override fun onPause() {

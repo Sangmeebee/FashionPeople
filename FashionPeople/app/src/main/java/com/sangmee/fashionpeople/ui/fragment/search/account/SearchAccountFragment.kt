@@ -127,6 +127,7 @@ class SearchAccountFragment : Fragment(), OnAccountItemSelectedInterface {
             )
             vm.callUser(it)
         }
+        searchVm.closeKeyBoard.call()
     }
 
     override fun onClickCancelBtn(user: FUser) {
