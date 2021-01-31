@@ -177,11 +177,15 @@ class OtherFragment : Fragment() {
         customId?.let { customId ->
             infoVm.isFollowing.value?.let { isFollowing ->
                 if (isFollowing) {
-                    infoVm.deleteFollowing(customId)
+                    mainVm.deleteFollowing(customId)
+                    mainVm.followingNum.value =  mainVm.followingNum.value!! -1
+                    setMyBtn(customId, false)
                     infoVm.followerNum.value = infoVm.followerNum.value!! - 1
                     infoVm.isFollowing.value = !isFollowing
                 } else {
-                    infoVm.updateFollowing(customId)
+                    mainVm.updateFollowing(customId)
+                    mainVm.followingNum.value =  mainVm.followingNum.value!! +1
+                    setMyBtn(customId, true)
                     infoVm.followerNum.value = infoVm.followerNum.value!! + 1
                     infoVm.isFollowing.value = !isFollowing
                 }
@@ -189,6 +193,16 @@ class OtherFragment : Fragment() {
         }
     }
 
+    private fun setMyBtn(customId: String, isFollow: Boolean){
+        mainVm.isFollowingsFollowing.value?.let{
+            it[customId] = isFollow
+            mainVm.isFollowingsFollowing.value = it
+        }
+        mainVm.isFollowingsFollower.value?.let{
+            it[customId] = isFollow
+            mainVm.isFollowingsFollower.value = it
+        }
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

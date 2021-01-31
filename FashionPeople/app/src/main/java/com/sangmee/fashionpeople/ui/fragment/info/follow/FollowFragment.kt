@@ -6,9 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.databinding.FragmentFollowBinding
+import com.sangmee.fashionpeople.observer.MainViewModel
 import kotlinx.android.synthetic.main.fragment_follow.*
 
 private const val ARG_PARAM1 = "param1"
@@ -24,6 +28,7 @@ class FollowFragment : Fragment() {
     private var followingNum: Int? = null
     private var userName: String? = null
     private lateinit var binding: FragmentFollowBinding
+    private val mainVm by activityViewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +56,7 @@ class FollowFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setTabLayout()
-
+        initViewModel()
     }
 
     private fun setTabLayout() {
@@ -74,6 +79,15 @@ class FollowFragment : Fragment() {
             }
         }.attach()
 
+    }
+
+    private fun initViewModel(){
+        mainVm.followerNum.observe(viewLifecycleOwner, Observer {
+            tl_container.getTabAt(0)?.text = "팔로워 ${it}명"
+        })
+        mainVm.followingNum.observe(viewLifecycleOwner, Observer {
+            tl_container.getTabAt(1)?.text = "팔로잉 ${it}명"
+        })
     }
 
     companion object {

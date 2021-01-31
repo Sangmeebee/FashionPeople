@@ -8,6 +8,10 @@
         <variable
             name="vm"
             type="com.sangmee.fashionpeople.observer.InfoViewModel" />
+
+        <variable
+            name="mainVm"
+            type="com.sangmee.fashionpeople.observer.MainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -147,7 +151,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="@{String.valueOf(vm.followerNum)}"
+                                android:text="@{String.valueOf(mainVm.followerNum)}"
                                 android:textColor="@color/colorBlack"
                                 android:textSize="18dp"
                                 android:textStyle="bold" />
@@ -176,7 +180,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="@{String.valueOf(vm.followingNum)}"
+                                android:text="@{String.valueOf(mainVm.followingNum)}"
                                 android:textColor="@color/colorBlack"
                                 android:textSize="18dp"
                                 android:textStyle="bold" />

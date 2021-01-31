@@ -7,12 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.observer.FollowViewModel
 import com.sangmee.fashionpeople.observer.InfoViewModel
+import com.sangmee.fashionpeople.observer.MainViewModel
 import kotlinx.android.synthetic.main.fragment_info_follow.*
 import java.util.*
 
@@ -25,29 +27,10 @@ class InfoFollowingFragment(private val userId: String) : Fragment() {
         ownerProducer = { requireParentFragment() }
     )
 
-    private val followingAdapter by lazy {
-        InfoFollowingAdapter({
-            vm.isFollowingsFollowing.value?.let { isFollowings ->
-                isFollowings[it]?.let { isFollowing ->
-                    isFollowings[it] = !isFollowing
-                    if (isFollowing) {
-                        vm.deleteFollowing(it)
-                        infoVm.followingNum.value?.let { infoVm.followingNum.value = it - 1 }
-                    } else {
-                        vm.updateFollowing(it)
-                        infoVm.followingNum.value?.let { infoVm.followingNum.value = it + 1 }
-                    }
-                    vm.isFollowingsFollowing.value = isFollowings
-                }
-            }
+    private val mainVm by activityViewModels<MainViewModel>()
 
-            vm.isFollowingsFollower.value?.let { isFollowings ->
-                isFollowings[it]?.let { isFollowing ->
-                    isFollowings[it] = !isFollowing
-                    vm.isFollowingsFollower.value = isFollowings
-                }
-            }
-        }, { vm.callOtherActivity(it) })
+    private val followingAdapter by lazy {
+        InfoFollowingAdapter({ setBtn(it) }, { vm.callOtherActivity(it) })
     }
 
     override fun onCreateView(
@@ -60,8 +43,12 @@ class InfoFollowingFragment(private val userId: String) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setRecyclerView()
+        if (userId == mainVm.userId) {
+            mainVm.callFollowingsFollowing()
+        } else {
+            vm.callFollowingsFollowing(userId)
+        }
         vm.callFollowing(userId)
-        vm.callFollowingsFollowing(userId)
         viewModelCallback()
         et_userName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -104,16 +91,83 @@ class InfoFollowingFragment(private val userId: String) : Fragment() {
     private fun viewModelCallback() {
 
         vm.followings.observe(viewLifecycleOwner, Observer {
-            vm.followings.value?.let { followingAdapter.clearAndAddItems(it) }
+            followingAdapter.clearAndAddItems(it)
         })
         vm.isFollowingsFollowing.observe(viewLifecycleOwner, Observer {
             vm.isFollowingsFollowing.value?.let { followingAdapter.clearAndAddButtonType(it) }
+        })
+
+        mainVm.isFollowingsFollowing.observe(viewLifecycleOwner, Observer {
+            followingAdapter.clearAndAddButtonType(it)
         })
 
         vm.isFollowingComplete.observe(viewLifecycleOwner, Observer {
 
             crossfade()
         })
+    }
+
+    private fun setBtn(name: String) {
+        if (userId == mainVm.userId) {
+            mainVm.isFollowingsFollowing.value?.let { isFollowings ->
+                isFollowings[name]?.let { isFollowing ->
+                    isFollowings[name] = !isFollowing
+                    if (isFollowing) {
+                        mainVm.deleteFollowing(name)
+                        mainVm.followingNum.value?.let { mainVm.followingNum.value = it - 1 }
+                    } else {
+                        mainVm.updateFollowing(name)
+                        mainVm.followingNum.value?.let { mainVm.followingNum.value = it + 1 }
+                    }
+                    mainVm.isFollowingsFollowing.value = isFollowings
+                }
+            }
+
+            mainVm.isFollowingsFollower.value?.let { isFollowings ->
+                isFollowings[name]?.let { isFollowing ->
+                    isFollowings[name] = !isFollowing
+                    mainVm.isFollowingsFollower.value = isFollowings
+                }
+            }
+        } else {
+            vm.isFollowingsFollowing.value?.let { isFollowings ->
+                isFollowings[name]?.let { isFollowing ->
+                    isFollowings[name] = !isFollowing
+                    if (isFollowing) {
+                        mainVm.deleteFollowing(name)
+                        mainVm.isFollowingsFollowing.value?.let { followings ->
+                            followings[name] = false
+                            mainVm.isFollowingsFollowing.value = followings
+                        }
+                        infoVm.followingNum.value?.let { infoVm.followingNum.value = it - 1 }
+                        mainVm.followingNum.value?.let { mainVm.followingNum.value = it - 1 }
+                    } else {
+                        mainVm.updateFollowing(name)
+                        mainVm.isFollowingsFollowing.value?.let { followings ->
+                            followings[name] = true
+                            mainVm.isFollowingsFollowing.value = followings
+                        }
+                        infoVm.followingNum.value?.let { infoVm.followingNum.value = it + 1 }
+                        mainVm.followingNum.value?.let { mainVm.followingNum.value = it + 1 }
+                    }
+                    vm.isFollowingsFollowing.value = isFollowings
+                }
+            }
+
+            vm.isFollowingsFollower.value?.let { isFollowings ->
+                isFollowings[name]?.let { isFollowing ->
+                    isFollowings[name] = !isFollowing
+                    vm.isFollowingsFollower.value = isFollowings
+                }
+            }
+            mainVm.isFollowingsFollower.value?.let { isFs ->
+                isFs[name]?.let { isF ->
+                    isFs[name] = !isF
+                    mainVm.isFollowingsFollower.value = isFs
+                }
+            }
+        }
+
     }
 
     private fun crossfade() {

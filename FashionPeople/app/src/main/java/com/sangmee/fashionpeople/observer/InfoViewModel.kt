@@ -44,12 +44,12 @@ class InfoViewModel : ViewModel() {
     val followerNum = MutableLiveData(0)
     val followingNum = MutableLiveData(0)
     val callActivity = SingleLiveEvent<Int>()
-    val isFollowing = MutableLiveData<Boolean>()
     val followBtnEvent = SingleLiveEvent<Unit>()
     val galleryBtnEvent = SingleLiveEvent<Unit>()
     val profileReviseBtnEvent = SingleLiveEvent<Unit>()
     val behaviorSubject = BehaviorSubject.create<Unit>()
     var isCallProfileComplete = SingleLiveEvent<Any>()
+    val isFollowing = MutableLiveData<Boolean>()
 
     fun callProfile(userId: String) {
         //프로필 세팅
@@ -78,13 +78,7 @@ class InfoViewModel : ViewModel() {
             .subscribe { }.addTo(compositeDisposable)
     }
 
-    fun callIsFollowing(customId: String) {
-        followRepository.getIsFollowing(
-            this.customId,
-            customId,
-            { isFollowing.value = it },
-            { Log.e("CALL_IS_FOLLOWING_ERROR", it) })
-    }
+
 
     fun callOtherActivity(num: Int) {
         callActivity.value = num
@@ -94,16 +88,12 @@ class InfoViewModel : ViewModel() {
         followBtnEvent.value = Unit
     }
 
-    fun updateFollowing(followingId: String) {
-        followRepository.updateFollowing(customId, followingId, success = {
-            Log.d("ADD_FOLLOWING", "팔로잉 추가")
-        }, failed = { Log.d("ADD_FOLLOWING", "error") })
-    }
-
-    fun deleteFollowing(followingId: String) {
-        followRepository.deleteFollowing(customId, followingId, success = {
-            Log.d("DELETE_FOLLOWING", "팔로잉 삭제")
-        }, failed = { Log.d("DELETE_FOLLOWING", "error") })
+    fun callIsFollowing(customId: String) {
+        followRepository.getIsFollowing(
+            this.customId,
+            customId,
+            { isFollowing.value = it },
+            { Log.e("CALL_IS_FOLLOWING_ERROR", it) })
     }
 
     fun clickGalleryBtn() {

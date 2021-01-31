@@ -29,7 +29,6 @@ class FollowViewModel : ViewModel() {
 
     //팔로워의 팔로잉 여부
     val isFollowingsFollower = MutableLiveData<MutableMap<String, Boolean>>()
-
     //팔로잉의 팔로잉 여부
     val isFollowingsFollowing = MutableLiveData<MutableMap<String, Boolean>>()
     val callActivity = SingleLiveEvent<String>()
@@ -71,18 +70,6 @@ class FollowViewModel : ViewModel() {
             customId,
             { isFollowingsFollower.value = it as MutableMap<String, Boolean> },
             { Log.e("error", it) })
-    }
-
-    fun updateFollowing(followingId: String) {
-        followRepository.updateFollowing(customId, followingId, success = {
-            Log.d("ADD_FOLLOWING", "팔로잉 추가")
-        }, failed = { Log.d("ADD_FOLLOWING", "error") })
-    }
-
-    fun deleteFollowing(followingId: String) {
-        followRepository.deleteFollowing(customId, followingId, success = {
-            Log.d("DELETE_FOLLOWING", "팔로잉 삭제")
-        }, failed = { Log.d("DELETE_FOLLOWING", "error") })
     }
 
     fun callOtherActivity(customId: String) {

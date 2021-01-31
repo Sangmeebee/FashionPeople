@@ -64,6 +64,7 @@ class InfoFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_info, container, false)?.apply {
             binding = DataBindingUtil.bind(this)!!
             binding.vm = vm
+            binding.mainVm = mainVm
             binding.lifecycleOwner = viewLifecycleOwner
         }
     }
@@ -179,6 +180,16 @@ class InfoFragment : Fragment() {
                 ), mainVm.tagName.value!!
             )
         })
+
+        vm.followingNum.observe(viewLifecycleOwner, Observer {
+            Log.d("Sangmeebee", "followingNum : ${it}")
+            mainVm.followingNum.value = it
+        })
+        vm.followerNum.observe(viewLifecycleOwner, Observer {
+            Log.d("Sangmeebee", "followerNum : ${it}")
+            mainVm.followerNum.value = it
+        })
+
 
         vm.behaviorSubject
             .observeOn(Schedulers.io())

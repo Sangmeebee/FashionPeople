@@ -7,15 +7,13 @@ import androidx.lifecycle.ViewModel
 import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.data.dataSource.remote.FUserRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.dataSource.remote.FeedImageRemoteDataSourceImpl
+import com.sangmee.fashionpeople.data.dataSource.remote.FollowRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.dataSource.remote.SaveImageRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.Evaluation
 import com.sangmee.fashionpeople.data.model.FUser
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.data.model.stack.Stack
-import com.sangmee.fashionpeople.data.repository.FUserRepositoryImpl
-import com.sangmee.fashionpeople.data.repository.FeedImageRepositoryImpl
-import com.sangmee.fashionpeople.data.repository.SaveImageRepository
-import com.sangmee.fashionpeople.data.repository.SaveImageRepositoryImpl
+import com.sangmee.fashionpeople.data.repository.*
 import com.sangmee.fashionpeople.data.service.retrofit.RetrofitClient
 import com.sangmee.fashionpeople.util.SingleLiveEvent
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -30,7 +28,7 @@ class MainViewModel : ViewModel() {
         SaveImageRepositoryImpl(SaveImageRemoteDataSourceImpl())
     }
     private val feedImageRepository = FeedImageRepositoryImpl(FeedImageRemoteDataSourceImpl())
-
+    private val followRepository = FollowRepositoryImpl(FollowRemoteDataSourceImpl())
     private val userRepository = FUserRepositoryImpl(FUserRemoteDataSourceImpl())
 
     private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
@@ -51,6 +49,13 @@ class MainViewModel : ViewModel() {
     val searchFragments = Stack<Fragment>()
     val infoFragments = Stack<Fragment>()
     val tagList = Stack<String>()
+
+    //팔로워의 팔로잉 여부
+    val isFollowingsFollower = MutableLiveData<MutableMap<String, Boolean>>()
+    //팔로잉의 팔로잉 여부
+    val isFollowingsFollowing = MutableLiveData<MutableMap<String, Boolean>>()
+    val followerNum = MutableLiveData(0)
+    val followingNum = MutableLiveData(0)
 
     fun getUser() {
         userRepository.getFUser(userId)
@@ -108,6 +113,32 @@ class MainViewModel : ViewModel() {
                 updateFeedImage.value = it
             }, {
             }).addTo(compositeDisposable)
+    }
+
+    fun updateFollowing(followingId: String) {
+        followRepository.updateFollowing(userId, followingId, success = {
+            Log.d("ADD_FOLLOWING", "팔로잉 추가")
+        }, failed = { Log.d("ADD_FOLLOWING", "error") })
+    }
+
+    fun deleteFollowing(followingId: String) {
+        followRepository.deleteFollowing(userId, followingId, success = {
+            Log.d("DELETE_FOLLOWING", "팔로잉 삭제")
+        }, failed = { Log.d("DELETE_FOLLOWING", "error") })
+    }
+
+    fun callFollowingsFollowing() {
+        followRepository.getIsFollowingsFollowing(
+            userId, userId,
+            { isFollowingsFollowing.value = it as MutableMap<String, Boolean> },
+            { Log.e("error", it) })
+    }
+
+    fun callFollowingsFollower() {
+        followRepository.getIsFollowingsFollower(
+            userId, userId,
+            { isFollowingsFollower.value = it as MutableMap<String, Boolean> },
+            { Log.e("error", it) })
     }
 
     fun unBindViewModel() {
