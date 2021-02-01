@@ -109,12 +109,14 @@ class LoginDialogFragment : DialogFragment() {
             intent.flags =
                 Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
+            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         } else {
             val intent =
                 Intent(activity, UserInfoActivity::class.java)
                     .putExtra("custom_id", customId)
                     .putExtra("login_type", type)
             startActivity(intent)
+            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
     }
 

@@ -67,6 +67,7 @@ class SettingActivity : AppCompatActivity() {
                         GlobalApplication.prefs.remove("login_type")
                         setResult(Activity.RESULT_OK)
                         this@SettingActivity.finish()
+                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
                     }
                 }
                 .setNegativeButton("아니오") { dialog, which ->
@@ -96,6 +97,7 @@ class SettingActivity : AppCompatActivity() {
                     GlobalApplication.prefs.remove("login_type")
                     setResult(Activity.RESULT_OK)
                     this@SettingActivity.finish()
+                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
 
                 }
                 .setNegativeButton("아니오") { dialog, which ->
@@ -127,6 +129,7 @@ class SettingActivity : AppCompatActivity() {
                 GlobalApplication.prefs.remove("login_type")
                 setResult(Activity.RESULT_OK)
                 this@SettingActivity.finish()
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
             }
 
             override fun onSessionClosed(errorResult: ErrorResult?) {
