@@ -19,6 +19,7 @@ class EvaluateFeedAdapter :
     RecyclerView.Adapter<EvaluateFeedAdapter.EvaluateFeedViewHolder>() {
 
     private val items = mutableListOf<FeedImage>()
+    private val comments = mutableMapOf<String, Int>()
     private val saveItems = mutableListOf<String>()
     var onClickListener: OnClickListener? = null
 
@@ -86,7 +87,7 @@ class EvaluateFeedAdapter :
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onBindViewHolder(holder: EvaluateFeedViewHolder, position: Int) {
-        holder.bind(items[position], saveItems)
+        holder.bind(items[position], saveItems, comments)
     }
 
     override fun getItemCount(): Int = items.size
@@ -106,6 +107,12 @@ class EvaluateFeedAdapter :
         } else {
             notifyItemChanged(position)
         }
+    }
+
+    fun setCommentNum(list: Map<String, Int>) {
+        comments.clear()
+        comments.putAll(list)
+        notifyDataSetChanged()
     }
 
     fun updateItem(feedImage: FeedImage) {
@@ -140,8 +147,9 @@ class EvaluateFeedAdapter :
         val customId = GlobalApplication.prefs.getString("${loginType}_custom_id", "empty")
 
         @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-        fun bind(feedImage: FeedImage, saveItems: List<String>) {
+        fun bind(feedImage: FeedImage, saveItems: List<String>, comments: Map<String, Int>) {
             binding.feedImage = feedImage
+            binding.commentNum = comments[feedImage.imageName!!]
             binding.isSaved = feedImage.imageName in saveItems
 
             if (feedImage.evaluateNow) {

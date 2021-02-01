@@ -20,6 +20,10 @@
             name="isEvaluating"
             type="Boolean" />
 
+        <variable
+            name="commentNum"
+            type="Integer" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -67,7 +71,7 @@
             android:layout_marginBottom="30dp"
             android:background="@drawable/bg_oval_primary_dark"
             android:gravity="center"
-            android:text="@{String.valueOf(feedImage.comments.size())}"
+            android:text="@{String.valueOf(commentNum)}"
             android:textColor="@color/colorWhite"
             android:textSize="10dp"
             android:textStyle="bold"

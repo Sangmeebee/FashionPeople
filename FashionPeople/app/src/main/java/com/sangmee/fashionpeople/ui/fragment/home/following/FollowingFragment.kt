@@ -57,6 +57,14 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
         initObserve()
     }
 
+    private fun initCommentNum(feedImages: List<FeedImage>) {
+        val map =  mainVm.comments.value!!
+        for (feedImage in feedImages) {
+            feedImage.comments?.size?.let { map.put(feedImage.imageName!!, it) }
+        }
+        mainVm.comments.value = map
+    }
+
     private fun initViewPager() {
         followingFeedAdapter.onClickListener = this@FollowingFragment
         binding.vpFollowing.apply {
@@ -68,6 +76,9 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
 
     private fun initObserve() {
         vm.followingFeedImages.observe(viewLifecycleOwner, Observer {
+            //댓글 수 초기화
+            initCommentNum(it)
+            //feedImage adapter에 세팅
             if (!it.isNullOrEmpty()) {
                 binding.vpFollowing.visibility = View.VISIBLE
                 binding.tvEmptyResult.visibility = View.GONE
@@ -90,6 +101,10 @@ class FollowingFragment : Fragment(), FollowingFeedAdapter.OnClickListener {
             it?.let {
                 followingFeedAdapter.updateItem(it)
             }
+        })
+
+        mainVm.comments.observe(viewLifecycleOwner, Observer {
+            followingFeedAdapter.setCommentNum(it)
         })
 
         vm.followingLoadingComplete.observe(viewLifecycleOwner, Observer {
