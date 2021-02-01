@@ -27,6 +27,7 @@ import java.util.concurrent.TimeUnit
 class UserInfoActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityUserInfoBinding
+    private lateinit var loginType: String
     private lateinit var customId: String
     private var gender = "남"
     private val vm by viewModels<UserInfoVIewModel>()
@@ -43,6 +44,7 @@ class UserInfoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_user_info)
+        loginType = intent.getStringExtra("login_type")!!
         customId = intent.getStringExtra("custom_id")!!
         binding.customId = customId
         binding.gender = "남자"
@@ -95,8 +97,8 @@ class UserInfoActivity : AppCompatActivity() {
                 listOf(),
                 listOf()
             ), {
-                GlobalApplication.prefs.setString("login_type", "kakao")
-                GlobalApplication.prefs.setString("kakao_custom_id", customId)
+                GlobalApplication.prefs.setString("login_type", loginType)
+                GlobalApplication.prefs.setString("${loginType}_custom_id", customId)
                 val intent = Intent(this, MainActivity::class.java)
                 intent.flags =
                     Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
