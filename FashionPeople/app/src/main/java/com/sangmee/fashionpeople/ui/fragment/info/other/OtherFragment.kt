@@ -8,10 +8,11 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -29,11 +30,8 @@ import com.sangmee.fashionpeople.databinding.FragmentOtherBinding
 import com.sangmee.fashionpeople.observer.InfoViewModel
 import com.sangmee.fashionpeople.observer.MainViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
-import com.sangmee.fashionpeople.ui.fragment.info.ReviseUserInfoActivity
-import com.sangmee.fashionpeople.ui.fragment.info.SettingActivity
 import com.sangmee.fashionpeople.ui.fragment.info.follow.FollowFragment
 import com.sangmee.fashionpeople.ui.fragment.info.image_content.ViewPagerAdapter
-import com.sangmee.fashionpeople.ui.login.LoginActivity
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -95,10 +93,6 @@ class OtherFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setTabLayout()
         observeCallBack()
-
-        //툴바 세팅
-        setToolbar(binding.tbProfile)
-        setHasOptionsMenu(true)
     }
 
     private fun setTabLayout() {
@@ -132,27 +126,6 @@ class OtherFragment : Fragment() {
             )
         })
 
-        infoVm.profileReviseBtnEvent.observe(this, Observer {
-            if (isMe) {
-                val intent = Intent(context, ReviseUserInfoActivity::class.java)
-                intent.putExtra("nick_name", infoVm.userName.value.toString())
-                intent.putExtra("gender", infoVm.gender.value.toString())
-                intent.putExtra("height", infoVm.height.value)
-                intent.putExtra("weight", infoVm.weight.value)
-                infoVm.profileImgName.value?.let {
-                    intent.putExtra("profile_image_name", it)
-                }
-                infoVm.introduce.value?.let {
-                    intent.putExtra("introduce", it)
-                }
-                startActivityForResult(intent, REVISE_PROFILE)
-                requireActivity().overridePendingTransition(
-                    R.anim.slide_in_right,
-                    R.anim.slide_out_left
-                )
-            }
-        })
-
         infoVm.galleryBtnEvent.observe(this, Observer {
             if (isMe) {
                 selectProfileImage()
@@ -178,13 +151,13 @@ class OtherFragment : Fragment() {
             infoVm.isFollowing.value?.let { isFollowing ->
                 if (isFollowing) {
                     mainVm.deleteFollowing(customId)
-                    mainVm.followingNum.value =  mainVm.followingNum.value!! -1
+                    mainVm.followingNum.value = mainVm.followingNum.value!! - 1
                     setMyBtn(customId, false)
                     infoVm.followerNum.value = infoVm.followerNum.value!! - 1
                     infoVm.isFollowing.value = !isFollowing
                 } else {
                     mainVm.updateFollowing(customId)
-                    mainVm.followingNum.value =  mainVm.followingNum.value!! +1
+                    mainVm.followingNum.value = mainVm.followingNum.value!! + 1
                     setMyBtn(customId, true)
                     infoVm.followerNum.value = infoVm.followerNum.value!! + 1
                     infoVm.isFollowing.value = !isFollowing
@@ -193,12 +166,12 @@ class OtherFragment : Fragment() {
         }
     }
 
-    private fun setMyBtn(customId: String, isFollow: Boolean){
-        mainVm.isFollowingsFollowing.value?.let{
+    private fun setMyBtn(customId: String, isFollow: Boolean) {
+        mainVm.isFollowingsFollowing.value?.let {
             it[customId] = isFollow
             mainVm.isFollowingsFollowing.value = it
         }
-        mainVm.isFollowingsFollower.value?.let{
+        mainVm.isFollowingsFollower.value?.let {
             it[customId] = isFollow
             mainVm.isFollowingsFollower.value = it
         }
@@ -206,21 +179,6 @@ class OtherFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == LOGOUT_CODE && resultCode == AppCompatActivity.RESULT_OK) {
-            activity?.finish()
-            val intent = Intent(context, LoginActivity::class.java)
-            startActivity(intent)
-        }
-
-        if (requestCode == REVISE_PROFILE && resultCode == AppCompatActivity.RESULT_OK) {
-            infoVm.userName.value = data?.getStringExtra("nick_name")
-            infoVm.gender.value = data?.getStringExtra("gender")
-            infoVm.introduce.value = data?.getStringExtra("introduce")
-            infoVm.height.value = data?.getIntExtra("height", 0)
-            infoVm.weight.value = data?.getIntExtra("weight", 0)
-            binding.tvIntroduce.isVisible = !infoVm.introduce.value.isNullOrEmpty()
-        }
 
         if (requestCode == CHOOSE_PROFILEIMG) {
             if (resultCode == AppCompatActivity.RESULT_OK) {
@@ -331,38 +289,8 @@ class OtherFragment : Fragment() {
         }
     }
 
-    //메뉴 버튼 세팅
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.setting_toolbar, menu)
-    }
-
-    //메뉴 버튼 이벤트
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_setting -> {
-                val intent = Intent(context, SettingActivity::class.java)
-                startActivityForResult(intent, LOGOUT_CODE)
-                requireActivity().overridePendingTransition(
-                    R.anim.slide_in_right,
-                    R.anim.slide_out_left
-                )
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    private fun setToolbar(toolbar: Toolbar) {
-        (activity as MainActivity).setSupportActionBar(toolbar)
-        (activity as MainActivity).supportActionBar?.run {
-            setDisplayShowTitleEnabled(false)
-        }
-    }
-
     companion object {
-        private const val REVISE_PROFILE = 220
         private const val CHOOSE_PROFILEIMG = 200
-        private const val LOGOUT_CODE = 210
 
 
         @JvmStatic

@@ -21,6 +21,7 @@ import com.sangmee.fashionpeople.observer.MainViewModel
 import com.sangmee.fashionpeople.ui.add.TagActivity
 import com.sangmee.fashionpeople.ui.fragment.home.HomeFragment
 import com.sangmee.fashionpeople.ui.fragment.info.InfoFragment
+import com.sangmee.fashionpeople.ui.fragment.info.other.OtherFragment
 import com.sangmee.fashionpeople.ui.fragment.rank.RankFragment
 import com.sangmee.fashionpeople.ui.fragment.search.SearchFragment
 import com.theartofdev.edmodo.cropper.CropImage
@@ -184,6 +185,7 @@ class MainActivity : AppCompatActivity() {
             Log.d("Sangmeebee", tag)
             val fragment = map[tag]?.peek()!!
             showRecentHideOldFragment(fragment, oldFragment)
+
         }
         updateBottomMenu(tag)
     }

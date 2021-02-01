@@ -24,20 +24,12 @@
         android:layout_height="match_parent"
         android:background="@color/colorWhite">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/tb_profile"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorWhite"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/cl_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize"
             android:visibility="invisible"
-            app:layout_constraintTop_toBottomOf="@id/tb_profile">
+            app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/ab_container"
@@ -49,6 +41,7 @@
                 <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingTop="40dp"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
