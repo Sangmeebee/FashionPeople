@@ -52,10 +52,14 @@ class MainViewModel : ViewModel() {
 
     //팔로워의 팔로잉 여부
     val isFollowingsFollower = MutableLiveData<MutableMap<String, Boolean>>()
+
     //팔로잉의 팔로잉 여부
     val isFollowingsFollowing = MutableLiveData<MutableMap<String, Boolean>>()
     val followerNum = MutableLiveData(0)
     val followingNum = MutableLiveData(0)
+
+    //댓글 개수
+    val comments = MutableLiveData<MutableMap<String, Int>>(mutableMapOf())
 
     fun getUser() {
         userRepository.getFUser(userId)

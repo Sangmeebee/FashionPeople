@@ -7,22 +7,15 @@ import androidx.lifecycle.ViewModel
 import com.sangmee.fashionpeople.data.model.Comment
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.data.repository.CommentRepository
-import com.sangmee.fashionpeople.data.repository.FeedImageRepository
 import com.sangmee.fashionpeople.util.SingleLiveEvent
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.schedulers.Schedulers
-import io.reactivex.rxjava3.subjects.BehaviorSubject
 
-class CommentViewModel(
-    private val commentRepository: CommentRepository,
-    private val feedImageRepository: FeedImageRepository
-) : ViewModel() {
+class CommentViewModel(private val commentRepository: CommentRepository) : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
-
-    val imageNameSubject = BehaviorSubject.create<String>()
 
     private val _comments = MutableLiveData<List<Comment>>()
     val comments: LiveData<List<Comment>>
@@ -38,20 +31,7 @@ class CommentViewModel(
 
     val deleteComplete = SingleLiveEvent<Any>()
 
-    init {
-        imageNameSubject
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                getImageComments(it)
-                Log.d("Sangmeebee", it.toString())
-            }, {
-
-            }).addTo(compositeDisposable)
-    }
-
-
-    private fun getImageComments(imageName: String) {
+    fun getImageComments(imageName: String) {
         commentRepository.getImageComments(imageName)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

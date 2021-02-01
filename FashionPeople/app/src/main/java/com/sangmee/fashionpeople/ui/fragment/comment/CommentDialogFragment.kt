@@ -25,10 +25,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.data.dataSource.remote.CommentRemoteDataSourceImpl
-import com.sangmee.fashionpeople.data.dataSource.remote.FeedImageRemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.Comment
 import com.sangmee.fashionpeople.data.repository.CommentRepositoryImpl
-import com.sangmee.fashionpeople.data.repository.FeedImageRepositoryImpl
 import com.sangmee.fashionpeople.databinding.FragmentCommentBinding
 import com.sangmee.fashionpeople.observer.MainViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
@@ -51,10 +49,7 @@ class CommentDialogFragment : BottomSheetDialogFragment(), CommentRecyclerAdapte
     private val viewModel: CommentViewModel by lazy {
         ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return CommentViewModel(
-                    commentRepository = CommentRepositoryImpl(CommentRemoteDataSourceImpl()),
-                    feedImageRepository = FeedImageRepositoryImpl(FeedImageRemoteDataSourceImpl())
-                ) as T
+                return CommentViewModel(CommentRepositoryImpl(CommentRemoteDataSourceImpl())) as T
             }
         }).get(CommentViewModel::class.java)
     }
@@ -108,7 +103,7 @@ class CommentDialogFragment : BottomSheetDialogFragment(), CommentRecyclerAdapte
 
     private fun initView() {
         imageName?.let { imageName ->
-            viewModel.imageNameSubject.onNext(imageName)
+            viewModel.getImageComments(imageName)
             binding.ivSend.setOnClickListener {
                 binding.etCommentInput.text?.let {
                     if (it.isEmpty()) {
@@ -156,6 +151,11 @@ class CommentDialogFragment : BottomSheetDialogFragment(), CommentRecyclerAdapte
     private fun initObserve() {
         viewModel.comments.observe(viewLifecycleOwner, Observer {
             commentRecyclerView.setComments(it)
+            //Detail화면 댓글 개수 동기화
+            mainVm.comments.value?.let { map ->
+                map[imageName!!] = it.size
+                mainVm.comments.value = map
+            }
         })
 
 

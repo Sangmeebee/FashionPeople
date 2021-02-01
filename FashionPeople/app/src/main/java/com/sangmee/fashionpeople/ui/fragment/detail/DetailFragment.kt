@@ -1,7 +1,6 @@
 package com.sangmee.fashionpeople.ui.fragment.detail
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,9 +48,18 @@ class DetailFragment(private val feedImages: List<FeedImage>, private val positi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initCommentNum()
         initViewPager()
         initView()
         initObserve()
+    }
+
+    private fun initCommentNum() {
+        val map =  mainVm.comments.value!!
+        for (feedImage in feedImages) {
+            feedImage.comments?.size?.let { map.put(feedImage.imageName!!, it) }
+        }
+        mainVm.comments.value = map
     }
 
     private fun initViewPager() {
@@ -102,8 +110,12 @@ class DetailFragment(private val feedImages: List<FeedImage>, private val positi
             detailAdapter.setSaveItems(saveImages, pos)
         })
 
-        mainVm.updateFeedImage.observe(this, Observer {
+        mainVm.updateFeedImage.observe(viewLifecycleOwner, Observer {
             detailAdapter.updateItem(it)
+        })
+
+        mainVm.comments.observe(viewLifecycleOwner, Observer {
+            detailAdapter.setCommentNum(it)
         })
     }
 
