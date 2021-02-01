@@ -95,8 +95,9 @@ class UserInfoActivity : AppCompatActivity() {
                 listOf(),
                 listOf()
             ), {
-                val intent = Intent(this, MainActivity::class.java)
+                GlobalApplication.prefs.setString("login_type", "kakao")
                 GlobalApplication.prefs.setString("kakao_custom_id", customId)
+                val intent = Intent(this, MainActivity::class.java)
                 intent.flags =
                     Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)

@@ -32,6 +32,7 @@ import com.sangmee.fashionpeople.observer.MainViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.info.follow.FollowFragment
 import com.sangmee.fashionpeople.ui.fragment.info.image_content.ViewPagerAdapter
+import com.sangmee.fashionpeople.ui.login.LoginDialogFragment
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -112,18 +113,26 @@ class OtherFragment : Fragment() {
 
     private fun observeCallBack() {
         infoVm.followBtnEvent.observe(viewLifecycleOwner, Observer {
-            btnForFollowing()
+            if (mainVm.userId == "empty") {
+                LoginDialogFragment().show(parentFragmentManager, "LoginDialog")
+            } else {
+                btnForFollowing()
+            }
         })
         infoVm.callActivity.observe(viewLifecycleOwner, Observer {
-            (activity as MainActivity).replaceFragmentUseTagBackStack(
-                FollowFragment.newInstance(
-                    it,
-                    customId!!,
-                    infoVm.userName.value!!,
-                    infoVm.followerNum.value!!,
-                    infoVm.followingNum.value!!
-                ), mainVm.tagName.value!!
-            )
+            if (mainVm.userId == "empty") {
+                LoginDialogFragment().show(parentFragmentManager, "LoginDialog")
+            } else {
+                (activity as MainActivity).replaceFragmentUseTagBackStack(
+                    FollowFragment.newInstance(
+                        it,
+                        customId!!,
+                        infoVm.userName.value!!,
+                        infoVm.followerNum.value!!,
+                        infoVm.followingNum.value!!
+                    ), mainVm.tagName.value!!
+                )
+            }
         })
 
         infoVm.galleryBtnEvent.observe(this, Observer {

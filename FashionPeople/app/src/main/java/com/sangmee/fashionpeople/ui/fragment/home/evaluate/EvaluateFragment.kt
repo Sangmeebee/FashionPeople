@@ -3,7 +3,6 @@ package com.sangmee.fashionpeople.ui.fragment.home.evaluate
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import com.sangmee.fashionpeople.R
@@ -24,6 +22,7 @@ import com.sangmee.fashionpeople.ui.fragment.grade.GradeDialogFragment
 import com.sangmee.fashionpeople.ui.fragment.home.HomeViewModel
 import com.sangmee.fashionpeople.ui.fragment.info.other.OtherFragment
 import com.sangmee.fashionpeople.ui.fragment.tag.TagDialogFragment
+import com.sangmee.fashionpeople.ui.login.LoginDialogFragment
 import com.willy.ratingbar.BaseRatingBar
 
 class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
@@ -59,7 +58,7 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
     }
 
     private fun initCommentNum(feedImages: List<FeedImage>) {
-        val map =  mainVm.comments.value!!
+        val map = mainVm.comments.value!!
         for (feedImage in feedImages) {
             feedImage.comments?.size?.let { map.put(feedImage.imageName!!, it) }
         }
@@ -130,7 +129,7 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
 
     private fun initIsExist() {
         homeVm.evaluatedIsAdded.value?.let {
-            if(it){
+            if (it) {
                 binding.clContainer.visibility = View.VISIBLE
                 binding.pbLoading.visibility = View.GONE
             }
@@ -178,7 +177,11 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
     }
 
     override fun onClickComment(imageName: String) {
-        showCommentFragment(imageName)
+        if (mainVm.userId == "empty") {
+            LoginDialogFragment().show(parentFragmentManager, "LoginDialog")
+        } else {
+            showCommentFragment(imageName)
+        }
     }
 
     override fun onClickGrade(feedImage: FeedImage) {
@@ -186,8 +189,12 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
     }
 
     override fun onClickSave(imageName: String, position: Int) {
-        mainVm.postSaveImage(imageName)
-        pos = position
+        if (mainVm.userId == "empty") {
+            LoginDialogFragment().show(parentFragmentManager, "LoginDialog")
+        } else {
+            mainVm.postSaveImage(imageName)
+            pos = position
+        }
     }
 
     override fun onClickDelete(imageName: String, position: Int) {
@@ -207,7 +214,12 @@ class EvaluateFragment : Fragment(), EvaluateFeedAdapter.OnClickListener {
         fromUser: Boolean,
         feedImage: FeedImage
     ) {
-        feedImage.imageName?.let { mainVm.ratingClick(it, rating) }
+        if (mainVm.userId == "empty") {
+            ratingBar?.setFilledDrawableRes(R.drawable.star)
+            LoginDialogFragment().show(parentFragmentManager, "LoginDialog")
+        } else {
+            feedImage.imageName?.let { mainVm.ratingClick(it, rating) }
+        }
     }
 
     override fun onClickTag(feedImage: FeedImage) {

@@ -32,7 +32,7 @@ class MainViewModel : ViewModel() {
     private val userRepository = FUserRepositoryImpl(FUserRemoteDataSourceImpl())
 
     private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
-    val userId = GlobalApplication.prefs.getString("${loginType}_custom_id", "empty")
+    var userId = GlobalApplication.prefs.getString("${loginType}_custom_id", "empty")
 
     val user = MutableLiveData<FUser>()
     val saveImages = MutableLiveData<List<FeedImage>>()

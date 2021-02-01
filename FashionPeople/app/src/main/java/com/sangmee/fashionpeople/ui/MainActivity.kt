@@ -14,6 +14,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import com.kakao.auth.Session
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.data.model.stack.Stack
@@ -21,9 +22,9 @@ import com.sangmee.fashionpeople.observer.MainViewModel
 import com.sangmee.fashionpeople.ui.add.TagActivity
 import com.sangmee.fashionpeople.ui.fragment.home.HomeFragment
 import com.sangmee.fashionpeople.ui.fragment.info.InfoFragment
-import com.sangmee.fashionpeople.ui.fragment.info.other.OtherFragment
 import com.sangmee.fashionpeople.ui.fragment.rank.RankFragment
 import com.sangmee.fashionpeople.ui.fragment.search.SearchFragment
+import com.sangmee.fashionpeople.ui.login.LoginDialogFragment
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -50,7 +51,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         initViewModel()
-
         navigationView.post { navigationView.selectedItemId = R.id.homeItem }
         navigationView.setOnNavigationItemSelectedListener {
 
@@ -64,15 +64,23 @@ class MainActivity : AppCompatActivity() {
                     setTagList("rank")
                 }
                 R.id.addItem -> {
-                    addPhoto()
+                    if (mainVm.userId == "empty") {
+                        LoginDialogFragment().show(supportFragmentManager, "LoginDialog")
+                    } else {
+                        addPhoto()
+                    }
                 }
                 R.id.searchItem -> {
                     changeFragment("search", SearchFragment(), mainVm.searchFragments)
                     setTagList("search")
                 }
                 R.id.infoItem -> {
-                    changeFragment("info", InfoFragment(), mainVm.infoFragments)
-                    setTagList("info")
+                    if (mainVm.userId == "empty") {
+                        LoginDialogFragment().show(supportFragmentManager, "LoginDialog")
+                    } else {
+                        changeFragment("info", InfoFragment(), mainVm.infoFragments)
+                        setTagList("info")
+                    }
                 }
             }
             true
@@ -190,7 +198,7 @@ class MainActivity : AppCompatActivity() {
         updateBottomMenu(tag)
     }
 
-    private fun updateBottomMenu(tag: String) {
+    fun updateBottomMenu(tag: String) {
 
         if (tag == "home") {
             mainVm.tagName.value = "home"
@@ -227,6 +235,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        //카카오톡 로그인 결과
+        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
+            Log.i("Log", "session get current session")
+            return
+        }
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CHOOSE_PROFILE_IMG && resultCode == RESULT_OK && data != null) {
             try {

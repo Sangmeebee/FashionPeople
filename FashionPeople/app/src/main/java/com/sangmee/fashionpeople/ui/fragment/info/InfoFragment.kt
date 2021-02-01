@@ -32,7 +32,7 @@ import com.sangmee.fashionpeople.observer.MainViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.info.follow.FollowFragment
 import com.sangmee.fashionpeople.ui.fragment.info.image_content.ViewPagerAdapter
-import com.sangmee.fashionpeople.ui.login.LoginActivity
+import com.sangmee.fashionpeople.ui.login.LoginDialogFragment
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -107,8 +107,9 @@ class InfoFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == LOGOUT_CODE && resultCode == AppCompatActivity.RESULT_OK) {
-            activity?.finish()
-            val intent = Intent(context, LoginActivity::class.java)
+            val intent = Intent(activity, MainActivity::class.java)
+            intent.flags =
+                Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }
 
@@ -170,15 +171,19 @@ class InfoFragment : Fragment() {
         })
 
         vm.callActivity.observe(viewLifecycleOwner, Observer {
-            (activity as MainActivity).replaceFragmentUseTagBackStack(
-                FollowFragment.newInstance(
-                    it,
-                    customId,
-                    vm.userName.value!!,
-                    vm.followerNum.value!!,
-                    vm.followingNum.value!!
-                ), mainVm.tagName.value!!
-            )
+            if (mainVm.userId == "empty") {
+                LoginDialogFragment().show(parentFragmentManager, "LoginDialog")
+            } else {
+                (activity as MainActivity).replaceFragmentUseTagBackStack(
+                    FollowFragment.newInstance(
+                        it,
+                        customId,
+                        vm.userName.value!!,
+                        vm.followerNum.value!!,
+                        vm.followingNum.value!!
+                    ), mainVm.tagName.value!!
+                )
+            }
         })
 
         vm.followingNum.observe(viewLifecycleOwner, Observer {

@@ -11,8 +11,10 @@ import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayout
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.databinding.FragmentHomeBinding
+import com.sangmee.fashionpeople.observer.MainViewModel
 import com.sangmee.fashionpeople.ui.fragment.home.evaluate.EvaluateFragment
 import com.sangmee.fashionpeople.ui.fragment.home.following.FollowingFragment
+import com.sangmee.fashionpeople.ui.login.LoginDialogFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
@@ -23,6 +25,7 @@ class HomeFragment : Fragment() {
     private lateinit var evaluateFragment: EvaluateFragment
     private lateinit var followingFragment: FollowingFragment
     private val vm by activityViewModels<HomeViewModel>()
+    private val mainVm by activityViewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,15 +84,20 @@ class HomeFragment : Fragment() {
                         vm.homePage.value = 0
                     }
                     else -> {
-                        vm.followingIsAdded.value?.let { isAdded ->
-                            if (!isAdded) {
-                                manager.beginTransaction().add(R.id.fl_home, followingFragment)
-                                    .commit()
+                        if (mainVm.userId == "empty") {
+                            LoginDialogFragment().show(parentFragmentManager, "LoginDialog")
+                            tl_home.getTabAt(0)?.select()
+                        } else {
+                            vm.followingIsAdded.value?.let { isAdded ->
+                                if (!isAdded) {
+                                    manager.beginTransaction().add(R.id.fl_home, followingFragment)
+                                        .commit()
+                                }
                             }
+                            manager.beginTransaction().show(followingFragment).commit()
+                            manager.beginTransaction().hide(evaluateFragment).commit()
+                            vm.homePage.value = 1
                         }
-                        manager.beginTransaction().show(followingFragment).commit()
-                        manager.beginTransaction().hide(evaluateFragment).commit()
-                        vm.homePage.value = 1
                     }
                 }
             }
