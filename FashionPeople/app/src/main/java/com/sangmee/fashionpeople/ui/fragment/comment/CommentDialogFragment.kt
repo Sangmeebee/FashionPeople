@@ -183,6 +183,7 @@ class CommentDialogFragment : BottomSheetDialogFragment(), CommentRecyclerAdapte
     }
 
     override fun clickProfile(id: String) {
+        this.dismiss()
         OtherFragment.newInstance(id).let {
             (activity as MainActivity).replaceFragmentUseTagBackStack(it, mainVm.tagName.value!!)
         }
