@@ -13,10 +13,17 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import com.facebook.AccessToken
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -63,6 +70,10 @@ class LoginDialogFragment : DialogFragment() {
     }
     private lateinit var googleSignInClient: GoogleSignInClient
 
+    //페이스북 로그인
+    private val callbackManager by lazy { CallbackManager.Factory.create() }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //배경화면 클릭해도 dismiss 안되게 설정
@@ -93,6 +104,10 @@ class LoginDialogFragment : DialogFragment() {
         publishSubject.onNext("kakao")
     }
 
+    fun clickFacebookLoginBtn() {
+        publishSubject.onNext("facebook")
+    }
+
     fun clickCancelBtn() {
         dismiss()
         mainVm.tagName.value?.let { tag -> (activity as MainActivity).updateBottomMenu(tag) }
@@ -109,14 +124,20 @@ class LoginDialogFragment : DialogFragment() {
             intent.flags =
                 Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            requireActivity().overridePendingTransition(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            )
         } else {
             val intent =
                 Intent(activity, UserInfoActivity::class.java)
                     .putExtra("custom_id", customId)
                     .putExtra("login_type", type)
             startActivity(intent)
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            requireActivity().overridePendingTransition(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            )
         }
     }
 
@@ -135,6 +156,8 @@ class LoginDialogFragment : DialogFragment() {
                 Log.w("Sangmeebee", "Google sign in failed", e)
             }
         }
+        //페이스북 로그인
+        callbackManager?.onActivityResult(requestCode, resultCode, data)
     }
 
     //구글 로그인
@@ -168,6 +191,54 @@ class LoginDialogFragment : DialogFragment() {
         }, failed = { Log.e("fashionPeopleError", it) })
     }
 
+    //페이스북 로그인
+    private fun loginFacebook() {
+        LoginManager.getInstance().logInWithReadPermissions(this, listOf("public_profile", "email"))
+        LoginManager.getInstance().registerCallback(callbackManager, object :
+            FacebookCallback<LoginResult> {
+            override fun onSuccess(result: LoginResult?) {
+                handleFacebookAccessToken(result?.accessToken!!)
+            }
+
+            override fun onCancel() {
+                Log.i("Sangmeebee", "handleFacebookAccessToken:cancel")
+            }
+
+            override fun onError(error: FacebookException?) {
+                Log.e("Sangmeebee", "handleFacebookAccessToken:error")
+            }
+        })
+    }
+
+    private fun handleFacebookAccessToken(token: AccessToken) {
+        Log.d("Sangmeebee", "handleFacebookAccessToken:$token")
+
+        val credential = FacebookAuthProvider.getCredential(token.token)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener(requireActivity()) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d("Sangmeebee", "signInWithCredential:success")
+                    val user = auth.currentUser
+                    user?.let {
+                        customId = if(it.email == null) {
+                            it.phoneNumber!!
+                        } else {
+                            it.email!!
+                        }
+                    }
+                    checkAndSave(customId, "facebook")
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w("Sangmeebee", "signInWithCredential:failure", task.exception)
+                    Toast.makeText(
+                        context, "Authentication failed.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+    }
+
     private fun initCallBack() {
         publishSubject.throttleFirst(5000L, TimeUnit.MILLISECONDS)
             .subscribe {
@@ -180,6 +251,10 @@ class LoginDialogFragment : DialogFragment() {
                     Toast.makeText(context, "구글로 로그인합니다.", Toast.LENGTH_SHORT).show()
                     val signInIntent = googleSignInClient.signInIntent
                     startActivityForResult(signInIntent, RC_SIGN_IN)
+                }
+                if (it == "facebook") {
+                    Toast.makeText(context, "페이스북으로 로그인합니다.", Toast.LENGTH_SHORT).show()
+                    loginFacebook()
                 }
             }.addTo(compositeDisposable)
 

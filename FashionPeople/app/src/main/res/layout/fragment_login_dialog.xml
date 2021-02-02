@@ -52,6 +52,14 @@
                 app:srcCompat="@drawable/ic_google_login" />
 
             <ImageView
+                android:id="@+id/iv_facebook_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:onClick="@{() -> dialog.clickFacebookLoginBtn()}"
+                app:srcCompat="@drawable/ic_facebook_login" />
+
+            <ImageView
                 android:id="@+id/iv_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

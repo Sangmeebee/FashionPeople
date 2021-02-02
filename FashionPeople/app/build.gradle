@@ -128,6 +128,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:19.4.0'
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
 
+    //facebook
+    implementation 'com.facebook.android:facebook-android-sdk:4.42.0'
+
     //SimpleRatingBar
     implementation 'com.github.ome450901:SimpleRatingBar:1.5.1'
 }

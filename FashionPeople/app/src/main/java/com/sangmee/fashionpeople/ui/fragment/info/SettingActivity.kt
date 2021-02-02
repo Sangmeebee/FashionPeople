@@ -55,7 +55,7 @@ class SettingActivity : AppCompatActivity() {
                     if (loginType == "kakao") {
                         withdrawalAtKakao()
                     }
-                    if (loginType == "google") {
+                    else {
                         FirebaseAuth.getInstance().currentUser?.delete()
                         vm.deleteUser(customId)
                         Toast.makeText(
@@ -84,8 +84,7 @@ class SettingActivity : AppCompatActivity() {
                                 override fun onCompleteLogout() {
                                 }
                             })
-                    }
-                    if (loginType == "google") {
+                    } else {
                         Firebase.auth.signOut()
                     }
                     Toast.makeText(

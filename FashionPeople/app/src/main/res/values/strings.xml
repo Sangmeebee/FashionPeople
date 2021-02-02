@@ -40,4 +40,6 @@
     <string name="authentication_mail">본인인증이 완료되지 않았습니다\n메일을 확인해주세요</string>
     <string name="complete_evaluation_text">소중한 평가 감사합니다\n사진을 저장하시겠습니까?</string>
     <string name="login_request_text">로그인이 필요해요</string>
+    <string name="facebook_app_id">425739802079263</string>
+    <string name="fb_login_protocol_scheme">fb425739802079263</string>
 </resources>
