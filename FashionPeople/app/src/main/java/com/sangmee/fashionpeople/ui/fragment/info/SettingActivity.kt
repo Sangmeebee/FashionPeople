@@ -161,7 +161,7 @@ class SettingActivity : AppCompatActivity() {
     fun sendToDeveloperEmail() {
         Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse("mailto:")
-            putExtra(Intent.EXTRA_EMAIL, arrayOf(DEVELOPER_EMAIL1, DEVELOPER_EMAIL2))
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(DEVELOPER_EMAIL1))
         }.run {
             if (this.resolveActivity(packageManager) != null) {
                 startActivity(this)
@@ -212,7 +212,6 @@ class SettingActivity : AppCompatActivity() {
 
     companion object {
         const val DEVELOPER_EMAIL1 = "apfhdznzl@gmail.com"
-        const val DEVELOPER_EMAIL2 = "slflfl12@naver.com"
     }
 
 }
