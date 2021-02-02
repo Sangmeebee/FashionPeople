@@ -93,9 +93,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:hint="20글자 이하"
+                    android:hint="8글자 이하"
                     android:inputType="text"
-                    android:maxLength="20" />
+                    android:maxLength="8" />
 
                 <TextView
                     android:id="@+id/tv_alert"
