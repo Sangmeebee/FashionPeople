@@ -42,4 +42,6 @@
     <string name="login_request_text">로그인이 필요해요</string>
     <string name="facebook_app_id">425739802079263</string>
     <string name="fb_login_protocol_scheme">fb425739802079263</string>
+    <string name="webPrivacyPolicy">http://54.180.224.29:3333/api/v1/individual/information/policy</string>
+    <string name="webTermsOfService">http://54.180.224.29:3333/api/v1/termsOfUse</string>
 </resources>

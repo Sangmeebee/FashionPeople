@@ -240,7 +240,7 @@ class LoginDialogFragment : DialogFragment() {
     }
 
     private fun initCallBack() {
-        publishSubject.throttleFirst(5000L, TimeUnit.MILLISECONDS)
+        publishSubject.throttleFirst(2000L, TimeUnit.MILLISECONDS)
             .subscribe {
                 if (it == "kakao") {
                     Toast.makeText(context, "카카오톡으로 로그인합니다.", Toast.LENGTH_SHORT).show()

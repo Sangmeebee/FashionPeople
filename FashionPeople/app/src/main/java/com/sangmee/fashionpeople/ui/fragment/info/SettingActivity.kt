@@ -24,6 +24,8 @@ import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
 import com.sangmee.fashionpeople.databinding.ActivitySettingBinding
 import com.sangmee.fashionpeople.observer.InfoViewModel
+import com.sangmee.fashionpeople.policy.PrivacyPolicyActivity
+import com.sangmee.fashionpeople.policy.TermsOfServiceActivity
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
@@ -54,8 +56,7 @@ class SettingActivity : AppCompatActivity() {
                 .setPositiveButton("예") { dialog, which ->
                     if (loginType == "kakao") {
                         withdrawalAtKakao()
-                    }
-                    else {
+                    } else {
                         FirebaseAuth.getInstance().currentUser?.delete()
                         vm.deleteUser(customId)
                         Toast.makeText(
@@ -102,6 +103,21 @@ class SettingActivity : AppCompatActivity() {
                 .setNegativeButton("아니오") { dialog, which ->
 
                 }.create().show()
+        }
+
+
+        //이용약관
+        binding.tvTermsOfServiceSub.setOnClickListener {
+            val intent = Intent(this, TermsOfServiceActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        }
+
+        //개인정보 처리방침
+        binding.tvPrivacyPolicy.setOnClickListener {
+            val intent = Intent(this, PrivacyPolicyActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
     }
