@@ -102,6 +102,10 @@ class FeedImageFragment : Fragment(), FeedImageAdapter.OnClickListener {
             Toast.makeText(context, "사진을 삭제했습니다.", Toast.LENGTH_SHORT).show()
         })
 
+        mainVm.feedImages.observe(viewLifecycleOwner, Observer {
+            feedImageAdapter.setFeedImages(it)
+        })
+
         vm.behaviorSubject
             .observeOn(Schedulers.io())
             .subscribe { s3RemoteDataSource.deleteFileInS3("users/${userId}/feed/${it}") }

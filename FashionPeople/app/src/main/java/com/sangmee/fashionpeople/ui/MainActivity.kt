@@ -259,11 +259,15 @@ class MainActivity : AppCompatActivity() {
                 //TagFragment로 이동 & resultUri 전
                 GlobalApplication.prefs.setString("resultUri", resultUri.toString())
                 val intent = Intent(this, TagActivity::class.java)
-                startActivity(intent)
+                startActivityForResult(intent, CHOOSE_TAG_FOR_IMG)
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Log.e("TAG_ERROR", result.error.toString())
             }
+        }
+
+        if (requestCode == CHOOSE_TAG_FOR_IMG && resultCode == RESULT_OK) {
+            mainVm.callFeedImages(mainVm.userId)
         }
     }
 
@@ -309,5 +313,6 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val CHOOSE_PROFILE_IMG = 200
+        private const val CHOOSE_TAG_FOR_IMG = 200
     }
 }

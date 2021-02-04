@@ -36,6 +36,7 @@ class MainViewModel : ViewModel() {
 
     val user = MutableLiveData<FUser>()
     val saveImages = MutableLiveData<List<FeedImage>>()
+    val feedImages = MutableLiveData<List<FeedImage>>()
 
     val tagName = MutableLiveData<String>()
 
@@ -106,6 +107,18 @@ class MainViewModel : ViewModel() {
                 getFeedImage(imageName)
             }, {
                 Log.e("Sangmeebee", it.message.toString())
+            }).addTo(compositeDisposable)
+    }
+
+
+    fun callFeedImages(userId: String) {
+        feedImageRepository.getFeedImages(
+            userId
+        ).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                feedImages.value = it
+            }, {
             }).addTo(compositeDisposable)
     }
 

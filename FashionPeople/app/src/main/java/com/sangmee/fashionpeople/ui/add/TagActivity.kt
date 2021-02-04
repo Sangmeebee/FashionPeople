@@ -120,22 +120,23 @@ class TagActivity : AppCompatActivity() {
     private fun initViewModel() {
         vm.isComplete.observe(this, androidx.lifecycle.Observer {
             Toast.makeText(applicationContext, "사진 등록 완료", Toast.LENGTH_SHORT).show()
-            finishActivity()
+            finishComponent(RESULT_OK)
         })
 
         vm.isError.observe(this, androidx.lifecycle.Observer {
             Toast.makeText(applicationContext, "사진 등록 실패", Toast.LENGTH_SHORT).show()
-            finishActivity()
+            finishComponent(RESULT_CANCELED)
         })
     }
 
 
-    private fun finishActivity() {
+    private fun finishComponent(resultCode: Int) {
         GlobalApplication.prefs.remove("resultUri")
         GlobalApplication.prefs.remove("style")
         GlobalApplication.prefs.remove("top")
         GlobalApplication.prefs.remove("pants")
         GlobalApplication.prefs.remove("shoes")
+        setResult(resultCode)
         finish()
     }
 
