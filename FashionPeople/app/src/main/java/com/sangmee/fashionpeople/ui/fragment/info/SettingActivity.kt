@@ -128,14 +128,6 @@ class SettingActivity : AppCompatActivity() {
             startActivity(intent)
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
-
-        //오픈소스 라이선스
-        binding.tvOpenLicense.setOnClickListener {
-            val intent = Intent(this, PrivacyPolicyActivity::class.java)
-            startActivity(intent)
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-        }
-
     }
 
     private fun setToolbar(toolbar: Toolbar) {
