@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -22,6 +23,7 @@ import com.kakao.usermgmt.callback.LogoutResponseCallback
 import com.kakao.usermgmt.callback.UnLinkResponseCallback
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
+import com.sangmee.fashionpeople.data.dataSource.remote.S3RemoteDataSourceImpl
 import com.sangmee.fashionpeople.databinding.ActivitySettingBinding
 import com.sangmee.fashionpeople.observer.InfoViewModel
 import com.sangmee.fashionpeople.policy.PrivacyPolicyActivity
@@ -29,6 +31,7 @@ import com.sangmee.fashionpeople.policy.TermsOfServiceActivity
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 class SettingActivity : AppCompatActivity() {
 
@@ -38,6 +41,12 @@ class SettingActivity : AppCompatActivity() {
     private lateinit var customId: String
     private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
     private val vm by viewModels<InfoViewModel>()
+    private val s3RemoteDataSource by lazy {
+        S3RemoteDataSourceImpl(
+            applicationContext,
+            customId
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,6 +124,13 @@ class SettingActivity : AppCompatActivity() {
 
         //개인정보 처리방침
         binding.tvPrivacyPolicy.setOnClickListener {
+            val intent = Intent(this, PrivacyPolicyActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        }
+
+        //오픈소스 라이선스
+        binding.tvOpenLicense.setOnClickListener {
             val intent = Intent(this, PrivacyPolicyActivity::class.java)
             startActivity(intent)
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
@@ -211,6 +227,11 @@ class SettingActivity : AppCompatActivity() {
         vm.loadingSubject
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { binding.pbLoading.isVisible = it }
+            .addTo(compositeDisposable)
+
+        vm.deleteSubject
+            .observeOn(Schedulers.io())
+            .subscribe { s3RemoteDataSource.deleteFolderInS3("users/${it}")}
             .addTo(compositeDisposable)
     }
 

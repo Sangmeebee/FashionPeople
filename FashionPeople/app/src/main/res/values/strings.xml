@@ -12,7 +12,7 @@
     <string name="plus_text2">사진을 등록하세요</string>
     <string name="setting_text">설정</string>
     <string name="account_text">계정</string>
-    <string name="information_use">정보</string>
+    <string name="information_use">약관 및 정책</string>
     <string name="modify_profile_text">프로필 수정</string>
     <string name="system_text">로그인</string>
     <string name="logout_text">로그아웃</string>
@@ -24,6 +24,7 @@
     <string name="customer_support_text">고객지원</string>
     <string name="question_suggestion_text">문의 / 의견 보내기</string>
     <string name="privacy_policy_text">개인정보 처리방침</string>
+    <string name="open_license_text">오픈소스 라이선스</string>
     <string name="revise_info_text">회원정보 수정</string>
     <string name="terms_of_service_text">이용약관</string>
     <string name="withdrawl_text">회원탈퇴</string>

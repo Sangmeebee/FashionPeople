@@ -11,19 +11,23 @@ import com.amazonaws.regions.Region
 import com.amazonaws.regions.Regions
 import com.amazonaws.services.s3.AmazonS3Client
 import com.amazonaws.services.s3.model.CannedAccessControlList
+import com.amazonaws.services.s3.model.DeleteObjectRequest
+import com.amazonaws.services.s3.model.ListObjectsRequest
 import java.io.File
+
 
 class S3RemoteDataSourceImpl(private val context: Context, private val customId: String) :
     S3RemoteDataSource {
 
+    private val credentialsProvider = CognitoCachingCredentialsProvider(
+        context,
+        "ap-northeast-2:04a21c16-627a-49a9-8229-f1c412ddebfa",  // 자격 증명 풀 ID
+        Regions.AP_NORTHEAST_2 // 리전
+    )
+
     //aws s3에 이미지 업로드
     override fun uploadWithTransferUtility(fileName: String, file: File?, location: String) {
 
-        val credentialsProvider = CognitoCachingCredentialsProvider(
-            context,
-            "ap-northeast-2:04a21c16-627a-49a9-8229-f1c412ddebfa",  // 자격 증명 풀 ID
-            Regions.AP_NORTHEAST_2 // 리전
-        )
 
         TransferNetworkLossHandler.getInstance(context)
 
@@ -65,6 +69,34 @@ class S3RemoteDataSourceImpl(private val context: Context, private val customId:
         if (uploadObserver.state == TransferState.COMPLETED) {
             /* Handle completion */
 
+        }
+    }
+
+    override fun deleteFileInS3(location: String) {
+        AmazonS3Client(credentialsProvider, Region.getRegion(Regions.AP_NORTHEAST_2)).deleteObject(
+            DeleteObjectRequest("fashionprofile-images", location)
+        )
+    }
+
+    override fun deleteFolderInS3(location: String) {
+        val s3Client = AmazonS3Client(credentialsProvider, Region.getRegion(Regions.AP_NORTHEAST_2))
+        if(s3Client.doesBucketExist("fashionprofile-images")){
+            val listObjectsRequest = ListObjectsRequest()
+                .withBucketName("fashionprofile-images")
+                .withPrefix(location)
+
+            var objectListing = s3Client.listObjects(listObjectsRequest)
+
+            while (true) {
+                for (objectSummary in objectListing.objectSummaries) {
+                    s3Client.deleteObject("fashionprofile-images", objectSummary.key)
+                }
+                objectListing = if (objectListing.isTruncated) {
+                    s3Client.listNextBatchOfObjects(objectListing)
+                } else {
+                    break
+                }
+            }
         }
     }
 }

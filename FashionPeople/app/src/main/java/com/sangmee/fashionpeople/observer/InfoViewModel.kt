@@ -51,6 +51,8 @@ class InfoViewModel : ViewModel() {
     var isCallProfileComplete = SingleLiveEvent<Any>()
     val isFollowing = MutableLiveData<Boolean>()
 
+    val deleteSubject = BehaviorSubject.create<String>()
+
     fun callProfile(userId: String) {
         //프로필 세팅
         fUserRepository.getFUser(userId)
@@ -77,7 +79,6 @@ class InfoViewModel : ViewModel() {
             .subscribeOn(Schedulers.io())
             .subscribe { }.addTo(compositeDisposable)
     }
-
 
 
     fun callOtherActivity(num: Int) {
@@ -108,13 +109,12 @@ class InfoViewModel : ViewModel() {
         fUserRepository.deleteUser(customId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { loadingSubject.onNext(true) }
+            .doOnSubscribe {
+                loadingSubject.onNext(true)
+                deleteSubject.onNext(customId)
+            }
             .doAfterTerminate { loadingSubject.onNext(false) }
-            .subscribe({
-
-            }, {
-
-            }).addTo(compositeDisposable)
+            .subscribe({ }, { }).addTo(compositeDisposable)
     }
 
     fun unbindViewModel() {

@@ -107,6 +107,21 @@
                     android:paddingVertical="18dp"
                     android:text="@string/privacy_policy_text"
                     android:textSize="15dp" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorGray" />
+
+                <TextView
+                    android:id="@+id/tv_open_license"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="18dp"
+                    android:text="@string/open_license_text"
+                    android:textSize="15dp" />
             </LinearLayout>
 
             <LinearLayout

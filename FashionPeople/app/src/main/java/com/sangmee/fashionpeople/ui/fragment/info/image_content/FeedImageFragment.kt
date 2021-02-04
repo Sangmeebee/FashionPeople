@@ -16,12 +16,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.sangmee.fashionpeople.R
 import com.sangmee.fashionpeople.data.GlobalApplication
+import com.sangmee.fashionpeople.data.dataSource.remote.S3RemoteDataSourceImpl
 import com.sangmee.fashionpeople.data.model.FeedImage
 import com.sangmee.fashionpeople.databinding.FragmentFeedImageBinding
 import com.sangmee.fashionpeople.observer.FeedImageViewModel
 import com.sangmee.fashionpeople.observer.MainViewModel
 import com.sangmee.fashionpeople.ui.MainActivity
 import com.sangmee.fashionpeople.ui.fragment.detail.DetailFragment
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.kotlin.addTo
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 class FeedImageFragment : Fragment(), FeedImageAdapter.OnClickListener {
 
@@ -34,8 +38,14 @@ class FeedImageFragment : Fragment(), FeedImageAdapter.OnClickListener {
             }
         }).get(FeedImageViewModel::class.java)
     }
-
+    private val compositeDisposable = CompositeDisposable()
     private val mainVm by activityViewModels<MainViewModel>()
+    private val s3RemoteDataSource by lazy {
+        S3RemoteDataSourceImpl(
+            requireContext(),
+            mainVm.userId
+        )
+    }
 
     private val loginType = GlobalApplication.prefs.getString("login_type", "empty")
     val customId = GlobalApplication.prefs.getString("${loginType}_custom_id", "empty")
@@ -81,7 +91,7 @@ class FeedImageFragment : Fragment(), FeedImageAdapter.OnClickListener {
         vm.feedImages.observe(viewLifecycleOwner, Observer {
             isEmpty = it.isEmpty()
             binding.isEmpty = isEmpty
-            feedImageAdapter?.setFeedImages(it)
+            feedImageAdapter.setFeedImages(it)
         })
 
         vm.isComplete.observe(viewLifecycleOwner, Observer {
@@ -91,6 +101,11 @@ class FeedImageFragment : Fragment(), FeedImageAdapter.OnClickListener {
         vm.deleteComplete.observe(viewLifecycleOwner, Observer {
             Toast.makeText(context, "사진을 삭제했습니다.", Toast.LENGTH_SHORT).show()
         })
+
+        vm.behaviorSubject
+            .observeOn(Schedulers.io())
+            .subscribe { s3RemoteDataSource.deleteFileInS3("users/${userId}/feed/${it}") }
+            .addTo(compositeDisposable)
     }
 
     private fun getDisplayHeight(): Int {
@@ -153,6 +168,7 @@ class FeedImageFragment : Fragment(), FeedImageAdapter.OnClickListener {
 
     override fun onDestroy() {
         vm.unBindDisposable()
+        compositeDisposable.clear()
         super.onDestroy()
     }
 
