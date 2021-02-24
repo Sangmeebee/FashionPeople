@@ -45,6 +45,6 @@
 
   - 스타일, 브랜드, 계정 별로 검색할 수 있다.
 
-## 주요 적용 기술 및 라이브러리
+## 기획안 / 모델구조 / 요구사항 분석서
 
-![모델구조](./FashionPeople 자료/readme image/model_structure.png)
+참고 자료 : [패션노트 자료](https://github.com/Sangmeebee/FashionPeople/tree/master/FashionPeople%20%EC%9E%90%EB%A3%8C)
