@@ -47,4 +47,4 @@
 
 ## 주요 적용 기술 및 라이브러리
 
-![모델구조](FashionPeople 자료/readme image/스크린샷 2021-02-24 오후 4.16.44.png)
+![모델구조](./FashionPeople 자료/readme image/model_structure.png)
