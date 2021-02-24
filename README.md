@@ -1,4 +1,4 @@
-# FashionPeople
+# 패션노트 - Fashion note
 
 ## 프로젝트 개요
 
